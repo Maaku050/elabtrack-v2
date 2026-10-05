@@ -1,4 +1,5 @@
-# eLabTrack V2 local development services.
+# eLabTrack V2 local development services. Published postgres/postgres defaults
+# are local-only; this file is not a production manifest.
 # Usage:  docker compose up -d postgres   (then run backend/frontend on host)
 
 services:
@@ -27,10 +28,15 @@ services:
     container_name: elabtrack_v2_backend
     restart: unless-stopped
     env_file:
-      - ./backend/.env
+      - path: ./backend/.env
+        required: false
     environment:
       # Inside Compose, reach the postgres service by name and reuse the
       # same credentials the container was initialized with.
+      # This file is local development only; production uses external config.
+      APP_PORT: "8080"
+      DB_SSLMODE: disable
+      DB_PORT: "5432"
       DB_HOST: postgres
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
       DB_USER: ${DB_USER:-postgres}

@@ -2,69 +2,119 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"os"
 	"strings"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/bootstrap"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
 )
 
-// CLI flags. The server runs by default; passing any of these flags runs
-// the corresponding one-shot command instead and exits.
+type command struct {
+	up, down, status, seed bool
+	create                 string
+}
+
 func main() {
-	migrateUp := flag.Bool("migrate-up", false, "apply pending database migrations and exit")
-	migrateDown := flag.Bool("migrate-down", false, "roll back the latest migration and exit")
-	migrateCreate := flag.String("migrate-create", "", "create a new migration pair (provide a name) and exit")
-	seed := flag.Bool("seed", false, "run database seeders and exit")
-	flag.Parse()
-
-	ctx := context.Background()
-
-	// One-shot commands that don't need the full HTTP server wiring.
-	if *migrateUp || *migrateDown || *migrateCreate != "" || *seed {
-		if err := runCommand(ctx, *migrateUp, *migrateDown, *migrateCreate, *seed); err != nil {
-			fmt.Fprintf(os.Stderr, "error: %v\n", err)
-			os.Exit(1)
-		}
+	cmd, err := parseCommand(os.Args[1:])
+	if errors.Is(err, flag.ErrHelp) {
 		return
 	}
-
-	app, err := bootstrap.New(ctx)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to bootstrap application: %v\n", err)
-		os.Exit(1)
+	if err == nil {
+		err = run(context.Background(), cmd)
 	}
-	if err := app.Run(); err != nil {
-		fmt.Fprintf(os.Stderr, "application error: %v\n", err)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
 		os.Exit(1)
 	}
 }
-
-func runCommand(ctx context.Context, up, down bool, createName string, seed bool) error {
-	app, err := bootstrap.New(ctx)
+func parseCommand(args []string) (command, error) {
+	var cmd command
+	flags := flag.NewFlagSet("api", flag.ContinueOnError)
+	// Flag errors can contain supplied values; print only our safe errors.
+	flags.SetOutput(io.Discard)
+	flags.BoolVar(&cmd.up, "migrate-up", false, "apply pending migrations")
+	flags.BoolVar(&cmd.down, "migrate-down", false, "roll back the latest migration")
+	flags.BoolVar(&cmd.status, "migrate-status", false, "show migration status without schema changes")
+	flags.StringVar(&cmd.create, "migrate-create", "", "create a paired SQL scaffold")
+	flags.BoolVar(&cmd.seed, "seed", false, "explicitly run local development seeds")
+	if err := flags.Parse(args); err != nil {
+		if errors.Is(err, flag.ErrHelp) {
+			fmt.Println("api [--migrate-up | --migrate-down | --migrate-status | --migrate-create NAME | --seed]")
+			return cmd, flag.ErrHelp
+		}
+		return cmd, errors.New("command: invalid arguments; use --help")
+	}
+	count := 0
+	for _, active := range []bool{cmd.up, cmd.down, cmd.status, cmd.create != "", cmd.seed} {
+		if active {
+			count++
+		}
+	}
+	if count > 1 || flags.NArg() > 0 {
+		return cmd, errors.New("command: choose exactly one action, without positional arguments")
+	}
+	if cmd.create != "" && strings.Trim(sanitizeName(cmd.create), "_") == "" {
+		return cmd, errors.New("migrate-create: name must contain letters or digits")
+	}
+	// An explicitly empty create flag must not accidentally launch a server.
+	flags.Visit(func(f *flag.Flag) {
+		if f.Name == "migrate-create" && cmd.create == "" {
+			count = -1
+		}
+	})
+	if count < 0 {
+		return cmd, errors.New("migrate-create: name is required")
+	}
+	return cmd, nil
+}
+func run(ctx context.Context, cmd command) error {
+	if !cmd.up && !cmd.down && !cmd.status && cmd.create == "" && !cmd.seed {
+		app, err := bootstrap.New(ctx)
+		if err != nil {
+			return err
+		}
+		return app.Run()
+	}
+	cfg, err := config.Load()
 	if err != nil {
 		return err
 	}
-	defer app.Logger().Sync()
-	defer func() { _ = app.Shutdown(context.Background()) }()
-
-	switch {
-	case createName != "":
-		if _, err := app.Migrator().Create(sanitizeName(createName)); err != nil {
+	if cmd.seed {
+		if err := config.CheckDevelopmentSeed(cfg.App.Env, true); err != nil {
 			return err
 		}
-	case up:
-		return app.Migrator().Up(ctx)
-	case down:
-		return app.Migrator().Down(ctx)
-	case seed:
-		return app.Seeder().Run(ctx)
+	}
+	if cmd.create != "" {
+		_, err := database.NewMigrator(nil, "migrations").Create(sanitizeName(cmd.create))
+		return err
+	}
+	db, err := database.New(ctx, cfg.DB)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+	migrator := database.NewMigrator(db.Pool, "migrations")
+	switch {
+	case cmd.up:
+		err = migrator.Up(ctx)
+	case cmd.down:
+		err = migrator.Down(ctx)
+	case cmd.status:
+		err = migrator.Status(ctx)
+	case cmd.seed:
+		return database.NewSeeder(db.Pool, "seeds", cfg.App.Env).Run(ctx, true)
+	}
+	// SQL errors may include server details. Do not send them to startup logs.
+	if err != nil {
+		return errors.New("migration: command failed; inspect database state through an authorized operator")
 	}
 	return nil
 }
-
-// sanitizeName keeps migration file names safe.
 func sanitizeName(s string) string {
 	s = strings.ToLower(strings.TrimSpace(s))
 	var b strings.Builder
@@ -72,9 +122,7 @@ func sanitizeName(s string) string {
 		switch {
 		case r >= 'a' && r <= 'z', r >= '0' && r <= '9':
 			b.WriteRune(r)
-		case r == '-' || r == ' ':
-			b.WriteRune('_')
-		case r == '_':
+		case r == '-' || r == ' ' || r == '_':
 			b.WriteRune('_')
 		}
 	}

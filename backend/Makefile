@@ -1,4 +1,4 @@
-.PHONY: help run tidy fmt vet test build migrate-up migrate-down migrate-create seed
+.PHONY: help run tidy fmt vet test build migrate-up migrate-down migrate-status migrate-create seed
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
@@ -27,8 +27,11 @@ migrate-up: ## Apply pending migrations
 migrate-down: ## Roll back the latest migration
 	go run ./cmd/api --migrate-down
 
+migrate-status: ## Show migration state without schema mutation
+	go run ./cmd/api --migrate-status
+
 migrate-create: ## Create a new migration: make migrate-create name=create_products
 	go run ./cmd/api --migrate-create=$(name)
 
-seed: ## Run database seeders
+seed: ## Explicitly run development-only seeds (denied in test/production)
 	go run ./cmd/api --seed

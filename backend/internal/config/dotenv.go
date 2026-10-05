@@ -2,60 +2,70 @@ package config
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 )
 
-// LoadDotEnv reads a .env file (if present) from the working directory and
-// sets any variables that are not already present in the environment. This
-// is a minimal, dependency-free loader modeled on godotenv semantics.
-//
-// Existing environment variables always win over .env values, so production
-// deployments can override behaviour without editing files.
-func LoadDotEnv(path string) {
-	f, err := os.Open(path)
-	if err != nil {
-		// Missing .env is fine; rely on real environment variables.
-		return
+// Load snapshots the process environment once. A local .env supplies missing
+// values only in development. It never mutates the process environment.
+func Load() (*Config, error) {
+	values := map[string]string{}
+	for _, entry := range os.Environ() {
+		key, value, ok := strings.Cut(entry, "=")
+		if ok {
+			values[key] = value
+		}
 	}
-	defer f.Close()
-
-	sc := bufio.NewScanner(f)
-	for sc.Scan() {
-		line := strings.TrimSpace(sc.Text())
-		if line == "" || strings.HasPrefix(line, "#") {
-			continue
-		}
-		key, val, ok := splitEnvLine(line)
-		if !ok {
-			continue
-		}
-		// Don't override existing env vars.
-		if _, present := os.LookupEnv(key); present {
-			continue
-		}
-		_ = os.Setenv(key, val)
-	}
+	return loadWithFile(values, ".env")
 }
-
+func loadWithFile(values map[string]string, path string) (*Config, error) {
+	// Explicit production/test/unknown environments never read local dotenv.
+	if env, present := values["APP_ENV"]; !present || env == string(Development) {
+		f, err := os.Open(path)
+		if err != nil && !os.IsNotExist(err) {
+			return nil, fmt.Errorf(".env: cannot read configuration file")
+		}
+		if err == nil {
+			defer f.Close()
+			sc := bufio.NewScanner(f)
+			for sc.Scan() {
+				line := strings.TrimSpace(sc.Text())
+				if line == "" || strings.HasPrefix(line, "#") {
+					continue
+				}
+				key, value, ok := splitEnvLine(line)
+				if !ok {
+					return nil, fmt.Errorf(".env: invalid assignment")
+				}
+				if _, present := values[key]; !present {
+					values[key] = value
+				}
+			}
+			if sc.Err() != nil {
+				return nil, fmt.Errorf(".env: cannot read configuration file")
+			}
+		}
+	}
+	return Parse(values)
+}
 func splitEnvLine(line string) (string, string, bool) {
-	// Handle optional `export ` prefix.
-	line = strings.TrimPrefix(line, "export ")
-	idx := strings.Index(line, "=")
-	if idx <= 0 {
+	key, value, ok := strings.Cut(strings.TrimPrefix(line, "export "), "=")
+	key = strings.TrimSpace(key)
+	value = strings.TrimSpace(value)
+	if !ok || key == "" {
 		return "", "", false
 	}
-	key := strings.TrimSpace(line[:idx])
-	val := strings.TrimSpace(line[idx+1:])
-	val = unquote(val)
-	return key, val, true
-}
-
-func unquote(s string) string {
-	if len(s) >= 2 {
-		if (s[0] == '"' && s[len(s)-1] == '"') || (s[0] == '\'' && s[len(s)-1] == '\'') {
-			return s[1 : len(s)-1]
+	for _, c := range key {
+		if !(c == '_' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9') {
+			return "", "", false
 		}
 	}
-	return s
+	if len(value) > 0 && (value[0] == '\'' || value[0] == '"') {
+		if len(value) < 2 || value[len(value)-1] != value[0] {
+			return "", "", false
+		}
+		value = value[1 : len(value)-1]
+	}
+	return key, value, true
 }

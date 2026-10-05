@@ -2,6 +2,17 @@
 
 Status: findings recorded 2026-10-05; **not implemented in Phase 0**. Priorities are engineering risk assessments from current source, not proof of exploitation. The generic auth endpoints still exist even though their frontend screens were removed. Owner roles below do not invent named approvers. No actual JWT values, passwords from real accounts, or database contents are disclosed.
 
+## Phase 1A implementation status — verified 2026-10-06
+
+The finding tables below preserve the Phase 0 audit evidence. Current implementation and validation are in [PHASE1_FOUNDATION.md](PHASE1_FOUNDATION.md).
+
+- **SEC-001 configuration safeguard implemented:** production rejects missing/blank/default/placeholder/short/low-diversity signing material before infrastructure. Claim verification and session design are still SEC-002–006 work.
+- **SEC-009 configuration safeguard implemented:** safe URL encoding/parsing, explicit production verify-full TLS, minimum TLS 1.2, and no fallback. Unit tests inspect effective pool config; actual deployment CA/host/TLS connectivity is unrun.
+- **SEC-011 development seed guard implemented:** opt-in CLI plus seeder guard deny production/test before IO. Final production bootstrap-admin procedure remains unresolved and has no seeded product-account policy.
+- **SEC-008 partially implemented:** automatic Docker/startup migration removed; distinct CLI up/down/status and explicit local Compose workflow exist. SQL/version bookkeeping still use separate commits, no concurrent-run lock, and Down still conflates lookup failures with no rows. Atomicity, exclusivity, least-privilege release/runtime credentials and isolated PostgreSQL recovery tests remain open. Do not claim SEC-008 complete.
+- **SEC-013 configuration portion implemented:** explicit production HTTPS frontend/origin allowlist, no wildcard/credential/path defaults. Cookie/CSRF policy and deployment/preflight verification remain open.
+- **SEC-002–007, SEC-010, SEC-012, SEC-014–019 remain open.** No authentication/session redesign, product decisions, deployment or CI suite were implemented in Phase 1A.
+
 ## CRITICAL
 
 | ID | Finding / evidence | Required hardening and acceptance evidence | Owner |

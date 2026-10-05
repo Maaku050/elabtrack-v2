@@ -19,18 +19,19 @@ import (
 // App is the fully wired application. Run it with Run; shut it down with
 // Shutdown (called automatically by Run on SIGINT/SIGTERM).
 type App struct {
-	cfg      *config.Config
-	log      *logger.Logger
-	db       *database.Postgres
-	server   *fiber.App
-	migrator *database.Migrator
-	seeder   *database.Seeder
+	cfg    *config.Config
+	log    *logger.Logger
+	db     *database.Postgres
+	server *fiber.App
 }
 
 // New wires the entire application: config -> infrastructure -> services
 // -> handlers -> routes. It returns an App ready to Run.
 func New(ctx context.Context) (*App, error) {
-	cfg := config.Load()
+	cfg, err := config.Load()
+	if err != nil {
+		return nil, err
+	}
 	infra, err := initInfrastructure(ctx, cfg)
 	if err != nil {
 		return nil, err
@@ -40,12 +41,10 @@ func New(ctx context.Context) (*App, error) {
 	RegisterRoutes(server, c)
 
 	return &App{
-		cfg:      cfg,
-		log:      infra.Logger,
-		db:       infra.DB,
-		server:   server,
-		migrator: infra.Migrator,
-		seeder:   infra.Seeder,
+		cfg:    cfg,
+		log:    infra.Logger,
+		db:     infra.DB,
+		server: server,
 	}, nil
 }
 
@@ -54,7 +53,7 @@ func New(ctx context.Context) (*App, error) {
 func (a *App) Run() error {
 	addr := ":" + a.cfg.App.Port
 	go func() {
-		a.log.Info("starting http server", zap.String("addr", addr), zap.String("env", a.cfg.App.Env))
+		a.log.Info("starting http server", zap.String("addr", addr), zap.String("env", string(a.cfg.App.Env)))
 		if err := a.server.Listen(addr, fiber.ListenConfig{DisableStartupMessage: false}); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			a.log.Fatal("server stopped unexpectedly")
 		}
@@ -82,12 +81,6 @@ func (a *App) Shutdown(ctx context.Context) error {
 	a.log.Sync()
 	return nil
 }
-
-// Migrator exposes the migrator for CLI subcommands.
-func (a *App) Migrator() *database.Migrator { return a.migrator }
-
-// Seeder exposes the seeder for CLI subcommands.
-func (a *App) Seeder() *database.Seeder { return a.seeder }
 
 // Logger exposes the application logger.
 func (a *App) Logger() *logger.Logger { return a.log }

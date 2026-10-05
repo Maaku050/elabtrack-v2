@@ -1,7 +1,7 @@
 # Root Makefile - convenience wrappers around backend/frontend tooling.
 # Linux development; equivalent commands are documented in README.md.
 
-.PHONY: help dev backend frontend migrate-up migrate-down migrate-create seed test lint fmt vet install
+.PHONY: help dev backend frontend migrate-up migrate-down migrate-status migrate-create compose-migrate-up seed test lint fmt vet install
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
@@ -21,10 +21,13 @@ migrate-up: ## Apply database migrations
 migrate-down: ## Roll back the latest migration
 	cd backend && go run ./cmd/api --migrate-down
 
+migrate-status: ## Show migration state without schema mutation
+	cd backend && go run ./cmd/api --migrate-status
+
 migrate-create: ## Create a new migration: make migrate-create name=describe_change
 	cd backend && go run ./cmd/api --migrate-create=$(name)
 
-seed: ## Run database seeders
+seed: ## Explicitly run development-only seeds (denied in test/production)
 	cd backend && go run ./cmd/api --seed
 
 test: ## Run all tests
@@ -44,3 +47,6 @@ vet: ## Run go vet
 install: ## Install backend and frontend dependencies
 	cd backend && go mod download
 	cd frontend && npm install
+
+compose-migrate-up: ## Explicitly migrate the local Compose database
+	docker compose --profile full run --rm --build backend --migrate-up

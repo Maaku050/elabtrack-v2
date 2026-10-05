@@ -11,9 +11,9 @@ desktop.ini
 
 # ---------- Env ----------
 .env
-.env.local
-.env.*.local
+.env.*
 !.env.example
+!.env.*.example
 
 # ---------- Backend (Go) ----------
 backend/bin/

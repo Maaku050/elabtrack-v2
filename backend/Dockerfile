@@ -16,5 +16,5 @@ COPY migrations ./migrations
 COPY seeds ./seeds
 USER appuser
 EXPOSE 8080
-# Apply pending migrations, then serve. Migrations are idempotent.
-CMD ["sh", "-c", "./api -migrate-up && exec ./api"]
+# Start only the API. Run migrations as a separate, explicit command/job.
+ENTRYPOINT ["./api"]

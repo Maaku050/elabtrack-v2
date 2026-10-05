@@ -2,7 +2,7 @@ package database
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
@@ -18,28 +18,21 @@ type Postgres struct {
 // New constructs a Postgres connection pool from config and pings it.
 // One pool is created per process and injected via dependencies.
 func New(ctx context.Context, cfg config.DBConfig) (*Postgres, error) {
-	poolCfg, err := pgxpool.ParseConfig(cfg.DSN())
+	poolCfg, err := cfg.PoolConfig()
 	if err != nil {
-		return nil, fmt.Errorf("parse db config: %w", err)
+		return nil, err
 	}
-
-	// Pool sizing is also expressed in the DSN; set here too for clarity.
-	poolCfg.MaxConns = cfg.MaxConns
-	poolCfg.MinConns = cfg.MinConns
-	poolCfg.MaxConnLifetime = cfg.MaxConnLifetime
-	poolCfg.MaxConnIdleTime = cfg.MaxConnIdleTime
-	poolCfg.HealthCheckPeriod = time.Minute
 
 	pool, err := pgxpool.NewWithConfig(ctx, poolCfg)
 	if err != nil {
-		return nil, fmt.Errorf("create db pool: %w", err)
+		return nil, errors.New("database: failed to create connection pool")
 	}
 
 	pingCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 	if err := pool.Ping(pingCtx); err != nil {
 		pool.Close()
-		return nil, fmt.Errorf("ping db: %w", err)
+		return nil, errors.New("database: connection check failed (check connectivity, credentials and TLS)")
 	}
 
 	return &Postgres{Pool: pool}, nil

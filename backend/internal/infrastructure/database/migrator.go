@@ -218,3 +218,32 @@ func sanitize(name string) string {
 	}
 	return b.String()
 }
+
+// Status reads tracking state without creating schema_migrations or executing
+// migration SQL. Schema mutation is reserved for explicit Up/Down commands.
+func (m *Migrator) Status(ctx context.Context) error {
+	var exists bool
+	if err := m.pool.QueryRow(ctx, `SELECT to_regclass('schema_migrations') IS NOT NULL`).Scan(&exists); err != nil {
+		return err
+	}
+	applied := map[string]bool{}
+	if exists {
+		var err error
+		applied, err = m.appliedVersions(ctx)
+		if err != nil {
+			return err
+		}
+	}
+	files, err := m.listUpMigrations()
+	if err != nil {
+		return err
+	}
+	for _, f := range files {
+		state := "pending"
+		if applied[f.version] {
+			state = "applied"
+		}
+		fmt.Printf("%s %s\n", state, f.version)
+	}
+	return nil
+}

@@ -17,7 +17,7 @@ func newServer(cfg *config.Config, c *Container, log *logger.Logger) *fiber.App 
 		ReadTimeout:  cfg.App.ReadTimeout,
 		WriteTimeout: cfg.App.WriteTimeout,
 		IdleTimeout:  cfg.App.ReadTimeout + cfg.App.WriteTimeout,
-		BodyLimit:    bodyLimitBytes(cfg.App.BodyLimit),
+		BodyLimit:    cfg.App.BodyLimit,
 		ServerHeader: "",
 		ErrorHandler: middleware.ErrorHandler(log),
 	})
