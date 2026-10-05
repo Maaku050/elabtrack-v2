@@ -9,6 +9,7 @@ Recorded 2026-10-05. These entries are investigation results, not accepted polic
 - **Evidence from latest documentation (INTENDED LEGACY REQUIREMENT):** Scope/account management P421 requires approved/manual verification; conclusion P1527 says borrowers can register; Add User description P1316 describes admin registration. This is an internal documentation conflict as well as a V1 conflict.
 - **Current status:** Needs Stakeholder Input; no confirmed V2 product-policy resolution.
 - **Impact:** Determines onboarding, approval/verification, abuse controls and routes in Phases 4–5. Template /auth/register remains inherited only.
+- **Phase 1B engineering evidence (2026-10-06):** Production registration is now absent (404); only explicit development/test retains local signup. DEC-025 accepts reversible containment, not public-signup or provisioning policy. No alternative creation API/UI is implemented.
 - **Required decision-maker:** FSMO accountable administrator with school project sponsor (responsibility, not an invented named approver).
 
 ## ELAB-V2-OPEN-002
@@ -74,6 +75,8 @@ Recorded 2026-10-05. These entries are investigation results, not accepted polic
 - **Impact:** Phase 4 session checks/revocation and Phase 5 eligibility; preserve outstanding accountability.
 - **Required decision-maker:** FSMO policy owner and IT/security owner (responsibility, not an invented named approver).
 
+- **Phase 1B engineering evidence (2026-10-06):** Existing generic is_active=false denies subsequent protected API requests with 403; current role is looked up each request. No suspended-state taxonomy, session-family/logout revocation or loan/accountability policy was added. Those questions remain unresolved.
+
 ## ELAB-V2-OPEN-009
 
 - **Question:** Is email verification required, and at what point?
@@ -82,6 +85,8 @@ Recorded 2026-10-05. These entries are investigation results, not accepted polic
 - **Current status:** Needs Stakeholder Input; no confirmed V2 product-policy resolution.
 - **Impact:** Phase 4 onboarding/recovery and Phase 9 deliverability; do not confuse email verification with borrowing eligibility.
 - **Required decision-maker:** FSMO administrator and IT/security owner (responsibility, not an invented named approver).
+
+- **Phase 1B engineering evidence (2026-10-06):** Self-service email/identity changes are temporarily unavailable; only display-name editing remains. This containment avoids inventing verification/provisioning behavior and does not settle email ownership/eligibility policy.
 
 ## ELAB-V2-OPEN-010
 

@@ -7,8 +7,8 @@ import (
 )
 
 // Login verifies credentials and issues a token pair.
-// On any failure path it returns ErrInvalidCredentials to avoid leaking
-// whether the email exists in the system.
+// Failed credentials do not reveal whether an account exists or is inactive.
+// Account status is checked only after the password has been verified.
 func (s *Service) Login(ctx context.Context, req LoginRequest) (TokenPairDTO, error) {
 	email, err := domainuser.ParseEmail(req.Email)
 	if err != nil {
@@ -16,14 +16,14 @@ func (s *Service) Login(ctx context.Context, req LoginRequest) (TokenPairDTO, er
 	}
 
 	u, err := s.users.FindByEmail(ctx, email.String())
-	if err != nil {
+	if err != nil || u == nil {
+		return TokenPairDTO{}, domainuser.ErrInvalidCredentials
+	}
+	if err := s.hasher.Compare(u.Password, req.Password); err != nil {
 		return TokenPairDTO{}, domainuser.ErrInvalidCredentials
 	}
 	if !u.IsActive {
 		return TokenPairDTO{}, domainuser.ErrUserInactive
-	}
-	if err := s.hasher.Compare(u.Password, req.Password); err != nil {
-		return TokenPairDTO{}, domainuser.ErrInvalidCredentials
 	}
 
 	return s.issueTokenPair(ctx, u)

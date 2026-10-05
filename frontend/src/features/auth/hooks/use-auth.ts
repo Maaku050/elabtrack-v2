@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { authApi } from '../api/auth.api'
-import { usersApi } from '@/features/users/api/users.api'
 import { useAuthStore } from '@/stores/auth-store'
 import { storage, storageKeys } from '@/lib/storage'
 import { useToast } from '@/components/feedback/toast'
@@ -80,10 +79,10 @@ export function useCurrentUser() {
   const setUser = useAuthStore((s) => s.setUser)
 
   return useQuery({
-    queryKey: queryKeys.users.me(),
+    queryKey: queryKeys.auth.me(),
     queryFn: async ({ signal }) => {
-      const user = await usersApi.me(signal)
-      if (!signal.aborted) setUser({ id: user.id, name: user.name, email: user.email, role: user.role })
+      const user = await authApi.me(signal)
+      if (!signal.aborted) setUser(user)
       return user
     },
     enabled: isAuthenticated,

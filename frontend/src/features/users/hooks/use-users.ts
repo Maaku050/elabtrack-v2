@@ -20,7 +20,7 @@ export function useProfile() {
 /**
  * Optimistic profile update.
  *
- * This is a safe, reversible mutation (rename / email change), so we use
+ * This is a display-name-only mutation, so we use
  * the optimistic UI pattern:
  *   1. cancel related queries
  *   2. snapshot previous cache
@@ -49,12 +49,11 @@ export function useUpdateProfile() {
         const next: User = {
           ...previous,
           name: input.name ?? previous.name,
-          email: input.email ?? previous.email,
           updated_at: new Date().toISOString(),
         }
         queryClient.setQueryData<User>(queryKeys.users.me(), next)
         // Keep the auth store's lightweight metadata in sync too.
-        setUser({ id: next.id, name: next.name, email: next.email, role: next.role })
+        setUser({ id: next.id, name: next.name, email: next.email, role: next.role, is_active: next.is_active })
       }
 
       return { previous }
@@ -69,19 +68,21 @@ export function useUpdateProfile() {
           name: context.previous.name,
           email: context.previous.email,
           role: context.previous.role,
+          is_active: context.previous.is_active,
         })
       }
       toast.error('Update failed', 'Your profile was not changed. Please try again.')
     },
 
     onSuccess: (user) => {
-      setUser({ id: user.id, name: user.name, email: user.email, role: user.role })
+      setUser({ id: user.id, name: user.name, email: user.email, role: user.role, is_active: user.is_active })
       toast.success('Profile updated', 'Your changes have been saved.')
     },
 
     onSettled: () => {
       // 6. Revalidate to make sure our optimistic state matches the server.
       void queryClient.invalidateQueries({ queryKey: queryKeys.users.me() })
+      void queryClient.invalidateQueries({ queryKey: queryKeys.auth.me() })
     },
   })
 }

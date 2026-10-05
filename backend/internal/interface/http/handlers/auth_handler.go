@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
-	appuser "github.com/Maaku050/elabtrack-v2/backend/internal/application/user"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/middleware"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
@@ -12,19 +11,18 @@ import (
 // AuthHandler exposes the auth endpoints.
 type AuthHandler struct {
 	auth *auth.Service
-	user *appuser.Service
 	v    *validator.Validator
 }
 
 // NewAuthHandler constructs an AuthHandler.
-func NewAuthHandler(authSvc *auth.Service, userSvc *appuser.Service, v *validator.Validator) *AuthHandler {
-	return &AuthHandler{auth: authSvc, user: userSvc, v: v}
+func NewAuthHandler(authSvc *auth.Service, v *validator.Validator) *AuthHandler {
+	return &AuthHandler{auth: authSvc, v: v}
 }
 
 // Register handles POST /api/v1/auth/register.
 func (h *AuthHandler) Register(c fiber.Ctx) error {
 	var req auth.RegisterRequest
-	if err := c.Bind().Body(&req); err != nil {
+	if err := bindStrictJSON(c, &req); err != nil {
 		return response.BadRequest(c, "Invalid request body.")
 	}
 	if fe := h.v.Validate(req); fe != nil {
@@ -84,15 +82,11 @@ func (h *AuthHandler) Logout(c fiber.Ctx) error {
 	return response.NoContent(c)
 }
 
-// Me handles GET /api/v1/auth/me (convenience alias for the current user).
+// Me returns the already resolved current-account snapshot, never JWT metadata.
 func (h *AuthHandler) Me(c fiber.Ctx) error {
-	claims, ok := middleware.ClaimsFromContext(c)
+	principal, ok := middleware.PrincipalFromContext(c)
 	if !ok {
 		return response.Unauthorized(c, "Authentication required.")
 	}
-	dto, err := h.auth.CurrentUser(c.Context(), claims)
-	if err != nil {
-		return response.Error(c, err)
-	}
-	return response.OK(c, "Current user retrieved successfully.", dto)
+	return response.OK(c, "Current user retrieved successfully.", principal.UserDTO())
 }

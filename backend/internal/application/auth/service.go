@@ -1,8 +1,6 @@
 package auth
 
 import (
-	"context"
-	"fmt"
 	"time"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
@@ -40,18 +38,4 @@ func NewService(
 		accessTTL:  accessTTL,
 		refreshTTL: refreshTTL,
 	}
-}
-
-// CurrentUser returns the authenticated user's public profile.
-func (s *Service) CurrentUser(ctx context.Context, claims application.Claims) (AuthUserDTO, error) {
-	u, err := s.users.FindByID(ctx, claims.UserID)
-	if err != nil {
-		return AuthUserDTO{}, fmt.Errorf("find current user: %w", err)
-	}
-	return AuthUserDTO{
-		ID:    u.ID,
-		Email: u.Email,
-		Name:  u.Name,
-		Role:  string(u.Role),
-	}, nil
 }

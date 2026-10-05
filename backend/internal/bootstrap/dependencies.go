@@ -4,6 +4,7 @@ import (
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
 	appuser "github.com/Maaku050/elabtrack-v2/backend/internal/application/user"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/routes"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
@@ -23,6 +24,8 @@ type Container struct {
 
 	// Outbound ports needed by route registration (auth middleware).
 	TokenIssuer application.TokenIssuer
+	Accounts    auth.AccountResolver
+	Environment config.Environment
 }
 
 // buildContainer wires infrastructure -> repositories -> application services
@@ -41,9 +44,11 @@ func buildContainer(infra *Infrastructure) *Container {
 		AuthSvc:     authSvc,
 		UserSvc:     userSvc,
 		Health:      handlers.NewHealthHandler(infra.Health),
-		Auth:        handlers.NewAuthHandler(authSvc, userSvc, v),
+		Auth:        handlers.NewAuthHandler(authSvc, v),
 		User:        handlers.NewUserHandler(userSvc, v),
 		TokenIssuer: issuer,
+		Accounts:    auth.NewAccountResolver(userRepo),
+		Environment: infra.Config.App.Env,
 	}
 }
 
@@ -54,5 +59,7 @@ func (c *Container) routeDeps() *routes.Deps {
 		Auth:        c.Auth,
 		User:        c.User,
 		TokenIssuer: c.TokenIssuer,
+		Accounts:    c.Accounts,
+		Environment: c.Environment,
 	}
 }

@@ -163,3 +163,24 @@ Recorded 2026-10-05. Status vocabulary: **Accepted**, **Proposed**, **Deferred**
 - Decision: API/container startup never runs migrations or seeds. Separate mutually exclusive CLI actions apply/roll back/read migration status or create scaffolds. Development seeding requires an explicit CLI request and is denied in production/test before IO, with a second guard inside the seeder.
 - Authority/date: stakeholder Phase 1A request, 2026-10-05; implemented API command separation and seed guard tests.
 - Rationale/impact: production migrations are a distinct authorized release step. Migration locking/atomic bookkeeping, least-privilege deployment credentials, and final admin provisioning remain outstanding. Existing auth SQL and synthetic local accounts establish no product roles or eligibility policies.
+
+## ELAB-V2-DEC-024 — Current-account request authorization
+
+- Status: Accepted
+- Decision: Every retained access-token-protected route verifies bearer identity through one middleware implementation, then resolves a safe current PostgreSQL account snapshot. A nonzero verified account ID locates the row; current is_active and known temporary role drive access. Token/body email, role and status are never authorization evidence. Missing/deleted accounts return generic 401; inactive/unknown-role accounts return generic 403; lookup failures fail closed with safe 500.
+- Authority/date: stakeholder Phase 1B request, 2026-10-06; implemented application account resolver, narrow read port, private typed request keys/helpers and real-router HTTP tests.
+- Rationale/impact: demotion/deactivation takes effect on subsequent protected requests without waiting for token expiry. A request already authorized can finish from its snapshot; this does not accept final institutional roles, session revocation or JWT validation policy. Existing schema needs no migration.
+
+## ELAB-V2-DEC-025 — Reversible production registration containment
+
+- Status: Accepted (technical containment only)
+- Decision: POST /api/v1/auth/register is mounted only for explicit development/test route configuration. Production/unknown/unset routing environments leave it absent (404). Account-creation service/domain code and local-only adapter remain reusable; no alternative provisioning endpoint is added.
+- Authority/date: stakeholder Phase 1B request, 2026-10-06; production/local/unknown environment route tests and creation-side-effect assertions.
+- Rationale/impact: prevents unreviewed production signup while OPEN-001/002/003 remain unresolved. Local account creation assigns only the inherited generic user role and hashes passwords; it establishes no product signup/eligibility/approval policy.
+
+## ELAB-V2-DEC-026 — Narrow self-service and temporary privileged reads
+
+- Status: Accepted (technical containment only)
+- Decision: Retained self profile updates accept only display name. Identity/email, role/status, passwords/session fields, IDs and timestamps cannot be bound from client mutation payloads. A parameterized name-only UPDATE rechecks is_active and known role without rewriting a security snapshot. Existing generic admin user listing remains read-only, bounded and authorized from current database role. No arbitrary-account CRUD/provisioning/status/role endpoint is exposed.
+- Authority/date: stakeholder Phase 1B request, 2026-10-06; strict DTO decoding, repository projection/write-scope tests and HTTP mass-assignment/self-vs-other tests.
+- Rationale/impact: removes the inherited full-row self-update that could overwrite concurrent demotion/deactivation/password changes. Email/identity changes and final user administration require later reviewed flows; display-name containment does not settle institutional staff/admin permissions or identity verification.

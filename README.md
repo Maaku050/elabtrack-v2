@@ -1,8 +1,8 @@
 # eLabTrack V2
 
-eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phase 1A adds configuration and runtime safeguards to the Go Fiber/React/PostgreSQL foundation. Product workflows are planned for later approved phases.
+eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phases 1A/1B add configuration safeguards and current-account authentication/authorization to the Go Fiber/React/PostgreSQL foundation. Product workflows are planned for later approved phases.
 
-Start with the [project charter](docs/project/PROJECT_CHARTER.md), [source policy](docs/project/SOURCE_OF_TRUTH.md), [decision register](docs/project/DECISIONS.md), [open decisions](docs/project/OPEN_DECISIONS.md), and [roadmap](docs/project/ROADMAP.md). The [foundation audit](docs/project/FOUNDATION_AUDIT.md) distinguishes inherited code from approved product requirements. See the [Phase 1 security backlog](docs/project/PHASE1_SECURITY_BACKLOG.md), [Phase 0 report](docs/project/PHASE0_REPORT.md), and [Phase 1A foundation report](docs/project/PHASE1_FOUNDATION.md) before treating this foundation as production ready.
+Start with the [project charter](docs/project/PROJECT_CHARTER.md), [source policy](docs/project/SOURCE_OF_TRUTH.md), [decision register](docs/project/DECISIONS.md), [open decisions](docs/project/OPEN_DECISIONS.md), and [roadmap](docs/project/ROADMAP.md). The [foundation audit](docs/project/FOUNDATION_AUDIT.md) distinguishes inherited code from approved product requirements. See the [Phase 1 security backlog](docs/project/PHASE1_SECURITY_BACKLOG.md), [Phase 0 report](docs/project/PHASE0_REPORT.md), and [Phase 1 foundation report](docs/project/PHASE1_FOUNDATION.md) before treating this foundation as production ready.
 
 ## Architecture and requirements
 

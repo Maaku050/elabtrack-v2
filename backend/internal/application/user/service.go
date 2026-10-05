@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
@@ -39,42 +38,23 @@ func (s *Service) GetByEmail(ctx context.Context, email string) (UserDTO, error)
 	return toDTO(u), nil
 }
 
-// UpdateProfile applies a partial update to the current user's profile.
+// UpdateProfile changes only the authenticated account's display name.
+// The repository must not rewrite role, status, password or email from a snapshot.
 func (s *Service) UpdateProfile(ctx context.Context, cmd UpdateProfileCommand) (UserDTO, error) {
-	u, err := s.repo.FindByID(ctx, cmd.UserID)
+	name, err := domainuser.ParseName(cmd.Name)
 	if err != nil {
-		return UserDTO{}, fmt.Errorf("find user: %w", err)
+		return UserDTO{}, err
 	}
+	account, err := s.repo.UpdateProfile(ctx, cmd.UserID, name.String())
+	if err != nil {
+		return UserDTO{}, fmt.Errorf("update profile: %w", err)
+	}
+	return FromAccount(*account), nil
+}
 
-	if cmd.Name != nil {
-		name, err := domainuser.ParseName(*cmd.Name)
-		if err != nil {
-			return UserDTO{}, err
-		}
-		u.Name = name.String()
-	}
-	if cmd.Email != nil {
-		email, err := domainuser.ParseEmail(*cmd.Email)
-		if err != nil {
-			return UserDTO{}, err
-		}
-		// Check uniqueness only when the email actually changes.
-		if email.String() != u.Email {
-			existing, err := s.repo.FindByEmail(ctx, email.String())
-			if err == nil && existing.ID != u.ID {
-				return UserDTO{}, domainuser.ErrEmailAlreadyExists
-			}
-			if err != nil && !errors.Is(err, domainuser.ErrUserNotFound) && !errors.Is(err, shared.ErrNotFound) {
-				return UserDTO{}, fmt.Errorf("check email uniqueness: %w", err)
-			}
-			u.Email = email.String()
-		}
-	}
-
-	if err := s.repo.Update(ctx, u); err != nil {
-		return UserDTO{}, fmt.Errorf("update user: %w", err)
-	}
-	return toDTO(u), nil
+// FromAccount maps a safe current-account snapshot to the existing profile DTO.
+func FromAccount(a domainuser.Account) UserDTO {
+	return UserDTO{ID: a.ID, Email: a.Email, Name: a.Name, Role: string(a.Role), IsActive: a.IsActive, CreatedAt: a.CreatedAt, UpdatedAt: a.UpdatedAt}
 }
 
 // List returns a paginated list of users.

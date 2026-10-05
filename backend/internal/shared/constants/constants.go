@@ -6,8 +6,6 @@ const APIVersionPrefix = "/api/v1"
 // Context keys used to attach request-scoped values.
 const (
 	CtxRequestID = "request_id"
-	CtxUserID    = "user_id"
-	CtxClaims    = "claims"
 )
 
 // HTTP header names.

@@ -13,6 +13,15 @@ The finding tables below preserve the Phase 0 audit evidence. Current implementa
 - **SEC-013 configuration portion implemented:** explicit production HTTPS frontend/origin allowlist, no wildcard/credential/path defaults. Cookie/CSRF policy and deployment/preflight verification remain open.
 - **SEC-002–007, SEC-010, SEC-012, SEC-014–019 remain open.** No authentication/session redesign, product decisions, deployment or CI suite were implemented in Phase 1A.
 
+## Phase 1B implementation status — 2026-10-06
+
+- **SEC-006 current-account authorization implemented:** every retained protected route resolves current account role/is_active from PostgreSQL; token/body role cannot authorize it. Missing accounts get generic 401, inactive/unknown-role accounts get generic 403. In-flight snapshot windows, access-token/logout/session-family revocation and final institutional permissions remain open.
+- **SEC-007 production containment implemented:** register route exists only for explicit development/test. Account creation remains reusable and local-only; no new provisioning API/UI or final eligibility/role policy is accepted.
+- **SEC-005 identity locator portion implemented:** middleware rejects a zero verified uid before database access. Issuer/algorithm/audience/type/required-time/subject validation remains Phase 1C work; JWT adapter semantics are unchanged.
+- **Additional discovered self-update risk contained:** old self-profile service loaded a full user and repository.Update rewrote password/role/is_active. Self update now accepts display name only and uses a narrow SQL update with current access predicate; security fields cannot be restored from a stale snapshot. No account-security migration was required.
+- **SEC-017 auth-boundary coverage expanded:** real-router HTTP tests, real JWT adapter boundary test, safe repository projection/write-scope tests and frontend trusted-account adapter tests pass without a database. Live PostgreSQL concurrency/integration and CI remain unrun/open.
+- SEC-002–004/010 and full JWT/session design are explicitly deferred to Phase 1C/1D. Other Phase 1A partial/open findings remain outstanding. No Phase 1C/1D implementation is claimed.
+
 ## CRITICAL
 
 | ID | Finding / evidence | Required hardening and acceptance evidence | Owner |

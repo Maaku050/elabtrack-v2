@@ -21,6 +21,7 @@ export const authApi = {
       })
   },
 
+  // Local development/test convenience only; production does not mount this route.
   register(input: RegisterInput): Promise<TokenPair & { user: AuthUser }> {
     return apiClient
       .post<TokenPair>('/auth/register', input)
@@ -45,7 +46,7 @@ export const authApi = {
     })
   },
 
-  me(): Promise<AuthUser> {
-    return apiClient.get<AuthUser>('/auth/me')
+  me(signal?: AbortSignal): Promise<AuthUser> {
+    return apiClient.get<AuthUser>('/auth/me', { signal })
   },
 }

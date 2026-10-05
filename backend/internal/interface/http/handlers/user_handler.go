@@ -2,6 +2,7 @@ package handlers
 
 import (
 	appuser "github.com/Maaku050/elabtrack-v2/backend/internal/application/user"
+	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/middleware"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/pagination"
@@ -20,28 +21,24 @@ func NewUserHandler(svc *appuser.Service, v *validator.Validator) *UserHandler {
 	return &UserHandler{svc: svc, v: v}
 }
 
-// Me handles GET /api/v1/users/me.
+// Me reads the safe snapshot established by the authentication boundary.
 func (h *UserHandler) Me(c fiber.Ctx) error {
-	userID, ok := middleware.UserIDFromContext(c)
+	principal, ok := middleware.PrincipalFromContext(c)
 	if !ok {
 		return response.Unauthorized(c, "Authentication required.")
 	}
-	dto, err := h.svc.GetByID(c.Context(), userID)
-	if err != nil {
-		return response.Error(c, err)
-	}
-	return response.OK(c, "User retrieved successfully.", dto)
+	return response.OK(c, "User retrieved successfully.", appuser.FromAccount(domainuser.Account(principal)))
 }
 
 // UpdateMe handles PATCH /api/v1/users/me.
 func (h *UserHandler) UpdateMe(c fiber.Ctx) error {
-	userID, ok := middleware.UserIDFromContext(c)
+	principal, ok := middleware.PrincipalFromContext(c)
 	if !ok {
 		return response.Unauthorized(c, "Authentication required.")
 	}
 
 	var req appuser.UpdateProfileRequest
-	if err := c.Bind().Body(&req); err != nil {
+	if err := bindStrictJSON(c, &req); err != nil {
 		return response.BadRequest(c, "Invalid request body.")
 	}
 	if fe := h.v.Validate(req); fe != nil {
@@ -49,9 +46,8 @@ func (h *UserHandler) UpdateMe(c fiber.Ctx) error {
 	}
 
 	dto, err := h.svc.UpdateProfile(c.Context(), appuser.UpdateProfileCommand{
-		UserID: userID,
+		UserID: principal.ID,
 		Name:   req.Name,
-		Email:  req.Email,
 	})
 	if err != nil {
 		return response.Error(c, err)

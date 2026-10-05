@@ -4,6 +4,7 @@ export type ID = string
 
 export type ISODateString = string
 
+// Temporary generic infrastructure roles, not the final eLabTrack taxonomy.
 export type UserRole = 'user' | 'admin'
 
 export interface User {
@@ -21,6 +22,7 @@ export interface AuthUser {
   email: string
   name: string
   role: UserRole
+  is_active: boolean
 }
 
 export interface TokenPair {

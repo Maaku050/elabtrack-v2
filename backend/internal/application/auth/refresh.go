@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
 	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
 	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 )
@@ -76,6 +75,3 @@ func (s *Service) issueTokenPair(ctx context.Context, u *domainuser.User) (Token
 
 // timeNowUTC is a small seam for tests; defaults to time.Now().UTC().
 var timeNowUTC = func() time.Time { return time.Now().UTC() }
-
-// Ensure application.Claims is referenced (used by Service.CurrentUser).
-var _ application.Claims

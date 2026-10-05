@@ -4,65 +4,76 @@ import (
 	"strings"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
+	appauth "github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
+	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/constants"
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
 )
 
-// Auth returns a Fiber middleware that validates a Bearer access token via
-// the application.TokenIssuer port and stores the resulting claims in the
-// Fiber context for downstream handlers.
-func Auth(issuer application.TokenIssuer) fiber.Handler {
+type identityKey struct{}
+type principalKey struct{}
+
+// Auth is the single protected-request boundary: verify bearer identity, then
+// resolve the current permitted account. JWT email/role never authorize a route.
+func Auth(issuer application.TokenIssuer, accounts appauth.AccountResolver) fiber.Handler {
 	return func(c fiber.Ctx) error {
-		header := c.Get(constants.HeaderAuthorization)
-		if header == "" {
-			return response.Unauthorized(c, "Missing authorization header.")
+		parts := strings.Fields(c.Get(constants.HeaderAuthorization))
+		if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") {
+			return response.Unauthorized(c, "Authentication required.")
 		}
-
-		parts := strings.SplitN(header, " ", 2)
-		if len(parts) != 2 || !strings.EqualFold(parts[0], "Bearer") || parts[1] == "" {
-			return response.Unauthorized(c, "Invalid authorization header.")
+		if issuer == nil || accounts == nil {
+			return response.Internal(c, "Unable to process request.")
 		}
-
 		claims, err := issuer.VerifyAccessToken(c.Context(), parts[1])
-		if err != nil {
-			return response.Unauthorized(c, "Invalid or expired access token.")
+		if err != nil || claims.UserID == uuid.Nil {
+			return response.Unauthorized(c, "Authentication required.")
 		}
-
-		c.Locals(constants.CtxClaims, claims)
-		c.Locals(constants.CtxUserID, claims.UserID)
+		identity := appauth.Identity{UserID: claims.UserID}
+		principal, err := accounts.ResolveCurrentAccount(c.Context(), identity)
+		if err != nil {
+			return response.Error(c, err)
+		}
+		// Defense against a miswired resolver; only the verified account may proceed.
+		if principal.ID != identity.UserID {
+			return response.Unauthorized(c, "Authentication required.")
+		}
+		if !principal.IsActive || !principal.Role.Valid() {
+			return response.Forbidden(c, "You do not have access to this resource.")
+		}
+		c.Locals(identityKey{}, identity)
+		c.Locals(principalKey{}, principal)
 		return c.Next()
 	}
 }
 
-// RequireRole returns a middleware that allows only the given roles.
-// It must be installed after Auth so claims are available.
-func RequireRole(roles ...string) fiber.Handler {
-	allowed := make(map[string]struct{}, len(roles))
-	for _, r := range roles {
-		allowed[r] = struct{}{}
+// RequireRole uses current database state and only temporary known roles.
+// Install after Auth. Unknown configured/current roles cannot authorize access.
+func RequireRole(roles ...domainuser.Role) fiber.Handler {
+	allowed := map[domainuser.Role]bool{}
+	for _, role := range roles {
+		if role.Valid() {
+			allowed[role] = true
+		}
 	}
 	return func(c fiber.Ctx) error {
-		claims, ok := c.Locals(constants.CtxClaims).(application.Claims)
+		principal, ok := PrincipalFromContext(c)
 		if !ok {
 			return response.Unauthorized(c, "Authentication required.")
 		}
-		if _, ok := allowed[claims.Role]; !ok {
-			return response.Forbidden(c, "Insufficient permissions.")
+		if !principal.IsActive || !principal.Role.Valid() || !allowed[principal.Role] {
+			return response.Forbidden(c, "You do not have access to this resource.")
 		}
 		return c.Next()
 	}
 }
 
-// ClaimsFromContext returns the authenticated claims from Fiber locals.
-func ClaimsFromContext(c fiber.Ctx) (application.Claims, bool) {
-	claims, ok := c.Locals(constants.CtxClaims).(application.Claims)
-	return claims, ok
+func PrincipalFromContext(c fiber.Ctx) (appauth.Principal, bool) {
+	principal, ok := c.Locals(principalKey{}).(appauth.Principal)
+	return principal, ok && principal.ID != uuid.Nil
 }
-
-// UserIDFromContext returns the authenticated user id from Fiber locals.
-func UserIDFromContext(c fiber.Ctx) (uuid.UUID, bool) {
-	id, ok := c.Locals(constants.CtxUserID).(uuid.UUID)
-	return id, ok
+func IdentityFromContext(c fiber.Ctx) (appauth.Identity, bool) {
+	identity, ok := c.Locals(identityKey{}).(appauth.Identity)
+	return identity, ok && identity.UserID != uuid.Nil
 }

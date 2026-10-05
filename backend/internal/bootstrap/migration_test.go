@@ -20,11 +20,11 @@ func TestFiberV3HTTPContracts(t *testing.T) {
 	cfg := &config.Config{App: config.AppConfig{BodyLimit: 1 << 20}, Security: config.SecurityConfig{AllowedOrigins: []string{"http://localhost:5173"}, RateLimitMax: 100, RateLimitWindow: time.Minute}}
 	app := newServer(cfg, nil, nil)
 	health := handlers.NewHealthHandler(nil)
-	auth := handlers.NewAuthHandler(nil, nil, validator.New())
+	auth := handlers.NewAuthHandler(nil, validator.New())
 	app.Get("/api/v1/health", health.Health)
 	app.Post("/api/v1/auth/login", auth.Login)
-	app.Get("/api/v1/users/me", middleware.Auth(nil), func(c fiber.Ctx) error { return c.SendStatus(200) })
-	app.Get("/missing-claims", auth.Me)
+	app.Get("/api/v1/users/me", middleware.Auth(nil, nil), func(c fiber.Ctx) error { return c.SendStatus(200) })
+	app.Get("/missing-principal", auth.Me)
 	app.Get("/panic", func(c fiber.Ctx) error { panic("test") })
 	cases := []struct {
 		name, method, path, body string
@@ -34,7 +34,7 @@ func TestFiberV3HTTPContracts(t *testing.T) {
 		{"malformed JSON", "POST", "/api/v1/auth/login", "{", 400},
 		{"invalid credentials input", "POST", "/api/v1/auth/login", "{}", 422},
 		{"missing bearer", "GET", "/api/v1/users/me", "", 401},
-		{"missing claims helper", "GET", "/missing-claims", "", 401},
+		{"missing principal helper", "GET", "/missing-principal", "", 401},
 		{"panic recovery", "GET", "/panic", "", 500},
 		{"unknown route", "GET", "/unknown", "", 404},
 	}

@@ -2,7 +2,10 @@ package routes
 
 import (
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
+	appauth "github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/middleware"
 	"github.com/gofiber/fiber/v3"
 )
 
@@ -15,8 +18,9 @@ func Register(app *fiber.App, deps *Deps) {
 	v1.Get("/health", deps.Health.Health)
 
 	// Feature route groups.
-	RegisterAuth(v1, deps.Auth, deps.TokenIssuer)
-	RegisterUser(v1, deps.User, deps.TokenIssuer)
+	protected := middleware.Auth(deps.TokenIssuer, deps.Accounts)
+	RegisterAuth(v1, deps.Auth, protected, deps.Environment)
+	RegisterUser(v1, deps.User, protected)
 }
 
 // Deps bundles the handlers + token issuer needed to register routes.
@@ -26,4 +30,6 @@ type Deps struct {
 	Auth        *handlers.AuthHandler
 	User        *handlers.UserHandler
 	TokenIssuer application.TokenIssuer
+	Accounts    appauth.AccountResolver
+	Environment config.Environment
 }

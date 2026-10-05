@@ -22,10 +22,9 @@ type UserDTO struct {
 }
 
 // UpdateProfileRequest is the input DTO for PATCH /users/me.
-// All fields are pointers so partial updates are supported.
+// Only display-name editing is exposed; identity/security fields are deferred.
 type UpdateProfileRequest struct {
-	Name  *string `json:"name,omitempty"`
-	Email *string `json:"email,omitempty"`
+	Name string `json:"name" validate:"required,min=1,max=100"`
 }
 
 // ListUsersRequest is the input DTO for GET /users.

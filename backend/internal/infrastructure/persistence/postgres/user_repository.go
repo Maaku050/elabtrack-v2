@@ -78,6 +78,42 @@ func (r *UserRepository) FindByID(ctx context.Context, id uuid.UUID) (*domainuse
 	return u, nil
 }
 
+// accountColumns intentionally excludes password and session data.
+const accountColumns = `id, email, name, role, is_active, created_at, updated_at`
+
+// FindAccountByID reads current authorization state without loading secrets.
+func (r *UserRepository) FindAccountByID(ctx context.Context, id uuid.UUID) (*domainuser.Account, error) {
+	const q = `SELECT ` + accountColumns + ` FROM users WHERE id = $1`
+	account, err := scanAccount(r.executor(ctx).QueryRow(ctx, q, id))
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, domainuser.ErrUserNotFound
+	}
+	return account, err
+}
+
+// UpdateProfile cannot overwrite a concurrent demotion/deactivation/password
+// change. Permission is rechecked in the same statement as the name mutation.
+func (r *UserRepository) UpdateProfile(ctx context.Context, id uuid.UUID, name string) (*domainuser.Account, error) {
+	const q = `UPDATE users SET name = $2, updated_at = NOW()
+  WHERE id = $1 AND is_active = TRUE AND role IN ('user','admin')
+  RETURNING ` + accountColumns
+	account, err := scanAccount(r.executor(ctx).QueryRow(ctx, q, id, name))
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, shared.ErrForbidden
+	}
+	return account, err
+}
+
+func scanAccount(s scanner) (*domainuser.Account, error) {
+	a := &domainuser.Account{}
+	var role string
+	if err := s.Scan(&a.ID, &a.Email, &a.Name, &role, &a.IsActive, &a.CreatedAt, &a.UpdatedAt); err != nil {
+		return nil, err
+	}
+	a.Role = domainuser.Role(role)
+	return a, nil
+}
+
 // FindByEmail returns a single user by email or domain/user.ErrUserNotFound.
 func (r *UserRepository) FindByEmail(ctx context.Context, email string) (*domainuser.User, error) {
 	const q = `SELECT ` + userColumns + ` FROM users WHERE email = $1`

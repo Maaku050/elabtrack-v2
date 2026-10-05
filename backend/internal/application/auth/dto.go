@@ -34,8 +34,9 @@ type RefreshRequest struct {
 
 // AuthUserDTO is the public representation of the authenticated user.
 type AuthUserDTO struct {
-	ID    uuid.UUID `json:"id"`
-	Email string    `json:"email"`
-	Name  string    `json:"name"`
-	Role  string    `json:"role"`
+	ID       uuid.UUID `json:"id"`
+	Email    string    `json:"email"`
+	Name     string    `json:"name"`
+	Role     string    `json:"role"`
+	IsActive bool      `json:"is_active"`
 }

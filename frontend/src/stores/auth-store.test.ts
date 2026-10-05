@@ -8,6 +8,7 @@ const user: AuthUser = {
   email: 'test@example.com',
   name: 'Test User',
   role: 'user',
+  is_active: true,
 }
 
 const tokens: TokenPair = {
