@@ -27,6 +27,7 @@ type httpSessions struct {
 	session              *domainauth.RefreshToken
 	lookupErr, revokeErr error
 	revokeHash           string
+	created              []*domainauth.RefreshToken
 }
 
 func (r *httpSessions) FindByHashForUpdate(_ context.Context, hash string) (*domainauth.RefreshToken, error) {
@@ -50,6 +51,19 @@ func (r *httpSessions) Revoke(_ context.Context, hash string) error {
 	return nil
 }
 
+func (r *httpSessions) Create(_ context.Context, session *domainauth.RefreshToken) error {
+	r.created = append(r.created, session)
+	return nil
+}
+func (r *httpSessions) Consume(_ context.Context, hash string, replacement uuid.UUID, now time.Time) error {
+	if r.session == nil || r.session.TokenHash != hash || !r.session.ValidAt(now) {
+		return domainauth.ErrTokenInvalid
+	}
+	r.session.RevokedAt = &now
+	r.session.ReplacedBy = &replacement
+	return nil
+}
+
 type httpTransaction struct{}
 
 func (httpTransaction) Within(ctx context.Context, fn func(context.Context) error) error {
@@ -67,7 +81,7 @@ func refreshHTTPApp(r *users, sessions *httpSessions) *fiber.App {
 	i := &issuer{}
 	svc := appauth.NewService(r, sessions, security.NewBcryptHasher(4), i, security.SHA256RefreshHasher{}, httpTransaction{}, httpAccounts{r}, time.Minute, time.Hour)
 	v := validator.New()
-	routes.Register(app, &routes.Deps{Auth: handlers.NewAuthHandler(svc, v), User: handlers.NewUserHandler(appuser.NewService(r), v), Health: handlers.NewHealthHandler(nil), TokenIssuer: i, Accounts: appauth.NewAccountResolver(r), Environment: config.Development})
+	routes.Register(app, &routes.Deps{Auth: handlers.NewAuthHandler(svc, v, config.Development, config.SecurityConfig{AllowedOrigins: []string{"https://app.example.invalid"}}), User: handlers.NewUserHandler(appuser.NewService(r), v), Health: handlers.NewHealthHandler(nil), TokenIssuer: i, Accounts: appauth.NewAccountResolver(r), Environment: config.Development})
 	return app
 }
 func TestRefreshFailuresHaveSameUnauthorizedResponse(t *testing.T) {
@@ -100,7 +114,7 @@ func TestRefreshFailuresHaveSameUnauthorizedResponse(t *testing.T) {
 			case "unknown role":
 				r.account.Role = "superadmin"
 			}
-			status, _, body := request(t, refreshHTTPApp(r, sessions), http.MethodPost, "/api/v1/auth/refresh", `{"refresh_token":"`+presented+`"}`, "")
+			status, body, _ := cookieRequest(t, refreshHTTPApp(r, sessions), "/api/v1/auth/refresh", presented, "https://app.example.invalid", "")
 			if status != http.StatusUnauthorized {
 				t.Fatalf("status=%d", status)
 			}
@@ -120,7 +134,7 @@ func TestLogoutHTTPIdempotentAndSecretSafe(t *testing.T) {
 	sessions := &httpSessions{session: domainauth.NewRefreshToken(hash, selfID, now, now.Add(time.Hour))}
 	app := refreshHTTPApp(&users{account: fixtureUser()}, sessions)
 	for _, presented := range []string{raw, raw, strings.Repeat("b", 64), "secret-sentinel"} {
-		status, _, body := request(t, app, http.MethodPost, "/api/v1/auth/logout", `{"refresh_token":"`+presented+`"}`, "")
+		status, body, _ := cookieRequest(t, app, "/api/v1/auth/logout", presented, "https://app.example.invalid", "")
 		if status != http.StatusNoContent || body != "" {
 			t.Fatal("logout exposes token existence")
 		}
@@ -128,12 +142,12 @@ func TestLogoutHTTPIdempotentAndSecretSafe(t *testing.T) {
 	if sessions.session.RevokedAt == nil {
 		t.Fatal("logout did not revoke current session")
 	}
-	status, _, _ := request(t, app, http.MethodPost, "/api/v1/auth/refresh", `{"refresh_token":"`+raw+`"}`, "")
+	status, _, _ := cookieRequest(t, app, "/api/v1/auth/refresh", raw, "https://app.example.invalid", "")
 	if status != http.StatusUnauthorized {
 		t.Fatal("logged-out session refreshed")
 	}
 	sessions.revokeErr = errors.New(raw + hash)
-	status, _, body := request(t, app, http.MethodPost, "/api/v1/auth/logout", `{"refresh_token":"`+raw+`"}`, "")
+	status, body, _ := cookieRequest(t, app, "/api/v1/auth/logout", raw, "https://app.example.invalid", "")
 	if status != http.StatusInternalServerError || strings.Contains(body, raw) || strings.Contains(body, hash) {
 		t.Fatal("logout storage failure not safe")
 	}
@@ -142,7 +156,7 @@ func TestRefreshHTTPStorageErrorIsSafeInternalFailure(t *testing.T) {
 	raw := strings.Repeat("a", 64)
 	hash, _ := (security.SHA256RefreshHasher{}).Hash(raw)
 	sessions := &httpSessions{lookupErr: errors.New(raw + hash + " SQL credential-sentinel")}
-	status, _, body := request(t, refreshHTTPApp(&users{account: fixtureUser()}, sessions), http.MethodPost, "/api/v1/auth/refresh", `{"refresh_token":"`+raw+`"}`, "")
+	status, body, _ := cookieRequest(t, refreshHTTPApp(&users{account: fixtureUser()}, sessions), "/api/v1/auth/refresh", raw, "https://app.example.invalid", "")
 	if status != http.StatusInternalServerError || strings.Contains(body, raw) || strings.Contains(body, hash) || strings.Contains(body, "SQL") {
 		t.Fatal("unsafe storage response")
 	}

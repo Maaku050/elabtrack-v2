@@ -2,23 +2,20 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { authApi } from '../api/auth.api'
 import { useAuthStore } from '@/stores/auth-store'
-import { storage, storageKeys } from '@/lib/storage'
 import { useToast } from '@/components/feedback/toast'
 import { queryKeys } from '@/lib/query-keys'
 import type { LoginInput, RegisterInput } from '../types'
 
 /**
- * Login mutation. On success, stores tokens + user and navigates to the app.
+ * Login mutation. The centralized client sets the memory session before navigation.
  */
 export function useLogin() {
-  const setSession = useAuthStore((s) => s.setSession)
   const navigate = useNavigate()
   const toast = useToast()
 
   return useMutation({
     mutationFn: (input: LoginInput) => authApi.login(input),
     onSuccess: (data) => {
-      setSession(data.user, data)
       toast.success('Welcome back!', `Signed in as ${data.user.email}`)
       navigate('/', { replace: true })
     },
@@ -30,17 +27,15 @@ export function useLogin() {
 }
 
 /**
- * Register mutation. On success, stores tokens + user and navigates to the app.
+ * Local registration mutation; the centralized client owns session state.
  */
 export function useRegister() {
-  const setSession = useAuthStore((s) => s.setSession)
   const navigate = useNavigate()
   const toast = useToast()
 
   return useMutation({
     mutationFn: (input: RegisterInput) => authApi.register(input),
     onSuccess: (data) => {
-      setSession(data.user, data)
       toast.success('Account created', `Welcome, ${data.user.name}!`)
       navigate('/', { replace: true })
     },
@@ -56,23 +51,17 @@ export function useRegister() {
  * (idempotent) and navigates to the placeholder.
  */
 export function useLogout() {
-  const clear = useAuthStore((s) => s.clear)
   const navigate = useNavigate()
 
   return () => {
-    const refreshToken = storage.get(storageKeys.refreshToken)
-    if (refreshToken) {
-      // Fire-and-forget; we clear the session either way.
-      authApi.logout({ refresh_token: refreshToken }).catch(() => {})
-    }
-    clear()
+    void authApi.logout().catch(() => {})
     navigate('/', { replace: true })
   }
 }
 
 /**
- * Current-user query. Used on app load to hydrate the auth store with the
- * actual user profile (the store only knows there *is* a session).
+ * Current-user query refreshes safe presentation metadata from the server.
+ * Bootstrap already accepts current account state with its access response.
  */
 export function useCurrentUser() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
@@ -81,8 +70,9 @@ export function useCurrentUser() {
   return useQuery({
     queryKey: queryKeys.auth.me(),
     queryFn: async ({ signal }) => {
+      const generation = useAuthStore.getState().generation
       const user = await authApi.me(signal)
-      if (!signal.aborted) setUser(user)
+      if (!signal.aborted && generation === useAuthStore.getState().generation) setUser(user)
       return user
     },
     enabled: isAuthenticated,

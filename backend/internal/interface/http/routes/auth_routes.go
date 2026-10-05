@@ -7,7 +7,8 @@ import (
 )
 
 // RegisterAuth wires the auth routes under /api/v1/auth.
-// Login/refresh/logout use their existing credentials. Public registration is
+// Browser login issues a refresh cookie; refresh/logout read only that cookie.
+// Cookie-changing handlers require a trusted Origin. Public registration is
 // local-only pending policy; unknown environments also leave the route absent.
 func RegisterAuth(v1 fiber.Router, h *handlers.AuthHandler, protected fiber.Handler, environment config.Environment) {
 	g := v1.Group("/auth")

@@ -622,3 +622,215 @@ Institutional concurrent-session limits, family-wide replay revocation, logout-a
 ### C28. Phase 1C exit gate
 
 **SATISFIED / COMPLETE** for the authorized Phase 1C scope: strict access JWT contract and purpose separation; retained cryptographically strong opaque refresh format; hash-only persistence/lookup/revoke; real PostgreSQL transaction boundary and once-only lock/conditional design; safe replay/expiry/revocation/current-account denial; safe error/log paths; focused JWT/session/HTTP/repository/transaction tests; backend fmt/vet/tests and frontend lint/tests/build; Compose configuration and diff checks; Phase 1A/1B evidence preserved. Live PostgreSQL concurrency/migration/rollback verification is explicitly required in Phase 1G as permitted by the request. Completion does not establish production/session transport readiness. No Phase 1D or business feature work, commit, push or deployment occurred.
+
+
+## Phase 1D — Browser Session Architecture
+
+Authorized 2026-10-06. Phase 1E, business features, migrations against live/unknown databases, commit, push and deployment are outside this work.
+
+### Pre-change browser/session audit (before implementation)
+
+| Source | Existing reads/writes/flow | Risk and selected action |
+|---|---|---|
+| frontend/src/stores/auth-store.ts | setSession writes both tokens to storage/state; hydrate reads storage; clear removes keys and Query cache. | Tokens survive reload and XSS can read long-lived credentials. Replace with a non-persisted access/user/status store; bootstrap through cookie only. |
+| frontend/src/features/auth/api/auth.api.ts | Login/local register persist both JSON tokens before /auth/me; refresh/logout send raw refresh_token bodies. | Refresh is JavaScript-readable and has a second transport path. Remove refresh DTO/state, centrally coordinate cookie login/refresh/logout. |
+| frontend/src/lib/api-client.ts | Reads access from storage for Authorization; reads refresh for JSON refresh; writes replacement tokens; in-instance refresh promise; retry lacks a request marker and includes login/logout. | Recursive retries and competing flows can consume a single-use credential. Use memory, one shared refresh promise, one retry marker, explicit auth-endpoint exclusions and lifecycle generation checks. |
+| frontend/src/features/auth/hooks/use-auth.ts | Login/register setSession again; logout reads persisted refresh and clears locally. | Duplicate/later writes can restore stale state after logout. Let the central client own session mutations; clear immediately and serialize logout behind pending cookie responses. |
+| frontend/src/lib/storage.ts | Defines readable access/refresh keys; generic preferences use localStorage. | Remove auth keys and purge known legacy auth entries without reading their values; retain non-sensitive preferences. |
+| frontend/src/app/providers.tsx, main.tsx, query-client.ts | No session bootstrap is mounted; React StrictMode; Query retries once. | Reload restoration absent; repeated mount/query retries could rotate twice. Add one controlled bootstrap, recoverable error state and no Query retry on auth failures. |
+| backend auth handlers | Login/local register/refresh return TokenPairDTO including raw refresh; refresh/logout bind raw JSON body; no cookie helper. | Raw token exposed to JavaScript. Issue/clear one host-only HttpOnly refresh cookie, return access + safe current account only, remove raw body input. |
+| backend current-account/JWT/session code | Strict HS256 access; safe PostgreSQL authority; hash-only transactional once-only rotation and idempotent revoke. | Preserve all Phase 1B/1C server guarantees; no new migration or family/replay policy. |
+| config/CORS/routes | Typed environment and explicit origins; credentialed CORS already enabled; auth mutations POST-only; no request Origin check. | CORS alone does not prevent cookie CSRF. Add exact trusted-Origin enforcement to cookie-changing auth endpoints, including login/local register; retain explicit allowlist CORS. |
+
+Chosen model: memory-only access; opaque refresh cookie elabtrack_v2_refresh, host-only, Path=/api/v1/auth, HttpOnly, SameSite=Lax, Secure in production (also fail-safe for unknown environment), expiry taken directly from the newly persisted refresh session. HTTP development/test are intentional exceptions derived only from typed APP_ENV. Cross-site SPA/API cookie deployments are unsupported by this SameSite policy; no configurable None/insecure production bypass. Session bootstrap/login/refresh use current safe server account metadata, not JWT decoding. Known-dead refresh failures clear the cookie; transient storage failures retain it for deliberate recovery.
+
+No Obsidian MCP is exposed; no private notes were read or persisted. Removed planner/constitution files remain absent; current project instructions and source govern.
+
+### D1. Files changed
+
+29 unstaged files: 24 modified tracked files and five new files; exact inventory in D30. Backend changes cover safe session DTOs, cookie/Origin handler adaptation, wiring and HTTP tests. Frontend changes cover the centralized transport, memory store, bootstrap, auth adapters/hooks, query retry and storage cleanup, with focused tests. Documentation updates this report, technical decisions, security backlog and root/backend READMEs. No dependencies, environment/configuration files, infrastructure, migrations, business schema or reusable UI primitives changed.
+
+### D2. Previous browser token design
+
+The audit above was recorded before implementation. Both access and raw refresh credentials were returned in JSON, written to localStorage and hydrated into Zustand. Axios read persistent credentials, submitted refresh JSON and stored rotated tokens. Refresh retry lacked a per-request bound; bootstrap was not mounted. Auth hooks duplicated session writes and could restore late responses after logout. Generic non-sensitive preferences also use storage and remain supported.
+
+### D3. Final access-token storage strategy
+
+Non-persisted Zustand holds accessToken, safe current user, status and a lifecycle generation. Access JWT travels only as Authorization: Bearer from this memory. No persistence middleware, localStorage/sessionStorage/IndexedDB write, access cookie or JWT decoding. Reload loses that access token and creates a fresh application store. Query owns server data, never credential state. Clear/account changes clear Query cache; generation checks reject stale asynchronous session writes/retries. Existing short access TTL and server JWT validation remain unchanged.
+
+### D4. Final refresh-token browser transport
+
+The browser receives raw refresh solely through Set-Cookie and sends it automatically through credentialed requests. Frontend state/types/requests contain no raw refresh credential or readable refresh-cookie parser. Refresh/logout ignore raw body input and read only the cookie; there is no alternate production transport. Application TokenPairDTO retains raw material only internally for the HTTP cookie boundary, with json:"-" as an additional guard. PostgreSQL still receives SHA-256 digests only; crypto/rand generation, transaction locks, current-account validation and once-only rotation are retained unchanged.
+
+### D5. Cookie name and attributes
+
+| Attribute | Selected contract |
+|---|---|
+| Name | elabtrack_v2_refresh, owned by this project |
+| HttpOnly | true, frontend JavaScript cannot read this cookie |
+| Secure | true in production; also the fail-safe attribute for unknown environments |
+| SameSite | Explicit Lax; production SPA/API must be same-site HTTPS |
+| Path | /api/v1/auth; delivery covers refresh/logout without ordinary /users routes |
+| Domain | Omitted; host-only API cookie |
+| Expires | Newly persisted refresh-session ExpiresAt; serialized to HTTP-date seconds |
+| Clearing | Same name/path/host-only/HttpOnly/Secure/Lax, empty value, past expiry, MaxAge=-1 |
+
+One helper issues/clears cookies. There is no independent cookie TTL or security environment override. Rotation replaces the cookie with expiry from the replacement session. Path is delivery scope, not a security boundary; HttpOnly does not prevent injected JavaScript from making authenticated requests. Lax does not support cross-site fetch-based SPA authentication. These semantics follow [MDN Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie). Actual browser enforcement remains unrun.
+
+### D6. Development cookie behavior
+
+Explicit APP_ENV=development/test derives Secure=false while keeping HttpOnly, Lax, path and host-only scope. Existing explicit localhost origins permit local HTTP SPA/API ports on the same site. No implicit missing-Origin bypass is allowed for tools/tests; they send a trusted Origin deliberately. Production registration containment remains unchanged. HTTP localhost behavior is covered by handler tests, not a real browser run.
+
+### D7. Production cookie behavior
+
+Typed production requires Secure=true and explicit HTTPS trusted origins; no arbitrary flag can disable it. Unknown environment, empty/wildcard/invalid cookie origins and production HTTP origins deny cookie mutations before service IO. Production supports same-site HTTPS, normally the existing same-origin nginx /api/v1 proxy. Different registrable sites/schemes are unsupported by this Lax contract; no SameSite=None option was added. TLS/proxy/browser compatibility must be verified in Phase 1G after the broader Phase 1E review.
+
+### D8. Login response changes
+
+Login/local registration persist the existing hash-only refresh session, issue its raw value only as cookie, and return the normal envelope containing exactly access_token, expires_at, token_type and user. User contains id/email/name/role/is_active only. No refresh secret/hash, password hash, session identifier/replacement metadata or refresh expiry in normal JSON. Safe user metadata is projected from the server account used for issuance. Session endpoints set Cache-Control: no-store, including errors. Local registration retains the existing separate user/session-write recovery limitation; production register remains 404.
+
+### D9. Refresh response changes
+
+Bodyless POST /auth/refresh reads the cookie, validates current account and rotates through the unchanged Phase 1C transactional mechanism. Only committed success issues the replacement cookie and safe access/user JSON. Old/replayed/expired/revoked/unknown/malformed credentials fail generically; the HTTP adapter does not weaken single-use constraints. A presented raw JSON credential without a cookie cannot refresh. No database schema/migration change is needed.
+
+### D10. Logout behavior
+
+Frontend clears access/user/cache immediately and increments generation before any network acknowledgement. It submits bodyless credentialed logout, serialized behind pending refresh/login responses so their latest cookie can be revoked. Late promises cannot restore the cleared state. Backend revokes the cookie's session idempotently, clears matching cookie attributes and normally returns 204 even for missing/invalid/already-revoked credentials. Storage failure returns safe 500 but still clears the cookie.
+
+Network failure leaves this document locally unauthenticated; it cannot prove server revocation or delete an HttpOnly cookie from JavaScript. A later reload may restore a still-valid cookie if logout never reached the server. Storage failure can likewise leave a backend record until expiry. Logout does not globally revoke concurrent sessions or immediately invalidate access JWTs; current account checks and expiry still apply. No stronger policy is implied.
+
+### D11. Session bootstrap flow
+
+Providers mounts SessionBootstrap before application content. Initial idle/bootstrapping shows an accessible restoring-session status, then one cached bootstrap promise invokes the shared refresh operation using browser credentials. Repeated StrictMode effects share the same client/module/promise. Success accepts safe server access/user and marks authenticated; 401/403 marks unauthenticated; unexpected network/server failure clears credentials and shows a recoverable error banner with an explicit Retry session action. Public placeholder/status content is then available. No automatic restoration loop or final login/dashboard UI was added.
+
+Transport is dynamically imported to preserve the existing bundle warning gate; module loading failure is recoverable. An explicit retry starts one new bootstrap attempt only from error. Existing public health requests remain manual; bootstrap itself can rotate an existing session and is now part of application loading.
+
+### D12. Current-account handling
+
+Login/refresh returns a safe server-account projection. The client validates the response shape and known temporary role/active flag, then retains only safe fields. It never decodes JWT claims as authorization truth. /auth/me remains a current-account read, with hook generation/identity checks before store updates. Protected backend routes still verify bearer identity then resolve current PostgreSQL role/status. Frontend role is presentation data only; cookie alone cannot authenticate protected APIs. No institutional role or provisioning decision changed.
+
+### D13. Single-flight refresh implementation
+
+One runtime Axios singleton owns refreshPromise, reused by bootstrap, manual refresh and eligible concurrent 401s. Session mutations share a promise queue so refresh/login/logout cannot compete within this client. No sleeps, secondary runtime transport or server grace relaxation. A late 401 for the previous access token uses an already renewed memory token rather than rotating again. Lifecycle generation checks reject work belonging to a cleared/replaced session.
+
+Coordination is per application document. Independent tabs are not coordinated. Simultaneous tabs may consume the same single-use cookie; a losing invalid-refresh response can also clear a winner's cookie. Cross-tab/lost-response behavior is explicitly required Phase 1G verification and may need later approved client coordination or policy; no cross-tab safety claim is made.
+
+### D14. Retry limit
+
+Only a protected 401 sent with this session's memory token is eligible. Each request receives a sessionRetry marker before refresh and is retried at most once using the replacement token. A second 401 clears the session and stops. Login/register/refresh/logout, unauthenticated requests, disabled auth/retry options, stale generations and 403/validation/server/business failures cannot start automatic refresh. Query also excludes 401/403 from its ordinary retry so it cannot restart that auth loop. Existing one-retry behavior for other Query failures remains unchanged.
+
+### D15. Refresh failure behavior
+
+Any refresh failure clears memory/user/cache for the current generation and rejects queued protected requests without recursive refresh. Auth 401/403 becomes unauthenticated; transient failures become an error/recoverable state. Backend clears known-dead refresh cookies on generic 401, but retains cookies on transient storage 500 to allow a deliberate recovery attempt. The client never inspects or deletes the HttpOnly credential. Stale responses cannot clear a newer session.
+
+### D16. CORS changes
+
+Existing typed explicit origin validation and Fiber AllowCredentials=true were sufficient and remain unchanged. The centralized Axios instance uses withCredentials=true. Actual-router tests verify exact trusted preflight ACAO/credentials and no permissive origin response for an untrusted origin. No wildcard or arbitrary origin reflection is introduced. Credentialed CORS requires exact allowed-origin responses, consistent with the [Fetch standard](https://fetch.spec.whatwg.org/#origin-header). Full CORS deployment/proxy review remains Phase 1E; browser enforcement remains Phase 1G.
+
+### D17. CSRF policy
+
+Defense in depth consists of host-only HttpOnly cookie, explicit Lax, auth path, POST-only cookie mutations, exact trusted-Origin enforcement and explicit credentialed CORS. Guard applies to login/local register as well as refresh/logout, preventing login CSRF/cookie replacement from untrusted origins. Missing/null Origin is rejected; no GET mutation or JSON credential fallback exists. CORS alone is not the CSRF guard. Requests from trusted origins can use credentials; protected APIs require the separate bearer token and current account. No elaborate CSRF-token framework or API-wide HTTP redesign was needed. XSS/trusted-origin compromise remains a distinct risk.
+
+### D18. Browser-storage cleanup
+
+Complete source search shows no application write/read of persisted authentication credentials. Only removal code references known old keys: elabtrack_v2.access_token, elabtrack_v2.refresh_token, fst.access_token and fst.refresh_token. Bootstrap, accepted session and clear purge these from localStorage and sessionStorage without reading values; storage exceptions are handled. No prior auth IndexedDB use exists. Generic localStorage/theme helpers and sidebar preference cookie remain unchanged. No raw refresh field, request DTO or auth persistence middleware remains.
+
+### D19. Backend cookie tests
+
+New browser_session_test.go tests real mounted HTTP handlers with synthetic service/repository doubles: login development/test/production attributes and digest storage, production Secure, local HTTP/register, exact safe JSON, refresh replacement/expiry/replay, body-only rejection, logout body ignored/idempotency/clearing, invalid cookie clearing, transient refresh retention, logout storage failure clearing, exact Origin variants and invalid policy denial before IO, CORS preflight, GET non-mutation and cookie-only protected-route denial. Existing Phase 1B/C HTTP tests were adapted to the transport contract while preserving authorization/password/rotation assertions. These tests prove handler behavior, not PostgreSQL transaction or browser enforcement.
+
+### D20. Frontend persistence tests
+
+Store/API tests verify access/user only in memory, raw refresh absent, safe projection discards extra sensitive server fields, legacy key removal, no auth storage reads/writes and retained theme preference. Existing account/cache tests remain; login/register feature adapters return only safe user metadata to mutation hooks, and manual refresh returns no credentials to feature callers. Three adapter boundary tests verify those results; Query receives metadata rather than credentials. Login fixture, refreshed state, reload simulation and logout all leave readable credential stores empty. No production secrets appear in fixtures/snapshots.
+
+### D21. Bootstrap tests
+
+API adapter tests cover one shared bootstrap, successful safe current account, missing/invalid 401/403, simulated new-document restoration, bounded network/server failure and deliberate retry. A StrictMode Providers/jsdom test verifies loading gate, public recoverable banner, one initial transport call and one explicit recovery attempt. Test transport uses synthetic cookie-server response simulation; no browser cookie jar, actual navigation/reload or live API was exercised.
+
+### D22. Concurrent/single-flight tests
+
+Eight simultaneous protected 401s produce exactly one refresh and eight retries with the replacement Authorization header. Late old-token 401 uses the new token without another refresh. Six simultaneous callers sharing failed refresh 401/503 produce one refresh and clean failure without recursion. Deferred promises verify pending refresh/login and later protected denials cannot resurrect logged-out memory state. No sleeps are used to create concurrency; independent browser tabs are outside these doubles.
+
+### D23. Retry-loop tests
+
+Protected 401 → successful refresh → retried 401 stops after three transport calls, clears session/cache and does not refresh again. Query cache clearing intentionally cancels pending query work; separate Query tests prove 401/403 receive no library retry. Auth-endpoint denial cases do not recursively intercept; attachAuth=false and non-401 failures do not rotate credentials. Quality gates and previous security assertions remain enabled.
+
+### D24. Logout tests
+
+Frontend tests verify immediate memory/cache invalidation before response, credentialed bodyless backend call, empty readable storage after failed network logout and no state resurrection. Pending refresh/login responses are followed by queued logout. Backend HTTP cases verify repeated/missing/invalid cookie 204 clearing and safe storage 500 with clearing. No test claims an unreachable server has revoked its record or that JavaScript can delete HttpOnly material.
+
+### D25. Token/log safety
+
+Modified auth code contains no secret-bearing logging or token response console output. HTTP JSON uses explicit allowlists, internal refresh fields are json:"-", errors are generic and Axios errors are normalized without retaining request headers/config/raw transport errors. Existing request logging remains method/path/status rather than cookie/body/Authorization logging. Password, access, refresh/hash, signing secret and Cookie/Authorization values are not written to logs. Backend hash persistence/security sources remain unchanged. Broader structured logging/error contracts remain later-phase work.
+
+### D26. Backend fmt/vet/test results
+
+PASS: go fmt ./..., go vet ./..., go test ./... (structured JSON run). **59 top-level tests + 182 subtests = 241 passing nodes across 11 tested packages**, zero failures; eight additional top-level tests and nine subtests relative to Phase 1C. PASS targeted go test -race ./internal/application/auth ./internal/interface/http/routes ./internal/bootstrap; no detected races in tested code/doubles. Commands used Go 1.27.1 from backend/ and the writable GOCACHE=/tmp/elabtrack-phase1b-go-cache. No dependency/toolchain/gate downgrade. Live database checks remain unrun.
+
+### D27. Frontend lint/test/build results
+
+PASS: npm run lint (zero errors, same 19 unchanged shadcn/hook warnings), npm run test:run (**54 tests / six files**), npm run build (TypeScript + Vite). 29 additional tests/two new files relative to Phase 1C. Assets: entry JS 477.83 kB / 150.77 kB gzip; dynamically loaded API client 54.42 kB / 19.98 kB gzip; CSS 179.91 kB / 27.63 kB gzip. Transport splitting avoids the default 500 kB entry warning without changing warning limits. Manifests/locks/UI primitives/strict TypeScript settings are unchanged. No real browser end-to-end session test claimed.
+
+### D28. Compose validation
+
+PASS: docker compose config --quiet and docker compose --profile full config --quiet. Compose, Dockerfiles and environment examples are unchanged. No image build, service/container startup, database connection, migration, seed, cleanup, named-volume deletion or deployment occurred. Full Docker SPA/API/PostgreSQL auth remains Phase 1G.
+
+### D29. git diff --check and preservation review
+
+PASS. This report begins with the exact pre-1D Phase 1A/1B/1C content. Baseline hashes preserve all six migration files including unrun 000003, configuration, dependency manifests/locks, infrastructure, 62 reusable UI files, 16 V1 audit files, Phase 0 report and OPEN_DECISIONS. Phase 1C hashing/transaction/JWT infrastructure and Phase 1B current-account authorization remain. No equipment/borrowing/approval/return/fine/email/report/kiosk/campus code or schema was introduced. Final exact status is below.
+
+### D30. Exact git status
+
+All 29 changes are unstaged: 24 modified tracked files and five new files. Exact git status --short at Phase 1D closure:
+
+```text
+ M README.md
+ M backend/README.md
+ M backend/internal/application/auth/dto.go
+ M backend/internal/application/auth/refresh.go
+ M backend/internal/bootstrap/dependencies.go
+ M backend/internal/bootstrap/migration_test.go
+ M backend/internal/interface/http/handlers/auth_handler.go
+ M backend/internal/interface/http/routes/auth_boundary_test.go
+ M backend/internal/interface/http/routes/auth_routes.go
+ M backend/internal/interface/http/routes/refresh_session_test.go
+ M docs/project/DECISIONS.md
+ M docs/project/PHASE1_FOUNDATION.md
+ M docs/project/PHASE1_SECURITY_BACKLOG.md
+ M frontend/src/app/providers.tsx
+ M frontend/src/app/query-client.ts
+ M frontend/src/features/auth/api/auth.api.ts
+ M frontend/src/features/auth/auth-foundation.test.tsx
+ M frontend/src/features/auth/hooks/use-auth.ts
+ M frontend/src/features/auth/types/index.ts
+ M frontend/src/lib/api-client.ts
+ M frontend/src/lib/storage.ts
+ M frontend/src/stores/auth-store.test.ts
+ M frontend/src/stores/auth-store.ts
+ M frontend/src/types/common.ts
+?? backend/internal/interface/http/handlers/session_cookie.go
+?? backend/internal/interface/http/routes/browser_session_test.go
+?? frontend/src/app/session-bootstrap.test.tsx
+?? frontend/src/app/session-bootstrap.tsx
+?? frontend/src/lib/api-client.test.ts
+```
+
+No staging, commit, push, remote modification or deployment performed.
+
+### D31. Remaining Phase 1E work
+
+Complete CORS review, trusted proxy configuration/IP trust model, targeted auth abuse/rate controls, general API/SPA security headers, production reverse-proxy/TLS assumptions, structured logging and full API error-contract normalization. Only cookie transport, its no-store responses and minimum session Origin protections were implemented here. Phase 1E has not begun.
+
+### D32. Remaining Phase 1G live verification
+
+REQUIRED: isolated PostgreSQL migration 000001→000003, down/reapply invalidation, hash-only persisted values/constraints and presented-hash rejection; transactional rollback/commit/lost acknowledgement; simultaneous refresh on separate connections/instances; account changes versus rotation; logout/revoke-all races; cleanup/FK/index/retention behavior; migration runner lock/bookkeeping and reproducible CI. Migration 000003 remains unchanged and unrun; Phase 1D adds no migration.
+
+REQUIRED real browser checks: Set-Cookie HttpOnly/Secure/Lax/host/path/expiry/clearing on intended HTTP development and HTTPS production origins; credentialed preflight and trusted-Origin denial; login, actual reload bootstrap, access expiry, concurrent protected 401s, replay/invalid cookie, recoverable failures and logout acknowledgement; network/lost response behavior; independent tabs competing for rotation and late cookie clearing; full Docker frontend/API/PostgreSQL flow and TLS/proxy behavior. Unit/HTTP/jsdom doubles do not prove these runtime properties. Cross-tab coordination is not implemented and must be evaluated before production; no grace/family policy was accepted.
+
+### D33. Product/security policies still unresolved
+
+All existing institutional OPEN_DECISIONS retain their statuses, including signup/provisioning, borrower eligibility, staff/admin/Super Administrator authority, verification and deactivation/ongoing-loan consequences. Device/session management, concurrent-session limits, family-wide replay revocation, logout-all/global issuance serialization, immediate access-session revocation and stronger lost-response/grace recovery are unresolved. Technical browser choices alone are accepted in DEC-030/031. Local registration atomicity/recovery, deployment/cleanup ownership and cross-tab coordination remain later work. No private notes were read/persisted, stakeholder policies resolved or V1 systems accessed.
+
+### D34. Phase 1D exit gate
+
+**SATISFIED / COMPLETE** for authorized Phase 1D source-level scope: cookie-only HttpOnly refresh transport, no frontend raw refresh, memory-only access, safe login/refresh JSON, controlled restoration, shared single-flight refresh, one bounded retry, immediate local logout plus idempotent backend revoke/clear, minimum explicit credentialed CORS/CSRF policy, focused backend/frontend tests and all required local gates. Prior Phase 1A/B/C evidence is preserved. Browser/PostgreSQL/deployment checks remain explicitly required Phase 1G; completion does not establish production readiness or cross-tab coordination. No Phase 1E/business feature, migration execution, commit, push or deployment occurred.

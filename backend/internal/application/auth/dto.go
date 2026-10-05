@@ -6,12 +6,14 @@ import (
 	"github.com/google/uuid"
 )
 
-// TokenPairDTO is returned to clients after login/register/refresh.
+// TokenPairDTO is an internal result. Raw refresh material is never JSON.
 type TokenPairDTO struct {
-	AccessToken  string    `json:"access_token"`
-	RefreshToken string    `json:"refresh_token"`
-	ExpiresAt    time.Time `json:"expires_at"`
-	TokenType    string    `json:"token_type"`
+	AccessToken      string      `json:"access_token"`
+	RefreshToken     string      `json:"-"`
+	ExpiresAt        time.Time   `json:"expires_at"`
+	TokenType        string      `json:"token_type"`
+	RefreshExpiresAt time.Time   `json:"-"`
+	User             AuthUserDTO `json:"user"`
 }
 
 // RegisterRequest is the input DTO for registration.
@@ -27,9 +29,9 @@ type LoginRequest struct {
 	Password string `json:"password" validate:"required,min=8,max=72"`
 }
 
-// RefreshRequest is the input DTO for token refresh.
+// RefreshRequest is an application credential command, never HTTP-bound.
 type RefreshRequest struct {
-	RefreshToken string `json:"refresh_token" validate:"required"`
+	RefreshToken string `json:"-"`
 }
 
 // AuthUserDTO is the public representation of the authenticated user.

@@ -1,63 +1,43 @@
 import { create } from 'zustand'
-import type { AuthUser, TokenPair } from '@/types/common'
-import { storage, storageKeys } from '@/lib/storage'
+import type { AuthUser, BrowserSession } from '@/types/common'
+import { clearLegacyAuthStorage } from '@/lib/storage'
 import { queryClient } from '@/app/query-client'
 
+export type SessionStatus = 'idle' | 'bootstrapping' | 'authenticated' | 'unauthenticated' | 'error'
 interface AuthState {
   user: AuthUser | null
   accessToken: string | null
-  refreshToken: string | null
+  status: SessionStatus
+  generation: number
   isAuthenticated: boolean
-  isHydrated: boolean
-  setSession: (user: AuthUser, tokens: TokenPair) => void
+  setSession: (session: BrowserSession) => void
   setUser: (user: AuthUser) => void
-  hydrate: () => void
-  clear: () => void
+  setStatus: (status: SessionStatus) => void
+  clear: (status?: SessionStatus) => number
 }
 
-/**
- * Auth store — holds only session *metadata* and tokens.
- *
- * Server data (e.g. full user profile, lists of users) belongs in TanStack
- * Query. This store only keeps what's needed to gate the UI: who is logged
- * in and the tokens to attach to requests.
- */
+// No persistence middleware. User/role are presentation metadata; every API
+// authorizes against PostgreSQL. Generation prevents stale async resurrection.
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   accessToken: null,
-  refreshToken: null,
+  status: 'idle',
+  generation: 0,
   isAuthenticated: false,
-  isHydrated: false,
-
-  setSession: (user, tokens) => {
-    if (get().user?.id !== user.id) queryClient.clear()
-    storage.set(storageKeys.accessToken, tokens.access_token)
-    storage.set(storageKeys.refreshToken, tokens.refresh_token)
-    set({
-      user,
-      accessToken: tokens.access_token,
-      refreshToken: tokens.refresh_token,
-      isAuthenticated: true,
-    })
+  setSession: (session) => {
+    clearLegacyAuthStorage()
+    if (get().user?.id !== session.user.id) queryClient.clear()
+    set({ user: session.user, accessToken: session.access_token, status: 'authenticated', isAuthenticated: true })
   },
-
-  setUser: (user) => set({ user }),
-
-  hydrate: () => {
-    const accessToken = storage.get(storageKeys.accessToken)
-    const refreshToken = storage.get(storageKeys.refreshToken)
-    set({
-      accessToken,
-      refreshToken,
-      isAuthenticated: !!accessToken,
-      isHydrated: true,
-    })
+  setUser: (user) => {
+    if (get().isAuthenticated && get().user?.id === user.id) set({ user })
   },
-
-  clear: () => {
+  setStatus: (status) => set({ status }),
+  clear: (status = 'unauthenticated') => {
+    clearLegacyAuthStorage()
+    const generation = get().generation + 1
+    set({ user: null, accessToken: null, status, isAuthenticated: false, generation })
     queryClient.clear()
-    storage.remove(storageKeys.accessToken)
-    storage.remove(storageKeys.refreshToken)
-    set({ user: null, accessToken: null, refreshToken: null, isAuthenticated: false })
+    return generation
   },
 }))

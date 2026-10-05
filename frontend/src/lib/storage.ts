@@ -54,7 +54,13 @@ export const storage = {
 
 /** Keys used by the app. Centralized to avoid typos. */
 export const storageKeys = {
-  accessToken: 'elabtrack_v2.access_token',
-  refreshToken: 'elabtrack_v2.refresh_token',
   theme: 'elabtrack_v2.theme',
 } as const
+
+/** Remove known legacy auth values without reading them or touching preferences. */
+export function clearLegacyAuthStorage(): void {
+  for (const key of ['elabtrack_v2.access_token', 'elabtrack_v2.refresh_token', 'fst.access_token', 'fst.refresh_token']) {
+    storage.remove(key)
+    try { window.sessionStorage.removeItem(key) } catch { /* Storage may be unavailable. */ }
+  }
+}

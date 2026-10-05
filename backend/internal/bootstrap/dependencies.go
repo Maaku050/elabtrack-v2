@@ -45,7 +45,7 @@ func buildContainer(infra *Infrastructure) *Container {
 		AuthSvc:     authSvc,
 		UserSvc:     userSvc,
 		Health:      handlers.NewHealthHandler(infra.Health),
-		Auth:        handlers.NewAuthHandler(authSvc, v),
+		Auth:        handlers.NewAuthHandler(authSvc, v, infra.Config.App.Env, infra.Config.Security),
 		User:        handlers.NewUserHandler(userSvc, v),
 		TokenIssuer: issuer,
 		Accounts:    auth.NewAccountResolver(userRepo),

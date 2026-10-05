@@ -1,6 +1,6 @@
 # eLabTrack V2
 
-eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phases 1A–1C add configuration safeguards, current-account authorization, strict access JWTs and hash-only transactional refresh sessions to the Go Fiber/React/PostgreSQL foundation. Product workflows are planned for later approved phases.
+eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phases 1A–1D add configuration safeguards, current-account authorization, strict access JWTs, hash-only transactional refresh sessions and browser session architecture to the Go Fiber/React/PostgreSQL foundation. Product workflows are planned for later approved phases.
 
 Start with the [project charter](docs/project/PROJECT_CHARTER.md), [source policy](docs/project/SOURCE_OF_TRUTH.md), [decision register](docs/project/DECISIONS.md), [open decisions](docs/project/OPEN_DECISIONS.md), and [roadmap](docs/project/ROADMAP.md). The [foundation audit](docs/project/FOUNDATION_AUDIT.md) distinguishes inherited code from approved product requirements. See the [Phase 1 security backlog](docs/project/PHASE1_SECURITY_BACKLOG.md), [Phase 0 report](docs/project/PHASE0_REPORT.md), and [Phase 1 foundation report](docs/project/PHASE1_FOUNDATION.md) before treating this foundation as production ready.
 
@@ -48,7 +48,9 @@ make migrate-up
 
 There are no equipment/borrowing/fine/report/notification domain tables. Optional `make seed` loads synthetic starter accounts with published development passwords; never use it on real data or production.
 
-Migration 000003 explicitly invalidates existing refresh sessions when applied or rolled back; users must log in again. Coordinate schema and application versions. Historical migrations are preserved. `make sessions-cleanup` explicitly deletes at most 1000 expired/revoked records terminal for over seven days; operators must run enough batches regularly. It never runs at API startup. Browser token storage/transport remains Phase 1D work; real PostgreSQL migration/concurrency checks remain required Phase 1G coverage. See the [Phase 1C report](docs/project/PHASE1_FOUNDATION.md#phase-1c--jwt--refresh-session-security).
+Migration 000003 explicitly invalidates existing refresh sessions when applied or rolled back; users must log in again. Coordinate schema and application versions. Historical migrations are preserved. `make sessions-cleanup` explicitly deletes at most 1000 expired/revoked records terminal for over seven days; operators must run enough batches regularly. It never runs at API startup. Migration execution and real PostgreSQL migration/concurrency checks remain required Phase 1G coverage. See the [Phase 1 foundation report](docs/project/PHASE1_FOUNDATION.md).
+
+Browser access tokens live only in memory; refresh credentials use the host-only `elabtrack_v2_refresh` HttpOnly cookie at `/api/v1/auth`, with explicit SameSite=Lax and production Secure. Cookie-changing auth POSTs require an exact configured frontend Origin, including login and local registration. Configure explicit local origins (the example includes `http://localhost:5173`); local HTTP cookies derive Secure=false only from development/test APP_ENV. Production requires HTTPS and a same-site SPA/API arrangement, normally the same-origin nginx `/api/v1` proxy. Arbitrary cross-site deployments are unsupported. Login/refresh JSON carries access credentials and safe current account fields only; raw refresh JSON input has been removed.
 
 Start each service in its own terminal:
 
@@ -57,7 +59,7 @@ make backend
 make frontend
 ```
 
-The frontend at `http://localhost:5173/` displays a minimal eLabTrack V2 placeholder, a theme toggle, and a link to `/status`. The status check explicitly reads `GET http://localhost:8080/api/v1/health` when clicked. It does not authenticate or mutate data. The API must be running and connected to PostgreSQL for a real success result.
+The frontend at `http://localhost:5173/` displays a minimal eLabTrack V2 placeholder, a theme toggle, and a link to `/status`. Application loading first makes one credentialed refresh-cookie restoration attempt, shared across StrictMode effects. Invalid/missing sessions become unauthenticated; network/server failures show a recoverable session banner and allow public content. Restoration can rotate an existing refresh session. The status button separately reads `GET http://localhost:8080/api/v1/health` when clicked; that health request does not authenticate or mutate data. The API must be running and connected to PostgreSQL for a real success result. Final login/dashboard screens have not been implemented.
 
 The full development profile requires an explicit migration first:
 

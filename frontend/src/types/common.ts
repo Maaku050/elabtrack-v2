@@ -25,11 +25,11 @@ export interface AuthUser {
   is_active: boolean
 }
 
-export interface TokenPair {
+export interface BrowserSession {
   access_token: string
-  refresh_token: string
   expires_at: ISODateString
-  token_type: string
+  token_type: 'Bearer'
+  user: AuthUser
 }
 
 export type RequestState =

@@ -1,6 +1,6 @@
-import type { AuthUser, TokenPair } from '@/types/common'
+import type { AuthUser, BrowserSession } from '@/types/common'
 
-export type { AuthUser, TokenPair }
+export type { AuthUser, BrowserSession }
 
 export interface LoginInput {
   email: string
@@ -11,8 +11,4 @@ export interface RegisterInput {
   email: string
   name: string
   password: string
-}
-
-export interface RefreshInput {
-  refresh_token: string
 }

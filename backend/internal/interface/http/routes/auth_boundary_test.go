@@ -126,7 +126,7 @@ func newApp(env config.Environment, r *users, i application.TokenIssuer, refresh
 	authService := appauth.NewService(r, refresh, security.NewBcryptHasher(4), i, security.SHA256RefreshHasher{}, nil, nil, time.Minute, time.Hour)
 	v := validator.New()
 	routes.Register(app, &routes.Deps{
-		Health: handlers.NewHealthHandler(nil), Auth: handlers.NewAuthHandler(authService, v), User: handlers.NewUserHandler(appuser.NewService(r), v),
+		Health: handlers.NewHealthHandler(nil), Auth: handlers.NewAuthHandler(authService, v, env, config.SecurityConfig{AllowedOrigins: []string{"https://app.example.invalid"}}), User: handlers.NewUserHandler(appuser.NewService(r), v),
 		TokenIssuer: i, Accounts: accountService, Environment: env,
 	})
 	return app
@@ -135,6 +135,7 @@ func request(t *testing.T, app *fiber.App, method, path, body, header string) (i
 	t.Helper()
 	req := httptest.NewRequest(method, path, bytes.NewBufferString(body))
 	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Origin", "https://app.example.invalid")
 	if header != "" {
 		req.Header.Set("Authorization", header)
 	}

@@ -42,7 +42,7 @@ func (s *Service) Refresh(ctx context.Context, req RefreshRequest) (TokenPairDTO
 		if !stored.ValidAt(s.now()) {
 			return domainauth.ErrTokenInvalid
 		}
-		u := &domainuser.User{ID: account.ID, Email: account.Email, Role: account.Role, IsActive: account.IsActive}
+		u := &domainuser.User{ID: account.ID, Email: account.Email, Name: account.Name, Role: account.Role, IsActive: account.IsActive}
 		candidate, replacement, err := s.newTokenPair(txCtx, u)
 		if err != nil {
 			return shared.ErrInternal
@@ -110,5 +110,5 @@ func (s *Service) newTokenPair(ctx context.Context, u *domainuser.User) (TokenPa
 	}
 	now := s.now()
 	session := domainauth.NewRefreshToken(hash, u.ID, now, now.Add(s.refreshTTL))
-	return TokenPairDTO{AccessToken: access, RefreshToken: raw, ExpiresAt: now.Add(s.accessTTL), TokenType: "Bearer"}, session, nil
+	return TokenPairDTO{AccessToken: access, RefreshToken: raw, ExpiresAt: now.Add(s.accessTTL), TokenType: "Bearer", RefreshExpiresAt: session.ExpiresAt, User: AuthUserDTO{ID: u.ID, Email: u.Email, Name: u.Name, Role: string(u.Role), IsActive: u.IsActive}}, session, nil
 }

@@ -20,7 +20,7 @@ func TestFiberV3HTTPContracts(t *testing.T) {
 	cfg := &config.Config{App: config.AppConfig{BodyLimit: 1 << 20}, Security: config.SecurityConfig{AllowedOrigins: []string{"http://localhost:5173"}, RateLimitMax: 100, RateLimitWindow: time.Minute}}
 	app := newServer(cfg, nil, nil)
 	health := handlers.NewHealthHandler(nil)
-	auth := handlers.NewAuthHandler(nil, validator.New())
+	auth := handlers.NewAuthHandler(nil, validator.New(), config.Development, cfg.Security)
 	app.Get("/api/v1/health", health.Health)
 	app.Post("/api/v1/auth/login", auth.Login)
 	app.Get("/api/v1/users/me", middleware.Auth(nil, nil), func(c fiber.Ctx) error { return c.SendStatus(200) })

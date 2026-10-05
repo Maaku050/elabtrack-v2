@@ -12,7 +12,7 @@ import type { UpdateProfileInput } from '@/features/users/types'
 import type { AuthUser } from '@/types/common'
 
 vi.mock('@/lib/api-client', () => ({
-  apiClient: { get: vi.fn(), post: vi.fn(), patch: vi.fn() },
+  apiClient: { get: vi.fn(), post: vi.fn(), patch: vi.fn(), authenticate: vi.fn(), refreshSession: vi.fn() },
 }))
 
 const currentAccount: AuthUser = {
@@ -26,11 +26,28 @@ const currentAccount: AuthUser = {
 beforeEach(() => {
   vi.clearAllMocks()
   localStorage.clear()
-  useAuthStore.setState({ user: null, isAuthenticated: false, accessToken: null, refreshToken: null })
+  useAuthStore.setState({ user: null, isAuthenticated: false, accessToken: null })
 })
 afterEach(() => localStorage.clear())
 
 describe('Phase 1B trusted account adapters', () => {
+  it.each(['login', 'register'] as const)('%s exposes only safe account metadata to mutation results', async (operation) => {
+    vi.mocked(apiClient.authenticate).mockResolvedValue({
+      access_token: 'synthetic-memory-access', expires_at: '2026-10-06T12:00:00Z', token_type: 'Bearer', user: currentAccount,
+    })
+    const input = { email: 'synthetic@example.invalid', password: 'synthetic-password', name: 'Current User' }
+    expect(await authApi[operation](input)).toEqual({ user: currentAccount })
+    expect(apiClient.authenticate).toHaveBeenCalledWith(`/auth/${operation}`, input)
+  })
+
+  it('manual refresh updates the centralized memory session without returning credentials to feature callers', async () => {
+    vi.mocked(apiClient.refreshSession).mockResolvedValue({
+      access_token: 'synthetic-memory-access', expires_at: '2026-10-06T12:00:00Z', token_type: 'Bearer', user: currentAccount,
+    })
+    expect(await authApi.refresh()).toBeUndefined()
+    expect(apiClient.refreshSession).toHaveBeenCalledTimes(1)
+  })
+
   it('reads /auth/me with cancellation and preserves server role/status', async () => {
     const controller = new AbortController()
     vi.mocked(apiClient.get).mockResolvedValue(currentAccount)
@@ -42,9 +59,9 @@ describe('Phase 1B trusted account adapters', () => {
     vi.mocked(apiClient.get).mockResolvedValue(currentAccount)
     useAuthStore.setState({
       isAuthenticated: true,
+      status: 'authenticated',
       user: { ...currentAccount, role: 'admin' },
       accessToken: 'existing-access',
-      refreshToken: 'existing-refresh',
     })
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
     const profile = { ...currentAccount, created_at: '2026-01-01T00:00:00Z' }
@@ -58,7 +75,7 @@ describe('Phase 1B trusted account adapters', () => {
     expect(useAuthStore.getState().user).toEqual(currentAccount)
     expect(client.getQueryData(queryKeys.users.me())).toEqual(profile)
     expect(client.getQueryData(queryKeys.auth.me())).toEqual(currentAccount)
-    expect(useAuthStore.getState().refreshToken).toBe('existing-refresh')
+    expect(useAuthStore.getState()).not.toHaveProperty('refreshToken')
     expect(useAuthStore.getState().accessToken).toBe('existing-access')
     unmount()
     client.clear()

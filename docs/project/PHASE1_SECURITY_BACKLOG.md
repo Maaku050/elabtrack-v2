@@ -34,6 +34,16 @@ The Phase 0 finding tables and Phase 1A/1B notes are historical evidence; this s
 - **SEC-017 coverage expanded:** deterministic JWT, hashing, rotation/replay/rollback, test-double concurrency, actual transaction/context/isolation lifecycle, repository locking/conditional SQL/error redaction and actual-router refresh/logout contracts. No live database integration/CI claim.
 - **SEC-002/010 and transport part of SEC-013 remain Phase 1D:** localStorage access/refresh storage, cookie/CSRF decision, bounded retry, hydration/cross-tab/session handling. No Phase 1D work performed. SEC-008 migration-runner integrity and the other Phase 1A/1B partial/open findings remain outstanding.
 
+## Phase 1D implementation status — 2026-10-06
+
+Earlier phase notes and finding tables preserve historical evidence. Current browser behavior and validation are recorded in the Phase 1D section of PHASE1_FOUNDATION.md.
+
+- **SEC-002 browser persistence finding resolved in current source:** access lives in non-persisted memory; raw refresh is absent from frontend state/DTO/storage and normal JSON. Host-only HttpOnly refresh cookie, explicit Lax/path, production Secure and session-aligned expiry are implemented. Known legacy auth entries are removed without reading values; preferences remain. Real browser enforcement/reload/expiry and deployment compatibility require Phase 1G evidence; memory tokens and authenticated browser actions remain exposed to XSS.
+- **SEC-010 recursive retry finding resolved in current source:** one shared refresh promise per application document; eligible protected 401s retry at most once; auth mutations cannot recursively refresh; late old-token denials use the already renewed token; failure clears memory/cache. Generation checks and queued cookie mutations prevent logout resurrection. Controlled tests cover simultaneous callers and late responses. Cross-tab coordination is not implemented; competing tabs/lost responses under strict single-use rotation may require re-login and remain explicit Phase 1G checks.
+- **SEC-013 minimum cookie/CSRF implementation complete:** existing typed explicit credentialed CORS retained; exact configured Origin checks apply to POST login/local register/refresh/logout. Missing/null/untrusted Origin and invalid cookie policy fail closed. No state-changing GET or body credential fallback; cookie alone cannot authenticate protected routes. Same-site HTTPS production is required. Full CORS/proxy/rate/header/error review remains Phase 1E; actual preflight/cookie enforcement remains Phase 1G.
+- **SEC-017 coverage expanded:** backend response cookies, exact safe JSON, environment/Origin/body-fallback behavior and frontend memory/bootstrap/single-flight/retry/logout tests pass. These are HTTP/unit/jsdom adapter tests; no real browser, PostgreSQL, Docker auth integration or CI is claimed.
+- **SEC-004/006/008/018 limits remain:** live transactional rotation, registration user/session atomicity, stronger revocation policy, migration bookkeeping/exclusivity and cleanup operational ownership are unchanged. Migration 000003 is unchanged and unrun. No Phase 1E or business feature work performed.
+
 ## CRITICAL
 
 | ID | Finding / evidence | Required hardening and acceptance evidence | Owner |
@@ -75,6 +85,6 @@ The Phase 0 finding tables and Phase 1A/1B notes are historical evidence; this s
 
 ## Phase boundary and completion
 
-Phase 1 can harden generic foundation mechanisms without implementing borrower administration, equipment, fines, kiosk or notifications. Product onboarding/privilege policy decisions belong to stakeholders and Phase 4. Cookie transport and token family details are proposals until their contracts are reviewed. Business history/audit and stock integrity are confirmed design constraints for Phase 2 and later; no financial or inventory tables are created by this backlog.
+Phase 1 can harden generic foundation mechanisms without implementing borrower administration, equipment, fines, kiosk or notifications. Product onboarding/privilege policy decisions belong to stakeholders and Phase 4. Browser transport is now accepted in DEC-030/031; token-family/concurrent-session policies remain unresolved. Business history/audit and stock integrity are confirmed design constraints for Phase 2 and later; no financial or inventory tables are created by this backlog.
 
 Before declaring foundation ready, resolve critical findings and verify high-risk mechanisms with tests, track remaining items with owners, and record all unavailable environment/database/deployment evidence. `PHASE0_REPORT.md` records this session's actual validation; this backlog is not completion evidence.
