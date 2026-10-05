@@ -1,0 +1,57 @@
+package auth
+
+import (
+	"context"
+	"fmt"
+	"time"
+
+	"github.com/fullstacktemplate/backend/internal/application"
+	domainauth "github.com/fullstacktemplate/backend/internal/domain/auth"
+	domainuser "github.com/fullstacktemplate/backend/internal/domain/user"
+)
+
+// Service is the auth application service. It coordinates user creation,
+// credential verification, and token issuance/rotation through ports.
+//
+// Use-case methods are split across register.go, login.go, and refresh.go
+// to keep each file focused on a single use case.
+type Service struct {
+	users      domainuser.Repository
+	tokens     domainauth.Repository
+	hasher     application.PasswordHasher
+	issuer     application.TokenIssuer
+	accessTTL  time.Duration
+	refreshTTL time.Duration
+}
+
+// NewService constructs an auth application service.
+func NewService(
+	users domainuser.Repository,
+	tokens domainauth.Repository,
+	hasher application.PasswordHasher,
+	issuer application.TokenIssuer,
+	accessTTL, refreshTTL time.Duration,
+) *Service {
+	return &Service{
+		users:      users,
+		tokens:     tokens,
+		hasher:     hasher,
+		issuer:     issuer,
+		accessTTL:  accessTTL,
+		refreshTTL: refreshTTL,
+	}
+}
+
+// CurrentUser returns the authenticated user's public profile.
+func (s *Service) CurrentUser(ctx context.Context, claims application.Claims) (AuthUserDTO, error) {
+	u, err := s.users.FindByID(ctx, claims.UserID)
+	if err != nil {
+		return AuthUserDTO{}, fmt.Errorf("find current user: %w", err)
+	}
+	return AuthUserDTO{
+		ID:    u.ID,
+		Email: u.Email,
+		Name:  u.Name,
+		Role:  string(u.Role),
+	}, nil
+}
