@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fullstacktemplate/backend/internal/application"
-	domainauth "github.com/fullstacktemplate/backend/internal/domain/auth"
-	domainuser "github.com/fullstacktemplate/backend/internal/domain/user"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
+	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
+	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 )
 
 // Service is the auth application service. It coordinates user creation,

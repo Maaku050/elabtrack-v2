@@ -9,9 +9,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/fullstacktemplate/backend/internal/config"
-	"github.com/fullstacktemplate/backend/internal/infrastructure/database"
-	"github.com/fullstacktemplate/backend/internal/infrastructure/logger"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger"
 	"github.com/gofiber/fiber/v3"
 	"go.uber.org/zap"
 )

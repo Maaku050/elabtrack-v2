@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/fullstacktemplate/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/cors"
 )

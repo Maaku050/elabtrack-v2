@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"github.com/fullstacktemplate/backend/internal/infrastructure/logger"
-	"github.com/fullstacktemplate/backend/internal/interface/http/response"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
 	"github.com/gofiber/fiber/v3"
 	fiberrecover "github.com/gofiber/fiber/v3/middleware/recover"
 	"go.uber.org/zap"

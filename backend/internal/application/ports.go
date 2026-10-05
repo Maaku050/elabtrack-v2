@@ -3,8 +3,8 @@ package application
 import (
 	"context"
 
-	"github.com/fullstacktemplate/backend/internal/domain/auth"
-	"github.com/fullstacktemplate/backend/internal/domain/user"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 	"github.com/google/uuid"
 )
 

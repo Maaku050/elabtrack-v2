@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/fullstacktemplate/backend/internal/domain/shared"
-	domainuser "github.com/fullstacktemplate/backend/internal/domain/user"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
+	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 	"github.com/google/uuid"
 )
 

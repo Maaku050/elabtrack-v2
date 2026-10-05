@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fullstacktemplate/backend/internal/application"
-	"github.com/fullstacktemplate/backend/internal/config"
-	domainuser "github.com/fullstacktemplate/backend/internal/domain/user"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
 )

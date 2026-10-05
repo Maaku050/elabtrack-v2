@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/fullstacktemplate/backend/internal/shared/constants"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/constants"
 	"github.com/gofiber/fiber/v3"
 	fiberrequestid "github.com/gofiber/fiber/v3/middleware/requestid"
 )

@@ -1,7 +1,7 @@
 package response
 
 import (
-	"github.com/fullstacktemplate/backend/internal/domain/shared"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	"github.com/gofiber/fiber/v3"
 )
 

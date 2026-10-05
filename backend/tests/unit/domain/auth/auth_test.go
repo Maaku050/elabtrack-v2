@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	domainauth "github.com/fullstacktemplate/backend/internal/domain/auth"
+	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
 	"github.com/google/uuid"
 )
 

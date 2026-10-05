@@ -4,11 +4,11 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/fullstacktemplate/backend/internal/domain/auth"
-	domainshared "github.com/fullstacktemplate/backend/internal/domain/shared"
-	domainuser "github.com/fullstacktemplate/backend/internal/domain/user"
-	"github.com/fullstacktemplate/backend/internal/shared/constants"
-	"github.com/fullstacktemplate/backend/internal/shared/validator"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
+	domainshared "github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
+	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/constants"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
 	"github.com/gofiber/fiber/v3"
 )
 

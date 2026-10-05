@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/fullstacktemplate/backend/internal/domain/shared"
-	domainuser "github.com/fullstacktemplate/backend/internal/domain/user"
-	"github.com/fullstacktemplate/backend/internal/infrastructure/database"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
+	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"

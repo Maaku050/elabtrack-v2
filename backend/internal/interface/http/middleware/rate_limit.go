@@ -3,9 +3,9 @@ package middleware
 import (
 	"time"
 
-	"github.com/fullstacktemplate/backend/internal/config"
-	"github.com/fullstacktemplate/backend/internal/interface/http/response"
-	"github.com/fullstacktemplate/backend/internal/shared/constants"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/constants"
 	"github.com/gofiber/fiber/v3"
 	fiberlimiter "github.com/gofiber/fiber/v3/middleware/limiter"
 )

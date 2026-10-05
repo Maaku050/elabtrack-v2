@@ -133,3 +133,112 @@ There is no legitimate porcelain status to report; do not infer a clean or dirty
 **Not satisfied unconditionally.** Scope/identity cleanup, authoritative documentation, open-conflict register, minimal application and frontend quality gates are complete. Before marking Phase 0 closed, expose the actual repository metadata, verify remote/status/diff and the authoritative module path, and rerun required backend fmt/vet/tests with Go >=1.27.1. These are verification/foundation identity blockers, not authorization to implement Phase 1.
 
 Open product questions may remain open until their dependent phases; hiding them is not an exit criterion. Database/Docker/browser/deployment checks remain explicitly unrun. Current V2 stays FSMO-focused. No later phase was started.
+
+## Phase 0 Closure Verification
+
+Date: **2026-10-05 (Asia/Shanghai)**. This section records the final closure verification and supersedes the earlier blocked exit assessment for current status. The complete earlier report above is preserved unchanged. Closure establishes the Phase 0 engineering baseline; it does not declare the inherited auth implementation production-ready or authorize Phase 1.
+
+| Item | Verification | Result |
+|---|---|---|
+| 1 | Git repository valid | PASS: real repository inspected; starting HEAD `f950e5cef9c8b38e8784a502de9e88c1271e7d48` |
+| 2 | Branch | `main`; local branch up to date with the locally recorded `origin/main`; no fetch/push performed |
+| 3 | Authoritative remote | Fetch and push origin both `https://github.com/Maaku050/elabtrack-v2.git`; does not point to the template; remote unchanged |
+| 4 | Working tree before task | Clean: `git status` reported nothing to commit; `git status --porcelain=v1` returned empty output |
+| 5 | Previous Go module | `github.com/fullstacktemplate/backend` (historical identity) |
+| 6 | Final Go module | `github.com/Maaku050/elabtrack-v2/backend`; module declaration and every active internal import renamed consistently in 37 files |
+| 7 | Go toolchain | `go version go1.27.1 linux/amd64` from `backend/`; `go env GOTOOLCHAIN` → `auto`; Go directive stays 1.27.1 |
+| 8 | Backend `go fmt ./...` | PASS, exit 0; no files changed by formatting after the module replacement |
+| 9 | Backend `go vet ./...` | PASS, exit 0, no diagnostics |
+| 10 | Backend `go test ./...` | PASS, exit 0; JSON evidence reports 9 top-level tests plus 7 subtests across 4 passing test packages; packages without tests reported normally |
+| 11 | Frontend `npm run lint` | PASS, exit 0; the same 19 retained UI/use-mobile warnings, no configuration changes |
+| 12 | Frontend `npm run test:run` | PASS: 3 files, 21 tests |
+| 13 | Frontend `npm run build` | PASS: strict TypeScript plus Vite 8.3.2; JS 475.69 kB / gzip 149.97 kB; no chunk-size warning |
+| 14 | shadcn/ui foundation | PASS: original base-nova/zinc/CSS-variable/Lucide configuration and all 62 original UI primitive files unchanged |
+| 15 | Docker version | PASS: Docker Engine client/server 29.8.0; read-only verification only |
+| 16 | Compose verification | PASS: Compose v5.5.1; `docker compose config` exit 0; rendered environment values withheld; no services started or volumes modified |
+| 17 | Reference hygiene | PASS: `.project-reference/` ignored; capstone exists locally, untracked and unstaged; all 16 V1 audit files unchanged |
+| 18 | Phase 0 business boundary | PASS: only inherited backend auth/user/shared and frontend auth/users/foundation modules; only four paired generic auth migration files; no equipment, inventory, borrowing, approval, return, damage/loss, fine, notification, report, kiosk or campus hierarchy implementation |
+| 19 | `git diff --check` | PASS, exit 0, no output; checked again after recording final status |
+| 20 | Exact final Git status | Recorded verbatim below; closure changes are unstaged; no commit or push |
+| 21 | Remaining closure blockers | None. Earlier Git/toolchain/Docker blockers are resolved for the required Phase 0 gates |
+| 22 | Recommended Phase 1 order | Recorded below from the existing security backlog; recommendations only, no implementation |
+| 23 | Phase 0 status | **COMPLETE** |
+
+### Module identity and historical evidence
+
+The stakeholder-supplied repository path was verified against the actual origin before renaming. Active Go source contains no `github.com/fullstacktemplate/backend` or other `fullstacktemplate` identifier. The dependency section of `go.mod` and all of `go.sum` are unchanged, so `go mod tidy` was unnecessary and no dependency upgrades occurred. All 37 backend changes were verified to be exactly the module/import substitution; formatting made no extra edits.
+
+Updated current README/backend README/stack evidence and resolved ELAB-V2-DEC-020 to Accepted. The earlier report, historical audit references and V1 audit contents were not rewritten to erase the original identity or blocked history. Product-policy decisions remain unresolved where originally recorded.
+
+### Execution details and unrun checks
+
+The root Go launcher remains Go 1.26.5 outside the module; `backend/` automatically selects the compatible installed Go 1.27.1 toolchain. Initial sandbox attempts could not write the default Go build cache and emitted setup errors; the successful fmt/vet/test gates used `GOCACHE=/tmp/elabtrack-closure-go-cache`. This is a per-command execution setting, not a dependency, source, toolchain or test-policy change. No toolchain upgrade or directive downgrade was performed.
+
+Docker socket access initially required elevated read-only execution; version/config checks then succeeded. Compose configuration validation is sufficient for this closure under the stakeholder's current instruction. Actual PostgreSQL/API integration, migration/seed execution, Docker service builds/runs, live browser integration and deployment remain unrun and belong to later separately authorized work. No running services, production environment, V1 Firebase or Docker volumes were changed.
+
+The removed `.specify/`, `.devin/`, showcase/dashboard folders, generic login/register/profile pages and root example components remain absent. Retained Go Clean Architecture, pgx, SQL migrations, Docker configuration, React/Vite/TypeScript, Query, Zustand, Hook Form, Zod, Tailwind v4, shadcn and Lucide remain available. Source/configuration inspection and hash comparisons confirm the UI primitives, V1 audit, migrations, frontend manifests/configuration and Docker files are unchanged by closure.
+
+### Recommended Phase 1 work order
+
+This sequence is derived from `PHASE1_SECURITY_BACKLOG.md` and is **not executed**. Each future change should add its relevant tests immediately; the final step consolidates integration/CI evidence. Product policy questions in `OPEN_DECISIONS.md` require accountable stakeholder decisions before dependent product implementation.
+
+1. **Production configuration safety** — fail closed on default/missing JWT secrets (SEC-001); validate environment/TLS/connection encoding (SEC-009); guard development seeding (SEC-011).
+2. **Registration and authorization boundaries** — contain the inherited public-registration surface while policy remains unresolved (SEC-007); define current-account status/privilege/revocation checks (SEC-006); obtain policy decisions without inventing borrower/staff/admin/Super Admin permissions.
+3. **Safe auth migration infrastructure** — separate release migrations from runtime startup, make SQL/bookkeeping atomic and exclusive, and establish isolated PostgreSQL fixtures/least-privilege credentials (SEC-008). This precedes refresh-token storage migrations.
+4. **JWT verification** — enforce exact algorithm, issuer, expiry and identity/subject claims with negative tests (SEC-005), coordinated with current-account authorization.
+5. **Refresh-token storage and lifecycle** — one-way token digests (SEC-003), atomic single-use rotation, failure recovery, reuse handling and transactional registration where appropriate (SEC-004); define bounded cleanup/retention (SEC-018).
+6. **Browser session/transport contract** — review the memory-access/HttpOnly-refresh-cookie proposal before adopting it (SEC-002); coordinate CSRF/origin/cookie protections with the API; bound recursive 401 retries and synchronize session/cross-tab behavior (SEC-010).
+7. **HTTP abuse and serving controls** — explicit production CORS (SEC-013), trusted proxy/IP behavior and focused auth rate limits (SEC-012), and separate API/SPA security headers (SEC-014); verify them against the chosen session transport.
+8. **API contracts and observability** — align error/envelope/health contracts (SEC-016); ensure structured logs, request correlation, panic/error visibility and secret redaction (SEC-015).
+9. **Integration and CI closure** — PostgreSQL/concurrency/session/negative-path tests and reproducible gates (SEC-017); review unchanged warnings and dependency/image policy (SEC-019), without weakening lint/types or deleting reusable primitives.
+
+### Exact final Git status
+
+```text
+ M README.md
+ M backend/README.md
+ M backend/cmd/api/main.go
+ M backend/go.mod
+ M backend/internal/application/auth/login.go
+ M backend/internal/application/auth/refresh.go
+ M backend/internal/application/auth/register.go
+ M backend/internal/application/auth/service.go
+ M backend/internal/application/ports.go
+ M backend/internal/application/user/commands.go
+ M backend/internal/application/user/service.go
+ M backend/internal/bootstrap/app.go
+ M backend/internal/bootstrap/dependencies.go
+ M backend/internal/bootstrap/infrastructure.go
+ M backend/internal/bootstrap/migration_test.go
+ M backend/internal/bootstrap/server.go
+ M backend/internal/domain/user/entity.go
+ M backend/internal/domain/user/repository.go
+ M backend/internal/infrastructure/database/postgres.go
+ M backend/internal/infrastructure/persistence/postgres/auth_repository.go
+ M backend/internal/infrastructure/persistence/postgres/user_repository.go
+ M backend/internal/infrastructure/security/jwt.go
+ M backend/internal/interface/http/handlers/auth_handler.go
+ M backend/internal/interface/http/handlers/health_handler.go
+ M backend/internal/interface/http/handlers/user_handler.go
+ M backend/internal/interface/http/middleware/auth.go
+ M backend/internal/interface/http/middleware/cors.go
+ M backend/internal/interface/http/middleware/rate_limit.go
+ M backend/internal/interface/http/middleware/recovery.go
+ M backend/internal/interface/http/middleware/requestid.go
+ M backend/internal/interface/http/response/errors.go
+ M backend/internal/interface/http/response/response.go
+ M backend/internal/interface/http/routes/auth_routes.go
+ M backend/internal/interface/http/routes/routes.go
+ M backend/internal/interface/http/routes/user_routes.go
+ M backend/internal/shared/pagination/pagination.go
+ M backend/tests/unit/domain/auth/auth_test.go
+ M backend/tests/unit/domain/user/user_test.go
+ M backend/tests/unit/security/bcrypt_test.go
+ M docs/STACK.md
+ M docs/project/DECISIONS.md
+ M docs/project/PHASE0_REPORT.md
+```
+
+No changes were staged. No commit, push, remote alteration, deployment, business feature or business-domain table was created. Phase 1 has not begun.
+
+**PHASE 0 STATUS: COMPLETE**

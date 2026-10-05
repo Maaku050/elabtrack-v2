@@ -3,11 +3,11 @@ package bootstrap
 import (
 	"context"
 
-	"github.com/fullstacktemplate/backend/internal/config"
-	"github.com/fullstacktemplate/backend/internal/infrastructure/database"
-	"github.com/fullstacktemplate/backend/internal/infrastructure/logger"
-	"github.com/fullstacktemplate/backend/internal/infrastructure/persistence/postgres"
-	"github.com/fullstacktemplate/backend/internal/infrastructure/security"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/persistence/postgres"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/security"
 )
 
 // Infrastructure bundles the infrastructure-layer singletons created

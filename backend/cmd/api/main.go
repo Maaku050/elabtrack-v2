@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/fullstacktemplate/backend/internal/bootstrap"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/bootstrap"
 )
 
 // CLI flags. The server runs by default; passing any of these flags runs

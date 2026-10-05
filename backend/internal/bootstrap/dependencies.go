@@ -1,12 +1,12 @@
 package bootstrap
 
 import (
-	"github.com/fullstacktemplate/backend/internal/application"
-	"github.com/fullstacktemplate/backend/internal/application/auth"
-	appuser "github.com/fullstacktemplate/backend/internal/application/user"
-	"github.com/fullstacktemplate/backend/internal/interface/http/handlers"
-	"github.com/fullstacktemplate/backend/internal/interface/http/routes"
-	"github.com/fullstacktemplate/backend/internal/shared/validator"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
+	appuser "github.com/Maaku050/elabtrack-v2/backend/internal/application/user"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/routes"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
 )
 
 // Container bundles all wired application services and HTTP handlers.

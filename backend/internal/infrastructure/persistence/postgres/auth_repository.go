@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	domainauth "github.com/fullstacktemplate/backend/internal/domain/auth"
-	"github.com/fullstacktemplate/backend/internal/infrastructure/database"
+	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"

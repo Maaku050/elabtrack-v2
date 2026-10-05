@@ -137,6 +137,8 @@ Recorded 2026-10-05. Status vocabulary: **Accepted**, **Proposed**, **Deferred**
 
 ## ELAB-V2-DEC-020 — Authoritative Go module path
 
-- Status: Needs Stakeholder Input
-- Evidence: `backend/go.mod` uses `github.com/fullstacktemplate/backend`; Git reports no repository in this mounted workspace.
-- Decision needed: verify the actual repository remote with its owner before changing module/import paths consistently. Current path remains temporarily unchanged; no URL guessed.
+- Status: Accepted
+- Decision: use `github.com/Maaku050/elabtrack-v2/backend` for the module declaration and every active internal Go import.
+- Authority/date: stakeholder closure request and read-only verification of `origin` as `https://github.com/Maaku050/elabtrack-v2.git` on `main`, 2026-10-05.
+- Earlier evidence: the initial Phase 0 session could not inspect Git metadata and temporarily retained `github.com/fullstacktemplate/backend`. That blocked validation history remains intact in `PHASE0_REPORT.md`.
+- Rationale/impact: the verified remote resolves the identity blocker without guessing a URL or upgrading dependencies; it does not authorize Phase 1 work.

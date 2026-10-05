@@ -3,7 +3,7 @@ package user_test
 import (
 	"testing"
 
-	domainuser "github.com/fullstacktemplate/backend/internal/domain/user"
+	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 	"github.com/google/uuid"
 )
 

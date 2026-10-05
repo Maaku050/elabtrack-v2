@@ -1,11 +1,11 @@
 package handlers
 
 import (
-	"github.com/fullstacktemplate/backend/internal/application/auth"
-	appuser "github.com/fullstacktemplate/backend/internal/application/user"
-	"github.com/fullstacktemplate/backend/internal/interface/http/middleware"
-	"github.com/fullstacktemplate/backend/internal/interface/http/response"
-	"github.com/fullstacktemplate/backend/internal/shared/validator"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
+	appuser "github.com/Maaku050/elabtrack-v2/backend/internal/application/user"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/middleware"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
 	"github.com/gofiber/fiber/v3"
 )
 

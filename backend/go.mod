@@ -1,4 +1,4 @@
-module github.com/fullstacktemplate/backend
+module github.com/Maaku050/elabtrack-v2/backend
 
 go 1.27.1
 

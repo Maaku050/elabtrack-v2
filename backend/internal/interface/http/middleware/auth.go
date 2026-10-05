@@ -3,9 +3,9 @@ package middleware
 import (
 	"strings"
 
-	"github.com/fullstacktemplate/backend/internal/application"
-	"github.com/fullstacktemplate/backend/internal/interface/http/response"
-	"github.com/fullstacktemplate/backend/internal/shared/constants"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/constants"
 	"github.com/gofiber/fiber/v3"
 	"github.com/google/uuid"
 )

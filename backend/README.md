@@ -2,7 +2,7 @@
 
 Go Fiber v3 with domain/application/infrastructure/HTTP boundaries, composed in `internal/bootstrap/`. Read [architecture](../docs/ARCHITECTURE.md) and [foundation audit](../docs/project/FOUNDATION_AUDIT.md). Current auth/user code is retained starter infrastructure; it does not establish eLabTrack product policies.
 
-Requires Go 1.27.1 or newer and a dedicated local PostgreSQL database. Copy `.env.example` to `.env`, configure credentials, and replace the development JWT secret. The module/import path is temporarily inherited pending a verified remote.
+Requires Go 1.27.1 or newer and a dedicated local PostgreSQL database. Copy `.env.example` to `.env`, configure credentials, and replace the development JWT secret. The authoritative module/import path is `github.com/Maaku050/elabtrack-v2/backend`, verified against `origin` during Phase 0 closure.
 
 ```bash
 go run ./cmd/api                    # database required at bootstrap

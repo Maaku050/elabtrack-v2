@@ -3,7 +3,7 @@ package security_test
 import (
 	"testing"
 
-	"github.com/fullstacktemplate/backend/internal/infrastructure/security"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/security"
 )
 
 func TestBcryptHasher_HashAndCompare(t *testing.T) {

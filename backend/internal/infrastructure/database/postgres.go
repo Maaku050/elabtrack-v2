@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/fullstacktemplate/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

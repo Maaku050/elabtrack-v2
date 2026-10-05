@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/fullstacktemplate/backend/internal/infrastructure/database"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
 	"github.com/gofiber/fiber/v3"
 )
 

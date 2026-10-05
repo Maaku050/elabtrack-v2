@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 
-	domainuser "github.com/fullstacktemplate/backend/internal/domain/user"
+	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 )
 
 // Login verifies credentials and issues a token pair.

@@ -8,7 +8,7 @@ Start with the [project charter](docs/project/PROJECT_CHARTER.md), [source polic
 
 React SPA → REST `/api/v1` → Go Fiber v3 → PostgreSQL.
 
-- Go **1.27.1 or newer**, as declared in `backend/go.mod`. This workspace currently has Go 1.26.5; do not lower the directive or assume checks pass.
+- Go **1.27.1 or newer**, as declared in `backend/go.mod`. The backend selects Go 1.27.1 with `GOTOOLCHAIN=auto`; run Go commands from `backend/` and preserve the directive.
 - Node satisfying `^22.12.0 || ^24.0.0 || >=26.0.0`; npm with `npm ci` and the committed lockfile. Current Node 24.19.0 satisfies this range.
 - PostgreSQL; the development Compose image is `postgres:18.6-alpine`. Docker Engine and Compose are optional for host development.
 - Linux shell; Make is optional. See [stack evidence](docs/STACK.md) and [architecture rules](docs/ARCHITECTURE.md).

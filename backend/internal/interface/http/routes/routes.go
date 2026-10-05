@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"github.com/fullstacktemplate/backend/internal/application"
-	"github.com/fullstacktemplate/backend/internal/interface/http/handlers"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers"
 	"github.com/gofiber/fiber/v3"
 )
 

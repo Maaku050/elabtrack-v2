@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fullstacktemplate/backend/internal/config"
-	"github.com/fullstacktemplate/backend/internal/interface/http/handlers"
-	"github.com/fullstacktemplate/backend/internal/interface/http/middleware"
-	"github.com/fullstacktemplate/backend/internal/shared/validator"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/middleware"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
 	"github.com/gofiber/fiber/v3"
 )
 
