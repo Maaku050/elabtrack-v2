@@ -22,7 +22,7 @@ func (s *Service) Login(ctx context.Context, req LoginRequest) (TokenPairDTO, er
 	if err := s.hasher.Compare(u.Password, req.Password); err != nil {
 		return TokenPairDTO{}, domainuser.ErrInvalidCredentials
 	}
-	if !u.IsActive {
+	if !u.IsActive || !u.Role.Valid() {
 		return TokenPairDTO{}, domainuser.ErrUserInactive
 	}
 

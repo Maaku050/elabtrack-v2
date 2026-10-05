@@ -91,6 +91,24 @@ func (r *UserRepository) FindAccountByID(ctx context.Context, id uuid.UUID) (*do
 	return account, err
 }
 
+// LockAccountByID prevents concurrent status/role updates until rotation ends.
+// FOR SHARE also conflicts with non-key updates; KEY SHARE would not suffice.
+func (r *UserRepository) LockAccountByID(ctx context.Context, id uuid.UUID) (*domainuser.Account, error) {
+	tx, ok := database.TxFromContext(ctx)
+	if !ok {
+		return nil, shared.ErrInternal
+	}
+	const q = `SELECT ` + accountColumns + ` FROM users WHERE id = $1 FOR SHARE`
+	account, err := scanAccount(tx.QueryRow(ctx, q, id))
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, domainuser.ErrUserNotFound
+	}
+	if err != nil {
+		return nil, shared.ErrInternal
+	}
+	return account, nil
+}
+
 // UpdateProfile cannot overwrite a concurrent demotion/deactivation/password
 // change. Permission is rechecked in the same statement as the name mutation.
 func (r *UserRepository) UpdateProfile(ctx context.Context, id uuid.UUID, name string) (*domainuser.Account, error) {

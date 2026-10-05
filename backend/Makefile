@@ -1,4 +1,4 @@
-.PHONY: help run tidy fmt vet test build migrate-up migrate-down migrate-status migrate-create seed
+.PHONY: help run tidy fmt vet test build migrate-up migrate-down migrate-status migrate-create seed sessions-cleanup
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
@@ -35,3 +35,6 @@ migrate-create: ## Create a new migration: make migrate-create name=create_produ
 
 seed: ## Explicitly run development-only seeds (denied in test/production)
 	go run ./cmd/api --seed
+
+sessions-cleanup: ## Explicitly delete one bounded batch of terminal sessions older than seven days
+	go run ./cmd/api --sessions-cleanup

@@ -1,6 +1,7 @@
 package auth_test
 
 import (
+	"strings"
 	"testing"
 	"time"
 
@@ -8,27 +9,17 @@ import (
 	"github.com/google/uuid"
 )
 
-func TestRefreshToken_IsValid(t *testing.T) {
-	userID := uuid.New()
-	future := time.Now().Add(time.Hour).UTC()
-	past := time.Now().Add(-time.Hour).UTC()
-
-	valid := domainauth.NewRefreshToken("tok", userID, future)
-	if !valid.IsValid() {
-		t.Fatal("expected fresh token to be valid")
+func TestRefreshToken_ValidAt(t *testing.T) {
+	now := time.Date(2026, 10, 6, 0, 0, 0, 0, time.UTC)
+	valid := domainauth.NewRefreshToken(strings.Repeat("a", 64), uuid.New(), now, now.Add(time.Hour))
+	if !valid.ValidAt(now) {
+		t.Fatal("fresh session denied")
 	}
-
-	expired := domainauth.NewRefreshToken("tok", userID, past)
-	if expired.IsValid() {
-		t.Fatal("expected expired token to be invalid")
+	if valid.ValidAt(valid.ExpiresAt) || valid.ValidAt(valid.ExpiresAt.Add(time.Nanosecond)) {
+		t.Fatal("expiry boundary must deny")
 	}
-
-	revoked := domainauth.NewRefreshToken("tok", userID, future)
-	revoked.Revoke()
-	if revoked.IsValid() {
-		t.Fatal("expected revoked token to be invalid")
-	}
-	if !revoked.IsRevoked() {
-		t.Fatal("expected revoked flag to be set")
+	valid.RevokedAt = &now
+	if valid.ValidAt(now) {
+		t.Fatal("revoked session accepted")
 	}
 }

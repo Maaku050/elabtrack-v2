@@ -3,75 +3,112 @@ package auth
 import (
 	"context"
 	"errors"
-	"fmt"
-	"time"
 
 	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
+	"github.com/google/uuid"
 )
 
-// Refresh rotates a refresh token and issues a new token pair.
-// The old refresh token is revoked before the new one is issued (rotation).
+// Refresh returns credentials only after a single-use rotation commits.
 func (s *Service) Refresh(ctx context.Context, req RefreshRequest) (TokenPairDTO, error) {
-	stored, err := s.tokens.FindByToken(ctx, req.RefreshToken)
+	hash, err := s.tokenHasher.Hash(req.RefreshToken)
 	if err != nil {
 		return TokenPairDTO{}, domainauth.ErrTokenInvalid
 	}
-	if !stored.IsValid() {
-		if !stored.IsRevoked() {
-			_ = s.tokens.Revoke(ctx, stored.Token)
+	var pair TokenPairDTO
+	err = s.tx.Within(ctx, func(txCtx context.Context) error {
+		stored, err := s.tokens.FindByHashForUpdate(txCtx, hash)
+		if errors.Is(err, domainauth.ErrTokenNotFound) {
+			return domainauth.ErrTokenInvalid
 		}
-		return TokenPairDTO{}, domainauth.ErrTokenInvalid
-	}
-
-	if err := s.tokens.Revoke(ctx, stored.Token); err != nil {
-		return TokenPairDTO{}, fmt.Errorf("revoke old refresh token: %w", err)
-	}
-
-	u, err := s.users.FindByID(ctx, stored.UserID)
+		if err != nil {
+			return shared.ErrInternal
+		}
+		if stored == nil || stored.TokenHash != hash || stored.UserID == uuid.Nil || !stored.ValidAt(s.now()) {
+			return domainauth.ErrTokenInvalid
+		}
+		account, err := s.accounts.LockAccountByID(txCtx, stored.UserID)
+		if errors.Is(err, domainuser.ErrUserNotFound) {
+			return domainauth.ErrTokenInvalid
+		}
+		if err != nil {
+			return shared.ErrInternal
+		}
+		if account == nil || account.ID != stored.UserID || !account.IsActive || !account.Role.Valid() {
+			return domainauth.ErrTokenInvalid
+		}
+		// Waiting for locks must not extend session validity.
+		if !stored.ValidAt(s.now()) {
+			return domainauth.ErrTokenInvalid
+		}
+		u := &domainuser.User{ID: account.ID, Email: account.Email, Role: account.Role, IsActive: account.IsActive}
+		candidate, replacement, err := s.newTokenPair(txCtx, u)
+		if err != nil {
+			return shared.ErrInternal
+		}
+		// Insert first to satisfy the immediate replacement FK. Both writes are
+		// invisible outside this transaction until consumption and commit succeed.
+		if err := s.tokens.Create(txCtx, replacement); err != nil {
+			return shared.ErrInternal
+		}
+		if err := s.tokens.Consume(txCtx, hash, replacement.ID, s.now()); err != nil {
+			if errors.Is(err, domainauth.ErrTokenInvalid) {
+				return domainauth.ErrTokenInvalid
+			}
+			return shared.ErrInternal
+		}
+		pair = candidate
+		return nil
+	})
 	if err != nil {
-		return TokenPairDTO{}, domainauth.ErrTokenInvalid
+		if errors.Is(err, domainauth.ErrTokenInvalid) {
+			return TokenPairDTO{}, domainauth.ErrTokenInvalid
+		}
+		return TokenPairDTO{}, shared.ErrInternal
 	}
-	if !u.IsActive {
-		return TokenPairDTO{}, domainuser.ErrUserInactive
-	}
-
-	return s.issueTokenPair(ctx, u)
+	return pair, nil
 }
 
-// Logout revokes the supplied refresh token. It is idempotent.
+// Logout revokes only the presented session, with no token-existence detail.
 func (s *Service) Logout(ctx context.Context, req RefreshRequest) error {
-	if err := s.tokens.Revoke(ctx, req.RefreshToken); err != nil {
-		if errors.Is(err, domainauth.ErrTokenNotFound) {
-			return nil
-		}
-		return fmt.Errorf("revoke refresh token: %w", err)
+	hash, err := s.tokenHasher.Hash(req.RefreshToken)
+	if err != nil {
+		return nil
+	}
+	if err := s.tokens.Revoke(ctx, hash); err != nil {
+		return shared.ErrInternal
 	}
 	return nil
 }
 
-// issueTokenPair is shared by Register, Login, and Refresh.
 func (s *Service) issueTokenPair(ctx context.Context, u *domainuser.User) (TokenPairDTO, error) {
-	access, err := s.issuer.IssueAccessToken(ctx, u)
+	pair, session, err := s.newTokenPair(ctx, u)
 	if err != nil {
-		return TokenPairDTO{}, fmt.Errorf("issue access token: %w", err)
+		return TokenPairDTO{}, shared.ErrInternal
 	}
-	refreshStr, err := s.issuer.GenerateRefreshToken()
-	if err != nil {
-		return TokenPairDTO{}, fmt.Errorf("generate refresh token: %w", err)
+	if err := s.tokens.Create(ctx, session); err != nil {
+		return TokenPairDTO{}, shared.ErrInternal
 	}
-	now := timeNowUTC()
-	rt := domainauth.NewRefreshToken(refreshStr, u.ID, now.Add(s.refreshTTL))
-	if err := s.tokens.Create(ctx, rt); err != nil {
-		return TokenPairDTO{}, fmt.Errorf("persist refresh token: %w", err)
-	}
-	return TokenPairDTO{
-		AccessToken:  access,
-		RefreshToken: refreshStr,
-		ExpiresAt:    now.Add(s.accessTTL),
-		TokenType:    "Bearer",
-	}, nil
+	return pair, nil
 }
 
-// timeNowUTC is a small seam for tests; defaults to time.Now().UTC().
-var timeNowUTC = func() time.Time { return time.Now().UTC() }
+// Raw credentials exist only in the transport result. The independent
+// persistence entity holds the digest, never the raw secret.
+func (s *Service) newTokenPair(ctx context.Context, u *domainuser.User) (TokenPairDTO, *domainauth.RefreshToken, error) {
+	access, err := s.issuer.IssueAccessToken(ctx, u)
+	if err != nil {
+		return TokenPairDTO{}, nil, shared.ErrInternal
+	}
+	raw, err := s.issuer.GenerateRefreshToken()
+	if err != nil {
+		return TokenPairDTO{}, nil, shared.ErrInternal
+	}
+	hash, err := s.tokenHasher.Hash(raw)
+	if err != nil {
+		return TokenPairDTO{}, nil, shared.ErrInternal
+	}
+	now := s.now()
+	session := domainauth.NewRefreshToken(hash, u.ID, now, now.Add(s.refreshTTL))
+	return TokenPairDTO{AccessToken: access, RefreshToken: raw, ExpiresAt: now.Add(s.accessTTL), TokenType: "Bearer"}, session, nil
+}

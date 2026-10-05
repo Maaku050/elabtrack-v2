@@ -405,3 +405,220 @@ OPEN-001 public signup versus provisioning; OPEN-002 borrower eligibility/types;
 ### B21. Phase 1B exit gate
 
 **SATISFIED / COMPLETE** for the authorized Phase 1B scope: production registration contained; protected routes share authentication and PostgreSQL current-account resolution; current role/activity drive authorization; token/body role cannot elevate; generic routes guarded; safe /auth/me; focused backend/frontend tests and all requested local gates pass; no business feature added. Phase 0/1A historical evidence is intact. Phase 1C/1D has not begun. Completion is not authentication/session/deployment readiness; remaining and unrun gates are explicit above.
+
+## Phase 1C — JWT & Refresh Session Security
+
+Authorized 2026-10-06. Phase 1D, cookies, browser storage changes, business workflows, commit, push and deployment are outside this work.
+
+### Pre-change audit (before implementation)
+
+| Actual current behavior | Risk | Authorized action |
+|---|---|---|
+| JWTIssuer issues HS256 but accepts any HMAC method; issuer/expiry presence/subject consistency/purpose are not required. | Signed tokens with inappropriate algorithms, identity or purpose may pass. | Pin HS256, configured issuer, fixed API audience, required identity/time claims and access purpose; change issuance and verification together. |
+| Access JWT embeds role/email; Phase 1B resolves a safe current PostgreSQL account on every protected request. | Returning to JWT-role authorization would restore stale privilege. | Preserve current-account boundary and its stale-role HTTP tests. |
+| Refresh generator uses crypto/rand, 32 bytes, 64 lowercase hexadecimal characters. | Format is already sufficiently strong; changing it adds unnecessary incompatibility. | Retain opaque format/entropy. |
+| Domain RefreshToken and PostgreSQL token column persist the raw bearer secret; errors can wrap database detail. | Database disclosure exposes usable sessions; detail may leak credentials. | Hash before persistence/lookup/revoke, hash-only repository interface, safe errors. |
+| Refresh reads/checks/revokes/creates through unrelated calls. | Concurrent requests can both rotate; failed replacement can strand the old credential. | One application transaction through an inward port; PostgreSQL row lock and conditional consumption; commit before returning. |
+| Refresh checks account only after revoking; checks active but not known role. | Failed/ineligible refresh can consume credentials; invalid current roles can authenticate. | Read/lock safe current account inside the transaction, reject absent/inactive/unknown role generically. |
+| Logout updates raw token without an active-state predicate; revoke-all exists. | Repeated operations rewrite state; token details can leak. | Hash-based idempotent revoke; preserve internal revoke-all capability. |
+| Historical migrations 000001/000002 have raw-token schema; no deployed V2 production sessions are evidenced. | Rewriting history or pretending production backfill exists would be misleading. | New paired 000003 migration, explicit session invalidation, constraints/indexes and documented down invalidation. |
+| No expired/revoked session cleanup; no live PostgreSQL integration harness. | Unbounded table growth; unit fakes cannot prove database concurrency. | Bounded cleanup capability and explicit maintenance command; required live migration/concurrency coverage in Phase 1G. |
+| JSON token-pair/body contract and localStorage adapters remain. | Browser-readable long-lived secrets and retry/cross-tab risks remain. | Keep compatibility; explicitly defer transport/storage/retry redesign to Phase 1D. |
+
+No private Obsidian MCP is exposed; no private notes were read or persisted. The removed `.specify/memory/constitution.md` and `docs/SPECKIT-PLANNER.md` are absent. Current project AGENTS/source-of-truth policy and manifests govern; no unrelated template/private-note workflow is substituted.
+
+
+### C1. Files changed
+
+Auth domain/repository now represent hash-only sessions. Application adds hashing, transaction and safe locked-account ports, atomic refresh coordination, safe pair issuance and hash-based logout. Infrastructure implements the SHA-256 adapter, strict JWT policy, explicit transaction isolation/cancellation-safe rollback, session locking/consumption/revocation/cleanup and safe locked account lookup. Bootstrap wires these ports. Login also denies unknown current roles after password verification. CLI/Make wrappers expose explicit bounded cleanup. Paired 000003 is the only schema addition. Backend tests cover these boundaries; existing Phase 1B fixtures and domain session tests are adapted. Root/backend READMEs, accepted technical decisions, security backlog and this report are updated. C24 lists every changed file. No frontend source/manifest/lockfile/config change is necessary.
+
+### C2. Previous JWT behavior
+
+Issuer produced HS256 with uid/email/role, issuer, UUID subject and exp/iat/nbf. Verification accepted the whole HMAC family and validated optional time claims through library defaults; it did not require issuer/audience/expiry/iat/subject consistency or access purpose. Phase 1B already rejected zero identity and resolved current accounts independently of token roles. Refresh was a separate opaque credential, persisted raw and rotated through non-transactional calls.
+
+### C3. Final access JWT validation policy
+
+| Check | Final contract |
+|---|---|
+| Algorithm/signature | Exact HS256 allowlist and matching method; configured signing secret; no none/HS384/HS512 acceptance |
+| Issuer | Required exact configured JWT_ISSUER (existing default elabtrack-v2); Phase 1A loader still rejects explicit blank values |
+| Audience | Required membership of fixed elabtrack-v2-api; single REST API, no new environment option or institutional scope |
+| Purpose | Required signature-protected purpose=access |
+| exp | Required; current UTC time must be strictly before expiry, including rejection at the exact boundary |
+| iat | Required and not in the future; issuance must precede expiry |
+| nbf | Required and not in the future; iat <= nbf < exp |
+| Clock | Zero leeway; real UTC clock in production, instance time seam in deterministic JWT/service tests; deployment hosts/database need synchronized clocks |
+| Identity | Required nonzero UUID uid; required canonical UUID subject exactly equal to uid.String() |
+| Authorization | uid locates the current account; current PostgreSQL role/is_active authorizes requests; token role/email cannot elevate access |
+| Errors | One safe invalid-access-token error, no parser/header/claim/token/signature/secret detail |
+
+Issuance and verification change together. Existing typed AccessTTL and RefreshTTL remain; configuration/defaults/dependencies are unchanged. Missing audience/purpose on older access tokens forces re-login. JSON token-pair response remains compatible. Claims do not establish final institutional role policy.
+
+### C4. Token purpose/type design
+
+JWT payload purpose=access is the authoritative token-class discriminator. JWT library's ordinary typ=JWT header is retained; no redundant header-type taxonomy is introduced. Refresh credentials are 64-character opaque random hex strings, never JWTs. They are accepted only by hashing/session lookup at refresh/logout, while access middleware requires a correctly signed JWT with the complete access contract. A JWT claiming purpose=refresh fails access verification; an opaque refresh string fails JWT parsing. No JWT refresh class exists.
+
+### C5. Refresh token format
+
+Retained crypto/rand.Read over 32 bytes, encoded as 64 lowercase hexadecimal characters: 256 bits of secret entropy. No timestamp, math/rand, UUID/user ID or deterministic hash generates the bearer secret. Malformed/noncanonical submitted refresh strings are rejected generically before lookup. Tests use explicitly synthetic deterministic strings in fakes; those fakes are not production security mechanisms.
+
+### C6. Refresh hashing design
+
+SHA-256 hashes the canonical encoded raw secret, yielding a separate 64-character lowercase hex digest. Password hashing is unnecessary for uniformly random 256-bit credentials. Raw tokens exist only in the application transport result/request; hash-only domain entities/repository parameters cannot accidentally copy a raw-token field. Login/local registration/new refresh issuance persist the digest, and presented raw refresh/logout credentials are hashed before repository access. Digests themselves are not accepted as bearer credentials: submitting one computes another digest and fails lookup. No salt/HMAC secret rotation complexity or new dependency is introduced. Repository errors discard PostgreSQL detail, including unique-constraint digests.
+
+### C7. Database session schema changes
+
+| Column/constraint/index | Purpose |
+|---|---|
+| id UUID primary key | Session identity |
+| token_hash TEXT NOT NULL UNIQUE | Digest-only credential locator; unique constraint supplies lookup index |
+| user_id UUID NOT NULL FK users ON DELETE CASCADE | Account ownership |
+| created_at / updated_at TIMESTAMPTZ | Creation and latest state change |
+| expires_at TIMESTAMPTZ NOT NULL | Authoritative persisted refresh expiry |
+| revoked_at nullable TIMESTAMPTZ | NULL means unrevoked; timestamp means consumed/revoked |
+| replaced_by nullable UUID FK refresh_tokens ON DELETE SET NULL | Consumed session points to its successor; no family/device model |
+| Hash format CHECK | Exactly 64 lowercase hexadecimal characters |
+| Lifetime / replacement CHECKs | expires_at > created_at; a replacement requires revocation; no self replacement |
+| Active user index | Internal revoke-all lookup for unrevoked sessions |
+| Terminal-time expression + id index | Bounded ordered cleanup by LEAST(expires_at, COALESCE(revoked_at, expires_at)) |
+| Partial replaced_by index | Efficient optional replacement FK maintenance |
+
+No raw token column remains after 000003 up. No business table, campus scope, fingerprint, geolocation or session dashboard is added.
+
+### C8. Migration changes
+
+New paired `000003_refresh_session_security.up.sql` / `.down.sql` only. Historical 000001/000002 up/down files match the pre-change hashes. Up explicitly DELETEs all existing raw sessions before changing the schema; no deployed V2 production sessions are evidenced and no speculative backfill is performed. Both schema directions require re-login. Down DELETEs hash-only sessions, drops new metadata/checks/indexes and restores the prior empty raw-column schema and indexes; hashes cannot reconstruct secrets. Coordinate application/schema rollback and do not run the hash-only API on the old schema.
+
+Fresh sequence and down dependencies were reviewed from SQL/source, including historical constraint names and the runner's transactional file execution. **SQL was not executed against PostgreSQL**; fresh up/down/reapply, constraints, uniqueness, FK/link cleanup and failure recovery are REQUIRED Phase 1G integration checks. The existing runner still records migration versions separately and lacks a concurrent-run lock (SEC-008); this migration does not claim to fix that defect. No database/container/volume was modified.
+
+### C9. Atomic rotation implementation
+
+Application depends on Transactions.Within(ctx, callback), RefreshTokenHasher and RefreshAccounts ports; no pgx/Fiber/infrastructure import crosses inward. Bootstrap injects the existing PostgreSQL transaction manager and repositories. Within begins one pgx transaction with explicit READ COMMITTED isolation and binds that same transaction into the callback context. Both repositories use the bound transaction; session/account locking methods and Consume reject missing transaction context rather than releasing locks in autocommit.
+
+1. Hash presented raw credential; begin transaction.
+2. SELECT the hash-indexed session FOR UPDATE. Require existing, unrevoked, unexpired session and nonzero owner.
+3. SELECT safe current account fields FOR SHARE. Require matching existing active account and a known temporary role. This lock conflicts with non-key role/status updates, unlike KEY SHARE. Recheck expiry after waiting.
+4. Generate/sign a candidate pair; persist only the replacement digest in the same transaction. Insert precedes old-row update solely to satisfy the immediate successor FK.
+5. Conditionally UPDATE the old hash only if revoked_at IS NULL and expiry exceeds both application UTC time and PostgreSQL clock_timestamp(); record revoked_at/updated_at and replaced_by. Exactly one affected row is required.
+6. Commit both writes together. Only after commit succeeds does the application return the candidate pair.
+
+Any callback/generation/lookup/write/conditional failure rolls back. Rollback gets a bounded five-second context detached from request cancellation. Begin/commit/session/account storage failures are sanitized and return no token pair. A lost commit acknowledgement or lost HTTP response has the ordinary distributed-system ambiguity: the database may already have committed while the client received no pair. No plaintext recovery cache or second successful retry is created; the client may need re-login. Live failure/connection tests remain Phase 1G.
+
+### C10. Concurrent refresh behavior
+
+PostgreSQL row locks, unique hashes and conditional consumption enforce at most one committed successor for a presented session across processes/API instances. A second READ COMMITTED locking reader waits, then sees the committed revoked row and returns generic 401; if the first transaction fails before commit, rollback permits a later attempt. No production mutex, Redis, grace replay or retry-success cache is used. Deterministic 16-caller service-double test yields one success and 15 denials; actual repository tests assert transaction-only FOR UPDATE and conditional mutation. **These are not proof of live PostgreSQL concurrency**; multi-connection/multi-instance verification is REQUIRED Phase 1G.
+
+### C11. Replay behavior
+
+Already consumed/revoked, expired, unknown or malformed presented credentials produce the same generic 401 envelope. A rotated row retains its successor link until terminal cleanup, allowing safe internal inspection without disclosing token existence. Replay never issues a second pair and does not revoke the legitimate successor. Stronger family-wide replay response would require reviewed concurrent-session/recovery policy and remains unresolved. No token/hash/raw body or replay-specific client detail is logged. Cleanup eventually removes old replay evidence; deleted hashes still fail generically.
+
+### C12. Expiration handling
+
+RefreshTTL from Phase 1A typed config determines persisted expiry at issuance; refresh validates the stored timestamp independently of browser state. Exact expiry is invalid. Expiry is rechecked after acquiring account locks, then the conditional consumption checks application time and the live database clock immediately before mutation. Revoked records cannot become valid through an expiry extension. JWT expiry remains independent and enforced by strict verification. No institution-specific maximum session lifetime/sliding-session policy is invented.
+
+### C13. Current-account refresh behavior
+
+Safe locked account projection excludes passwords/session material. Missing/deleted/nil/mismatched/inactive/unknown-role accounts cannot rotate; the client receives generic 401 without account/token existence detail. Unavailable account storage fails closed with safe 500. Replacement access claims use current account ID/email/role, not historical token/session hints. A status/role write occurring after rotation commits can complete; subsequent protected requests still resolve current database state through Phase 1B. No speculative suspension/ongoing-loan restriction is added.
+
+### C14. Revocation/logout behavior
+
+Logout hashes the presented raw credential and updates only an unrevoked matching session. Unknown, already revoked and malformed credentials are idempotent 204 with no body; database failures return safe 500. Missing/invalid request bodies retain existing 400/422 validation semantics. Revoked sessions cannot refresh. Logout of an old rotated credential does not revoke the successor; no family traversal is invented.
+
+Internal RevokeAllForUser remains parameterized and now sets revocation timestamps only on unrevoked rows, with safe errors. It affects rows visible to that SQL statement and does not serialize concurrent/future login/rotation; final global account-session policy remains open. No logout-all endpoint/UI is introduced. A previously issued access JWT still works until expiry when current account role/activity permits it; logout does not establish immediate access-session revocation. Disabled/missing accounts remain blocked by Phase 1B/current refresh checks.
+
+### C15. Cleanup/retention policy
+
+Technical refresh-record retention: delete sessions more than seven days after their earlier expiry/revocation timestamp, in one batch of at most 1000. Active/unexpired and recently terminal rows remain. Cleanup uses the terminal expression index, ordered candidates, FOR UPDATE SKIP LOCKED and one DELETE statement. Limits outside 1..1000 fail. Deleted successor targets clear optional replaced_by links; no bearer material/history reconstruction is possible.
+
+Explicit `go run ./cmd/api --sessions-cleanup` from backend/ or root/backend `make sessions-cleanup`; mutually exclusive with migration/seed actions. Normal startup does not clean up or schedule jobs. CLI prints only deleted count and a fixed safe failure. Operators must arrange regular runs (initially daily), repeat sufficient batches to drain eligible backlog, and monitor rotation volume/table growth; cadence/ownership must be established before deployment. No scheduler/maintenance action was executed. This retention is not institutional borrowing/audit policy. Index behavior and cleanup/rotation contention remain REQUIRED Phase 1G checks.
+
+### C16. Logging safety
+
+Changed JWT/hash/session/application paths introduce no token/body/header/password logging. JWT verification drops parser errors; refresh/pair/logout/account-lock/session repository errors return safe sentinel errors without wrapping SQL values. Begin/commit errors are sanitized. Synthetic raw-token/hash/detail sentinels test adapter/service/repository and HTTP failures. Existing request logger records time/method/path/status/latency/request ID only; cleanup prints count only. No raw JWT, refresh string, digest, Authorization header, password or signing secret is emitted by these paths. Full structured recovery/error observability remains separate SEC-015/Phase 1F work.
+
+### C17. Frontend compatibility changes
+
+None. All 121 baseline frontend source/config/manifest/lockfile files match baseline hashes. Token JSON remains access_token / refresh_token / expires_at / token_type=Bearer; refresh/logout still accept refresh_token bodies. Existing localStorage, auth store, Axios bearer injection/single-flight behavior and account adapters remain compatible. Expired/revoked/unknown/inactive refresh now uses the documented generic 401. No auth screen/session hydration/cookie/storage redesign was performed; the placeholder and 62 primitives remain.
+
+### C18. JWT tests added
+
+New security tests use a fixed clock and cover valid issuer-to-verifier roundtrip; invalid signature; HS384/HS512/none rejection; expired/exact-boundary/missing exp; wrong/missing issuer and audience; wrong/missing purpose; missing/malformed/mismatched subject; missing/zero uid; missing/future iat and nbf; time ordering; opaque refresh rejected as access. Error output is constant and contains no credential. Opaque generator/digest tests retain 32-byte lowercase-hex format, verify SHA-256 semantics and reject malformed credential inputs. Phase 1B's real-JWT/current-lower-database-role HTTP denial remains enabled and passing.
+
+### C19. Refresh/rotation tests added
+
+Service tests cover digest-only initial issuance, raw-to-hash lookup, stored digest rejected as bearer, current account/current role and typed TTLs, successful rotation/old replay denial/replacement reuse, exact/past expiry, revoked/unknown/malformed credentials, missing/inactive/unknown-role/mismatched account and expiry while waiting. Failure injection at lookup/account/access issuance/random generation/replacement creation/consumption/commit returns no pair and rolls back the test double; old credential remains usable after clearing the injected failure. A 16-caller transaction-double test produces at most one successor. Logout tests cover repeated/unknown/malformed revocation, hash-only lookup, refresh denial and safe errors.
+
+Actual transaction-manager tests verify explicit isolation, shared transaction context, commit/rollback/begin/commit failures and cancellation-independent rollback. Actual repository statements are exercised via recording pgx transaction/row doubles: hash parameters, safe scans, transaction-only session/account locks, once-only expiry/revocation predicates, zero-row loss, idempotent session/revoke-all, bounded cleanup and SQL-detail redaction. Actual-router tests verify identical 401 envelopes for invalid session/current-account cases, idempotent 204 logout and safe storage 500s. Domain test enforces exact expiry/revocation with a fixed clock. No live database is represented by these doubles.
+
+### C20. Backend fmt/vet/test results
+
+PASS: go fmt ./..., go vet ./..., go test ./... (structured JSON run). **51 top-level tests + 173 subtests = 224 passing nodes across 11 tested packages**, zero failures; 18 additional top-level tests and 55 additional subtests relative to Phase 1B. Also PASS: go test -race for application/auth, infrastructure/database, infrastructure/persistence/postgres, infrastructure/security and interface/http/routes. No race detected in the tested local code/doubles; this does not establish database race correctness.
+
+Commands run from backend/ with Go 1.27.1 and GOCACHE=/tmp/elabtrack-phase1b-go-cache, reusing the writable prior-phase cache. No toolchain directive/dependency downgrade or test-gate weakening. Live PostgreSQL and container runtime checks are unrun.
+
+### C21. Frontend lint/test/build results
+
+PASS: npm run lint (zero errors, same 19 shadcn/hook warnings), npm run test:run (**25 tests / 4 files**), npm run build (TypeScript + Vite). Unchanged assets: JS 475.69 kB / 149.97 kB gzip; CSS 179.91 kB / 27.63 kB gzip. No frontend source or gate was weakened. Browser end-to-end/session transport checks remain unrun.
+
+### C22. Compose validation
+
+PASS: docker compose config --quiet and docker compose --profile full config --quiet. Compose/Dockerfiles/environment examples/config are unchanged. No image built, container/service started, database connection/migration/cleanup/seeding performed, named volume removed or deployment attempted. Production TLS/CA connectivity and release/runtime checks remain unrun.
+
+### C23. git diff --check and preservation review
+
+PASS. Baseline hashes preserve 121 frontend files, all four historical migration files, 16 V1 audit files, dependency manifests/lockfiles, Phase 0 report, OPEN_DECISIONS and Phase 1A typed configuration. This report starts with the exact pre-1C Phase 1A/1B text; prior audit/gate evidence is preserved. Production code has no process mutex/session store/Redis; domain/application import no Fiber/pgx/infrastructure; SQL is parameterized; only hash fields enter persistence; protected-route current-account authorization remains. No equipment/inventory/borrowing/approval/return/fine/email/report/kiosk/campus capability or business schema was introduced.
+
+### C24. Exact git status
+
+All 30 changes are unstaged: 22 modified tracked files and 8 new files. Exact git status --short at Phase 1C closure:
+
+```text
+ M Makefile
+ M README.md
+ M backend/Makefile
+ M backend/README.md
+ M backend/cmd/api/main.go
+ M backend/cmd/api/main_test.go
+ M backend/internal/application/auth/login.go
+ M backend/internal/application/auth/refresh.go
+ M backend/internal/application/auth/service.go
+ M backend/internal/application/ports.go
+ M backend/internal/bootstrap/dependencies.go
+ M backend/internal/domain/auth/entity.go
+ M backend/internal/domain/auth/repository.go
+ M backend/internal/infrastructure/database/transaction.go
+ M backend/internal/infrastructure/persistence/postgres/auth_repository.go
+ M backend/internal/infrastructure/persistence/postgres/user_repository.go
+ M backend/internal/infrastructure/security/jwt.go
+ M backend/internal/interface/http/routes/auth_boundary_test.go
+ M backend/tests/unit/domain/auth/auth_test.go
+ M docs/project/DECISIONS.md
+ M docs/project/PHASE1_FOUNDATION.md
+ M docs/project/PHASE1_SECURITY_BACKLOG.md
+?? backend/internal/application/auth/refresh_test.go
+?? backend/internal/infrastructure/database/transaction_test.go
+?? backend/internal/infrastructure/persistence/postgres/auth_repository_test.go
+?? backend/internal/infrastructure/security/jwt_test.go
+?? backend/internal/infrastructure/security/refresh_hash.go
+?? backend/internal/interface/http/routes/refresh_session_test.go
+?? backend/migrations/000003_refresh_session_security.down.sql
+?? backend/migrations/000003_refresh_session_security.up.sql
+```
+
+No staging, commit, push, remote modification or deployment was performed.
+
+### C25. Items remaining for Phase 1D
+
+Browser transport/storage design, HttpOnly/Secure/SameSite refresh-cookie decision and CSRF/origin protection, access-token memory strategy, session hydration, bounded 401 retry, cross-tab rotation, store/query synchronization and logout UX. Access and refresh credentials remain readable from localStorage; stolen credentials remain usable subject to server session/current-account checks. Lost successful refresh response and simultaneous tabs can require re-login under strict once-only rotation. No grace policy, cookie, final session UI or Phase 1D implementation has begun.
+
+### C26. Items remaining for Phase 1G
+
+REQUIRED isolated real PostgreSQL tests: fresh 000001→000003 up, constraints/unique hashes, down/reapply/invalidation, transaction rollback on replacement/consumption failure, raw-token absence and presented-hash rejection; simultaneous refresh through separate connections/instances (at most one committed successor, loser 401, replacement usable); account deactivation/role update versus rotation; concurrent logout/revoke-all/rotation and cleanup/FK behavior; actual expiry clock predicates; bounded cleanup retention/index performance; canceled request/lost connection/commit acknowledgement behavior. CI reproducibility, migration-runner bookkeeping/lock recovery, live HTTP/database auth, browser/container/production transport remain unverified and require their authorized gates. Local registration user/session failure recovery remains open for later account provisioning design. No live concurrency claim is made here.
+
+### C27. Product/security policies still unresolved
+
+Institutional concurrent-session limits, family-wide replay revocation, logout-all/global serialization, immediate access-session revocation, device/session management and stronger recovery/grace policy are not accepted. OPEN-001 signup/provisioning, OPEN-002 eligibility/types, OPEN-003 staff/admin authority, OPEN-004/005 Super Administrator scope, OPEN-008 deactivation/ongoing-loan consequences, OPEN-009 verification and every other existing institutional question retain prior Needs Stakeholder Input/Deferred statuses. DEC-027–029 record technical token/transaction/cleanup choices only. No private-note access/persistence, V1 access or stakeholder policy resolution is claimed.
+
+### C28. Phase 1C exit gate
+
+**SATISFIED / COMPLETE** for the authorized Phase 1C scope: strict access JWT contract and purpose separation; retained cryptographically strong opaque refresh format; hash-only persistence/lookup/revoke; real PostgreSQL transaction boundary and once-only lock/conditional design; safe replay/expiry/revocation/current-account denial; safe error/log paths; focused JWT/session/HTTP/repository/transaction tests; backend fmt/vet/tests and frontend lint/tests/build; Compose configuration and diff checks; Phase 1A/1B evidence preserved. Live PostgreSQL concurrency/migration/rollback verification is explicitly required in Phase 1G as permitted by the request. Completion does not establish production/session transport readiness. No Phase 1D or business feature work, commit, push or deployment occurred.

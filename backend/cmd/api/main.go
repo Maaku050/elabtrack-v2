@@ -8,15 +8,17 @@ import (
 	"io"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/bootstrap"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/persistence/postgres"
 )
 
 type command struct {
-	up, down, status, seed bool
-	create                 string
+	up, down, status, seed, cleanup bool
+	create                          string
 }
 
 func main() {
@@ -42,15 +44,16 @@ func parseCommand(args []string) (command, error) {
 	flags.BoolVar(&cmd.status, "migrate-status", false, "show migration status without schema changes")
 	flags.StringVar(&cmd.create, "migrate-create", "", "create a paired SQL scaffold")
 	flags.BoolVar(&cmd.seed, "seed", false, "explicitly run local development seeds")
+	flags.BoolVar(&cmd.cleanup, "sessions-cleanup", false, "delete at most 1000 sessions terminal for over seven days")
 	if err := flags.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
-			fmt.Println("api [--migrate-up | --migrate-down | --migrate-status | --migrate-create NAME | --seed]")
+			fmt.Println("api [--migrate-up | --migrate-down | --migrate-status | --migrate-create NAME | --seed | --sessions-cleanup]")
 			return cmd, flag.ErrHelp
 		}
 		return cmd, errors.New("command: invalid arguments; use --help")
 	}
 	count := 0
-	for _, active := range []bool{cmd.up, cmd.down, cmd.status, cmd.create != "", cmd.seed} {
+	for _, active := range []bool{cmd.up, cmd.down, cmd.status, cmd.create != "", cmd.seed, cmd.cleanup} {
 		if active {
 			count++
 		}
@@ -73,7 +76,7 @@ func parseCommand(args []string) (command, error) {
 	return cmd, nil
 }
 func run(ctx context.Context, cmd command) error {
-	if !cmd.up && !cmd.down && !cmd.status && cmd.create == "" && !cmd.seed {
+	if !cmd.up && !cmd.down && !cmd.status && cmd.create == "" && !cmd.seed && !cmd.cleanup {
 		app, err := bootstrap.New(ctx)
 		if err != nil {
 			return err
@@ -98,6 +101,14 @@ func run(ctx context.Context, cmd command) error {
 		return err
 	}
 	defer db.Close()
+	if cmd.cleanup {
+		count, err := postgres.NewAuthRepository(db.Pool).Cleanup(ctx, time.Now().UTC().Add(-7*24*time.Hour), 1000)
+		if err != nil {
+			return errors.New("sessions: cleanup failed")
+		}
+		fmt.Printf("sessions: deleted %d terminal records\n", count)
+		return nil
+	}
 	migrator := database.NewMigrator(db.Pool, "migrations")
 	switch {
 	case cmd.up:

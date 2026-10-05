@@ -8,13 +8,13 @@ import (
 )
 
 func TestCommandSelection(t *testing.T) {
-	for _, args := range [][]string{{"--seed", "--migrate-up"}, {"--migrate-up", "--migrate-down"}, {"--migrate-create="}, {"--migrate-create", "!!!"}, {"--seed", "extra"}, {"--unknown=credential-sentinel"}} {
+	for _, args := range [][]string{{"--sessions-cleanup", "--seed"}, {"--sessions-cleanup", "--migrate-up"}, {"--seed", "--migrate-up"}, {"--migrate-up", "--migrate-down"}, {"--migrate-create="}, {"--migrate-create", "!!!"}, {"--seed", "extra"}, {"--unknown=credential-sentinel"}} {
 		_, err := parseCommand(args)
 		if err == nil || strings.Contains(err.Error(), "credential-sentinel") {
 			t.Fatal("invalid command must fail safely")
 		}
 	}
-	for _, args := range [][]string{nil, {"--migrate-up"}, {"--migrate-down"}, {"--migrate-status"}, {"--migrate-create", "add_test"}, {"--seed"}} {
+	for _, args := range [][]string{nil, {"--sessions-cleanup"}, {"--migrate-up"}, {"--migrate-down"}, {"--migrate-status"}, {"--migrate-create", "add_test"}, {"--seed"}} {
 		if _, err := parseCommand(args); err != nil {
 			t.Fatal(err)
 		}

@@ -5,7 +5,6 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
@@ -21,7 +20,14 @@ type JWTIssuer struct {
 	secret    []byte
 	accessTTL time.Duration
 	issuer    string
+	now       func() time.Time
 }
+
+// This single API has one fixed audience; it is not an organization scope.
+const accessAudience = "elabtrack-v2-api"
+const accessPurpose = "access"
+
+var errInvalidAccessToken = errors.New("invalid access token")
 
 // NewJWTIssuer constructs a JWT issuer from config.
 func NewJWTIssuer(cfg config.JWTConfig) *JWTIssuer {
@@ -29,26 +35,33 @@ func NewJWTIssuer(cfg config.JWTConfig) *JWTIssuer {
 		secret:    []byte(cfg.Secret),
 		accessTTL: cfg.AccessTTL,
 		issuer:    cfg.Issuer,
+		now:       func() time.Time { return time.Now().UTC() },
 	}
 }
 
 // accessClaims is the internal JWT claims structure.
 type accessClaims struct {
-	UserID uuid.UUID `json:"uid"`
-	Email  string    `json:"email"`
-	Role   string    `json:"role"`
+	UserID  uuid.UUID `json:"uid"`
+	Email   string    `json:"email"`
+	Role    string    `json:"role"`
+	Purpose string    `json:"purpose"`
 	jwt.RegisteredClaims
 }
 
 // IssueAccessToken signs a short-lived JWT for the given user.
 func (j *JWTIssuer) IssueAccessToken(ctx context.Context, u *domainuser.User) (string, error) {
-	now := time.Now().UTC()
+	if u == nil || u.ID == uuid.Nil {
+		return "", errInvalidAccessToken
+	}
+	now := j.now()
 	claims := accessClaims{
-		UserID: u.ID,
-		Email:  u.Email,
-		Role:   string(u.Role),
+		UserID:  u.ID,
+		Email:   u.Email,
+		Role:    string(u.Role),
+		Purpose: accessPurpose,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    j.issuer,
+			Audience:  jwt.ClaimStrings{accessAudience},
 			Subject:   u.ID.String(),
 			IssuedAt:  jwt.NewNumericDate(now),
 			ExpiresAt: jwt.NewNumericDate(now.Add(j.accessTTL)),
@@ -58,29 +71,31 @@ func (j *JWTIssuer) IssueAccessToken(ctx context.Context, u *domainuser.User) (s
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signed, err := token.SignedString(j.secret)
 	if err != nil {
-		return "", fmt.Errorf("sign access token: %w", err)
+		return "", errInvalidAccessToken
 	}
 	return signed, nil
 }
 
-// VerifyAccessToken validates the signature and expiry of a JWT and returns
-// the application-level claims.
+// VerifyAccessToken requires the complete access-token contract. Claim role
+// and email remain hints; current account state authorizes HTTP operations.
 func (j *JWTIssuer) VerifyAccessToken(ctx context.Context, tokenStr string) (application.Claims, error) {
 	claims := &accessClaims{}
 	token, err := jwt.ParseWithClaims(tokenStr, claims, func(t *jwt.Token) (interface{}, error) {
-		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+		if t.Method != jwt.SigningMethodHS256 {
+			return nil, errInvalidAccessToken
 		}
 		return j.secret, nil
-	})
-	if err != nil {
-		if errors.Is(err, jwt.ErrTokenExpired) {
-			return application.Claims{}, jwt.ErrTokenExpired
-		}
-		return application.Claims{}, fmt.Errorf("invalid token: %w", err)
+	}, jwt.WithValidMethods([]string{"HS256"}), jwt.WithIssuer(j.issuer),
+		jwt.WithAudience(accessAudience), jwt.WithExpirationRequired(),
+		jwt.WithNotBeforeRequired(), jwt.WithIssuedAt(), jwt.WithTimeFunc(j.now), jwt.WithStrictDecoding())
+	if err != nil || token == nil || !token.Valid {
+		return application.Claims{}, errInvalidAccessToken
 	}
-	if !token.Valid {
-		return application.Claims{}, errors.New("invalid token")
+	if claims.UserID == uuid.Nil || claims.Subject != claims.UserID.String() ||
+		claims.Purpose != accessPurpose || claims.IssuedAt == nil ||
+		!claims.ExpiresAt.After(claims.IssuedAt.Time) ||
+		claims.NotBefore.Before(claims.IssuedAt.Time) || !claims.NotBefore.Before(claims.ExpiresAt.Time) {
+		return application.Claims{}, errInvalidAccessToken
 	}
 	return application.Claims{
 		UserID: claims.UserID,
@@ -94,7 +109,7 @@ func (j *JWTIssuer) VerifyAccessToken(ctx context.Context, tokenStr string) (app
 func (j *JWTIssuer) GenerateRefreshToken() (string, error) {
 	b := make([]byte, 32)
 	if _, err := rand.Read(b); err != nil {
-		return "", fmt.Errorf("generate refresh token: %w", err)
+		return "", errors.New("refresh credential generation failed")
 	}
 	return hex.EncodeToString(b), nil
 }

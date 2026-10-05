@@ -119,11 +119,11 @@ func (i *issuer) VerifyAccessToken(_ context.Context, _ string) (application.Cla
 func (i *issuer) IssueAccessToken(_ context.Context, _ *domainuser.User) (string, error) {
 	return "synthetic-access", nil
 }
-func (i *issuer) GenerateRefreshToken() (string, error) { return "synthetic-refresh", nil }
+func (i *issuer) GenerateRefreshToken() (string, error) { return strings.Repeat("a", 64), nil }
 func newApp(env config.Environment, r *users, i application.TokenIssuer, refresh *tokens) *fiber.App {
 	app := fiber.New(fiber.Config{ErrorHandler: middleware.ErrorHandler(nil)})
 	accountService := appauth.NewAccountResolver(r)
-	authService := appauth.NewService(r, refresh, security.NewBcryptHasher(4), i, time.Minute, time.Hour)
+	authService := appauth.NewService(r, refresh, security.NewBcryptHasher(4), i, security.SHA256RefreshHasher{}, nil, nil, time.Minute, time.Hour)
 	v := validator.New()
 	routes.Register(app, &routes.Deps{
 		Health: handlers.NewHealthHandler(nil), Auth: handlers.NewAuthHandler(authService, v), User: handlers.NewUserHandler(appuser.NewService(r), v),

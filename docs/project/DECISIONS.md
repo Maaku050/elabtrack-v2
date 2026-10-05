@@ -184,3 +184,25 @@ Recorded 2026-10-05. Status vocabulary: **Accepted**, **Proposed**, **Deferred**
 - Decision: Retained self profile updates accept only display name. Identity/email, role/status, passwords/session fields, IDs and timestamps cannot be bound from client mutation payloads. A parameterized name-only UPDATE rechecks is_active and known role without rewriting a security snapshot. Existing generic admin user listing remains read-only, bounded and authorized from current database role. No arbitrary-account CRUD/provisioning/status/role endpoint is exposed.
 - Authority/date: stakeholder Phase 1B request, 2026-10-06; strict DTO decoding, repository projection/write-scope tests and HTTP mass-assignment/self-vs-other tests.
 - Rationale/impact: removes the inherited full-row self-update that could overwrite concurrent demotion/deactivation/password changes. Email/identity changes and final user administration require later reviewed flows; display-name containment does not settle institutional staff/admin permissions or identity verification.
+
+
+## ELAB-V2-DEC-027 — Strict access-token contract
+
+- Status: Accepted (technical security contract)
+- Decision: HS256 alone; configured Phase 1A issuer; fixed `elabtrack-v2-api` audience; signature-protected `purpose=access`; required exp/iat/nbf; zero clock leeway; nonzero uid and matching canonical UUID subject. Time ordering must satisfy iat <= nbf < exp, and iat/nbf cannot be in the future. JWT role/email remain non-authoritative hints; Phase 1B current PostgreSQL principal still authorizes protected requests.
+- Authority/date: stakeholder Phase 1C request, 2026-10-06. Issuance and verification change together, retaining the existing jwt/v5 dependency and typed configuration. The fixed audience avoids an unnecessary environment option for a single API.
+- Impact: pre-1C access tokens lack the required audience/purpose and require re-login. Opaque refresh credentials are a separate class; they never enter JWT verification. No institutional role/session or browser transport policy is accepted.
+
+## ELAB-V2-DEC-028 — Hash-only single-use refresh sessions
+
+- Status: Accepted (technical security mechanism)
+- Decision: Retain crypto/rand 32-byte opaque credentials encoded as 64 lowercase hex characters. SHA-256 of that canonical encoded secret is persisted/queried/revoked; raw values exist only for client transport. Unique token_hash and minimal ownership/time/replacement metadata replace raw persistence. Rotate through one explicit READ COMMITTED PostgreSQL transaction with a session FOR UPDATE lock, safe current account FOR SHARE lock, replacement insert and conditional once-only revocation. Return credentials after commit only; replay is generic 401 and does not revoke the successor.
+- Authority/date: stakeholder Phase 1C request, 2026-10-06. This chooses local single-use/replacement semantics, not family-wide revocation or device/concurrent-session policy.
+- Impact: paired migration 000003 preserves historical SQL and explicitly invalidates sessions on both up/down; hash values cannot recover bearer secrets. Live PostgreSQL concurrency, rollback and migration execution remain REQUIRED Phase 1G evidence. Lost commit acknowledgement/HTTP response cannot safely be retried as a second successful rotation; re-login may be required.
+
+## ELAB-V2-DEC-029 — Bounded terminal-session cleanup capability
+
+- Status: Accepted (technical record retention only)
+- Decision: Keep expired/revoked refresh records for seven days after the earlier terminal timestamp, then permit one explicit maintenance batch of at most 1000 eligible rows with SKIP LOCKED. No startup cleanup or new scheduler. Operators must arrange sufficient regular batches, initially daily, and measure backlog/table size before deployment.
+- Authority/date: stakeholder Phase 1C cleanup requirement, 2026-10-06; implemented repository/CLI capability. This does not establish institutional borrowing, disciplinary, audit, privacy or concurrent-session policy.
+- Impact: active/recent sessions are retained; deleted replacement targets clear the optional link. Deployment ownership/cadence and PostgreSQL index/cleanup validation remain open operational work. No maintenance command was executed during implementation.

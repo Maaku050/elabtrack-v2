@@ -22,6 +22,18 @@ The finding tables below preserve the Phase 0 audit evidence. Current implementa
 - **SEC-017 auth-boundary coverage expanded:** real-router HTTP tests, real JWT adapter boundary test, safe repository projection/write-scope tests and frontend trusted-account adapter tests pass without a database. Live PostgreSQL concurrency/integration and CI remain unrun/open.
 - SEC-002–004/010 and full JWT/session design are explicitly deferred to Phase 1C/1D. Other Phase 1A partial/open findings remain outstanding. No Phase 1C/1D implementation is claimed.
 
+## Phase 1C implementation status — 2026-10-06
+
+The Phase 0 finding tables and Phase 1A/1B notes are historical evidence; this section describes current source. See PHASE1_FOUNDATION.md for validation and limits.
+
+- **SEC-003 implemented:** raw refresh tokens no longer enter persistence; SHA-256 hash-only records and hash lookup/revoke, database hash uniqueness/format constraint, and paired migration 000003. Both migration directions invalidate sessions; historical migrations remain unchanged. SQL execution on PostgreSQL is required Phase 1G coverage and was not run.
+- **SEC-005 implemented:** exact HS256/signature, configured issuer, fixed API audience, required exp/iat/nbf with zero leeway, canonical nonzero uid/subject and explicit access purpose. Opaque refresh credentials cannot pass access verification. Existing current-account authorization/stale-role tests remain.
+- **SEC-004 refresh rotation implemented:** one PostgreSQL READ COMMITTED transaction; FOR UPDATE session lock; FOR SHARE safe account lock; conditional once-only consumption; replacement insertion and revocation commit together. Replay fails with generic 401. Service rollback/concurrent-double, actual transaction-manager, repository statement and HTTP tests pass. **Live PostgreSQL concurrency/rollback proof remains REQUIRED Phase 1G.** Local registration's separate user/session writes remain a recovery/atomicity item for later account provisioning work. Stronger family-wide revocation/concurrent-session policy remains unresolved; SEC-004 as a whole is not declared closed.
+- **SEC-006 refresh enforcement extended:** absent/inactive/unknown-role current accounts cannot refresh. Hash-based logout is idempotent, revoke-all remains internal. Access JWTs remain usable until expiry if the current account permits access; no immediate session/access or family-wide revocation policy is claimed. Revoke-all affects rows visible to its statement; concurrent/future issuance is not globally serialized.
+- **SEC-018 cleanup capability implemented:** indexed terminal time, seven-day terminal-record retention and an explicit one-batch maintenance command (maximum 1000; SKIP LOCKED). Operators must schedule sufficient regular batches/monitor growth before deployment. No automatic scheduler/operational ownership is established; actual cleanup/index performance remains Phase 1G validation.
+- **SEC-017 coverage expanded:** deterministic JWT, hashing, rotation/replay/rollback, test-double concurrency, actual transaction/context/isolation lifecycle, repository locking/conditional SQL/error redaction and actual-router refresh/logout contracts. No live database integration/CI claim.
+- **SEC-002/010 and transport part of SEC-013 remain Phase 1D:** localStorage access/refresh storage, cookie/CSRF decision, bounded retry, hydration/cross-tab/session handling. No Phase 1D work performed. SEC-008 migration-runner integrity and the other Phase 1A/1B partial/open findings remain outstanding.
+
 ## CRITICAL
 
 | ID | Finding / evidence | Required hardening and acceptance evidence | Owner |

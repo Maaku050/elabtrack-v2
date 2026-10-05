@@ -1,7 +1,7 @@
 # Root Makefile - convenience wrappers around backend/frontend tooling.
 # Linux development; equivalent commands are documented in README.md.
 
-.PHONY: help dev backend frontend migrate-up migrate-down migrate-status migrate-create compose-migrate-up seed test lint fmt vet install
+.PHONY: help dev backend frontend migrate-up migrate-down migrate-status migrate-create compose-migrate-up seed sessions-cleanup test lint fmt vet install
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
@@ -29,6 +29,9 @@ migrate-create: ## Create a new migration: make migrate-create name=describe_cha
 
 seed: ## Explicitly run development-only seeds (denied in test/production)
 	cd backend && go run ./cmd/api --seed
+
+sessions-cleanup: ## Explicitly delete one bounded batch of terminal sessions older than seven days
+	cd backend && go run ./cmd/api --sessions-cleanup
 
 test: ## Run all tests
 	cd backend && go test ./...

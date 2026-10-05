@@ -5,6 +5,7 @@ import (
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
 	appuser "github.com/Maaku050/elabtrack-v2/backend/internal/application/user"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/security"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/routes"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
@@ -35,7 +36,7 @@ func buildContainer(infra *Infrastructure) *Container {
 	hasher, issuer := newSecurityAdapters(infra.Config)
 	userRepo, authRepo := newRepositories(infra.DB)
 
-	authSvc := auth.NewService(userRepo, authRepo, hasher, issuer, infra.Config.JWT.AccessTTL, infra.Config.JWT.RefreshTTL)
+	authSvc := auth.NewService(userRepo, authRepo, hasher, issuer, security.SHA256RefreshHasher{}, infra.Tx, userRepo, infra.Config.JWT.AccessTTL, infra.Config.JWT.RefreshTTL)
 	userSvc := appuser.NewService(userRepo)
 
 	v := validator.New()

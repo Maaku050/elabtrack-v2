@@ -2,8 +2,9 @@ package database
 
 import (
 	"context"
-	"fmt"
+	"time"
 
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -14,14 +15,23 @@ import (
 //
 // Usage:
 //
-//	err := txm.Run(ctx, func(ctx context.Context, tx pgx.Tx) error {
-//	    if err := repoA.WithTx(tx).Create(ctx, a); err != nil {
+//	err := txm.Within(ctx, func(ctx context.Context) error {
+//	    if err := repoA.Create(ctx, a); err != nil {
 //	        return err
 //	    }
-//	    return repoB.WithTx(tx).Create(ctx, b)
+//	    return repoB.Create(ctx, b)
 //	})
 type TxManager struct {
-	pool *pgxpool.Pool
+	pool transactionBeginner
+}
+
+type transactionBeginner interface {
+	BeginTx(context.Context, pgx.TxOptions) (pgx.Tx, error)
+}
+
+// Within implements the inward application transaction port without pgx types.
+func (m *TxManager) Within(ctx context.Context, fn func(context.Context) error) error {
+	return m.Run(ctx, func(txCtx context.Context, _ pgx.Tx) error { return fn(txCtx) })
 }
 
 // NewTxManager constructs a TxManager backed by the given pool.
@@ -33,12 +43,16 @@ func NewTxManager(pool *pgxpool.Pool) *TxManager {
 // through the context so repositories can opt-in to participating in the
 // transaction via TxFromContext.
 func (m *TxManager) Run(ctx context.Context, fn func(ctx context.Context, tx pgx.Tx) error) error {
-	tx, err := m.pool.Begin(ctx)
+	// Explicit isolation: each locking read observes the committed winner's
+	// revoked row after waiting, even when the server's default is different.
+	tx, err := m.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted})
 	if err != nil {
-		return fmt.Errorf("begin tx: %w", err)
+		return shared.ErrInternal
 	}
 	defer func() {
-		_ = tx.Rollback(ctx) // safe to call after Commit; pgx treats it as no-op
+		rollbackCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
+		defer cancel()
+		_ = tx.Rollback(rollbackCtx)
 	}()
 
 	txCtx := WithTx(ctx, tx)
@@ -46,7 +60,7 @@ func (m *TxManager) Run(ctx context.Context, fn func(ctx context.Context, tx pgx
 		return err
 	}
 	if err := tx.Commit(ctx); err != nil {
-		return fmt.Errorf("commit tx: %w", err)
+		return shared.ErrInternal
 	}
 	return nil
 }

@@ -33,6 +33,21 @@ type Claims struct {
 	Role   string
 }
 
+// RefreshTokenHasher digests an opaque credential before repository access.
+type RefreshTokenHasher interface {
+	Hash(raw string) (string, error)
+}
+
+// Transactions binds participating repositories to one atomic unit of work.
+type Transactions interface {
+	Within(ctx context.Context, fn func(context.Context) error) error
+}
+
+// RefreshAccounts locks current safe account state until rotation commits.
+type RefreshAccounts interface {
+	LockAccountByID(ctx context.Context, id uuid.UUID) (*user.Account, error)
+}
+
 // Ports bundle groups outbound dependencies for a use case.
 type UserRepo interface {
 	user.Repository
