@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import type { AuthUser, BrowserSession } from '@/types/common'
 import { clearLegacyAuthStorage } from '@/lib/storage'
-import { queryClient } from '@/app/query-client'
+import { clearAuthenticatedQueries } from '@/app/query-client'
 
 export type SessionStatus = 'idle' | 'bootstrapping' | 'authenticated' | 'unauthenticated' | 'error'
 interface AuthState {
@@ -26,7 +26,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isAuthenticated: false,
   setSession: (session) => {
     clearLegacyAuthStorage()
-    if (get().user?.id !== session.user.id) queryClient.clear()
+    if (get().user?.id !== session.user.id) clearAuthenticatedQueries()
     set({ user: session.user, accessToken: session.access_token, status: 'authenticated', isAuthenticated: true })
   },
   setUser: (user) => {
@@ -37,7 +37,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     clearLegacyAuthStorage()
     const generation = get().generation + 1
     set({ user: null, accessToken: null, status, isAuthenticated: false, generation })
-    queryClient.clear()
+    clearAuthenticatedQueries()
     return generation
   },
 }))

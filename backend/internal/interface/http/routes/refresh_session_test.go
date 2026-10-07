@@ -88,13 +88,15 @@ func TestRefreshFailuresHaveSameUnauthorizedResponse(t *testing.T) {
 	raw := strings.Repeat("a", 64)
 	hash, _ := (security.SHA256RefreshHasher{}).Hash(raw)
 	var canonical string
-	for _, name := range []string{"expired", "revoked", "replayed", "unknown", "malformed", "inactive", "deleted", "unknown role"} {
+	for _, name := range []string{"missing", "expired", "revoked", "replayed", "unknown", "malformed", "inactive", "deleted", "unknown role"} {
 		t.Run(name, func(t *testing.T) {
 			now := time.Now().UTC()
 			sessions := &httpSessions{session: domainauth.NewRefreshToken(hash, selfID, now.Add(-time.Hour), now.Add(time.Hour))}
 			r := &users{account: fixtureUser()}
 			presented := raw
 			switch name {
+			case "missing":
+				presented = ""
 			case "expired":
 				sessions.session.ExpiresAt = now.Add(-time.Hour)
 			case "revoked":
@@ -114,15 +116,18 @@ func TestRefreshFailuresHaveSameUnauthorizedResponse(t *testing.T) {
 			case "unknown role":
 				r.account.Role = "superadmin"
 			}
-			status, body, _ := cookieRequest(t, refreshHTTPApp(r, sessions), "/api/v1/auth/refresh", presented, "https://app.example.invalid", "")
+			status, body, cookies := cookieRequest(t, refreshHTTPApp(r, sessions), "/api/v1/auth/refresh", presented, "https://app.example.invalid", "")
 			if status != http.StatusUnauthorized {
 				t.Fatalf("status=%d", status)
+			}
+			if len(cookies) != 0 {
+				t.Fatal("failed credential cannot identify the browser's current cookie")
 			}
 			comparable := errorWithoutRequestID(t, body)
 			if canonical == "" {
 				canonical = comparable
 			}
-			if comparable != canonical || strings.Contains(body, raw) || strings.Contains(body, hash) || strings.Contains(body, presented) {
+			if comparable != canonical || strings.Contains(body, raw) || strings.Contains(body, hash) || presented != "" && strings.Contains(body, presented) {
 				t.Fatal("token-existence detail/credential leaked")
 			}
 		})
@@ -157,8 +162,8 @@ func TestRefreshHTTPStorageErrorIsSafeInternalFailure(t *testing.T) {
 	raw := strings.Repeat("a", 64)
 	hash, _ := (security.SHA256RefreshHasher{}).Hash(raw)
 	sessions := &httpSessions{lookupErr: errors.New(raw + hash + " SQL credential-sentinel")}
-	status, body, _ := cookieRequest(t, refreshHTTPApp(&users{account: fixtureUser()}, sessions), "/api/v1/auth/refresh", raw, "https://app.example.invalid", "")
-	if status != http.StatusInternalServerError || strings.Contains(body, raw) || strings.Contains(body, hash) || strings.Contains(body, "SQL") {
+	status, body, cookies := cookieRequest(t, refreshHTTPApp(&users{account: fixtureUser()}, sessions), "/api/v1/auth/refresh", raw, "https://app.example.invalid", "")
+	if status != http.StatusInternalServerError || len(cookies) != 0 || strings.Contains(body, raw) || strings.Contains(body, hash) || strings.Contains(body, "SQL") {
 		t.Fatal("unsafe storage response")
 	}
 }

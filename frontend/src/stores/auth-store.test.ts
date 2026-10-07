@@ -53,23 +53,27 @@ describe('auth store', () => {
 
   it('clears private queries on logout', () => {
     useAuthStore.getState().setSession(tokens)
-    queryClient.setQueryData(['private'], { owner: user.id })
+    queryClient.setQueryData(['auth', 'private'], { owner: user.id })
+    queryClient.setQueryData(['foundation', 'health'], { status: 'ok' })
     useAuthStore.getState().clear()
-    expect(queryClient.getQueryData(['private'])).toBeUndefined()
+    expect(queryClient.getQueryData(['auth', 'private'])).toBeUndefined()
+    expect(queryClient.getQueryData(['foundation', 'health'])).toEqual({ status: 'ok' })
   })
 
   it('clears private queries when the account changes', () => {
     useAuthStore.getState().setSession(tokens)
-    queryClient.setQueryData(['private'], { owner: user.id })
+    queryClient.setQueryData(['auth', 'private'], { owner: user.id })
+    queryClient.setQueryData(['foundation', 'health'], { status: 'ok' })
     useAuthStore.getState().setSession({ ...tokens, user: { ...user, id: 'other-user' } })
-    expect(queryClient.getQueryData(['private'])).toBeUndefined()
+    expect(queryClient.getQueryData(['auth', 'private'])).toBeUndefined()
+    expect(queryClient.getQueryData(['foundation', 'health'])).toEqual({ status: 'ok' })
   })
 
   it('preserves queries when renewing the same account', () => {
     useAuthStore.getState().setSession(tokens)
-    queryClient.setQueryData(['private'], { owner: user.id })
+    queryClient.setQueryData(['auth', 'private'], { owner: user.id })
     useAuthStore.getState().setSession({ ...tokens, access_token: 'renewed' })
-    expect(queryClient.getQueryData(['private'])).toEqual({ owner: user.id })
+    expect(queryClient.getQueryData(['auth', 'private'])).toEqual({ owner: user.id })
   })
 
   it('updates the user without touching tokens', () => {

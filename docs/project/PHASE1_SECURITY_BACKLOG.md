@@ -93,6 +93,21 @@ and [machine summary](../../integration/evidence/2026-10-07-phase1h.json) record
 - **SEC-017 expanded reproducible tests, CI still open:** real migration faults/history/privileges/connections/processes, runtime-role auth under race, browser/runtime/restart and log redaction plus all standard gates. Local execution is not automated CI.
 - SEC-004/006 registration atomicity/institutional session/revocation policy, SEC-014 hosted HTTPS/CSP/edge/TLS, SEC-015 log sink/access/retention, SEC-018 cleanup scheduling/ownership and SEC-019 warnings/dependency/image review remain. OPEN-001–020 unchanged. No Phase 1I/business/mockup/deployment work.
 
+## Phase 1I cross-tab closure — 2026-10-08
+
+Earlier findings/report sections retain their historical behavior. The [58-item
+Phase 1I report](PHASE1_FOUNDATION.md#phase-1i--cross-tab-session-coordination),
+[unchanged-source baseline](../../integration/evidence/2026-10-07-phase1i-baseline.json)
+and [final machine evidence](../../integration/evidence/2026-10-08-phase1i.json)
+record the actual source/local gate.
+
+- **SEC-002/010 cross-tab engineering item CLOSED:** original one-winner/one-loser cookie destruction and peer logout defect reproduced before fixes. Dedicated Web Locks/BroadcastChannel coordination serializes retained cookie mutations, preserves per-document single-flight/one retry, and sends only validated non-secret metadata. Every waiting tab obtains its own memory access; no credential sharing/storage or replay grace. Failed refresh never emits Set-Cookie; explicit logout still clears.
+- **Mandatory real Chromium PASS:** two/three-tab pressure yields all 200 with max one refresh in flight; three simultaneous reloads yield exactly three successful bootstrap requests; logout removes peer memory/private cache without destroying public cache; held committed refresh cannot resurrect peer logout; three simultaneous logout requests all reach the server and reload stays logged out; account disable/current-account 403 and revoked-session refresh 401 invalidate peers; native owner closure releases ownership without completion; stale channel events are fenced. Deliberate uncoordinated late 401 preserves the winner cookie. Both-primitives-absent fallback recovers deliberately, and Web-Locks-only bootstrap serializes. Local/session storage, IndexedDB and observed channel messages contain no usable credentials.
+- **SEC-004/006 authoritative regressions PASS:** runtime-role PostgreSQL race still has one winner/11 denials, hash-only storage, coherent replacement/replay refusal/actual rollback/logout/cleanup. Source privilege/rotation/JWT/application/domain/migrations are unchanged. Institutional global/family/concurrent-device/immediate-access-revocation policy remains open; local registration atomicity remains before future provisioning implementation.
+- **SEC-013/014/015/016 local regressions PASS:** trusted/untrusted browser Origin, credentials/preflight, HttpOnly/Lax/path/environment cookie flags, CSP/headers, request IDs, bounded parser/rates, DB outage/reconnect and redaction. Actual result: 377 distinct sentinels, zero matches, 585 structured rows, 282 matching response/log IDs and statuses. Hosted production controls remain deployment-only verification.
+- **SEC-017 CI OPEN:** deterministic unit/live/browser commands exist and ran; no pipeline is added. Standard/race/frontend/Compose/diff gates pass. SEC-015 sink/access/retention ownership, SEC-018 scheduling/cadence/load/ownership and SEC-019 19 retained warnings/dependency/image reviews remain non-blocking foundation/operations work. OPEN-001–020 are preserved; policy-dependent product work still requires decisions.
+- **Phase 1A–1I:** no engineering blocker remains to separately authorized Phase 2 domain/database design. See the report's five remaining-work categories. No automatic Phase 1J, Phase 2 implementation, business feature/schema, mockup, commit, push or deployment.
+
 ## CRITICAL
 
 | ID | Finding / evidence | Required hardening and acceptance evidence | Owner |

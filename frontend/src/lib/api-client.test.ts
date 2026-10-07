@@ -6,6 +6,22 @@ import { QueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/auth-store'
 import { queryClient } from '@/app/query-client'
 import type { BrowserSession } from '@/types/common'
+import { SessionCoordinator, type SessionChannel, type SessionLocks, type TerminalEvent, SESSION_WAIT_MS } from './session-coordinator'
+
+const synchronousLocks: SessionLocks = { request: (_name, _options, operation) => operation() }
+const clients: ApiClient[] = []
+const coordinators: SessionCoordinator[] = []
+function coordinatedClient(adapter: AxiosAdapter, locks: SessionLocks | undefined = synchronousLocks) {
+  const channel: SessionChannel = { onmessage: null, postMessage: vi.fn(), close: vi.fn() }
+  const coordinator = new SessionCoordinator({ channel, locks })
+  const client = new ApiClient(adapter, coordinator)
+  clients.push(client); coordinators.push(coordinator)
+  const notify = (type: TerminalEvent) => {
+    const timestamp = performance.timeOrigin + performance.now()
+    channel.onmessage?.({ data: { version: 1, type, tabId: crypto.randomUUID(), attemptId: crypto.randomUUID(), epoch: Math.ceil(timestamp * 1_000), timestamp } } as MessageEvent)
+  }
+  return { client, coordinator, channel, notify }
+}
 
 const session: BrowserSession = {
   access_token: 'synthetic-renewed-access', expires_at: '2026-10-06T12:00:00Z', token_type: 'Bearer',
@@ -26,7 +42,11 @@ beforeEach(() => {
   useAuthStore.setState({ status: 'idle', generation: 0 })
   localStorage.clear(); sessionStorage.clear(); queryClient.clear()
 })
-afterEach(() => { vi.restoreAllMocks(); queryClient.clear() })
+afterEach(() => {
+  for (const client of clients.splice(0)) client.dispose()
+  for (const coordinator of coordinators.splice(0)) coordinator.dispose()
+  vi.restoreAllMocks(); vi.unstubAllGlobals(); vi.useRealTimers(); queryClient.clear()
+})
 
 describe('memory and cookie browser sessions', () => {
   it('login keeps access only in memory and accepts current safe account state', async () => {
@@ -114,7 +134,7 @@ describe('single-flight and bounded authentication retries', () => {
       if (config.url === '/auth/refresh') { started.resolve(); await gate.promise; return response(config, 200) }
       return response(config, config.headers.get('Authorization') === 'Bearer old-access' ? 401 : 200, { ok: true })
     })
-    const client = new ApiClient(adapter)
+    const { client } = coordinatedClient(adapter)
     const requests = Array.from({ length: 8 }, (_, i) => client.get(`/protected/${i}`))
     await started.promise; gate.resolve()
     await expect(Promise.all(requests)).resolves.toEqual(Array.from({ length: 8 }, () => ({ ok: true })))
@@ -155,9 +175,9 @@ describe('single-flight and bounded authentication retries', () => {
   it('401 → refresh → retried 401 stops after one retry, including Query retry policy', async () => {
     useAuthStore.getState().setSession({ ...session, access_token: 'old-access' })
     const adapter = vi.fn<AxiosAdapter>(async (config) => response(config, config.url === '/auth/refresh' ? 200 : 401))
-    const client = new ApiClient(adapter)
+    const { client } = coordinatedClient(adapter)
     // Clearing the private cache deliberately cancels its pending query.
-    await expect(queryClient.fetchQuery({ queryKey: ['protected'], queryFn: () => client.get('/protected') })).rejects.toMatchObject({ message: 'CancelledError' })
+    await expect(queryClient.fetchQuery({ queryKey: ['auth', 'protected'], queryFn: () => client.get('/protected') })).rejects.toMatchObject({ message: 'CancelledError' })
     expect(adapter).toHaveBeenCalledTimes(3)
     expect(adapter.mock.calls.filter(([config]) => config.url === '/auth/refresh')).toHaveLength(1)
     expect(useAuthStore.getState().status).toBe('unauthenticated')
@@ -189,13 +209,144 @@ describe('single-flight and bounded authentication retries', () => {
   })
 })
 
+describe('coordinator integration with memory, Query and HTTP fencing', () => {
+  it('simultaneous peer logout cannot cancel every backend revocation', async () => {
+    useAuthStore.getState().setSession(session)
+    const channels: SessionChannel[] = []
+    const adapter = vi.fn<AxiosAdapter>(async (config) => response(config, 204))
+    const tabs = Array.from({ length: 3 }, () => {
+      const channel: SessionChannel = { onmessage: null, close: vi.fn(), postMessage: message => { for (const peer of channels) if (peer !== channel) peer.onmessage?.({ data: message } as MessageEvent) } }
+      channels.push(channel)
+      const coordinator = new SessionCoordinator({ channel, locks: synchronousLocks })
+      const client = new ApiClient(adapter, coordinator); clients.push(client); coordinators.push(coordinator)
+      return client
+    })
+    await Promise.all(tabs.map(client => client.logout()))
+    expect(adapter).toHaveBeenCalledTimes(3)
+    expect(adapter.mock.calls.every(([config]) => config.url === '/auth/logout')).toBe(true)
+    expect(useAuthStore.getState().status).toBe('unauthenticated')
+  })
+  it('login announces both intent and successful completion without conveying credentials', async () => {
+    const adapter = vi.fn<AxiosAdapter>(async (config) => response(config, 200))
+    const { client, channel } = coordinatedClient(adapter)
+    await client.authenticate('/auth/login', { password: 'synthetic-password' })
+    const hints = vi.mocked(channel.postMessage).mock.calls.map(([m]) => m)
+    expect(hints.map(m => m.type)).toEqual(['auth-state-changed', 'auth-state-changed'])
+    expect(hints[1].epoch).toBeGreaterThan(hints[0].epoch)
+    expect(JSON.stringify(hints)).not.toMatch(/synthetic-password|synthetic-renewed-access/)
+  })
+  it('a late denial for an older retried token cannot clear a newer local recovery', async () => {
+    useAuthStore.getState().setSession({ ...session, access_token: 'old-access' })
+    const started = deferred<void>(), gate = deferred<void>()
+    let rotations = 0
+    const adapter = vi.fn<AxiosAdapter>(async (config) => {
+      if (config.url === '/auth/refresh') return response(config, 200, { ...session, access_token: `renewed-${++rotations}` })
+      if (config.headers.get('Authorization') === 'Bearer old-access') return response(config, 401)
+      started.resolve(); await gate.promise; return response(config, 401)
+    })
+    const { client, channel } = coordinatedClient(adapter)
+    const pending = client.get('/protected'); const denial = expect(pending).rejects.toMatchObject({ status: 401 })
+    await started.promise; await client.refreshSession(); gate.resolve(); await denial
+    expect(useAuthStore.getState().accessToken).toBe('renewed-2')
+    expect(vi.mocked(channel.postMessage).mock.calls.map(([m]) => m.type)).not.toContain('session-invalidated')
+    expect(adapter.mock.calls.filter(([c]) => c.url === '/protected')).toHaveLength(2)
+  })
+  it('a late current-account 403 for a superseded access token cannot invalidate a newer recovery', async () => {
+    useAuthStore.getState().setSession(session)
+    const started = deferred<void>(), gate = deferred<void>()
+    const adapter = vi.fn<AxiosAdapter>(async (config) => {
+      if (config.url === '/auth/refresh') return response(config, 200, { ...session, access_token: 'newest' })
+      started.resolve(); await gate.promise; return response(config, 403)
+    })
+    const { client, channel } = coordinatedClient(adapter)
+    const pending = client.get('/auth/me'); const denial = expect(pending).rejects.toMatchObject({ status: 403 })
+    await started.promise; await client.refreshSession(); gate.resolve(); await denial
+    expect(useAuthStore.getState().accessToken).toBe('newest')
+    expect(vi.mocked(channel.postMessage).mock.calls.map(([m]) => m.type)).not.toContain('session-invalidated')
+  })
+  it.each(['logout', 'session-invalidated', 'auth-state-changed'] as const)('peer %s clears private memory/cache, cancels active work and preserves public data', async (event) => {
+    useAuthStore.getState().setSession(session)
+    queryClient.setQueryData(['auth', 'me'], session.user)
+    queryClient.setQueryData(['foundation', 'health'], { status: 'ok' })
+    const adapter = vi.fn<AxiosAdapter>(async (config) => response(config, 200))
+    const { notify } = coordinatedClient(adapter)
+    let signal!: AbortSignal
+    const started = deferred<void>()
+    const pending = queryClient.fetchQuery({ queryKey: ['future-private'], meta: { authenticated: true }, queryFn: ({ signal: current }) => { signal = current; started.resolve(); return new Promise(() => {}) } })
+    const rejection = expect(pending).rejects.toMatchObject({ message: 'CancelledError' })
+    await started.promise
+    notify(event); await rejection
+    expect(signal.aborted).toBe(true)
+    expect(useAuthStore.getState()).toMatchObject({ accessToken: null, user: null, status: 'unauthenticated' })
+    expect(queryClient.getQueryData(['auth', 'me'])).toBeUndefined()
+    expect(queryClient.getQueryCache().find({ queryKey: ['future-private'] })).toBeUndefined()
+    expect(queryClient.getQueryData(['foundation', 'health'])).toEqual({ status: 'ok' })
+    expect(adapter).not.toHaveBeenCalled()
+  })
+  it('peer logout fences a pending successful refresh without another recovery', async () => {
+    useAuthStore.getState().setSession(session)
+    const gate = deferred<void>(), started = deferred<void>()
+    const adapter = vi.fn<AxiosAdapter>(async (config) => { started.resolve(); await gate.promise; return response(config, 200) })
+    const { client, notify } = coordinatedClient(adapter)
+    const refresh = client.refreshSession()
+    const rejection = expect(refresh).rejects.toMatchObject({ code: 'SESSION_CHANGED' })
+    await started.promise; notify('logout'); gate.resolve(); await rejection
+    expect(useAuthStore.getState().accessToken).toBeNull()
+    expect(adapter).toHaveBeenCalledOnce()
+  })
+  it('authoritative current-account 403 invalidates; ordinary resource 403 does not', async () => {
+    useAuthStore.getState().setSession(session)
+    const adapter = vi.fn<AxiosAdapter>(async (config) => response(config, 403))
+    const { client, channel } = coordinatedClient(adapter)
+    await expect(client.get('/admin-resource')).rejects.toMatchObject({ status: 403 })
+    expect(useAuthStore.getState().status).toBe('authenticated')
+    expect(channel.postMessage).not.toHaveBeenCalled()
+    await expect(client.get('/auth/me')).rejects.toMatchObject({ status: 403 })
+    expect(useAuthStore.getState().status).toBe('unauthenticated')
+    expect(channel.postMessage).toHaveBeenCalledWith(expect.objectContaining({ type: 'session-invalidated' }))
+    expect(adapter).toHaveBeenCalledTimes(2)
+  })
+  it('a lock timeout settles bootstrap as recoverable error and deliberate retry can restore', async () => {
+    vi.useFakeTimers()
+    let suspended = true
+    const locks: SessionLocks = { request: (_name, { signal }, operation) => suspended ? new Promise((_resolve, reject) => { signal.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')), { once: true }) }) : operation() }
+    const adapter = vi.fn<AxiosAdapter>(async (config) => response(config, 200))
+    const { client } = coordinatedClient(adapter, locks)
+    const boot = client.bootstrap()
+    await vi.advanceTimersByTimeAsync(SESSION_WAIT_MS); await boot
+    expect(useAuthStore.getState().status).toBe('error'); expect(adapter).not.toHaveBeenCalled()
+    suspended = false; await client.retryBootstrap()
+    expect(useAuthStore.getState().status).toBe('authenticated'); expect(adapter).toHaveBeenCalledOnce()
+  })
+  it('coordinated login/refresh/logout never write auth or coordination values to any browser store', async () => {
+    const setLocal = vi.spyOn(Storage.prototype, 'setItem')
+    const indexed = { open: vi.fn(), deleteDatabase: vi.fn() }; vi.stubGlobal('indexedDB', indexed)
+    const adapter = vi.fn<AxiosAdapter>(async (config) => response(config, config.url === '/auth/logout' ? 204 : 200))
+    const { client, channel } = coordinatedClient(adapter)
+    await client.authenticate('/auth/login', { password: 'synthetic-input' }); await client.refreshSession(); await client.logout()
+    expect(setLocal.mock.calls.every(([key, value]) => key === '__storage_test__' && value === '1')).toBe(true)
+    expect(localStorage.length).toBe(0); expect(sessionStorage.length).toBe(0)
+    expect(indexed.open).not.toHaveBeenCalled(); expect(indexed.deleteDatabase).not.toHaveBeenCalled()
+    expect(JSON.stringify(vi.mocked(channel.postMessage).mock.calls)).not.toMatch(/synthetic-input|synthetic-renewed-access|refresh_token|Authorization|Cookie|password/)
+  })
+  it('disposing the client prevents a pending reply from restoring auth and removes its peer subscription', async () => {
+    const gate = deferred<void>(), started = deferred<void>()
+    const adapter = vi.fn<AxiosAdapter>(async (config) => { started.resolve(); await gate.promise; return response(config, 200) })
+    const { client, notify } = coordinatedClient(adapter)
+    const refresh = client.refreshSession(); const rejection = expect(refresh).rejects.toMatchObject({ code: 'SESSION_CHANGED' })
+    await started.promise; client.dispose(); gate.resolve(); await rejection
+    useAuthStore.getState().setSession(session); notify('logout')
+    expect(useAuthStore.getState().status).toBe('authenticated')
+  })
+})
+
 describe('logout and session lifecycle races', () => {
   it('logout clears memory/cache immediately and remains logged out on network failure', async () => {
-    useAuthStore.getState().setSession(session); queryClient.setQueryData(['private'], { owner: session.user.id })
+    useAuthStore.getState().setSession(session); queryClient.setQueryData(['auth', 'private'], { owner: session.user.id })
     const adapter = vi.fn<AxiosAdapter>(async (config) => { throw new AxiosError('Network unavailable', 'ERR_NETWORK', config) })
     const client = new ApiClient(adapter); const logout = client.logout()
     expect(useAuthStore.getState().accessToken).toBeNull(); expect(useAuthStore.getState().user).toBeNull()
-    expect(queryClient.getQueryData(['private'])).toBeUndefined()
+    expect(queryClient.getQueryData(['auth', 'private'])).toBeUndefined()
     await expect(logout).rejects.toMatchObject({ status: 0 })
     expect(adapter).toHaveBeenCalledTimes(1); expect(adapter.mock.calls[0][0].url).toBe('/auth/logout')
     expect(adapter.mock.calls[0][0].data).toBeUndefined()

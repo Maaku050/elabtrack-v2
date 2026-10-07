@@ -10,6 +10,7 @@ import type { BrowserSession, AuthUser } from '@/types/common'
 import { useAuthStore } from '@/stores/auth-store'
 import { clearLegacyAuthStorage } from '@/lib/storage'
 import { ApiRequestError, normalizeApiError, normalizeApiResponseError } from '@/lib/api-error'
+import { SessionCoordinator, sessionCoordinator, classifyRefreshFailure, type SessionAttempt } from '@/lib/session-coordinator'
 export { ApiRequestError } from '@/lib/api-error'
 
 const baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1'
@@ -24,6 +25,7 @@ interface SessionRequest extends InternalAxiosRequestConfig {
   sessionRetry?: boolean
   sessionGeneration?: number
   sentAccessToken?: string | null
+  sessionAttempt?: SessionAttempt
 }
 
 // One transport and one refresh flight per application instance. Session
@@ -33,12 +35,22 @@ export class ApiClient {
   private refreshPromise: Promise<BrowserSession> | null = null
   private bootstrapPromise: Promise<void> | null = null
   private sessionTask: Promise<unknown> = Promise.resolve()
+  private coordinator: SessionCoordinator
+  private unsubscribe: () => void
+  private disposed = false
+  private authChange = 0
 
-  constructor(adapter?: AxiosAdapter) {
+  constructor(adapter?: AxiosAdapter, coordinator = new SessionCoordinator()) {
+    this.coordinator = coordinator
+    this.unsubscribe = coordinator.subscribe((event) => {
+      if (event.type === 'auth-state-changed') this.authChange++
+      useAuthStore.getState().clear()
+    })
     this.axios = axios.create({ baseURL, timeout: 15_000, headers: { 'Content-Type': 'application/json' }, withCredentials: true, adapter })
     this.axios.interceptors.request.use(this.attachToken)
     this.axios.interceptors.response.use((response) => response, (error: AxiosError<ApiResponse>) => this.onError(error))
   }
+  dispose(): void { this.disposed = true; this.unsubscribe() }
   get<T>(url: string, opts: RequestOptions = {}): Promise<T> { return this.request<T>('GET', url, undefined, opts) }
   post<T>(url: string, body?: unknown, opts: RequestOptions = {}): Promise<T> { return this.request<T>('POST', url, body, opts) }
   patch<T>(url: string, body?: unknown, opts: RequestOptions = {}): Promise<T> { return this.request<T>('PATCH', url, body, opts) }
@@ -54,12 +66,14 @@ export class ApiClient {
     } catch (error) { throw this.normalize(error) }
   }
   private attachToken = (original: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    if (this.disposed) throw new ApiRequestError('Session ended', 0, 'SESSION_CHANGED')
     const config = original as SessionRequest
     const state = useAuthStore.getState()
     if (config.sessionRetry && config.sessionGeneration !== state.generation) {
       throw new ApiRequestError('Session ended', 401)
     }
     config.sessionGeneration = state.generation
+    config.sessionAttempt = this.coordinator.capture()
     config.sentAccessToken = config.attachAuth === false ? null : state.accessToken
     if (config.sentAccessToken) config.headers.set('Authorization', `Bearer ${config.sentAccessToken}`)
     else config.headers.delete('Authorization')
@@ -70,13 +84,23 @@ export class ApiClient {
     return ['/auth/login', '/auth/register', '/auth/refresh', '/auth/logout'].includes(path ?? '')
   }
   private async onError(error: AxiosError<ApiResponse>): Promise<unknown> {
+    if (this.disposed) throw error
     const config = error.config as SessionRequest | undefined
+    // These retained current-account routes have no resource-specific 403:
+    // the authoritative resolver denied current active/recognized account state.
+    if (config && error.response?.status === 403 && config.sentAccessToken && config.sentAccessToken === useAuthStore.getState().accessToken && config.sessionGeneration === useAuthStore.getState().generation && ['/auth/me', '/users/me'].includes(config.url?.split('?')[0] ?? '')) {
+      useAuthStore.getState().clear()
+      if (config.sessionAttempt) this.coordinator.invalidate(config.sessionAttempt)
+    }
     if (!config || error.response?.status !== 401 || config.attachAuth === false || config.retryAuth === false || this.isSessionEndpoint(config) || !config.sentAccessToken) throw error
     const state = useAuthStore.getState()
     if (config.sessionGeneration !== state.generation) throw error
     if (config.sessionRetry) {
       // A persistent denial ends this session; Query must not restart it.
-      state.clear()
+      if (config.sentAccessToken === state.accessToken) {
+        state.clear()
+        if (config.sessionAttempt) this.coordinator.invalidate(config.sessionAttempt)
+      }
       throw error
     }
     config.sessionRetry = true
@@ -112,13 +136,26 @@ export class ApiClient {
     if (this.refreshPromise) return this.refreshPromise
     const generation = useAuthStore.getState().generation
     const task = this.scheduleSession(async () => {
-      if (generation !== useAuthStore.getState().generation) throw new ApiRequestError('Session ended', 401)
       try {
-        const data = this.acceptSession(await this.post<BrowserSession>('/auth/refresh', undefined, { attachAuth: false, retryAuth: false }))
-        if (generation !== useAuthStore.getState().generation) throw new ApiRequestError('Session ended', 401)
-        useAuthStore.getState().setSession(data)
-        return data
-      } catch (error) { this.failSession(error, generation); throw error }
+        return await this.coordinator.run(true, async (attempt) => {
+          if (this.disposed || generation !== useAuthStore.getState().generation) throw new ApiRequestError('Session ended', 401, 'SESSION_CHANGED')
+          try {
+            const data = this.acceptSession(await this.post<BrowserSession>('/auth/refresh', undefined, { attachAuth: false, retryAuth: false }))
+            if (this.disposed || generation !== useAuthStore.getState().generation) throw new ApiRequestError('Session ended', 401, 'SESSION_CHANGED')
+            useAuthStore.getState().setSession(data)
+            this.coordinator.succeeded(attempt)
+            return data
+          } catch (error) {
+            // An older operation cannot announce invalidation after logout or
+            // account change. Uncoordinated 401s can be lost races, not global
+            // proof of invalidation. Origin denial and network/5xx stay local.
+            if (!this.disposed && generation === useAuthStore.getState().generation) {
+              this.coordinator.failed(attempt, classifyRefreshFailure(this.normalize(error), attempt.exclusive))
+            }
+            throw error
+          }
+        })
+      } catch (error) { if (!this.disposed) this.failSession(error, generation); throw error }
     })
     this.refreshPromise = task
     const finished = () => { if (this.refreshPromise === task) this.refreshPromise = null }
@@ -140,23 +177,43 @@ export class ApiClient {
     return this.bootstrap()
   }
   authenticate(path: '/auth/login' | '/auth/register', input: unknown): Promise<BrowserSession> {
+    this.authChange++
     const generation = useAuthStore.getState().clear('bootstrapping')
+    // Credentials may change accounts. Peers discard old presentation state;
+    // they stay unauthenticated until deliberate server bootstrap/login.
+    this.coordinator.announce('auth-state-changed')
     return this.scheduleSession(async () => {
-      if (generation !== useAuthStore.getState().generation) throw new ApiRequestError('Session ended', 401)
       try {
-        const session = this.acceptSession(await this.post<BrowserSession>(path, input, { attachAuth: false, retryAuth: false }))
-        if (generation !== useAuthStore.getState().generation) throw new ApiRequestError('Session ended', 401)
-        useAuthStore.getState().setSession(session)
-        return session
-      } catch (error) { this.failSession(error, generation); throw error }
+        return await this.coordinator.run(false, async () => {
+          if (this.disposed || generation !== useAuthStore.getState().generation) throw new ApiRequestError('Session ended', 401, 'SESSION_CHANGED')
+          const session = this.acceptSession(await this.post<BrowserSession>(path, input, { attachAuth: false, retryAuth: false }))
+          if (this.disposed || generation !== useAuthStore.getState().generation) throw new ApiRequestError('Session ended', 401, 'SESSION_CHANGED')
+          useAuthStore.getState().setSession(session)
+          this.coordinator.announce('auth-state-changed')
+          return session
+        })
+      } catch (error) { if (!this.disposed) this.failSession(error, generation); throw error }
     })
   }
   logout(): Promise<void> {
     // Invalidate state immediately, even when the network is unavailable.
+    const authChange = this.authChange
     useAuthStore.getState().clear()
-    return this.scheduleSession(() => this.post<void>('/auth/logout', undefined, { attachAuth: false, retryAuth: false }))
+    this.coordinator.announce('logout')
+    return this.scheduleSession(() => this.coordinator.run(false, async () => {
+      // A newer login intent supersedes an old queued logout. Otherwise wait
+      // for pending replies, then revoke the cookie they actually installed.
+      // Other logout/invalidation notifications must NOT cancel revocation:
+      // simultaneous logout otherwise lets every document skip the server.
+      if (this.disposed || authChange !== this.authChange) return
+      try { await this.post<void>('/auth/logout', undefined, { attachAuth: false, retryAuth: false }) }
+      finally {
+        if (!this.disposed && authChange === this.authChange) this.coordinator.announce('logout')
+      }
+    }))
   }
   private normalize(error: unknown): ApiRequestError { return normalizeApiError(error) }
 }
 
-export const apiClient = new ApiClient()
+export const apiClient = new ApiClient(undefined, sessionCoordinator)
+if (import.meta.hot) import.meta.hot.dispose(() => apiClient.dispose())

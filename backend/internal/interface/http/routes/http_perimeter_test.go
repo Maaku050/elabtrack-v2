@@ -55,7 +55,7 @@ func TestRefreshRotationFitsDefaultPerimeterBudget(t *testing.T) {
 		sessions.session = sessions.created[i]
 	}
 	status, _, cookies := cookieRequest(t, app, "/api/v1/auth/refresh", original, trustedOrigin, "")
-	if status != 401 || len(cookies) != 1 || sessions.session.RevokedAt != nil {
+	if status != 401 || len(cookies) != 0 || sessions.session.RevokedAt != nil {
 		t.Fatal("replay semantics weakened by perimeter")
 	}
 	status, _, _ = cookieRequest(t, app, "/api/v1/auth/refresh", raw, trustedOrigin, "")

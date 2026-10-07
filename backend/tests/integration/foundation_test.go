@@ -196,6 +196,7 @@ func TestRealFoundation(t *testing.T) {
 					}
 				case 401:
 					denials++
+					require(t, len(r.Cookies()) == 0, "losing refresh cannot erase the winner cookie")
 				default:
 					t.Errorf("unexpected refresh status %d", r.StatusCode)
 				}
@@ -204,6 +205,7 @@ func TestRealFoundation(t *testing.T) {
 		close(start)
 		wg.Wait()
 		require(t, wins == 1 && denials == competitors-1 && successor != "" && successor != raw, "single committed concurrent winner")
+		t.Logf("real concurrent refresh: %d success / %d safe denials; no denial Set-Cookie", wins, denials)
 		remember(successor)
 		remember(digest(successor))
 		e = db.Pool.QueryRow(ctx, `SELECT count(*) FROM refresh_tokens WHERE user_id=$1 AND revoked_at IS NULL AND expires_at>now()`, u.ID).Scan(&n)
@@ -211,7 +213,7 @@ func TestRealFoundation(t *testing.T) {
 		e = db.Pool.QueryRow(ctx, `SELECT count(*) FROM refresh_tokens old JOIN refresh_tokens successor ON successor.id=old.replaced_by WHERE old.token_hash=$1 AND old.revoked_at IS NOT NULL AND successor.token_hash=$2`, digest(raw), digest(successor)).Scan(&n)
 		require(t, e == nil && n == 1, "coherent consumption/replacement")
 		r, _ = request("POST", "/auth/refresh", nil, "", raw)
-		require(t, r.StatusCode == 401, "old replay denied")
+		require(t, r.StatusCode == 401 && len(r.Cookies()) == 0, "old replay denied without cookie mutation")
 		r, _ = request("POST", "/auth/refresh", nil, "", successor)
 		require(t, r.StatusCode == 200, "winner remains usable after replay")
 		for _, c := range r.Cookies() {
@@ -227,7 +229,7 @@ func TestRealFoundation(t *testing.T) {
 			require(t, len(r.Cookies()) == 1 && r.Cookies()[0].Value == "", "cookie cleared")
 		}
 		r, _ = request("POST", "/auth/refresh", nil, "", successor)
-		require(t, r.StatusCode == 401, "logout revocation persisted")
+		require(t, r.StatusCode == 401 && len(r.Cookies()) == 0, "logout revocation persisted without refresh cookie mutation")
 	})
 	t.Run("real_transaction_rollback", func(t *testing.T) {
 		txm := database.NewTxManager(db.Pool)

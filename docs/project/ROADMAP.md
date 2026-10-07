@@ -1,6 +1,6 @@
 # Initial delivery roadmap
 
-Confirmed sequence from current stakeholder direction. **Phase 0 and 1A–1H are complete within their recorded scope. The latest authorization covers Phase 1H only; Phase 1I has not begun.** Later deliverables describe phase-level outcomes, not a speculative task backlog or permission to execute them. Dependencies include the relevant accepted policy decisions, not merely a checked phase number.
+Confirmed sequence from current stakeholder direction. **Phase 0 and 1A–1I are complete within their recorded source/disposable local scope. The latest authorization covers Phase 1I only; Phase 2 has not begun.** The Phase 1 engineering foundation has no remaining blocker to authorized domain/database design. CI, production deployment verification and product-policy decisions remain explicitly tracked. Later deliverables describe phase-level outcomes, not permission to execute them. Dependencies include accepted policy decisions, not merely a checked phase number.
 
 ## Phase 0 — Rebaseline & Template Adaptation
 
@@ -48,9 +48,9 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 - **Goal/deliverables:** Coordinate same-origin cookie-changing operations and peer session/logout lifecycle before product UI, preserving memory-only access/HttpOnly refresh and strict single-use server rotation.
 - **Evidence:** Real Phase 1G/1H browser race: one refresh succeeds; a late losing 401 clears the shared winner cookie. Peer logout leaves another tab apparently authenticated until refresh fails.
-- **Dependencies:** Completed 1H and separate explicit authorization; required before Phase 2/product UI. Detailed locking/fallback/late-operation design remains this phase's work.
+- **Dependencies:** Completed 1H and explicit Phase 1I authorization, received 2026-10-07; required before Phase 2/product UI.
 - **Non-goals:** No usable-token broadcast/persistence, server replay relaxation, business schema/features or CI platform implementation inferred from this requirement.
-- **Exit gate:** Real multi-tab simultaneous refresh/reload/logout/late-response behavior is coherent; bounded failure/fallback and generation safeguards verified, standard/browser/race gates pass. **Not begun.**
+- **Exit gate:** **Satisfied / COMPLETE, 2026-10-08.** Original defect reproduced before fixes; Web Locks serialize cookie mutations and BroadcastChannel carries strict non-secret lifecycle hints. Refresh failures never delete possibly newer cookies. Real two/three-tab pressure, simultaneous reload, logout/private-cache removal, delayed-success fencing, disable/revoke, owner close, stale events and unavailable-primitive fallback pass. PostgreSQL retains one winner/11 denials; standard/race/Compose/log/diff gates pass. See the [58-item report and whole-foundation assessment](PHASE1_FOUNDATION.md#phase-1i--cross-tab-session-coordination). CI remains open; no Phase 2 or 1J is authorized by closure.
 
 ## Phase 2 — Domain & Database Design
 

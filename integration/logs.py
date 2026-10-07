@@ -7,6 +7,10 @@ assert paths[-1].exists(), 'capture the current integration API log first'
 paths=[p for p in paths if p.exists()]
 raw='\n'.join(p.read_text() for p in paths)
 secrets=json.loads(Path('/tmp/elabtrack-phase1g-secrets.json').read_text())
+fixture=Path('backend/.env.phase1h')
+if fixture.exists():
+    values=dict(line.split('=',1) for line in fixture.read_text().splitlines() if line and not line.startswith('#'))
+    secrets += [value for key,value in values.items() if key.endswith('_PASSWORD') or key=='JWT_SECRET']
 secrets += ['wrong-synthetic-password','Authorization: Bearer','Cookie:','Set-Cookie:']
 assert not any(s and s in raw for s in secrets), 'credential sentinel leaked (value withheld)'
 rows=[json.loads(line) for p in paths for line in p.read_text().splitlines() if line.startswith('{')]
@@ -34,5 +38,5 @@ assert {'auth.login_succeeded','auth.login_failed','auth.refresh_succeeded','aut
 statuses=sorted({r['status'] for r in current if 'status' in r})
 assert {200,401,403,413,429,431,503}.issubset(statuses)
 result={'secretSentinelsChecked':len(set(secrets)),'secretMatches':0,'structuredRowsChecked':len(rows),'correlatedResponses':len(browser['correlation'])+len(runtime['requests']),'securityEvents':events,'finalStatuses':statuses,'clientIPs':proxy,'parserCompletionsAccurate':True}
-Path('/tmp/elabtrack-phase1h-logs.json').write_text(json.dumps(result,indent=2))
+Path('/tmp/elabtrack-phase1i-logs.json').write_text(json.dumps(result,indent=2))
 print(json.dumps(result,indent=2))

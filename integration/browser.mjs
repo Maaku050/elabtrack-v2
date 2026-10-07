@@ -4,6 +4,7 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { randomUUID, createHash } from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 import { pathToFileURL } from 'node:url'
+import { instrumentSessionMessages, verifySessionTabs } from './session-browser.mjs'
 
 // Use a small external Playwright installation, not a production dependency.
 const { chromium } = await import(pathToFileURL(process.env.PLAYWRIGHT_MODULE).href)
@@ -22,6 +23,7 @@ const servers = []
 let accountID
 try {
   const context = await browser.newContext()
+  await instrumentSessionMessages(context)
   const page = await context.newPage()
   const cspErrors = []
   const counts = new Map()
@@ -135,45 +137,10 @@ try {
   before=count(page);await page.reload()
   await page.waitForFunction(()=>window.phase1g?.state().status==='unauthenticated')
   assert.equal(count(page)-before,1)
-  assert.equal((await context.cookies()).filter(c=>c.name===cookieName).length,0)
-  check('revoked-session reload fails once and clears the dead cookie')
+  assert.equal((await context.cookies()).filter(c=>c.name===cookieName).length,1)
+  check('revoked-session reload fails once without mutating the shared cookie')
 
-  await page.evaluate(({email,password})=>window.phase1g.login(email,password),{email,password})
-  const tabB=await context.newPage();observe(tabB)
-  await tabB.goto(driver)
-  await tabB.waitForFunction(()=>window.phase1g?.state().status==='authenticated')
-  assert.equal((await page.evaluate(()=>window.phase1g.state())).status,'authenticated')
-  // Hold requests at the browser network boundary until both tabs have sent
-  // their shared cookie; no backend relaxation or fabricated refresh response.
-  const pending=[]
-  let release
-  const barrier=new Promise(r=>{release=r})
-  const cookieHeaders=[]
-  for(const p of [page,tabB]) await p.route('**/api/v1/auth/refresh',async route=>{
-    cookieHeaders.push((await route.request().allHeaders()).cookie)
-    pending.push(route);if(pending.length===2) release()
-    await barrier;await route.continue()
-  })
-  const concurrent=await Promise.all([page,tabB].map(p=>p.evaluate(()=>window.phase1g.refresh().then(()=> 'success',e=>`denied:${e.status}`))))
-  assert(cookieHeaders[0]===cookieHeaders[1],'both tabs sent the same cookie')
-  assert.equal(concurrent.filter(x=>x==='success').length,1)
-  assert.equal(concurrent.filter(x=>x==='denied:401').length,1)
-  for(const p of [page,tabB]) await p.unroute('**/api/v1/auth/refresh')
-  evidence.crossTab={ refreshResults:concurrent, cookieSurvived:(await context.cookies()).some(c=>c.name===cookieName), states:await Promise.all([page,tabB].map(p=>p.evaluate(()=>window.phase1g.state().status))) }
-  check('two tabs share the cookie but racing rotation forces one tab unauthenticated',evidence.crossTab)
-
-  await page.evaluate(({email,password})=>window.phase1g.login(email,password),{email,password})
-  await tabB.reload();await tabB.waitForFunction(()=>window.phase1g?.state().status==='authenticated')
-  await page.evaluate(()=>window.phase1g.logout())
-  assert.equal((await page.evaluate(()=>window.phase1g.state())).status,'unauthenticated')
-  assert.equal((await tabB.evaluate(()=>window.phase1g.state())).status,'authenticated')
-  assert.equal((await tabB.evaluate(()=>window.phase1g.me())).email,email)
-  await tabB.evaluate(()=>window.phase1g.invalidateAccess())
-  assert(await tabB.evaluate(()=>window.phase1g.me().then(()=>false,()=>true)))
-  assert.equal((await tabB.evaluate(()=>window.phase1g.state())).status,'unauthenticated')
-  evidence.crossTab.logoutOtherTabAccessRemainedValid=true
-  evidence.crossTab.recommendation='ADD CROSS-TAB SESSION COORDINATION BEFORE PRODUCT UI'
-  check('logout clears one tab; other tab remains authenticated until refresh fails')
+  await verifySessionTabs({browser,context,page,observe,secrets,check,evidence,sql,accountID,email,password,base,driver,cookieName})
 
   // Local same-site origins with different ports exercise real browser CORS.
   for(const port of [14173,14174]) {

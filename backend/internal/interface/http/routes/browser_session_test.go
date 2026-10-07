@@ -131,20 +131,24 @@ func TestRefreshCookieRotationAndLegacyBodyRemoval(t *testing.T) {
 	if status != 401 || len(sessions.created) != 1 {
 		t.Fatal("old cookie replay succeeded")
 	}
-	assertCookie(t, cookies, false, true)
+	if len(cookies) != 0 {
+		t.Fatal("replay response can erase the winner's replacement cookie")
+	}
 	sessions.session = sessions.created[0]
 	status, _, cookies = cookieRequest(t, app, "/api/v1/auth/refresh", "", trustedOrigin, `{"refresh_token":"`+cookie.Value+`"}`)
 	if status != 401 || len(sessions.created) != 1 {
 		t.Fatal("body-only credential accepted")
 	}
-	assertCookie(t, cookies, false, true)
+	if len(cookies) != 0 {
+		t.Fatal("missing-cookie failure must not mutate a shared cookie")
+	}
 	status, _, cookies = cookieRequest(t, app, "/api/v1/auth/logout", "", trustedOrigin, `{"refresh_token":"`+cookie.Value+`"}`)
 	if status != 204 || sessions.session.RevokedAt != nil {
 		t.Fatal("logout accepted body credential")
 	}
 	assertCookie(t, cookies, false, true)
 }
-func TestCookieClearingAndTransientFailure(t *testing.T) {
+func TestOnlyExplicitLogoutClearsCookie(t *testing.T) {
 	for _, env := range []config.Environment{config.Development, config.Production} {
 		t.Run(string(env), func(t *testing.T) {
 			sessions := &httpSessions{}
@@ -159,7 +163,9 @@ func TestCookieClearingAndTransientFailure(t *testing.T) {
 				if status != 401 {
 					t.Fatal("invalid refresh status")
 				}
-				assertCookie(t, cookies, env == config.Production, true)
+				if len(cookies) != 0 {
+					t.Fatal("invalid refresh must not mutate a shared cookie")
+				}
 				status, body, cookies := cookieRequest(t, app, "/api/v1/auth/logout", raw, trustedOrigin, "")
 				if status != 204 || body != "" {
 					t.Fatal("logout not idempotent")

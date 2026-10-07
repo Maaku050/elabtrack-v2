@@ -1,11 +1,8 @@
 package handlers
 
 import (
-	"errors"
-
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
-	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/middleware"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
@@ -73,9 +70,10 @@ func (h *AuthHandler) Refresh(c fiber.Ctx) error {
 	req := auth.RefreshRequest{RefreshToken: c.Cookies(refreshCookieName)}
 	pair, err := h.auth.Refresh(c.Context(), req)
 	if err != nil {
-		if errors.Is(err, domainauth.ErrTokenInvalid) {
-			h.browser.clear(c)
-		}
+		// The presented credential describes the request, not the cookie the
+		// browser holds when this response arrives. Even definitive rejection
+		// can arrive after another request installed a valid successor. Never
+		// delete a shared cookie on refresh failure; explicit logout clears it.
 		return response.Error(c, err)
 	}
 	h.browser.issue(c, pair)

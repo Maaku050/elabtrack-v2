@@ -1,7 +1,9 @@
 # Disposable foundation integration verification
 
-Phase 1H hardens migrations and verifies actual runtime/migrator separation on
-PostgreSQL 18.6, the repository API/nginx images and Chromium. Historical Phase 1G
+Phase 1I adds cross-tab session verification to the Phase 1H isolated target and
+its actual runtime/migrator separation on PostgreSQL 18.6, API/nginx and Chromium.
+Phase 1H resource/file names are deliberately retained for harness compatibility;
+they identify disposable resources, not a rollback to old session behavior. Historical Phase 1G
 [evidence](evidence/2026-10-07.json) and its foundation report remain immutable;
 old runner-defect expectations have been replaced by assertions of safe behavior.
 No business schema or product UI is involved. Run from the repository root.
@@ -189,11 +191,88 @@ warning absent from the unchanged normal build. Logs are checked against current
 run credential sentinels without displaying them; migration-processes.py checks
 SQL/config/password/URL redaction independently.
 
-**Phase 1I remains required and unimplemented:** racing same-cookie tabs can
-produce one successful rotation and a late losing 401 which clears the winner's
-new cookie. Peer logout also leaves another tab apparently authenticated until
-refresh fails. No token broadcast, replay relaxation or client coordination is
-added during 1H. The browser harness deliberately preserves this adverse test.
+## Phase 1I multi-tab verification
+
+The unchanged-source baseline was reproduced **before fixes**, on 2026-10-07:
+two actual requests presented the same cookie, one returned 200 and one 401,
+the replacement cookie disappeared, and peer logout left other-tab access in
+memory. [Baseline evidence](evidence/2026-10-07-phase1i-baseline.json) records the
+sequence/results; earlier Phase 1G/H reports are historical and unchanged.
+
+After the fresh database/migration/grant/image/nginx setup above, run:
+
+```bash
+(cd backend && python3 ../integration/env-run.py go test -race -v -count=1 ./tests/integration)
+sleep 6 # Allow the declared 5s integration rate window to reset after the HTTP suite.
+node integration/build-browser.mjs
+docker cp frontend/phase1g.local/dist/. elabtrack_v2_phase1h_frontend:/usr/share/nginx/html/
+python3 integration/env-run.py node integration/browser.mjs
+DOCKER_BIN=docker python3 integration/env-run.py python3 integration/runtime.py
+docker logs elabtrack_v2_phase1h_backend > /tmp/elabtrack-phase1h-final.log 2>&1
+python3 integration/logs.py
+```
+
+Do not run the browser/live/rate suites concurrently; they share local rate
+budgets and the private credential-sentinel file. The browser harness imports
+`session-browser.mjs`; its ignored driver imports the actual production singleton
+API/store/coordinator. Synthetic current-account/cache probes remain excluded
+from the normal production entrypoint. No token endpoint or production test seam.
+
+The script checks two and three authenticated documents. A browser network gate
+holds the first actual request while `navigator.locks.query()` confirms every
+other waiter is queued; it then requires all 200, one maximum network refresh in
+flight, distinct consumed credentials and PostgreSQL replacement links. Three
+simultaneous reloads require exactly three server bootstraps. Peer logout removes
+private caches while preserving public health; a committed refresh reply held at
+the network boundary cannot restore memory, and logout waits to revoke its new
+cookie. Three simultaneous logout intents must each reach the server; peer
+messages cannot cancel all revocations, and reload stays unauthenticated.
+Runtime-role synthetic account disable (403) and session revoke (401) propagate
+generic invalidation. A real owner closes before a pending request
+reaches the API; its waiter recovers without a completion message. Actual stale
+channel delivery leaves newer successful states intact.
+
+A deliberate raw same-cookie two-request race bypasses the coordinator. The
+server must still produce one 200/one 401; the real losing response is delivered
+last and must have no Set-Cookie. The winner cookie survives and its successor
+can refresh. Separate browser contexts test unavailable BroadcastChannel/Web
+Locks (safe cookie plus deliberate loser reload) and unavailable BroadcastChannel
+alone (two serialized successful bootstraps). These artificial capability
+removals are test-only; no browser storage fallback exists. Observed messages
+are strict non-secret metadata; local/session stores and actual IndexedDB database
+listing are checked. The live Go suite still requires one winner/11 denials and
+now also requires every denial to omit cookie mutation.
+
+Production behavior: Web Locks plus BroadcastChannel coordinate documents in
+the same origin/storage partition. Web Locks alone serialize but cannot provide
+peer UI notifications; BroadcastChannel alone offers lifecycle hints without
+atomic refresh optimization. With neither, per-document single-flight remains,
+401 cookie corruption is prevented, and manual reload/re-login can be needed.
+Chromium 140 is verified; other engines are not claimed tested. All access stays
+in each document's memory and refresh remains an HttpOnly cookie. Incoming channel
+metadata never supplies authority or a user/role. Private queries use the current
+`auth`/`users` roots or explicit `meta.authenticated=true` for future approved
+features; public cache survives. Login intent and completion discard peers' old presentation
+without auto-login; reload obtains fresh authoritative state.
+
+Active HTTP timeout is 15 seconds, queued lock wait 20 seconds and metadata age
+limit 60 seconds, with five seconds future tolerance. These are implementation
+bounds. Timeout fails recoverably instead of stealing a live cookie mutation;
+retry can acquire after the owner resumes/closes. Missing completion messages do
+not block native lock release. Lost committed responses may require re-login;
+there is no rotation grace or durable metadata/token storage. Missing notifications
+recover through normal reload/stale-token request recovery; no cross-device or
+immediate access-token revocation policy is introduced. Normal refresh failure,
+even definitive invalidation, leaves the cookie untouched because the response
+cannot identify the cookie currently installed. Explicit coordinated logout clears.
+
+Current sanitized outputs retain `/tmp/elabtrack-phase1g-browser.json` and
+`/tmp/elabtrack-phase1g-runtime.json`; log summary now uses
+`/tmp/elabtrack-phase1i-logs.json`. [Final Phase 1I evidence](evidence/2026-10-08-phase1i.json)
+and the foundation's 58-item report record the checked results. The real migration
+fault/process suite remains the unchanged Phase 1H evidence; it need not be rerun
+to exercise this frontend/HTTP-cookie change.
+
 CI is still open. These deterministic commands plus standard fmt/vet/test,
 targeted race, frontend lint/test/build, Compose config and diff checks are the
 later CI input; local success is not a deployed production TLS/backup/operations
@@ -213,4 +292,5 @@ Remove only this project's containers/network/volume/built images and private
 fixtures. Do not prune Docker globally or touch normal `elabtrack_v2_pgdata`,
 unknown resources, V1 or production data. Shared base-image caches and sanitized
 /tmp evidence can remain. [Phase 1H machine evidence](evidence/2026-10-07-phase1h.json)
-and the foundation report record actual results and deployment-only limits.
+and the [Phase 1I evidence](evidence/2026-10-08-phase1i.json) record actual results
+and deployment-only limits.

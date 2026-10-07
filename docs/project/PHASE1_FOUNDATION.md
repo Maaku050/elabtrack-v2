@@ -2181,3 +2181,288 @@ Required 1I cross-tab coordination; SEC-004/006 local registration atomicity and
 ### H57. Phase 1H exit gate
 
 **SATISFIED / COMPLETE for the authorized source and disposable local scope.** Atomic SQL/bookkeeping, native advisory exclusion, immutable checksums/history validation, safe state errors, coherent all-file round trip, real process concurrency, local least-privilege ownership/API/auth, explicit CLI, live/standard/race/frontend/Compose/diff gates pass. No later phase, business schema/feature, mockup, commit/push or deployment. Completion does not close production/CI/product-policy checks or authorize Phase 1I.
+
+
+## Phase 1I — Cross-Tab Session Coordination
+
+Authorized 2026-10-07. No Phase 2, business features/migrations, mockups, CI pipeline, commit, push or deployment.
+
+### Baseline recorded before implementation
+
+The unchanged Phase 1G Chromium harness was executed on a fresh isolated Phase 1H PostgreSQL 18.6/API/nginx stack using its separated runtime/migrator roles. All tracked file hashes still matched the pre-work baseline when this evidence was saved. Two authenticated tabs sent the same cookie behind a real browser network barrier: one refresh returned 200 and one 401; the shared replacement cookie was absent afterward; one tab remained authenticated and the other became unauthenticated. After a fresh login and peer reload, logout cleared only the initiating tab; the peer remained authenticated and its existing access still authorized `/auth/me` until forced recovery failed. See [baseline evidence](../../integration/evidence/2026-10-07-phase1i-baseline.json).
+
+Current root cause: per-document single-flight cannot serialize shared-cookie mutations across documents. `AuthHandler.Refresh` clears the cookie for every `ErrTokenInvalid`; that application error collapses missing/malformed/unknown/expired/revoked/consumed credentials and disabled/deleted/invalid-role accounts into the same generic 401. A late losing response consequently deletes a replacement established by the winner. Unexpected transaction/database failures return safe 500 without clearing; denied Origin returns 403 before credential work and without clearing. Logout explicitly clears its presented browser session even on storage failure. The HTTP response cannot know which cookie the browser holds when that response arrives. This baseline is recorded before any implementation change.
+
+### Final verification — 2026-10-08
+
+Confirmed implementation and recorded disposable local evidence. Source/application-domain/migrations and prior A–H report remain preserved. [Final machine evidence](../../integration/evidence/2026-10-08-phase1i.json) and [reproduction guide](../../integration/README.md#phase-1i-multi-tab-verification) accompany this complete 58-item report.
+
+### I1. Files changed
+
+23 unstaged files: 18 modified and five new. Backend: handler and three HTTP test files plus live integration test. Frontend: coordinator/code/tests, centralized client/tests, query client, store/tests. Integration: driver, browser runner, session-browser helper, log verifier, guide and two safe evidence files. Four project documents updated. Exact paths appear in I51.
+
+### I2. Phase 1G defect reproduced
+
+YES, before implementation: actual Chromium 140.0.7339.16 on fresh PostgreSQL 18.6/API/nginx, separated roles, identical presented cookie behind a browser barrier, one 200/one 401, winner cookie deleted, final tabs authenticated/unauthenticated. Peer logout left the other tab authenticated and its old access usable. The baseline above and checked-in baseline artifact were saved before code changes.
+
+### I3. Root cause
+
+Independent document promises cannot serialize a shared cookie; a late replay rejection blindly expires a successor installed by a winner. Logout also had no peer-memory/cache notification. The server single-use decision was correct.
+
+### I4. Previous refresh-cookie clearing policy
+
+Missing, malformed, unknown, expired, explicitly revoked, consumed/replayed and invalid current account all collapse to ErrTokenInvalid, generic 401 and unconditional cookie deletion. Missing/deleted/disabled/unrecognized account state is included. Unexpected storage/transaction failure returns safe 500 without deletion; denied Origin returns 403 before IO without deletion. Logout explicitly deletes even when storage revocation fails.
+
+### I5. Final refresh-cookie clearing policy
+
+NO failed refresh emits Set-Cookie, including definitive invalidation. A request cannot identify the cookie present when its response arrives; even expired/revoked/account-invalid input can race a later login. Invalid HttpOnly cookies remain until expiry, replacement or explicit trusted-Origin logout; server denial remains authoritative. Success issues a successor and explicit coordinated logout revokes/clears as before. No error taxonomy/replay relaxation or new cookie/schema.
+
+### I6. Coordination technology
+
+Dedicated non-React SessionCoordinator: BroadcastChannel for lifecycle/outcome metadata, native exclusive Web Locks for atomic origin/storage-partition ownership. Same lock protects refresh/login/local-register/logout. No new dependency. DEC-045–047 record confirmed engineering choices; their primary API contracts are linked there.
+
+### I7. Tab identity model
+
+crypto.randomUUID per document/application runtime, never persisted and never used as authentication/account/session identity. HMR creates a fresh runtime after disposing the old coordinator.
+
+### I8. Attempt/epoch model
+
+Fresh UUID per mutation/authority check. Epoch is a monotonic microsecond-scale high-resolution clock value advanced past observed epochs; timestamps are milliseconds. Equal epochs use deterministic attempt ordering and event rank; completed success rejects contradictory same-attempt failure. Local store generation and sent-token checks separately fence asynchronous HTTP.
+
+### I9. Cross-tab message types
+
+Version 1 strict union: refresh-started, refresh-succeeded, refresh-failed (allowlisted failure only), logout, session-invalidated, auth-state-changed. Fields only type/version/tabId/attemptId/epoch/timestamp and optional failure. Exact-key, UUID, numeric/age/type checks reject malformed/unknown/extra fields; there is no account object or authority.
+
+### I10. Secret-sharing analysis
+
+No access/refresh/hash/Authorization/Cookie/password/reset value is sent. Refresh replies are stored only in their own document. Unit extra-field/credential-sentinel tests and real observed channel payload checks pass. No message logs or arbitrary payload forwarding.
+
+### I11. Same-tab single-flight relationship
+
+Existing shared refreshPromise, bootstrapPromise and local mutation queue remain. Eight simultaneous unit protected 401s and five real browser requests share one refresh per document. Local and cross-document ownership are separate layers.
+
+### I12. Cross-tab refresh ownership
+
+Acquire named exclusive native lock, announce refresh-started, send one ordinary HttpOnly-cookie request, accept only current generation, store own access and publish outcome. The browser mutex, rather than channel timing or localStorage, establishes ownership.
+
+### I13. Waiting-tab recovery
+
+Wait for native ownership, independent of receiving a completion message. Every waiter rechecks its own generation before HTTP and accepts only its own trusted server result. Peer terminal events cancel stale queued recovery through the generation fence.
+
+### I14. Serialized follow-up refresh
+
+A completes and the browser installs its successor before releasing the lock; B then rotates that successor for its own memory token; C repeats. Actual two/three-tab tests require distinct consumed credentials and persisted replacement links.
+
+### I15. Leader lease/timeout
+
+Active Axios HTTP bound 15s, queued lock wait 20s, valid metadata age 60s, future tolerance 5s. COORDINATION_TIMEOUT is a safe typed recoverable status-0 error. Never steal a live lock or launch an overlapping mutation on timeout; deliberately retry once the owner resumes/releases/closes. These are implementation bounds, not product/session policy.
+
+### I16. Owner crash behavior
+
+Native closure/crash releases ownership without a completion broadcast. Unit owner disappearance and real closed Chromium owner recover the waiter. A permanently suspended live owner causes bounded error rather than endless waiting; it must resume/close before safe ownership is reacquired. Lost committed response/cookie delivery may still require re-login; no grace/recovery secret cache.
+
+### I17. Stale-message fencing
+
+Older epochs/attempts, duplicates/self events, expired/unknown input and contradictory post-success failure are ignored. Protected denial retains request-start epoch; late old token/generation failures cannot announce newer invalidation. Logout fences pending refresh/login replies. No durable distributed session-version claim.
+
+### I18. Login propagation behavior
+
+Login/local-register intent and successful completion both send fresh non-secret auth-state-changed hints; peers discard old memory/private presentation, including peers that missed intent. No auto-login/role transfer/automatic peer refresh; explicit reload or login obtains trusted state. Separate login-change counter lets newer login supersede old queued logout.
+
+### I19. Logout propagation behavior
+
+Initiator clears immediately and sends logout; peers promptly clear memory/private cache. The server request waits behind cookie-changing replies and clears their actual replacement. Completion hint handles delivery ordering. Peer logout/invalidation never cancels revocation: three simultaneous logouts each reach the server as 204; reload stays unauthenticated. A newer login is the only lifecycle change allowed to supersede old queued logout.
+
+### I20. Session invalidation behavior
+
+Participating exclusive refresh 401 publishes generic invalidation; without atomic ownership a denial is ambiguous and stays local. Current-account auth/me or users/me resolver 403 and persistent retried 401 invalidate with request/token fences. Ordinary resource 403, Origin denial, network/5xx and coordination timeout do not globally log out peers. PostgreSQL remains authority; internal reason is never sent.
+
+### I21. TanStack Query cache handling
+
+removeQueries synchronously destroys/cancels authenticated auth/users roots or meta.authenticated=true queries, including consumed AbortSignal; public health/status remains. Existing private test fixtures use real private roots, with preserved assertions and new public-cache checks. Current private mutation history is cleared to discard credentials/inputs; cache removal cannot undo server mutation, so future callbacks must retain generation guards.
+
+### I22. Session-store behavior
+
+Zustand remains non-persisted memory-only user/access/status/generation. No channel/lock is stored in React or general app state. The actual owners are the auth store and SessionBootstrap; there is no active separate token-manager or auth-provider module. No refresh-token field, JWT authority decoding or persistence middleware was added.
+
+### I23. Storage usage
+
+No coordination or credential writes to localStorage/sessionStorage/IndexedDB. Existing theme preference remains; known legacy token keys are removed without reading values. Browser IndexedDB listing is empty; no storage-event/token-lock fallback.
+
+### I24. Browser fallback behavior
+
+Chromium verified. Web Locks alone still serialize; missing BroadcastChannel removes reliable peer UI notifications. BroadcastChannel alone carries lifecycle hints without atomic refresh optimization; 401 becomes ambiguous/local. Neither primitive: per-document single-flight plus server no-clear safety, possible local denial and deliberate reload/re-login. Missing messages do not block native release; reload/stale-token recovery consults the server. No cross-browser matrix, durable logout history or cross-device/immediate access revocation claim.
+
+### I25. Backend cookie-clearing tests
+
+PASS HTTP missing/malformed/unknown/expired/revoked/consumed/disabled/deleted/invalid-role cases: same safe 401, no cookie. Unexpected database failure: safe 500, no cookie. Origin denial: 403 before IO, no cookie. Explicit logout: clears correct production/development flags, including storage failure. Replay/default-perimeter successor continuation and real denial header assertions pass.
+
+### I26. Message-contract tests
+
+PASS 54 coordinator cases overall, including all six event kinds, every failure enum, malformed/unknown/old/future values and extra secret/account/role fields. Exact typed allowlist excludes arbitrary payloads.
+
+### I27. Two-tab unit tests
+
+PASS independent coordinator runtimes with shared FIFO browser-lock port: one starts while the other waits; each obtains separate own memory access using successive synthetic server-cookie state; max overlap one, no token in messages.
+
+### I28. Three-tab/multi-waiter tests
+
+PASS three and five independent coordinators, all turns serialized, distinct consumed-cookie sequence and independent own memory results. Real three-tab proof is I37.
+
+### I29. Owner-failure tests
+
+PASS network and server failure release ownership and leave peers intact; queued peer can proceed. Exclusive authentication denial generically invalidates every peer. Uncoordinated denial is ambiguous and cannot globally clear peers.
+
+### I30. Owner-timeout tests
+
+PASS fake timers: hung active owner, waiter aborts at 20s without HTTP/steal; after simulated browser release, deliberate retry acquires and succeeds. Client bootstrap timeout settles error, then deliberate retry restores. No unit test uses real-time sleep.
+
+### I31. Stale-event tests
+
+PASS old attempt/invalidation after newer success, contradictory completed-attempt failure, old authority request-start denial after newer peer, duplicate/self/expired/malformed events and late superseded-token 401/403. Actual stale BroadcastChannel delivery also leaves all three tabs authenticated.
+
+### I32. Logout tests
+
+PASS immediate memory/private removal, public cache preservation, pending HTTP fencing, no unnecessary peer recovery and client subscription disposal. Three simultaneous peer logouts cannot cancel every server revocation. Actual delayed-success/three-tab logout cases pass.
+
+### I33. Session-invalidation tests
+
+PASS generic exclusive-auth denial propagation plus explicit invalidation to multiple peers, transport current-account 403 versus ordinary permission 403, private query cancellation and late-request fences. Real disable and session revoke pass.
+
+### I34. Retry-bound tests
+
+PASS 401 → one coordinated refresh → one retried request → 401 STOP, including Query cancellation/retry behavior. Session endpoints/public attachAuth=false do not recursively recover. Late old-token denial cannot clear a newer successful recovery.
+
+### I35. Storage tests
+
+PASS local/session Storage spies and IndexedDB open/delete spies; only preference availability probes occur. Login/refresh/logout and message sentinels show no usable credentials stored/transmitted. Real IndexedDB databases/local/session/document.cookie checks independently pass.
+
+### I36. Real Chromium two-tab result
+
+PASS [200, 200], max network refresh in flight 1, two distinct presented credentials, two consumed/linked rows, surviving usable cookie, both authenticated. Each access came through its own actual server reply. Separate deliberately uncoordinated same-cookie race remains [200, 401]; late loser has no Set-Cookie and cannot delete winner.
+
+### I37. Real Chromium three-tab result
+
+PASS [200, 200, 200], max in flight 1, three distinct consumed/linked credentials, surviving usable cookie and all authenticated. Native pending-lock introspection confirms two real waiting documents before the first request is released.
+
+### I38. Simultaneous reload result
+
+PASS three near-simultaneous reloads: exactly three bootstrap refreshes, each begins with empty memory and ends authenticated; no storm or cookie corruption.
+
+### I39. Real logout-propagation result
+
+PASS three peers promptly unauthenticated, private caches absent/public cache retained, zero peer refresh requests, cookie absent, subsequent protected requests denied. A held committed 200 cannot restore old memory; logout waits then revokes/clears replacement. Three simultaneous logout requests return 204 and subsequent reload stays logged out.
+
+### I40. Real disable/revoke result
+
+PASS synthetic runtime-role DML disable: current-account 403 causes generic invalidation across three tabs/private caches. Re-enable and fresh restoration, then revoke sessions: exclusive refresh 401 invalidates all three. Failed refresh retains invalid HttpOnly cookie by documented policy; explicit logout clears.
+
+### I41. Real PostgreSQL refresh concurrency regression
+
+PASS under -race, actual DML runtime role/HTTP/separate connections: 1 success / 11 safe denials, every denial no Set-Cookie. Single coherent successor, hash-only storage/digest-not-bearer, replay denial, winner usable, actual post-consumption rollback, current-account demotion/disable, idempotent logout and bounded cleanup. Seven passing test nodes (six subtests plus parent). Server application/domain/SQL/rotation infrastructure byte-identical.
+
+### I42. Cookie security regression
+
+PASS real development HttpOnly, host-only, Path=/api/v1/auth, SameSite=Lax, Secure=false on explicit local HTTP; document.cookie cannot read refresh. Production Secure=true and matching logout flags covered by HTTP tests. Access memory-only. Actual production HTTPS remains unrun.
+
+### I43. CORS/Origin regression
+
+PASS real trusted credentialed login/refresh/preflight and same-origin logout; untrusted localhost:14174 refresh/logout wire 403, no allowed-origin/credentials headers, no cookie change. Explicit server trusted-Origin policy/CORS source unchanged; no secret-readable CSRF cookie.
+
+### I44. Request-ID/logging regression
+
+PASS 282 response IDs/statuses each match exactly one final API completion; 585 structured rows checked against 377 distinct sentinel values, ZERO matches. Includes all local runtime/bootstrap/API credentials. Safe auth events remain, parser 413/431 and readiness/rates correct. No channel payload/token/header logging. Log artifacts include earlier attempts; current response correlations are from the final successful browser/runtime suites.
+
+### I45. Listener/resource cleanup
+
+PASS one singleton independent of React remounts; HMR closes channel/removes listener, aborts queued lock requests and disposes transport subscription. Pending old client cannot restore/recover auth. Test-owned coordinators disposed. Owned containers/network/volume/local image tags, private env/sentinels/CLI and ignored browser build removed; unrelated resource and shared caches preserved, verified by Docker names/labels.
+
+### I46. Backend fmt/vet/test results
+
+PASS go fmt ./..., go vet ./..., go test ./... with selected Go 1.27.1 and task GOCACHE: 426 passing test nodes (92 top-level/334 subtests), 15 passing packages; two opt-in live tests skipped offline, 11 packages without tests. Global outside-module launcher is still 1.26.5; no version/rule lowered. Unchanged Phase 1H live migration fault/process suite not rerun in 1I; prior real evidence and source hashes are preserved.
+
+### I47. Targeted race results
+
+PASS eight actual packages: application/auth, infrastructure/security, infrastructure/database, infrastructure/persistence/postgres, HTTP routes, HTTP middleware, bootstrap and config. Real foundation PostgreSQL suite independently passes -race. An initial command included a nonexistent repository directory; corrected to the discovered actual persistence path and completed successfully.
+
+### I48. Frontend lint/test/build results
+
+PASS npm run lint (zero errors, unchanged 19 warnings), npm run test:run (139 tests/eight files: 54 coordinator and 37 transport cases), npm run build (strict TypeScript/Vite). Node 24.19.0/npm 11.17.0; Docker Node 22 build also passes. Normal entry 459.49kB, transport 59.80kB; only ignored static-driver build has expected chunk/dynamic-import warnings. No dependencies/gate/typechecking changes.
+
+### I49. Compose validation
+
+PASS six quiet configurations: base default, full, tools, full+tools, retained Phase 1G override full and Phase 1H override full+tools. Actual API/frontend images build/run, nginx -t passes. Final nginx observed /32 still equals trusted configuration. Phase 1H disposable names intentionally retained; no production manifest/deployment.
+
+### I50. git diff --check
+
+PASS at closure. Exact A–H foundation prefix, Phase 0/open questions, charter/source/architecture/stack, all six historical SQL files, domain/application/database/security source, dependency manifests/locks, V1 audit and shadcn primitives preserved. Final safe evidence contains no credential values.
+
+### I51. Exact git status
+
+All 23 changes unstaged; 18 modified/five new. No staging/commit/push/remote modification.
+
+```text
+ M backend/internal/interface/http/handlers/auth_handler.go
+ M backend/internal/interface/http/routes/browser_session_test.go
+ M backend/internal/interface/http/routes/http_perimeter_test.go
+ M backend/internal/interface/http/routes/refresh_session_test.go
+ M backend/tests/integration/foundation_test.go
+ M docs/project/DECISIONS.md
+ M docs/project/PHASE1_FOUNDATION.md
+ M docs/project/PHASE1_SECURITY_BACKLOG.md
+ M docs/project/ROADMAP.md
+ M frontend/src/app/query-client.ts
+ M frontend/src/lib/api-client.test.ts
+ M frontend/src/lib/api-client.ts
+ M frontend/src/stores/auth-store.test.ts
+ M frontend/src/stores/auth-store.ts
+ M integration/README.md
+ M integration/browser-driver.ts
+ M integration/browser.mjs
+ M integration/logs.py
+?? frontend/src/lib/session-coordinator.test.ts
+?? frontend/src/lib/session-coordinator.ts
+?? integration/evidence/2026-10-07-phase1i-baseline.json
+?? integration/evidence/2026-10-08-phase1i.json
+?? integration/session-browser.mjs
+```
+
+### I52. Remaining CI work
+
+CI/OPERATIONS: automated pipeline remains absent/open. Wire deterministic selected-toolchain unit/race/frontend/Compose plus opt-in disposable-role/live/browser gates later; do not add CI here. Guide serializes shared fixtures/rate budgets and includes a six-second reset between live HTTP and browser suites.
+
+### I53. Remaining deployment-only verification
+
+Hosted same-site HTTPS/Secure cookies/HSTS/CSP/assets/edge proxy topology; production verified PostgreSQL TLS, least-privilege role/ownership rollout and separately credentialed release migration controls; backups/restore/recovery and operator deployment evidence. Local success is not deployed production approval; none blocks domain/database design.
+
+### I54. Remaining product-policy decisions
+
+OPEN-001–020 unchanged: provisioning/eligibility/institutional roles, stock reservation/borrowing/return/accountability/fine/currency/day-boundary/history/kiosk/terms/notifications/data migration policies. Family/global/concurrent-device/immediate-access-revocation policy remains unresolved. These gate dependent product design/implementation, not the engineering foundation.
+
+### I55. Remaining non-blocking foundation backlog
+
+19 retained primitive/hook warnings; dependency/image review; local registration user/session atomicity before future approved product provisioning; additional browser matrix if later required. Operational log sink/access/retention/rotation and cleanup scheduling/cadence/load/ownership stay CI/OPERATIONS. No automatic 1J.
+
+### I56. Any blocker before Phase 2
+
+BLOCKING BEFORE PHASE 2: NONE in the engineering foundation. CI and deployed-production checks remain open in their categories. Policy-dependent design still needs stakeholder decisions; Phase 2 itself still needs separate authorization.
+
+### I57. Phase 1I exit gate
+
+SATISFIED / COMPLETE, 2026-10-08, for source and disposable local scope. Baseline/fixed real race, atomic non-secret coordination, wait/recovery/fences, peer lifecycle/private cache, local single-flight/one retry, actual two/three/reload/disable/revoke/fallback/late-response checks, unchanged PostgreSQL single-use semantics and all standard/race/Compose/log/diff gates pass. No Phase 2/business schema/feature/mockup/CI pipeline/commit/push/deployment.
+
+### I58. Complete Phase 1 readiness for Phase 2
+
+READY for separately authorized domain/database design: Phase 1A–1I engineering foundations have no remaining blocker. Production verification/CI are not claimed complete. Product policies remain open and dependent designs require decisions. Phase 2 has NOT begun.
+
+### Phase 1A–1I remaining-work categories
+
+| Category | Remaining work / boundary |
+|---|---|
+| **BLOCKING BEFORE PHASE 2** | **None in the engineering foundation.** Separate Phase 2 authorization still required. |
+| **NON-BLOCKING FOUNDATION BACKLOG** | Retained 19 warnings; dependency/image review; local registration atomicity before product provisioning; optional future browser matrix. |
+| **DEPLOYMENT-ONLY** | Hosted HTTPS/Secure cookies/HSTS/CSP/edge topology; production verified DB TLS/roles/ownership; explicit release/recovery/backup/restore verification. |
+| **CI/OPERATIONS** | CI pipeline; deterministic toolchain/race/live/browser jobs; log sink/access/retention/rotation ownership; bounded cleanup schedule/cadence/load/owner. |
+| **PRODUCT POLICY** | Preserved OPEN-001–020 plus institutional session/family/global/concurrent-device/immediate-access-revocation policy. Decide before dependent model/feature implementation. |
+
+Phase 1A configuration fails closed; 1B current-account authority/production registration containment, 1C JWT/hash/atomic single-use sessions, 1D memory/HttpOnly/Origin transport, 1E perimeter, 1F safe contracts/observability, 1G real runtime and 1H migration/privilege evidence remain intact. Phase 1I closes the mandatory cross-tab engineering finding. No Phase 1J or later-phase implementation is inferred.

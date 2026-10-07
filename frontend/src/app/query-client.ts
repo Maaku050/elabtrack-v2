@@ -1,4 +1,4 @@
-import { QueryClient } from '@tanstack/react-query'
+import { QueryClient, type Query } from '@tanstack/react-query'
 import { ApiRequestError } from '@/lib/api-error'
 
 /**
@@ -24,3 +24,18 @@ export const queryClient = new QueryClient({
     },
   },
 })
+
+/** Retained private roots plus explicit opt-in for future approved features.
+ * Unclassified new server queries must use meta.authenticated=true if private. */
+export function isAuthenticatedQuery(query: Query): boolean {
+  return query.meta?.authenticated === true || ['auth', 'users'].includes(String(query.queryKey[0]))
+}
+
+export function clearAuthenticatedQueries(): void {
+  // removeQueries cancels active work synchronously (including AbortSignal)
+  // before destroying the cache. Public health/status data survives logout.
+  queryClient.removeQueries({ predicate: isAuthenticatedQuery })
+  // Mutations may contain credentials or private inputs. Removal cannot undo
+  // an HTTP mutation; application callbacks still fence by session generation.
+  queryClient.getMutationCache().clear()
+}

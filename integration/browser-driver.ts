@@ -2,6 +2,8 @@
 // disposable nginx container. Never included by the production entrypoint.
 import { apiClient } from '../frontend/src/lib/api-client'
 import { useAuthStore } from '../frontend/src/stores/auth-store'
+import { queryClient } from '../frontend/src/app/query-client'
+import { sessionCoordinator } from '../frontend/src/lib/session-coordinator'
 import '../frontend/src/main'
 
 Object.assign(window, { phase1g: {
@@ -14,4 +16,10 @@ Object.assign(window, { phase1g: {
   // changing cookies, the API, or production security behavior.
   invalidateAccess: () => useAuthStore.setState({ accessToken: 'invalid-synthetic-access' }),
   initialMemoryEmpty: useAuthStore.getState().accessToken === null,
+  coordination: () => ({ exclusive: sessionCoordinator.exclusive, broadcast: typeof BroadcastChannel !== 'undefined' }),
+  cachePrivate: () => {
+    queryClient.setQueryData(['auth', 'me'], useAuthStore.getState().user)
+    queryClient.setQueryData(['foundation', 'health'], { status: 'ok' })
+  },
+  cacheState: () => ({ privatePresent: queryClient.getQueryData(['auth', 'me']) !== undefined, publicPresent: queryClient.getQueryData(['foundation', 'health']) !== undefined }),
 } })

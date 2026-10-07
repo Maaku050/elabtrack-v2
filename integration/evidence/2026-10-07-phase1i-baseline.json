@@ -1,0 +1,33 @@
+{
+  "phase": "1I baseline before fixes",
+  "date": "2026-10-07",
+  "browser": "140.0.7339.16",
+  "sequence": [
+    "A logs in; B bootstraps with the shared cookie; both hold independent memory access",
+    "network barrier holds both cookie-based refresh requests until identical Cookie headers are confirmed",
+    "release both requests against actual PostgreSQL runtime-role API",
+    "A logs in again; B reloads; A logs out; B remains authenticated and can use its old access until forced refresh"
+  ],
+  "requests": {
+    "simultaneousRefresh": 2,
+    "samePresentedCookieConfirmed": true,
+    "results": [
+      "success",
+      "denied:401"
+    ]
+  },
+  "crossTab": {
+    "refreshResults": [
+      "success",
+      "denied:401"
+    ],
+    "cookieSurvived": false,
+    "states": [
+      "authenticated",
+      "unauthenticated"
+    ],
+    "logoutOtherTabAccessRemainedValid": true,
+    "recommendation": "ADD CROSS-TAB SESSION COORDINATION BEFORE PRODUCT UI"
+  },
+  "sourceUnchangedBeforeReproduction": true
+}
