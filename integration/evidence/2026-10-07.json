@@ -1,0 +1,259 @@
+{
+  "date": "2026-10-07",
+  "scope": "disposable local Phase 1G only",
+  "environment": {
+    "go": "1.27.1 linux/amd64",
+    "GOTOOLCHAIN": "auto",
+    "node": "24.19.0",
+    "npm": "11.17.0",
+    "dockerEngine": "29.8.0",
+    "dockerDesktop": "4.92.0",
+    "compose": "5.5.1",
+    "postgres": "18.6",
+    "playwright": "1.55.0",
+    "chromium": "140.0.7339.16"
+  },
+  "database": "elabtrack_v2_integration",
+  "runtime": {
+    "final_schema": {
+      "columns": [
+        "id",
+        "token_hash",
+        "user_id",
+        "expires_at",
+        "created_at",
+        "updated_at",
+        "revoked_at",
+        "replaced_by"
+      ],
+      "constraints": [
+        "refresh_tokens_created_at_not_null",
+        "refresh_tokens_expires_at_not_null",
+        "refresh_tokens_hash_format",
+        "refresh_tokens_id_not_null",
+        "refresh_tokens_lifetime",
+        "refresh_tokens_not_self_replaced",
+        "refresh_tokens_pkey",
+        "refresh_tokens_replaced_by_fkey",
+        "refresh_tokens_replacement_revoked",
+        "refresh_tokens_token_hash_key",
+        "refresh_tokens_token_not_null",
+        "refresh_tokens_updated_at_not_null",
+        "refresh_tokens_user_id_fkey",
+        "refresh_tokens_user_id_not_null"
+      ],
+      "indexes": [
+        "idx_refresh_tokens_replaced_by",
+        "idx_refresh_tokens_terminal",
+        "idx_refresh_tokens_user_id",
+        "refresh_tokens_pkey",
+        "refresh_tokens_token_hash_key"
+      ],
+      "versions": [
+        "000001_create_users",
+        "000002_create_refresh_tokens",
+        "000003_refresh_session_security"
+      ],
+      "roles": "postgres|t"
+    },
+    "DDL_committed_before_failed_bookkeeping": true,
+    "concurrent_runner": {
+      "exitCodes": [
+        1,
+        0
+      ],
+      "oneDDLFailure": true,
+      "advisoryLock": false
+    },
+    "modified_applied_migration_not_detected": true,
+    "denied_last_applied_lookup_swallowed": {
+      "exitCode": 0,
+      "realState": "three versions applied",
+      "reported": "no migrations to roll back"
+    },
+    "production_unsafe_TLS_rejected": "startup validation rejects disabled TLS before connection/seed IO",
+    "production_seed_rejected": "startup validation rejects disabled TLS before connection/seed IO",
+    "production_seed_guard": "valid production config refuses seed before database IO",
+    "incoming_IDs_ignored": true,
+    "direct": {
+      "requestId": "78473bef-ddea-4678-bf36-ac6db89b7d2d"
+    },
+    "direct_spoof": {
+      "requestId": "a93b0606-966a-44d4-b856-5d8a7c3cb940"
+    },
+    "proxied_spoof": {
+      "requestId": "730ba0da-ec57-4690-9db9-648ab4bb5122"
+    },
+    "local_HSTS_absent": true,
+    "socket_global_body_limit": {
+      "requestId": "5d8f65cd-3d2f-47fd-abea-0765614e31af"
+    },
+    "socket_header_limit": {
+      "requestId": "2fde4732-8581-4569-8aa3-b455bfa18086"
+    },
+    "socket_auth_body_limit": true,
+    "DB_unavailable_liveness_and_readiness": {
+      "liveness": 200,
+      "readiness": 503
+    },
+    "API_pool_reconnect": true,
+    "rate_limit_/auth/login": {
+      "allowed": 10,
+      "next": 429,
+      "retryAfter": "5",
+      "requestId": "ee15bac4-4ed4-4713-a622-8f1c4dc40120",
+      "window": "5s"
+    },
+    "rate_limit_/auth/refresh": {
+      "allowed": 60,
+      "next": 429,
+      "retryAfter": "5",
+      "requestId": "c26ae7ee-d383-4141-9934-11cc189c96b5",
+      "window": "5s"
+    },
+    "rate_limit_/health": {
+      "allowed": 120,
+      "next": 429,
+      "retryAfter": "5",
+      "requestId": "9fd1bdf6-655d-4e35-b6c8-639256090e91",
+      "window": "5s"
+    },
+    "explicit_migrations_unchanged_by_reconnect": true
+  },
+  "browser": {
+    "checks": [
+      {
+        "name": "production SPA headers, routes, API proxy, theme and three responsive viewports",
+        "detail": true
+      },
+      {
+        "name": "browser login, safe current account, HttpOnly/Lax/path cookie, memory-only tokens",
+        "detail": true
+      },
+      {
+        "name": "reload starts with empty memory and exactly one real bootstrap refresh",
+        "detail": true
+      },
+      {
+        "name": "five concurrent real protected 401s share one refresh and retry successfully",
+        "detail": true
+      },
+      {
+        "name": "controlled protected 401 performs one actual refresh and one retry",
+        "detail": true
+      },
+      {
+        "name": "persistent protected 401 stops after one retry and clears memory",
+        "detail": true
+      },
+      {
+        "name": "revoked-session reload fails once and clears the dead cookie",
+        "detail": true
+      },
+      {
+        "name": "two tabs share the cookie but racing rotation forces one tab unauthenticated",
+        "detail": {
+          "refreshResults": [
+            "success",
+            "denied:401"
+          ],
+          "cookieSurvived": false,
+          "states": [
+            "authenticated",
+            "unauthenticated"
+          ],
+          "logoutOtherTabAccessRemainedValid": true,
+          "recommendation": "ADD CROSS-TAB SESSION COORDINATION BEFORE PRODUCT UI"
+        }
+      },
+      {
+        "name": "logout clears one tab; other tab remains authenticated until refresh fails",
+        "detail": true
+      },
+      {
+        "name": "real browser allowed-origin credentials/preflight and disallowed refresh/logout CSRF denial",
+        "detail": true
+      }
+    ],
+    "crossTab": {
+      "refreshResults": [
+        "success",
+        "denied:401"
+      ],
+      "cookieSurvived": false,
+      "states": [
+        "authenticated",
+        "unauthenticated"
+      ],
+      "logoutOtherTabAccessRemainedValid": true,
+      "recommendation": "ADD CROSS-TAB SESSION COORDINATION BEFORE PRODUCT UI"
+    }
+  },
+  "logs": {
+    "secretSentinelsChecked": 91,
+    "secretMatches": 0,
+    "structuredRowsChecked": 454,
+    "correlatedResponses": 243,
+    "securityEvents": [
+      "auth.login_failed",
+      "auth.login_succeeded",
+      "auth.logout_completed",
+      "auth.refresh_failed",
+      "auth.refresh_succeeded"
+    ],
+    "finalStatuses": [
+      200,
+      201,
+      204,
+      400,
+      401,
+      403,
+      413,
+      429,
+      431,
+      503
+    ],
+    "clientIPs": {
+      "direct": "172.18.0.1",
+      "direct_spoof": "172.18.0.1",
+      "proxied_spoof": "172.18.0.1"
+    },
+    "parserCompletionsAccurate": true
+  },
+  "restart": {
+    "postgresVolumePreserved": true,
+    "migrationVersionsAndTimestampsUnchanged": true,
+    "oldAccessWorks": true,
+    "cookieSurvives": true,
+    "reloadRotatesAndRestores": true,
+    "logoutWorks": true,
+    "nginxSPAAvailable": true
+  },
+  "realPostgreSQLSuite": {
+    "passed": true,
+    "racePassed": true,
+    "concurrentHTTPAttempts": 12,
+    "refreshWinners": 1,
+    "safeDenials": 11,
+    "rollbackAfterActualConsume": true,
+    "staleRoleAndStatus": true,
+    "boundedCleanup": true
+  },
+  "standardGates": {
+    "backendPass": true,
+    "offlinePassNodes": 408,
+    "liveSuitePassNodes": 7,
+    "frontendTests": 73,
+    "frontendTestFiles": 7,
+    "frontendLintWarnings": 19,
+    "composeConfigurations": 3
+  },
+  "cleanup": "Owned integration containers, network, volume and built project images removed; ignored credentials, private secret sentinel file and generated browser build removed. Shared base-image caches retained.",
+  "deploymentOnly": [
+    "production HTTPS/HSTS",
+    "actual hosting verify-full PostgreSQL handshake",
+    "cloud proxy topology",
+    "backup/restore",
+    "external monitoring"
+  ]
+}

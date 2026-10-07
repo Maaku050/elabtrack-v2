@@ -1,6 +1,6 @@
 # Initial delivery roadmap
 
-Confirmed sequence from current stakeholder direction. **Current authorization is Phase 1F only; Phase 0 and 1A–1E are complete.** Later deliverables describe phase-level outcomes, not a speculative task backlog or permission to execute them. Dependencies include the relevant accepted policy decisions, not merely a checked phase number.
+Confirmed sequence from current stakeholder direction. **Phase 0 and 1A–1G are complete within their recorded scope. The latest authorization covers Phase 1G only; Phase 1H has not begun.** Later deliverables describe phase-level outcomes, not a speculative task backlog or permission to execute them. Dependencies include the relevant accepted policy decisions, not merely a checked phase number.
 
 ## Phase 0 — Rebaseline & Template Adaptation
 

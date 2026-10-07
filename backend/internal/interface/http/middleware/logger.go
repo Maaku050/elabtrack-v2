@@ -28,56 +28,62 @@ func Logger(l *logger.Logger) fiber.Handler {
 		if err != nil {
 			err = c.App().ErrorHandler(c, err)
 		}
-		if l == nil {
+		// Fiber traverses USE middleware before rendering a socket parser error.
+		// That traversal has no final HTTP status yet; the parser callback logs it.
+		if l == nil || c.Locals(parserErrorKey{}) == true {
 			return err
 		}
-		status := c.Response().StatusCode()
-		out := response.OutcomeFromContext(c)
-		fields := append(requestFields(c), zap.String("event", "http.request_completed"), zap.Int("status", status), zap.Float64("duration_ms", float64(time.Since(start))/float64(time.Millisecond)))
-		if out.Code != "" {
-			fields = append(fields, zap.String("error_code", out.Code))
-		}
-		event := ""
-		route := c.Route()
-		if route != nil && c.Method() == "POST" {
-			switch route.Path {
-			case "/api/v1/auth/login":
-				if status < 300 {
-					event = "auth.login_succeeded"
-				} else {
-					event = "auth.login_failed"
-				}
-			case "/api/v1/auth/refresh":
-				if status < 300 {
-					event = "auth.refresh_succeeded"
-				} else {
-					event = "auth.refresh_failed"
-				}
-			case "/api/v1/auth/logout":
-				if status < 300 {
-					event = "auth.logout_completed"
-				} else {
-					event = "auth.logout_failed"
-				}
-			}
-		}
-		if event != "" {
-			fields = append(fields, zap.String("security_event", event))
-		}
-		switch {
-		case status >= 500 || out.Unexpected:
-			l.Error("http request completed", fields...)
-		case status == 403 || status == 429:
-			l.Warn("http request completed", fields...)
-		case status >= 400 && (status != 401 || event == ""):
-			l.Debug("http request completed", fields...)
-		default:
-			l.Info("http request completed", fields...)
-		}
-		// response.Error writes directly; it still receives one safe failure record.
-		logFailure(l, c)
+		completeRequest(l, c, start)
 		return err
 	}
+}
+
+func completeRequest(l *logger.Logger, c fiber.Ctx, start time.Time) {
+	status := c.Response().StatusCode()
+	out := response.OutcomeFromContext(c)
+	fields := append(requestFields(c), zap.String("event", "http.request_completed"), zap.Int("status", status), zap.Float64("duration_ms", float64(time.Since(start))/float64(time.Millisecond)))
+	if out.Code != "" {
+		fields = append(fields, zap.String("error_code", out.Code))
+	}
+	event := ""
+	route := c.Route()
+	if route != nil && c.Method() == "POST" {
+		switch route.Path {
+		case "/api/v1/auth/login":
+			if status < 300 {
+				event = "auth.login_succeeded"
+			} else {
+				event = "auth.login_failed"
+			}
+		case "/api/v1/auth/refresh":
+			if status < 300 {
+				event = "auth.refresh_succeeded"
+			} else {
+				event = "auth.refresh_failed"
+			}
+		case "/api/v1/auth/logout":
+			if status < 300 {
+				event = "auth.logout_completed"
+			} else {
+				event = "auth.logout_failed"
+			}
+		}
+	}
+	if event != "" {
+		fields = append(fields, zap.String("security_event", event))
+	}
+	switch {
+	case status >= 500 || out.Unexpected:
+		l.Error("http request completed", fields...)
+	case status == 403 || status == 429:
+		l.Warn("http request completed", fields...)
+	case status >= 400 && (status != 401 || event == ""):
+		l.Debug("http request completed", fields...)
+	default:
+		l.Info("http request completed", fields...)
+	}
+	// response.Error writes directly; it still receives one safe failure record.
+	logFailure(l, c)
 }
 
 type failureLoggedKey struct{}

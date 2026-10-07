@@ -76,6 +76,8 @@ func Map(err error) Mapping {
 			return Map(shared.ErrValidation) // one 400 policy for input validation
 		case 429:
 			return result(429, constants.CodeRateLimited, "Too many requests. Please slow down.")
+		case 431:
+			return result(431, constants.CodeBadRequest, "Request headers are too large.")
 		case 503:
 			return result(503, constants.CodeUnavailable, "Service is not ready. Please try again later.")
 		}

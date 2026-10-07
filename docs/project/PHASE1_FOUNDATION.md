@@ -1324,3 +1324,542 @@ SEC-015/016 source-level contracts/logging implemented, runtime still 1G. SEC-01
 ### F40. Phase 1F exit gate and security review
 
 **SATISFIED / COMPLETE** for the authorized source/offline Phase 1F scope: consistent retained JSON/error/field contract and centralized safe mapping, correlated server-owned UUIDs/context, structured safe metadata/log levels/lifecycle/auth/error/panic records, tested secret exclusions, explicit minimal health/readiness, typed normalized frontend failure and preserved 1D refresh lifecycle / 1E perimeter, accepted UX/mockup/shadcn documentation and exact sequencing, backend fmt/vet/tests/race, frontend lint/tests/build, both supported Compose configurations and diff check all pass. All 40 requested final-report items are recorded above. Live parser/PG/browser/proxy/Docker/logging verification remains1G; runner hardening remains1H. This is not production deployment approval. No later phase, business feature, UI/mockup, migration execution, staging/commit/push or deployment occurred.
+
+## Phase 1G — Real Integration Verification
+
+Authorized and verified **2026-10-07 (Asia/Shanghai)**. Phase 0/1A–1F reports above
+are preserved as an exact prefix. This is real disposable local verification,
+with two narrow HTTP foundation fixes. No Phase 1H, business workflow/table,
+mockup/UI redesign, V1 Firebase, production data, commit, push or deployment.
+Reproduction: [integration instructions](../../integration/README.md).
+Sanitized machine results: [evidence](../../integration/evidence/2026-10-07.json).
+The following G1–G60 cover every requested final-report item.
+
+### G1. Files changed
+
+Modified: root/backend READMEs; bootstrap/server.go; middleware/logger.go;
+response/errors.go and errors_test.go; docs/API_CONTRACTS.md; this report;
+PHASE1_SECURITY_BACKLOG.md; ROADMAP.md. Added: bootstrap/parser_logging_test.go;
+middleware/parser_logging.go; tests/integration/foundation_test.go; integration
+README, Compose override, env runner, runtime/browser/restart/log check scripts,
+browser-only driver/build script and sanitized evidence JSON. G56 records exact
+porcelain status. No frontend production source, dependency, migration, seed SQL,
+domain/application/auth implementation or normal Docker/nginx manifest changed.
+
+### G2. Environment/tool versions
+
+Ubuntu 24.04.1 under WSL; Go **1.27.1 linux/amd64**, GOTOOLCHAIN=auto;
+Node **24.19.0**, npm **11.17.0**; Docker Engine client/server **29.8.0**,
+Desktop **4.92.0**, Compose **5.5.1**; PostgreSQL **18.6**;
+external cached Playwright **1.55.0**, real Chromium **140.0.7339.16**.
+Native WSL Docker wrappers reported integration unavailable; installed Windows
+Docker/Compose executables worked through interop after starting the stopped
+local Desktop engine. Real local sockets/Windows interop required execution
+outside the sandbox. Chromium initially lacked libnspr4/libnss3/libasound2t64;
+Ubuntu packages were downloaded/extracted under /tmp, without system installation
+or application dependency changes. No toolchain requirement was weakened.
+
+### G3. Disposable database setup
+
+Fresh `elabtrack_v2_integration`, PostgreSQL service/container
+`elabtrack_v2_phase1g_postgres`, localhost **15432**; inside Compose `postgres:5432`.
+Project `elabtrack_v2_phase1g`, volume `elabtrack_v2_phase1g_pgdata`, dedicated
+project network, API port **18080**, nginx **15173**. Generated credentials were
+in ignored 0600 backend/.env.phase1g; normal backend env_file was reset. Resource
+inspection found no pre-existing eLabTrack container/volume. Base project fixed
+names require the override in addition to `-p`. Normal development data was never
+reused. All owned integration resources and credentials were removed (G23).
+
+### G4. PostgreSQL result
+
+PASS: repository `postgres:18.6-alpine` pulled/started; pg_isready health passed;
+server reported PostgreSQL 18.6 x86_64 Linux-musl. Host pgx/psql and container psql
+authenticated to the isolated database; full API used that same instance.
+
+### G5. Migration from-zero result
+
+PASS: explicit compiled repository CLI `--migrate-status` showed all three pending;
+`--migrate-up` applied all three, without API startup. Final live schema has users,
+refresh_tokens and schema_migrations; digest-only session columns, unique hash,
+ownership/replacement FKs, lifetime/hash/replacement/self-link checks and expected
+indexes were inspected. PostgreSQL retains the historical NOT NULL constraint
+name `refresh_tokens_token_not_null` after column rename; it refers to token_hash,
+not a remaining plaintext token column.
+
+### G6. Migration versions applied
+
+Exactly `000001_create_users`, `000002_create_refresh_tokens`,
+`000003_refresh_session_security`, in order. Live status and tracking rows agreed.
+All six repository SQL files are unchanged.
+
+### G7. Down/up result
+
+PASS: fresh up → explicit latest `--migrate-down` removed version 000003 and
+restored its prior empty raw-column schema → `--migrate-up` reapplied 000003.
+Final status/schema are hash-only. Both directions intentionally invalidate
+sessions; this disposable sequence preceded authentication fixtures. No API
+was run against the old schema.
+
+### G8. Migration-runner observations
+
+Known defects reproduced safely; no runner fix:
+
+- A temporary tracking CHECK rejected probe version 000099 after its SQL committed;
+  probe table existed with **no tracking row**. Operator cleanup was required.
+- Two concurrent probe runners: **one exit 0, one exit 1**, one applied record;
+  both attempted the same pending DDL. No advisory lock exists.
+- Editing an applied temporary SQL file was silently skipped; no checksum detected it.
+- A temporary login allowed schema access/create but denied tracking SELECT;
+  `--migrate-down` exited **0**, saying “no migrations to roll back” despite three
+  applied versions. Source lastAppliedVersion swallows every Scan error.
+
+Temporary probe table/constraint/version/login were removed. Source also confirms
+Down commits SQL before deleting tracking. No dangerous production failure,
+business migration or runner redesign was attempted.
+
+### G9. Seeding safety result
+
+PASS: explicit development `--seed` executed repository development.sql locally;
+normal startup never seeds. Production disabled-TLS configuration failed before
+IO; separately, valid production verify-full configuration plus `--seed` reached
+and failed the development-only guard before database IO. Seed passwords were
+never printed or copied into this report. Seed accounts are synthetic temporary
+foundation conveniences, not approved institutional roles/provisioning.
+
+### G10. API startup result
+
+PASS: real repository API image built and started against migrated PostgreSQL.
+Startup JSON records explicit-command migration policy, startup_seed_enabled=false,
+development, listener and allowlist count without credentials. API restarts did
+not change migration versions/timestamps or invoke seeds. No test endpoint added.
+
+### G11. Health result
+
+PASS: real GET /api/v1/health returns 200 standard envelope with minimal
+status=ok/service=elabtrack-v2, no-store and server UUID. It remained 200 while the
+isolated PostgreSQL container was stopped.
+
+### G12. Readiness result
+
+PASS: /ready returns 200 when connected; stopping only the owned database produced
+safe enveloped **503 SERVICE_UNAVAILABLE** with matching request ID. Raw database
+errors were absent. After PostgreSQL resumed, the running API pool reconnected and
+readiness became 200. The probe proves connectivity, not full schema/operational
+health or backup readiness.
+
+### G13. Synthetic account setup
+
+Repository user adapter fixtures used generated synthetic addresses/passwords,
+real bcrypt, temporary user/admin and is_active=false. Browser fixtures used the
+supported local-only register API; no new provisioning UI/route. Only disposable
+fixture role/status updates used direct parameterized PostgreSQL. Successful
+tests deleted their own accounts; earlier harness-run remnants were disposed with
+the owned volume. No real personal/school data.
+
+### G14. Real login result
+
+PASS: actual HTTP/database login returns access_token/Bearer/expiry/safe user;
+no raw refresh in JSON. Cookie is host-only elabtrack_v2_refresh, HttpOnly,
+SameSite=Lax, Path=/api/v1/auth, Secure=false for documented development HTTP.
+Persisted session lookup matches the digest; no raw credential is printed.
+
+### G15. Invalid-login result
+
+PASS: wrong password, unknown account and inactive account all return the same
+generic **401 INVALID_CREDENTIALS** message and standard ID/envelope. Login rate
+budget applies before credential work. No claim of timing equalization is made.
+
+### G16. Current-account result
+
+PASS: real /auth/me returns exactly five safe current-account fields, expected
+synthetic ID/current role/status and standard envelope. Password/hash/session
+material is absent. PostgreSQL, rather than historical JWT authority, governs.
+
+### G17. Stale-role/status result
+
+PASS, mandatory: temporary admin initially lists users; direct disposable
+demotion then old access token → **403** on list. Disabling that account then old
+token → **403** on both list/current-account reads. No token reissue was necessary
+for current database authority to win. Final institutional roles remain unresolved.
+
+### G18. Refresh hash persistence result
+
+PASS: SHA-256 of the presented canonical opaque credential locates its row;
+the raw credential does not match persisted values. Final schema has no token
+column. Submitting the stored digest itself as a credential returns 401.
+
+### G19. Real rotation result
+
+PASS: cookie-driven refresh creates a different opaque credential/digest,
+consumes the old row, records its successor FK and returns renewed access. Old
+credential replay gives generic 401 and does not revoke the winner's successor;
+successor rotates successfully. Access JWT serialization can be identical when
+issued for the same account within one second; credential rotation/state and
+issuance are verified without inventing an access-token uniqueness requirement.
+
+### G20. Concurrent refresh result
+
+PASS, mandatory: **12 separate concurrent real HTTP requests** submitted the same
+cookie against PostgreSQL. **One 200, eleven 401s**; exactly one unrevoked/unexpired
+replacement for that account, old row revoked with exactly one successor link.
+Winner remained usable after old replay. Repeated under the Go race detector.
+
+### G21. Rotation rollback/atomicity evidence
+
+PASS: successful real HTTP rotation has both old consumption and replacement.
+Integration-only decorator invokes the real repository Consume, then returns a
+controlled error through the existing application port. Real TxManager rolls back
+both actual writes; no pair returned, one original usable row remains and the old
+credential subsequently rotates. No production hook/backdoor. Lost commit
+acknowledgement remains the documented re-login ambiguity, not simulated here.
+
+### G22. Logout/revocation result
+
+PASS: real logout returns bodyless 204, revokes the presented session, expires/
+clears the cookie; repeated logout is safe, later refresh is 401. Actual browser
+memory clears immediately. Existing access JWT remains valid to expiry if current
+account permits it; this phase does not invent immediate per-session access revocation.
+
+### G23. Cleanup/retention result
+
+PASS: synthetic stale expired rows deleted in bounded batches **2 then 1**;
+active sessions preserved. Explicit --sessions-cleanup succeeded with zero further
+eligible rows. No scheduler added. Final Compose down -v --rmi local removed only
+the owned three containers, network, fresh volume and built project images;
+filtered Docker inspection found none remaining. Ignored env, private sentinel
+file and generated browser build removed. Shared downloaded base-image caches
+and safe result/log artifacts under /tmp remain; unrelated hello-world resources
+and normal development volume were not touched.
+
+### G24. Full Docker stack result
+
+PASS: normal API/frontend Dockerfiles built successfully, isolated full profile
+ran PostgreSQL/API/nginx. Compose ps showed PG healthy and API/frontend Up;
+actual API readiness and browser document/API responses established reachability.
+API/frontend have no Docker HEALTHCHECK, so “Up” alone was not called healthy.
+No worker/service added; explicit migrations preceded startup.
+
+### G25. nginx/SPA result
+
+PASS: nginx -t passed; normal / and /status load with SPA route fallback,
+client navigation/status button calls real API, built assets use relative /api/v1
+through nginx, cookies rotate through that same path. No browser-localhost API
+URL or product UI change. The additional browser driver was copied only into
+the disposable container and removed with it.
+
+### G26. Browser login result
+
+PASS in real Chromium: actual centralized ApiClient authenticate/login plus
+current-account call populated the actual non-persisted store. Browser fixtures
+are synthetic; the driver imports the real app/client/store, not a reimplementation.
+
+### G27. Browser token-storage result
+
+PASS: programmatically inspected localStorage/sessionStorage contents contain no
+auth token/key or tested secret; document.cookie cannot read refresh cookie;
+Chromium cookie jar reports HttpOnly/Lax/path/local Secure=false. Access is present
+in application memory only. Preference persistence/theme remains functional.
+
+### G28. Reload/bootstrap result
+
+PASS: driver observed initially empty memory after reload, network counted exactly
+**one** real bootstrap refresh, authenticated/current-account memory restored and
+cookie changed. StrictMode produced no duplicate refresh or loop. Same behavior
+passed after full Compose restart.
+
+### G29. Invalid-session result
+
+PASS: revoke only the synthetic account's active refresh rows, reload → one 401
+bootstrap, unauthenticated memory and cleared dead cookie, no infinite loop or
+sensitive UI error.
+
+### G30. Bounded-retry result
+
+PASS: protected HTTP boundary mock gives first 401, real refresh then one actual
+successful retry. Persistent protected 401 mock gives exactly two protected
+attempts/one actual refresh, then memory clears/stops. Only protected responses
+were mocked; cookie/API/database refresh stayed real and server security unchanged.
+
+### G31. Single-flight result
+
+PASS: invalidated only test-page memory access, issued five concurrent protected
+requests → real 401s → **one refresh per tab**, all five resumed successfully.
+Network counts validate actual Axios/store behavior beyond unit adapters.
+
+### G32. Cross-tab result
+
+REQUIRED experiment completed: A logged in, B restored shared cookie into separate
+memory. Held two actual browser requests at the network boundary until both sent
+the same cookie: one refresh succeeded, the other received 401. One tab became
+unauthenticated and the late denial **cleared the shared winner cookie** in the
+observed runs. Winning tab initially retained authenticated memory. Logout in A
+left B apparently authenticated with still-valid access; B's next forced refresh
+failed and cleared its memory. No duplicate DB successor or privilege escalation.
+
+### G33. Cross-tab recommendation
+
+**COORDINATION REQUIRED — B. ADD CROSS-TAB SESSION COORDINATION BEFORE PRODUCT UI.**
+Smallest later approach: serialize cookie-changing refresh/login/logout across
+same-origin tabs, e.g. Web Locks with BroadcastChannel lifecycle notifications;
+notify logout immediately, avoid losing-tab refresh races, and deliberately restore
+each tab's own memory after a peer operation. Design fallback/late-operation and
+logout generation handling before implementation. Do not broadcast or persist
+usable access/refresh tokens in localStorage. BroadcastChannel notification alone
+is not an atomic refresh lock. No coordination/replay-grace implementation or new
+Accepted product/technical policy was introduced by this recommendation.
+
+### G34. Real CORS result
+
+PASS: locally controlled allowed http://localhost:14173 made credentialed real
+browser health/login/refresh requests to nginx:15173; JSON-header preflight worked,
+exact ACAO and credentials=true, never wildcard. Disallowed localhost:14174 fetch
+was browser-blocked. Chromium CDP wire metadata proved real 403 even though
+Playwright suppresses normal response events for CORS-blocked replies.
+
+### G35. Trusted-Origin/CSRF result
+
+PASS: disallowed local browser Origin on cookie-bearing refresh/logout → 403,
+no ACAO/credentials headers and shared cookie unchanged. Subsequent allowed
+refresh succeeded. Tests remained local; exact Origin policy was not relaxed.
+
+### G36. CSP/security-header result
+
+PASS: real normal nginx document has intended self-script CSP, DENY framing,
+nosniff, no-referrer and denied camera/microphone/geolocation. Built JS/CSS,
+retained shadcn card/button, theme, navigation and status all worked; **zero CSP
+console violations**. API headers and real safe error/envelope paths also pass.
+Parser final 413/431 now correlate correctly. Ingress-generated errors remain
+nginx responses as documented, not claimed to be API-generated JSON.
+
+### G37. HSTS/local HTTPS observation
+
+PASS: local HTTP API/document emit no HSTS, including direct/proxied spoofed
+X-Forwarded-Proto=https. Production HTTPS/HSTS ownership/configuration retains
+prior tests; no fake local production TLS or hosted endpoint was invented.
+Actual production TLS edge validation remains deployment-only.
+
+### G38. Proxy/client-IP result
+
+Only observed nginx **172.18.0.4/32** trusted. Direct API source = **172.18.0.1**;
+direct spoofed XFF=198.51.100.42 still logs 172.18.0.1. nginx overwrites spoofed
+forwarding; proxied effective client also =172.18.0.1 rather than nginx .4.
+This Docker Desktop NAT collapses tested clients to one address; end-user
+separation/cloud bypass policy is not proven. No blanket private-network trust.
+
+### G39. Real rate-limit result
+
+PASS: configured maxima **10 login / 60 refresh / 120 general**, five-second
+integration windows. Each maximum passes its budget (invalid auth safely fails
+normally); next request is **429**, standard envelope/UUID, Retry-After=5 and
+no secret. General test uses live health. Origin OPTIONS is not a credential
+bypass; canonical effective IP comes from the verified boundary. Defaults remain
+per-minute in normal configuration; process-local/NAT/restart limits remain.
+
+### G40. Request-ID correlation result
+
+PASS: **243 real browser/runtime responses** matched exactly one final completion
+status/ID in captured structured output. Real HTTP test checks error-body/header
+ID equality. Absent and valid-looking/malformed/2048-character inbound IDs were
+replaced by server UUIDs, per DEC-036; no caller ID acceptance is claimed.
+
+### G41. Log-redaction result
+
+PASS: **454 captured structured records**, **91 distinct** tested sentinel strings,
+**zero matches**. Includes synthetic plaintext/bcrypt passwords, access credentials,
+opaque refresh/digests, JWT key, DB/probe passwords and credential-header sentinels.
+Forbidden payload/header/URL/secret fields absent. Real login success/failure,
+refresh success/failure, logout, 401/403/429, startup, readiness and restart records
+were captured. Source stack/type metadata remains server-side. This is tested
+local output, not an assertion about future external sinks/retention/access.
+
+### G42. Panic-runtime result or reason unrun
+
+No runtime panic injected: production exposes no safe test-only panic seam.
+Existing captured observer/actual-router panic/internal-error tests and race
+checks pass. No production-accessible panic route was added for this phase.
+
+### G43. Responsive foundation smoke result
+
+PASS: actual normal SPA at **390×844**, **768×1024**, **1440×900**; no horizontal
+overflow beyond one-pixel tolerance. Dark/light toggle, shadcn primitives and
+service button/navigation function. Foundation smoke only; no mockups or Phase 3
+business UI QA. Accepted mobile borrower/touch kiosk/staff responsive policy unchanged.
+
+### G44. DB TLS separation result
+
+PASS: documented local non-TLS development connection used; production disable
+configuration rejected before connection. Prior effective verify-full/no-fallback
+tests remain enabled. Real production certificate/hostname handshake unavailable
+and deferred to legitimate hosting; no invented TLS endpoint.
+
+### G45. DB role/privilege observations
+
+GAP documented: migration and runtime currently share local postgres credentials;
+current_user postgres, rolsuper=true. No accepted least-privilege release/runtime
+roles are implemented. The temporary restricted fault-fixture login was deleted
+and does not solve this gap. Carry separation/ownership into later hardening.
+
+### G46. Clean-start reproducibility
+
+PASS: from zero volume/config → repository PG → explicit compiled CLI migrations
+→ normal API/nginx builds/start → supported synthetic registration/login. No
+reclone needed. New integration README exposes every additional setup: fixed-name
+override, ignored generated credentials, cached/external Playwright and missing
+libraries, Windows CLI fallback, actual nginx /32 discovery, test-only browser
+build/copy, readiness waiting, log capture and owned cleanup. No hidden manual
+schema/bootstrap operation or migration/seed startup side effect.
+
+### G47. Docker restart behavior
+
+PASS with repository `unless-stopped` policy retained: full Compose restart,
+PostgreSQL account/data and migration versions/timestamps unchanged, API/SPA
+ready again, old access/current account works, browser cookie survives and reload
+rotates/restores; logout works. Compose restart may start API before PostgreSQL
+readiness, causing a safe failed connection startup that Docker retries. The
+integration harness waits for actual readiness; it does not infer it from process
+start or add an application retry policy.
+
+### G48. Integration defects discovered
+
+1. **INTEGRATION DEFECT FOUND:** actual body-parser 413/header-parser rejection
+   completion logs incorrectly reported **200**, preceding final error rendering.
+   **ROOT CAUSE:** Fiber 3.5 socket parser callback traverses USE middleware first,
+   then renders the parser error after Logger returns.
+2. **INTEGRATION DEFECT FOUND:** over-8192-byte request header returned **500**.
+   **ROOT CAUSE:** central response mapper omitted Fiber's 431 error and used the
+   internal-error fallback.
+
+Known migrator defects are reproduced in G8, unchanged for Phase 1H. Harness-only
+issues corrected: fixture pool closed before cleanup; missing browser libraries;
+normal Playwright response event unavailable for CORS-blocked response; an initial
+integration restart=no override suppressed the existing retry policy. These are
+distinct from the two production HTTP defects and are not hidden exit failures.
+
+### G49. Integration fixes made
+
+1. **FIX:** listener hook wraps the existing Fiber/fasthttp parser callback;
+   suppress provisional middleware completion, log once after final render.
+   Retain existing mapping/perimeter traversal and restore the already-emitted
+   server ID after Fiber clears its standard context on release.
+   **REGRESSION TEST:** real callback body/header cases plus actual socket
+   response/ID/final-status log assertions.
+2. **FIX:** safe **431 BAD_REQUEST**, “Request headers are too large.”; no raw parser
+   text. **REGRESSION TEST:** direct/wrapped map tests, real parser callback and
+   actual socket 431/correlation checks. API catalog updated.
+
+No migration/auth/session-policy/UI redesign or production test backdoor.
+
+### G50. Integration tests added
+
+Opt-in Go live suite: health/ready/current account, generic invalid login, stale
+role/disable, digest persistence/presented-hash rejection, 12-way real HTTP refresh,
+replay/successor/logout, actual post-consumption rollback and bounded retention.
+Six subtests plus parent pass. External Playwright scripts exercise actual client
+memory/cookies/retry/single-flight/tabs/CORS/CSP/responsive/restart. Runtime script
+probes real migration errors, config guards, parser/socket limits, dependency
+outage, rates and IDs; log script verifies captured evidence. Normal unit gate
+skips live tests unless explicitly enabled; no production services are implicit.
+
+### G51. Backend fmt/vet/test results
+
+PASS final `go fmt ./...`, `go vet ./...`, `go test ./...` from backend with
+GOCACHE=/tmp/elabtrack-phase1b-go-cache. **84 top-level + 324 subtests = 408 passing
+offline nodes across 14 packages**; live opt-in suite explicitly skipped in this
+ordinary run and passed separately. Early path/cache command errors were corrected;
+final recorded gate exits are zero. Dependencies/types/test assertions unchanged.
+
+### G52. Targeted race results
+
+PASS: application/auth, bootstrap, HTTP middleware/routes/response,
+infrastructure database/persistence. Also **real opt-in PostgreSQL/HTTP suite under
+-race**, six subtests plus parent, including separate-connection refresh race and
+real rollback. No race detected in these exercised paths.
+
+### G53. Frontend lint/test/build results
+
+PASS: lint zero errors with **same 19** retained primitive/hook warnings;
+**73 tests / seven files**; strict TypeScript/Vite normal build. Entry JS
+459.35 kB/146.55 gzip, lazy transport 54.07/19.87, CSS 179.94/27.63.
+Production frontend source/dependencies/primitives unchanged. Actual critical
+browser flows were rerun against the rebuilt API after the HTTP fixes.
+
+### G54. Compose validation
+
+PASS: normal default, normal full profile and isolated full override config
+--quiet (three configurations), with installed Windows Compose executable.
+Actual base Dockerfiles built; nginx -t, full start/restart and browser/API/DB
+runtime also passed. The override preserves original restart behavior.
+
+### G55. git diff --check
+
+PASS after implementation/documentation/cleanup. Prior foundation is an exact
+prefix; migrations, auth/session/client/primitive code, manifests/locks, V1 audit,
+Phase 0, DECISIONS and OPEN_DECISIONS are unchanged. No tracked credential artifact.
+
+### G56. Exact git status
+
+Pre-test status/diff were clean on `main`; fetch/push origin unchanged at
+https://github.com/Maaku050/elabtrack-v2.git. Normal Compose names before tests:
+services postgres/backend/frontend, fixed elabtrack_v2_postgres/backend/frontend,
+volume elabtrack_v2_pgdata. No staging/commit/push/fetch/remote mutation.
+Final `git status --short`:
+
+```text
+ M README.md
+ M backend/README.md
+ M backend/internal/bootstrap/server.go
+ M backend/internal/interface/http/middleware/logger.go
+ M backend/internal/interface/http/response/errors.go
+ M backend/internal/interface/http/response/errors_test.go
+ M docs/API_CONTRACTS.md
+ M docs/project/PHASE1_FOUNDATION.md
+ M docs/project/PHASE1_SECURITY_BACKLOG.md
+ M docs/project/ROADMAP.md
+?? backend/internal/bootstrap/parser_logging_test.go
+?? backend/internal/interface/http/middleware/parser_logging.go
+?? backend/tests/integration/
+?? integration/
+```
+
+### G57. Deployment-only checks remaining
+
+Actual production HTTPS/TLS termination/HSTS, legitimate hosted PostgreSQL
+verify-full certificate/hostname handshake, cloud proxy/bypass topology, production
+backup/restore and external monitoring delivery remain unrun. No provider/secret/
+production endpoint invented. Credential privilege separation, operational log/
+cleanup ownership and CI are also unresolved foundation/operations work, not
+disguised as completed deployment checks.
+
+### G58. Phase 1H migration-runner inputs
+
+Unchanged runner reads paired files, executes each file in one transaction, then
+separately INSERTs/DELETEs version tracking. Fresh three-version up/latest-down/up
+passed; controlled orphan DDL, concurrent runner failure, missing edited-content
+detection and swallowed permission error demonstrate integrity/recovery gaps.
+No lock/checksum tracking; local migration/runtime both superuser. Hardening needs
+atomic SQL/bookkeeping, exclusive advisory locking, reviewed checksum compatibility,
+correct no-row-versus-error handling, constrained release/runtime credentials and
+recovery tests. **Phase 1H has not begun and requires separate authorization.**
+
+### G59. Product-policy decisions still unresolved
+
+OPEN-001–020 unchanged: provisioning/signup, borrower types/eligibility,
+staff/admin/Super Administrator, verification/deactivation/ongoing loans,
+inventory/lifecycle/fines/history/terms/kiosk/email/migration policies remain
+Needs Stakeholder Input/Deferred. Families/global revocation/concurrent devices/
+immediate access revocation/grace are unresolved; cross-tab engineering
+recommendation is evidence for a later task, not institutional policy acceptance.
+
+### G60. Phase 1G exit gate
+
+**SATISFIED / COMPLETE** for the authorized local integration scope: real
+PostgreSQL/migrations/up-down-up/API/health/readiness/login/hash-only persistence,
+concurrent atomic refresh/rollback/current-account stale authority/logout/cleanup;
+actual full Docker/nginx/Chromium cookie/memory/reload/retry/single-flight/CORS/
+Origin/CSP/responsive/proxy/rate/ID/log/restart checks; explicit adverse cross-tab
+evaluation/recommendation; narrow defects fixed with regression evidence; required
+standard/race/Compose/diff gates pass and owned resources/secrets cleaned.
+Cross-tab coordination must be addressed before product UI, and Phase 1H runner
+hardening remains separately authorized. Completion does not mean production
+readiness or resolution of product policy. No later phase, business feature,
+mockup, commit, push or deployment occurred.

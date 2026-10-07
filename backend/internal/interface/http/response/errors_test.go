@@ -30,7 +30,7 @@ func TestFoundationErrorMapping(t *testing.T) {
 		{shared.ErrInternal, 500, "INTERNAL_ERROR"}, {errors.New("private-SQL-secret"), 500, "INTERNAL_ERROR"},
 		{&pgconn.PgError{Message: "private-SQL-secret", Detail: "private-SQL-secret"}, 500, "INTERNAL_ERROR"},
 		{fiber.NewError(400, "private-SQL-secret"), 400, "BAD_REQUEST"}, {fiber.ErrUnauthorized, 401, "UNAUTHORIZED"}, {fiber.ErrForbidden, 403, "FORBIDDEN"}, {fiber.ErrNotFound, 404, "NOT_FOUND"}, {fiber.ErrMethodNotAllowed, 405, "METHOD_NOT_ALLOWED"},
-		{fiber.ErrRequestEntityTooLarge, 413, "PAYLOAD_TOO_LARGE"}, {fiber.ErrUnsupportedMediaType, 415, "UNSUPPORTED_MEDIA_TYPE"}, {fiber.ErrUnprocessableEntity, 400, "VALIDATION_ERROR"}, {fiber.ErrTooManyRequests, 429, "RATE_LIMITED"}, {fiber.ErrServiceUnavailable, 503, "SERVICE_UNAVAILABLE"},
+		{fiber.ErrRequestEntityTooLarge, 413, "PAYLOAD_TOO_LARGE"}, {fiber.ErrUnsupportedMediaType, 415, "UNSUPPORTED_MEDIA_TYPE"}, {fiber.ErrUnprocessableEntity, 400, "VALIDATION_ERROR"}, {fiber.ErrTooManyRequests, 429, "RATE_LIMITED"}, {fiber.ErrRequestHeaderFieldsTooLarge, 431, "BAD_REQUEST"}, {fiber.ErrServiceUnavailable, 503, "SERVICE_UNAVAILABLE"},
 		{fiber.NewError(200, "private-SQL-secret"), 500, "INTERNAL_ERROR"}, {fiber.NewError(599, "private-SQL-secret"), 500, "INTERNAL_ERROR"},
 		{errors.Join(shared.ErrInternal, shared.ErrForbidden), 500, "INTERNAL_ERROR"},
 	}

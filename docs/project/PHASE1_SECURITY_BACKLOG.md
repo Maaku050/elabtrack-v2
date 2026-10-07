@@ -64,6 +64,23 @@ The finding tables and earlier phase sections are historical evidence. Current H
 - SEC-004/006 session-policy and local-registration atomicity limits, SEC-018 cleanup ownership/cadence, SEC-014 live CSP/TLS/edge verification and SEC-019 retained warnings/dependency/image review remain. No product-policy question is resolved by observability.
 - [API_CONTRACTS.md](../API_CONTRACTS.md) gives the current route/catalog/log policy; Phase 1F closure report gives actual gate state. Phase 1G/1H have not begun.
 
+## Phase 1G runtime verification — 2026-10-07
+
+Actual local PostgreSQL 18.6, full Compose/nginx and Chromium evidence is in the
+[60-item report](PHASE1_FOUNDATION.md#phase-1g--real-integration-verification) and
+[sanitized machine summary](../../integration/evidence/2026-10-07.json).
+
+- **SEC-003 live hash storage verified:** migration 000003 executed; no active raw-token column; raw values absent, correct digest present, presented digest denied as a credential. Refresh/logout use the real cookie and PostgreSQL.
+- **SEC-004 transactional rotation verified locally:** 12 concurrent real HTTP requests sharing one credential yield one success/11 generic denials, one usable successor and a coherent consumption link. Injected failure after actual repository consumption rolls back both writes and preserves old-session usability. Registration atomicity, family-wide replay/concurrent-session/immediate access revocation policy remain open; do not close the entire finding.
+- **SEC-006 current PostgreSQL authority verified:** old temporary-admin access loses list authority after demotion; disabling the synthetic account denies current-account/list access. Institutional roles/status/ongoing-loan and immediate access-session revocation questions remain unresolved.
+- **SEC-002/010 actual browser verified:** HttpOnly/Lax/path cookie, no auth token in JavaScript storage, empty-memory reload plus one bootstrap, invalid-cookie clearing, one retry and five-request single-flight pass. **Cross-tab coordination required before product UI:** real same-cookie tab race forces one tab out and can clear the winner's cookie; logout leaves the other tab's memory/access apparently authenticated until refresh failure. Recommend non-token-sharing coordination; no BroadcastChannel implementation or server replay relaxation here.
+- **SEC-012/013/014 local runtime controls verified:** actual narrow nginx /32 trust, direct spoof rejection and nginx overwrite, real 10/60/120 HTTP budgets/429/Retry-After, credentialed browser preflight/allowed origin and rejected local untrusted refresh/logout, SPA CSP/assets/theme/mobile/tablet/desktop, API/common headers and absent local HTTP HSTS. Shared Docker NAT does not prove end-user separation; production HTTPS/edge topology remains deployment verification.
+- **SEC-015/016 local runtime verified:** 243 response/log status/ID matches and 91 distinct secret sentinels absent from 454 captured structured rows. Narrow defects fixed: parser completion previously logged 200 before final response; oversized headers mapped to 500 instead of 431. Real final 413/431 logging/envelopes now pass. Readiness becomes safe 503 while DB is unavailable, liveness stays 200; reconnect/restart verified. Runtime panic injection unrun because no existing production test seam; retained observer tests pass. Sink access/retention/rotation ownership is not implemented.
+- **SEC-017 reproducible local integration added/executed:** real database/HTTP/race, Chromium and controlled runtime probes, all standard gates and all three Compose configs pass. CI is still absent/unverified; local evidence does not establish automated CI or production readiness.
+- **SEC-018 bounded cleanup verified:** real batches remove two then one stale rows, active sessions remain; explicit CLI succeeds. Scheduling/cadence/load/ownership remain operational work.
+- **SEC-008 remains partial for Phase 1H:** up/down/up passes, but safe live probes demonstrate orphan DDL after bookkeeping failure, one failing concurrent runner, no edited-file detection and denied last-applied read reported as no migrations. Migration/runtime both use local PostgreSQL superuser credentials; deployment separation is unimplemented. Runner and migrations remain unchanged; no Phase 1H implementation.
+- SEC-001/005/007/009/011 retain prior source evidence; production disabled TLS and valid-config production seed refusal are additionally verified before IO. SEC-019 warning/dependency/image review, unresolved product policies and all deployment-only checks remain open. Disposable resources and generated secrets are removed.
+
 ## CRITICAL
 
 | ID | Finding / evidence | Required hardening and acceptance evidence | Owner |

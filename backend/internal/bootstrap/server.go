@@ -37,6 +37,13 @@ func newServer(cfg *config.Config, c *Container, log *logger.Logger) *fiber.App 
 	app.Use(middleware.RateLimit(cfg.Security))
 	app.Use(middleware.RequestSafety())
 	app.Use(compress.New())
+	// Fiber initializes/replaces its underlying server at listener startup.
+	// Install the wrapper after that initialization, before serving connections.
+	app.Hooks().OnListen(func(fiber.ListenData) error {
+		server := app.Server()
+		server.ErrorHandler = middleware.ParserErrorLogging(app, server.ErrorHandler, log)
+		return nil
+	})
 
 	return app
 }
