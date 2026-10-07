@@ -1,6 +1,6 @@
 # Initial delivery roadmap
 
-Confirmed sequence from current stakeholder direction. **Phase 0 and Phase 1A–1I are complete within recorded source/disposable-local scope. Phase 2 design was delivered with policy blockers; Phase 2.5 has now reconciled29 owner working decisions and satisfies its documentation exit gate. Phase 3A is READY FOR SEPARATE AUTHORIZATION, NOT STARTED.** Latest authorization covers Phase 2.5 Markdown/domain design only. Later outcomes are sequencing guidance, not permission to execute them. Production operations, delivery and migration gates remain specific to later work. See [current readiness](PHASE2_5_REPORT.md).
+Confirmed sequence from current stakeholder direction. **Phase 0, Phase 1A–1I, Phase 2 and Phase 2.5 are complete within their recorded scopes. Current authorized phase: Phase 3A.1 — UX Architecture & Low-Fidelity Wireframes; design package delivered for review. Phase 3A.2 high-fidelity mockups is next and NOT STARTED; Phase 3B follows approved mockups and is NOT STARTED.** Latest authorization is UX/text design only; no code, migrations, visual styling, Phase 1 security changes or locked policy changes. Production operations, delivery and migration gates remain specific to later work. See [Phase 3A.1 report](PHASE3A1_REPORT.md).
 
 ## Phase 0 — Rebaseline & Template Adaptation
 
@@ -68,15 +68,30 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 ## Phase 3A — UX Architecture & Mockups
 
-- **Status:** READY FOR SEPARATE AUTHORIZATION; NOT STARTED.
-- **Goal:** Review one coherent responsive UX before feature UI implementation.
-- **Deliverables:** Borrower mobile-first catalog/search/filter/quantity/cart/review/request, pending expiry/cancel/denial, status/history/terms/accountability; Staff/Admin desktop/tablet-first review/physical approval/direct issue/partial returns/replacements; Admin full fine clearing and role/navigation designs; accessible wireframes/high-fidelity mockups with responsive adaptations.
-- **Dependencies:** Current Phase 2.5 design/permission matrix. Mark engineering assumptions: full-request issue, damaged originals held nonusable, staff-certified equivalents, live full-clear checkpoint balance, draft terms/catalog copy.
-- **Non-goals:** No separate hardware kiosk shell/device auth/handoff, code/migrations or assumed deployment. Interactive Kiosk is the borrower catalog/cart flow.
-- **Exit gate:** Authorized owner review approves journeys, navigation/permissions, responsive/accessibility behavior and mockups; implementation follows only later approved scope.
+- **Status:** In progress at the authorized Phase 3A.1 design handoff; the complete Phase 3A/mockup approval gate is not claimed.
+- **Sequence:** Phase 3A.1 low-fidelity architecture → separately authorized Phase 3A.2 high-fidelity mockups → owner mockup approval → separately authorized Phase 3B implementation.
+- **Locked audience model:** Borrower mobile-first; Staff/Admin desktop/tablet-first responsive; Interactive Kiosk is the normal catalog/cart/request flow, no dedicated hardware shell.
+- **Shared dependency:** Current Phase 2.5 rules, working role matrix, physical/replacement reconciliation and outside-system return-photo clarification.
+
+## Phase 3A.1 — UX Architecture & Low-Fidelity Wireframes
+
+- **Current authorized phase/result:** COMPLETE — requested design deliverables and documentation exit gate; package awaiting owner review, 2026-10-08. [Report](PHASE3A1_REPORT.md).
+- **Deliverables:** Seven UX documents;59 inventoried surfaces (2 shared,22 Borrower,23 operational,12 Admin-only),38 text wireframe groups; two navigation maps; journeys A–H; concrete responsive/status/loading/empty/error/conflict/confirmation rules, future shadcn mapping and unchecked implementation acceptance checklist.
+- **Readiness:** Phase 3A.2 can begin after separate authorization. Minor UX/content/import/projection/activation/export questions are explicit design or later implementation dependencies; no new domain-policy blocker found.
+- **Non-goals:** No high-fidelity styling/mockups, React/components/backend/SQL, Phase 1 session/security or Phase 2.5 policy change; no boss writes/commit/push/deployment.
+
+## Phase 3A.2 — High-Fidelity Mockups
+
+- **Status:** NEXT — READY FOR SEPARATE AUTHORIZATION; NOT STARTED.
+- **Goal:** Refine the reviewed low-fidelity journeys into coherent visual mockups for each audience.
+- **Deliverables:** Borrower mobile-first high-fidelity screens with tablet/desktop enhancements; operational Staff/Admin responsive layouts, light/dark semantic styling, interaction/state variants and reviewed shadcn-based visual language.
+- **Dependencies:** Owner review of Phase 3A.1 navigation/flows/assumptions, draft content review and explicit authorization for this phase. Preserve working domain rules and no-return-photo software boundary.
+- **Non-goals:** No implemented React screens/components/business code/migrations or dedicated kiosk device app.
+- **Exit gate:** Owner approves mockups, responsive/permission/status/accessibility design and any explicitly recorded changes before Phase 3B implementation is authorized.
 
 ## Phase 3B — shadcn Design System & Application Shell
 
+- **Status:** NOT STARTED; follows Phase 3A.2 mockup approval and separate authorization.
 - **Goal:** Create the eLabTrack visual language and responsive accessible shell.
 - **Primary deliverables:** shadcn-based eLabTrack design system, project tokens, application shell/navigation, reusable domain UI components and accessible loading/error/empty/responsive patterns based on approved mockups.
 - **Dependencies:** Phases 1–2, approved Phase 3A mockups and role/navigation direction sufficient to design the shell.

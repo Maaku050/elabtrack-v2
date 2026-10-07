@@ -1,0 +1,75 @@
+# Staff/Admin operational flows
+
+Phase 3A.1 low-fidelity proposals, 2026-10-08. Desktop/tablet base, usable smaller-screen adaptation; no implementation. [Architecture inventory](UX_ARCHITECTURE.md) O-01–23/A-01–12 maps [wireframes](WIREFRAMES.md) WF-15–38. [Server permission matrix](../domain/BUSINESS_RULES.md#future-permission-matrix) remains authority; route visibility alone is insufficient.
+
+## Dashboard and request queue
+
+O-01 actionable summaries Pending, Active, Due today, Overdue, Replacement required; each count links to corresponding filtered operational queue. “Due today” is an Asia/Manila calendar display bucket, never the overdue cutoff/rate. Outstanding fines is contextual review data; count can link to borrowing/borrower filtered operational view for Staff, not Admin report export. Avoid invented due-soon windows, gross “revenue”, percentage growth or campus metrics. Categories can overlap; label counts as borrowings/obligations, not sum into a total.
+
+O-02 pending queue: borrower/reference/category/account-active, submitted time/expiry, item count and total requested units, requested due, existing fine/replacement indicator; Open request action only. No Approve in row or bulk physical approval. Stable bounded table with search/date/expiry filter; an expiring request warns but remains server-authoritative. Row expiry while open blocks stale action until updated state.
+
+## Request review and physical approval
+
+O-03 identity/category/active status and operational history context, submission/expiry, bound terms version/acceptance time, equipment/held quantities, current pool status, requested due date/time plus editable final due fields. Pending terms may legitimately bind an older version; do not require reacceptance merely because version changed after submission. Staff reviews outstanding fine/replacement accountability **without automatic denial**; approve or reasoned deny remains a human decision. Disabled issue for inactive target/expired request/current unusable stock has a visible cause.
+
+Approve & Release opens item/borrower/final due summary and explicit confirmation: **“Confirm only while physically handing all listed equipment to this borrower now.”** Confirm commits one CHECKED_OUT transition, reserved−q/checked_out+q, issue history. No Approved-waiting screen or second Release button. Confirmation doesn't create a policy signature/checkout acknowledgment system; it is action clarity. Current row account/stock/time validated by server. Changing quantities is unsupported in this baseline: deny/cancel-own/new request rather than quietly short-issuing. Success shows reference/Active/final due; due confirms date AND time.
+
+O-04 denial requires a nonblank visible reason with “Borrower will see this reason. Reserved stock will be released; history retained.” Review and Deny request confirmation. Failure retains reason but makes no release claim. Concurrent expiry/other decision shows real terminal state, not overwriting it with a reason. Optional administrative pending cancellation is unselected and absent.
+
+## Journey C — direct checkout
+
+O-07 Select Borrower (active registered generic Borrower, category/status/accountability; no Select Student) → O-08 Select equipment/quantity (available stock only; selection draft) → O-09 required due date+time Asia/Manila → O-10 review → Issue equipment while physically handing over. Current terms acceptance required under selected domain recommendation; missing current acceptance means borrower accepts through their account, never Staff ticks consent on their behalf. Existing fine is shown and manually reviewed, not hard block. Immediate CHECKED_OUT against available stock; no pending, reservation receipt or24h expiry. No seven-day maximum. Stock conflict refreshes selected lines and requires new review; no silent smaller quantities.
+
+## Journey D — full good return; Journey E — partial then final
+
+O-06 detail → O-11 Record return. Per line issued, previous good/damaged/lost, physical outstanding, existing replacement outstanding; enter **good returned now / damaged now / lost now**, positive integer total<=physical remaining. Fields default0, no inferred previous counts as new return. Full good return shortcut fills good_now=physical remaining on every item and clears damage/loss draft for those rows, with an explicit review if replacing entered dispositions. It does **not** resolve existing replacements or mark the loan complete. Notes for damage/loss follow current engineering-required incident rationale; no photos/attachments/camera/evidence step.
+
+Review O-12 computes before/after P and U from one unique item map and the same stock vectors; describe result Active/Completed only as prediction until commit. Return is Staff/Admin authoritative, borrowed account may now be inactive. Duplicate lines never rendered/editable as separate occurrences of the same item; server still rejects duplicates. Submit: immutable event/counters/stock/obligations/audit/outbox/fine-finalization if appropriate. Pending action disables double submit; uncertain result checks original command rather than issuing again.
+
+Full good5 with no liability → P0/U0 → Completed; partial good2 of 5 → P3/U0 → Active + Partial return, original due unchanged; later good3 closes only if U0. Success summary persists on detail, not just toast. Borrower view read-only. Physical in-person photo viewing, if any, stays outside eLabTrack for both roles; no field acknowledging or preserving a photograph.
+
+## Damage/loss and Journey F — replacement later accepted
+
+Issue5; return good2/loss3 produces P0/U3, available+2, checked_out−5, total−3. Display “Lost3 recorded;3 replacements required. This borrowing remains active.” Damage2 with good3 produces P0/U2 and damaged_held+2, unchanged physical total. Neither scenario assesses equipment-price money; fine clock continues if deadline passed. Historical incident remains visible after resolution.
+
+O-13 Record Replacement: select unresolved obligation(s), source equipment/kind/required/accepted/remaining; enter accepted_now<=remaining; certify correct type or operationally accepted equivalent, with rationale when applicable. No borrower substitution approval, mandatory repair queue or original-disposition selector. O-14 review shows new available+q/total+q acquisition, remaining replacements and whether P/U now both0; retained originals shown separately. For damaged original held, physical total can legitimately rise: existing damaged unit and new replacement are distinct actual units. Accepting replacement doesn't decrement damaged originals or increment original good-return count.
+
+Confirmation records actual accepted units at FSMO now. Server validates actor/type/remaining/unique obligation parent, serializes concurrency and commits acquisition/event/history. Partial accepted1 of 3 leaves2/open; last2 closes only if all physical0. Concurrent acceptance return409: show fresh remaining, keep proposed quantity visibly unsubmitted, require revise/review. No automatic clipping. Final acceptance freezes fine/completion once; no generic Complete transaction button.
+
+## Overdue fine viewing and Admin clearance
+
+O-06/O-16 displays due, currently overdue reason physical/replacement, assessed live/final, as-of, prior clearances and current outstanding. Staff can VIEW, never Clear Fine. Staff operational review can deny a new pending request with visible reason after human assessment; old fine never blocks submission.
+
+A-01 Admin Clear Fine: current/final assessed, previous clears, **entire current positive outstanding**, method Paid/Waived/Other resolution, optional note, confirmation. No editable amount, installments, online gateway, damage-price charge, refund or generalized finance correction. Label “Record full clearance” on final confirmation makes clear the software records the offline operational resolution. PAID records payment; WAIVED/OTHER are separate methods, not revenue. Method required; note optional. Historical private note visibility remains role-scoped, not automatically Borrower-visible.
+
+Journey G: live fine grows with P or U; completion freezes final; Admin clears entire outstanding after completion; history remains. Admin may also fully clear current live amount: warning “This borrowing remains active; additional overdue fine may accrue.” Expected-balance check prevents stale amount; if changed, review new balance and confirm again. A-02 retains assessed/final amount, all full-clear events/methods/time/named Admin; Borrower sees permitted resolution history. Clearing0 disabled “No outstanding fine”; Completed doesn't imply money settled.
+
+## Borrower management and privileged identities
+
+O-15 bounded generic Borrower list search/name/reference/category/program/active state. O-16 operational detail shows identity/profile only where justified, current borrowings/physical/replacement/fine/history. Staff sees Provision Borrower; Admin additionally bulk/deactivate/reactivate. Existing inactive accounts still have obligations and can receive Staff authoritative return/replacement processing. No separate suspension/eligibility switch, student-only view or account Delete.
+
+O-17 individual provisioning: name/email/category (Student/Faculty minimum), program/contact where purposeful, Borrower role fixed/read-only. Staff cannot select Staff/Admin or change account active privileges via this form. Secure activation/password mechanism remains implementation dependency; show “Account access instructions follow approved onboarding process”, no generated plaintext password display or assumed invitation email success. Duplicate email/input error before creation; unknown write checked before retry.
+
+A-06 deactivation/reactivation confirmation explains login/new requests blocked, existing loans/history retained and Staff may resolve obligations. Reactivation restores normal account access, not fine/replacement erasure. Status changes aren't irreversible identity deletion. Admin-only, current server validation. A-07/08 privileged account list/edit supports multiple named Staff/Admin; no shared admin credential or Staff-level escalation. Last-active-Admin/recovery procedure remains secure implementation design: wireframe identifies a protected-impact review and does not choose an unapproved override rule.
+
+## Journey H — Admin bulk provisioning
+
+A-03 download approved template → choose file (borrower account data, never return media) → validate → A-04 preview → explicitly select **Import valid rows** or correct/revalidate → confirm count/roles → A-05 result. Categories/program/contact conceptual fields, no permanent plaintext-password column. File type/size/schema and activation delivery remain future implementation design, stated in help rather than invented production limits/provider.
+
+Preview shows row number, fields, valid/invalid/duplicate-email reasons and created/rejected plan. No imported privileged roles; all forced Borrower. User chooses whether to exclude invalid rows; no silent skip or partial-success message without server results. Valid-row subset proposal doesn't prescribe DB batch atomicity: later importer contract must define its transaction/retry semantics. Stable batch result summarizes created/not-created and unresolved outcomes; correct failed rows before new batch; acknowledgment loss checks original batch identity. No downloaded “results” containing raw passwords, no plaintext spreadsheet requirement or fabricated activation-email delivery claim. Keyboard-accessible file input/table/summary; sensitive data not persisted unnecessarily.
+
+## Inventory and administrative settings/reports
+
+O-18 bounded inventory list: name/category/lifecycle, available/reserved/checked_out/damaged_held/total_tracked and separate replacement outstanding. Historical Lost/Damage counts and awaiting replacement are not extra physical stock buckets. O-19 detail prioritizes current counts and operational liabilities; secondary Movements tab shows time, human operation, signed quantities/reason/operator/related borrowing reference. Never sum historical lost incidents into total. Ledger doesn't expose raw technical IDs as primary content.
+
+O-20 metadata create/edit: name/description/category/catalog image independently supported, no raw R/C or total override. Opening stock explicit usable acquisition; subsequent ordinary additions/removals O-21 require reason/typed quantity and preview. Exceptional correction Admin only and cannot mask custody; initial wireframe places it behind Admin review with later procedure dependency. Damaged-original repair/discard/retire controls excluded until policy approved; damaged_held remains nonusable. O-22 inactive/archive explanation; archive blocked by any hold/physical/replacement, history retained. Inactive pools can resolve old loans but cannot newly issue.
+
+A-09 settings displays current24h TTL, PHP 10/elapsed24h/Asia-Manila basis and current terms version; TTL/fine defaults read-only unless future configuration approved. No freeform rate/timezone engine. A-10 drafts/publishes approved new terms version with effect “New requests require acceptance; existing loan evidence remains bound.” No changing old signed terms. Publishing is confirmed and timestamped; final institutional copy remains content review. No SMTP/provider settings screen.
+
+A-11 report workspace practical types Inventory / Active borrowings / Overdue / History / Damage-Loss-Replacements / Fines. Validate category/date/status filters; half-open server ranges interpreted Asia/Manila. Export entry is a labeled format dependency, disabled until approved format/permission/implementation; no queued million-row export. PAID separate from WAIVED/OTHER and assessed/outstanding, no arbitrary “revenue” total. Staff operational filters are not access to this Admin report surface. A-12 Admin audit bounded actor/action/time/reference, meaningful record changes without credentials/provider payload.
+
+## Shared failure and small-screen boundaries
+
+Every critical write has reviewable summary, progress/double-tap prevention, preserved draft on validation failure, unknown-result check and server-confirmed result. Stock/expiry/account/terms/concurrent quantity/balance conflicts refresh relevant authoritative data before a new review; never overwrite entered quantities invisibly or auto-submit clipped returns. Ordinary403 hides unsupported action;401 follows existing session handling, not a new global logout policy.
+
+Tablet keeps essential operations visible with compact sidebar/drawer; mobile table rows become labeled cards, review/return panels stack, dialogs become full-height sheets with keyboard-safe actions. Complex report/ledger/preview matrices may use an explicit labeled horizontal scroll region with row context; no whole-page overflow. Operational dense tasks remain desktop/tablet optimized. [Responsive matrix](RESPONSIVE_RULES.md) and [checklist](UX_ACCEPTANCE_CHECKLIST.md) specify future proof, not checks already performed.
