@@ -21,11 +21,12 @@ const (
 
 // Config is validated before any infrastructure or HTTP listener is created.
 type Config struct {
-	App      AppConfig
-	DB       DBConfig
-	JWT      JWTConfig
-	Security SecurityConfig
-	Log      LogConfig
+	App         AppConfig
+	DB          DBConfig
+	MigrationDB *DBConfig
+	JWT         JWTConfig
+	Security    SecurityConfig
+	Log         LogConfig
 }
 type AppConfig struct {
 	Env                       Environment
@@ -140,6 +141,7 @@ func Parse(values map[string]string) (*Config, error) {
 		r.fail("LOG_FORMAT", "must be console or json")
 	}
 	cfg.DB = parseDatabase(&r, env)
+	cfg.MigrationDB = parseMigrationDatabase(&r, env, cfg.DB)
 	if len(r.errs) > 0 {
 		return nil, errors.Join(r.errs...)
 	}

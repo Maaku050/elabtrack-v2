@@ -15,7 +15,7 @@ const secrets = JSON.parse(await readFile('/tmp/elabtrack-phase1g-secrets.json',
 secrets.push(password)
 const evidence = { browser: 'Chromium', checks: [], correlation: [], crossTab: {} }
 const check = (name, detail = true) => { evidence.checks.push({ name, detail }); console.log('PASS ' + name) }
-const sql = (query) => execFileSync('psql', ['-h','127.0.0.1','-p','15432','-U','postgres','-d','elabtrack_v2_integration','-At','-c',query], { env: { ...process.env, PGPASSWORD: process.env.DB_PASSWORD }, encoding: 'utf8' }).trim()
+const sql = (query) => execFileSync('psql', ['-h','127.0.0.1','-p','15432','-U','elabtrack_runtime','-d','elabtrack_v2_integration','-At','-c',query], { env: { ...process.env, PGPASSWORD: process.env.DB_PASSWORD }, encoding: 'utf8' }).trim()
 const cookieName = 'elabtrack_v2_refresh'
 const browser = await chromium.launch({ headless: true })
 const servers = []

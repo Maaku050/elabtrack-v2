@@ -2,7 +2,7 @@
 import json
 from pathlib import Path
 
-paths=[Path('/tmp/elabtrack-phase1g-api.log'),Path('/tmp/elabtrack-phase1g-before-fix.log'),Path('/tmp/elabtrack-phase1g-final.log')]
+paths=[Path('/tmp/elabtrack-phase1h-startup.log'),Path('/tmp/elabtrack-phase1h-final.log')]
 assert paths[-1].exists(), 'capture the current integration API log first'
 paths=[p for p in paths if p.exists()]
 raw='\n'.join(p.read_text() for p in paths)
@@ -34,5 +34,5 @@ assert {'auth.login_succeeded','auth.login_failed','auth.refresh_succeeded','aut
 statuses=sorted({r['status'] for r in current if 'status' in r})
 assert {200,401,403,413,429,431,503}.issubset(statuses)
 result={'secretSentinelsChecked':len(set(secrets)),'secretMatches':0,'structuredRowsChecked':len(rows),'correlatedResponses':len(browser['correlation'])+len(runtime['requests']),'securityEvents':events,'finalStatuses':statuses,'clientIPs':proxy,'parserCompletionsAccurate':True}
-Path('/tmp/elabtrack-phase1g-logs.json').write_text(json.dumps(result,indent=2))
+Path('/tmp/elabtrack-phase1h-logs.json').write_text(json.dumps(result,indent=2))
 print(json.dumps(result,indent=2))

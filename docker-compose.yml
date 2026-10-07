@@ -1,4 +1,4 @@
-# eLabTrack V2 local development services. Published postgres/postgres defaults
+# eLabTrack V2 local development services. Published credentials
 # are local-only; this file is not a production manifest.
 # Usage:  docker compose up -d postgres   (then run backend/frontend on host)
 
@@ -8,15 +8,19 @@ services:
     container_name: elabtrack_v2_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_USER: ${BOOTSTRAP_DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${BOOTSTRAP_DB_PASSWORD:-postgres}
       POSTGRES_DB: ${DB_NAME:-elabtrack_v2}
+      MIGRATION_DB_PASSWORD: ${MIGRATION_DB_PASSWORD:-elabtrack-local-migrator}
+      RUNTIME_DB_PASSWORD: ${DB_PASSWORD:-elabtrack-local-runtime}
     ports:
       - "${DB_PORT:-5432}:5432"
     volumes:
       - elabtrack_v2_pgdata:/var/lib/postgresql
+      - ./backend/database/bootstrap-roles.sh:/docker-entrypoint-initdb.d/10-elabtrack-roles.sh:ro
+      - ./backend/database/runtime-grants.sql:/opt/elabtrack/runtime-grants.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-elabtrack_v2}"]
+      test: ["CMD-SHELL", "pg_isready -U ${BOOTSTRAP_DB_USER:-postgres} -d ${DB_NAME:-elabtrack_v2}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -31,8 +35,8 @@ services:
       - path: ./backend/.env
         required: false
     environment:
-      # Inside Compose, reach the postgres service by name and reuse the
-      # same credentials the container was initialized with.
+      # Runtime receives only DML credentials. Bootstrap and migration secrets
+      # are intentionally absent from the API container environment.
       # This file is local development only; production uses external config.
       APP_PORT: "8080"
       # TRUSTED_PROXIES remains empty by default. If proxy client separation is
@@ -41,8 +45,8 @@ services:
       DB_SSLMODE: disable
       DB_PORT: "5432"
       DB_HOST: postgres
-      DB_PASSWORD: ${DB_PASSWORD:-postgres}
-      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-elabtrack-local-runtime}
+      DB_USER: elabtrack_runtime
       DB_NAME: ${DB_NAME:-elabtrack_v2}
     ports:
       - "8080:8080"
@@ -50,6 +54,26 @@ services:
       postgres:
         condition: service_healthy
     profiles: ["full"]
+
+  # Explicit local one-shot CLI, never part of the normal/full startup profile.
+  migrator:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    profiles: ["tools"]
+    restart: "no"
+    environment:
+      APP_ENV: development
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: ${DB_NAME:-elabtrack_v2}
+      DB_USER: elabtrack_migrator
+      DB_PASSWORD: ${MIGRATION_DB_PASSWORD:-elabtrack-local-migrator}
+      DB_SSLMODE: disable
+    command: ["--migrate-up"]
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   frontend:
     build:

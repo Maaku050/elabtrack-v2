@@ -1863,3 +1863,321 @@ Cross-tab coordination must be addressed before product UI, and Phase 1H runner
 hardening remains separately authorized. Completion does not mean production
 readiness or resolution of product policy. No later phase, business feature,
 mockup, commit, push or deployment occurred.
+
+## Phase 1H — Migration Runner & Database Privilege Hardening
+
+Authorized and locally verified **2026-10-07 (Asia/Shanghai)**. Earlier A–G reports
+are preserved byte for byte as a prefix. This phase changes infrastructure only:
+no business migration/feature, Phase 1I implementation, mockup, V1 access, commit,
+push or deployment. [Reproduction](../../integration/README.md) and
+[sanitized evidence](../../integration/evidence/2026-10-07-phase1h.json).
+The following H1–H57 cover all requested closure-report items.
+
+### H1. Files changed
+
+Runner/legacy compatibility/SQL transaction guard and unit/live tests; typed migration configuration and tests; CLI/action tests and Make wrappers; local env examples, Compose/tools job and bootstrap/grant scripts; runtime-identity auth tests; integration environment/role/SQL/process/browser/runtime/restart/log helpers and README/evidence; root/backend READMEs and foundation/decision/roadmap/security-backlog docs. H54 gives exact Git status; no historical migration, production frontend, dependency/lockfile, domain/application/auth source or OPEN_DECISIONS change.
+
+Exact changed-file inventory (37 files):
+
+```text
+.env.example
+Makefile
+README.md
+backend/.env.example
+backend/.env.production.example
+backend/Makefile
+backend/README.md
+backend/cmd/api/main.go
+backend/cmd/api/main_test.go
+backend/database/bootstrap-roles.sh
+backend/database/runtime-grants.sql
+backend/internal/config/config.go
+backend/internal/config/config_test.go
+backend/internal/config/database.go
+backend/internal/config/migration_test.go
+backend/internal/infrastructure/database/migration_legacy.go
+backend/internal/infrastructure/database/migration_sql.go
+backend/internal/infrastructure/database/migrator.go
+backend/internal/infrastructure/database/migrator_integration_test.go
+backend/internal/infrastructure/database/migrator_test.go
+backend/tests/integration/foundation_test.go
+docker-compose.yml
+docs/project/DECISIONS.md
+docs/project/PHASE1_FOUNDATION.md
+docs/project/PHASE1_SECURITY_BACKLOG.md
+docs/project/ROADMAP.md
+integration/README.md
+integration/browser.mjs
+integration/compose.phase1h.yml
+integration/env-run.py
+integration/evidence/2026-10-07-phase1h.json
+integration/logs.py
+integration/migration-processes.py
+integration/restart.mjs
+integration/roles.py
+integration/runtime.py
+integration/sql.py
+```
+
+### H2. Previous migration lifecycle
+
+Source audit before implementation: Up → ensureTable (pool CREATE IF NOT EXISTS) → read applied version map → discover .up.sql suffixes/lexical full-name sort → for each pending read file → pool Begin → tx Exec SQL → tx Commit → separate pool INSERT tracking. Down → ensureTable → pool SELECT version ORDER BY version DESC LIMIT 1 → any Scan error treated as no applied version → read matching .down.sql → tx Exec/Commit → separate pool DELETE tracking. Applied-map Query/Scan/Rows.Err errors propagated, but lastAppliedVersion swallowed all failures. Status only tested table existence/read versions and printed pending/applied. Create chose highest parsed numeric prefix +1, fell back to 1 on discovery errors, and wrote pairs with overwrite-capable WriteFile. No filename/pair/duplicate/history/checksum/lock validation.
+
+### H3. Previous atomicity defect
+
+execTx committed migration DDL before applyOne INSERT or Down DELETE. A failed bookkeeping write could leave committed orphan DDL; a failed removal could retain an applied record after rollback SQL committed. Phase 1G reproduced orphan DDL and swallowed denied lookup, concurrent DDL attempts and undetected editing; those historical observations remain unchanged.
+
+### H4. Final migration lifecycle
+
+Discover/validate and load both files → acquire dedicated PostgreSQL connection → immediate native advisory try-lock → inspect/create tracking as appropriate → read all records and verify applied-prefix/checksums → per-file BEGIN → SQL → bookkeeping in same tx → COMMIT → connection close releases command lock. Up applies ordered pending suffix; Down reverses the highest applied file only. Earlier successful files remain applied if a later file fails; the whole batch is intentionally not one transaction. Only Up creates missing tracking, under the lock. Status/Down never create it.
+
+### H5. schema_migrations schema changes
+
+Fresh public.schema_migrations: version TEXT PRIMARY KEY with canonical-name CHECK; applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW(); checksum TEXT NOT NULL with 64 lowercase hex CHECK. Numeric file prefix is the canonical ordering key; full canonical basename remains the compatible stored identifier. Legacy adoption adds checksum/digest constraint while retaining existing version PK/timestamps. No name/dirty/progress payload or business migration.
+
+### H6. Checksum algorithm/policy
+
+SHA-256 over marker elabtrack-v2-migration-pair-v1 plus NUL, then big-endian uint64 up byte length/up raw bytes, then down byte length/down raw bytes. Both directions are protected because safe rollback is part of this paired model. Comments/line endings count. Files are loaded once, so applied SQL and stored digest describe the same bytes. Store on apply; verify before Up/Down/Status; never replace an applied digest.
+
+### H7. Existing-record compatibility
+
+Checksum-free records cause an actionable failure. Explicit development-only --migrate-adopt-legacy is an operator provenance/schema attestation, not historical proof: accept only a prefix of exact 000001–000003 foundation identifiers whose paired bytes match the embedded Phase 1G baseline digests. Unknown/duplicate versions, baseline edits, missing mapping, gaps, query/scan failures and already-checksummed tracking fail. One transaction adds/backfills/constrains checksum without changing applied_at. Real known-three-version adoption and unknown-history/repeated-adoption refusals pass. Fresh disposable volumes are preferred; no external database is auto-repaired or assigned fabricated checksums.
+
+### H8. Up atomicity behavior
+
+SQL and INSERT(version,checksum) execute on the same dedicated session/transaction. SQL or INSERT failure rolls back both; commit is the only success point. Fresh tracking may remain empty after a first migration failure, which is coherent unapplied state. Parameterized tracking writes.
+
+### H9. Down atomicity behavior
+
+Down SQL and DELETE matching version/checksum share one tx. Require exactly one removed row; SQL/delete/commit errors fail. Real partial DROP-then-error and delete-trigger failure restore the table and applied record. Existing 000003 keeps its session-invalidation behavior.
+
+### H10. Nontransactional migration policy
+
+Supported files are transaction-safe SQL only. Current six SQL files meet this policy. CREATE INDEX CONCURRENTLY in a fixture fails clearly under PostgreSQL SQLSTATE 25001 and rolls back prior fixture DDL. Lexical guard rejects explicit transaction/session control (including BEGIN/COMMIT/END/ABORT, SET/RESET and prepared statements), understanding comments/quotes/dollar bodies; PostgreSQL remains the parser. No exceptional mode now; a future real need requires reviewed dirty/recovery semantics.
+
+### H11. Advisory lock implementation
+
+Project key 0x454c41424d494752 (ELABMIGR), parameterized pg_try_advisory_lock on a pool-acquired connection hijacked into a dedicated session. Acquire before every history read/change; hold across all file transactions, Up/Down/Status/adoption. Close on every exit with an independent bounded cleanup context; never return a session lock to the pool. Real different connections and separate CLI processes verify exclusion.
+
+### H12. Lock timeout/failure behavior
+
+Immediate safe failure if another migrator holds the lock; no blocking advisory wait. Connection acquisition/lock-query context is five seconds. Closing the owner session releases the lock; a following status/down succeeds. Separate-process loser and concurrent status both exit 1 with a retry-after-finish reason, without credentials.
+
+### H13. Migration discovery/order validation
+
+Nonzero six-digit numeric versions with lowercase underscore-separated names and required regular up/down files. Reject invalid .sql filenames, non-regular SQL files, missing pairs and duplicate numeric mappings even with different names. Sort numerically; gaps allowed; applied records must be a repository prefix. Generator validates existing discovery, chooses highest +1, uses an exclusive local scaffold lock/O_EXCL and never overwrites pairs. Interrupted partial generation needs operator review; no business scaffold was generated.
+
+### H14. Missing migration handling
+
+Applied record absent from discovered pairs causes a hard failure before migration SQL. Missing one counterpart fails discovery. Actual temporary applied version 000099 with both files removed is refused. Unknown database identifiers are not echoed into logs/errors.
+
+### H15. Checksum mismatch handling
+
+Hard failure with safe canonical local version before any SQL/history change. Both up and down fixture tampering fail Status/Up/Down. Restoring original bytes passes status, proving stored checksum was not overwritten.
+
+### H16. Database-error handling
+
+Separate missing table from empty applied records; Query, Scan, iteration and metadata/connection errors become safe classified MigrationError. No arbitrary error becomes version zero. Denied runtime history read fails; pgx can surface a server query error during rows iteration and that path is also checked. Closed-pool Down/Status fail. Unknown driver/SQL details never escape CLI.
+
+### H17. Dirty/partial-state policy
+
+No dirty flag: supported PostgreSQL SQL and bookkeeping roll back together. Strict checksums/history reject inconsistent external state. Connection loss at COMMIT can make acknowledgement ambiguous while database state remains atomic; error explicitly requires status inspection before retry. Unsupported exceptional nontransactional execution would require a later recovery design.
+
+### H18. Migration CLI changes
+
+Retain mutually exclusive --migrate-up/down/status/create, --seed and --sessions-cleanup. Add explicit development-only --migrate-adopt-legacy. CLI errors preserve safe reason/version; stdout status/generation and structured events contain no SQL/config/URLs. Migration/seed select operator connection; cleanup selects runtime. Normal API and Docker ENTRYPOINT remain API-only. Local tools-profile job is an explicit action excluded from default/full startup.
+
+### H19. Migration status behavior
+
+Locked coherent read only; missing-table notice, canonical version, applied/pending, checksum=verified/not-applied and current version (none or latest). It creates no tracking table and refuses corrupt/legacy/concurrently changing state. No admin UI.
+
+### H20. Migration logging
+
+Existing Zap conventions: migration.command and migration.apply, canonical migration_version, direction, result, numeric duration_ms, and allowlisted command failure reason. No raw errors/SQL/config/password/URL. Final separate-process capture: six structured migration records, six SQL/config/credential sentinels, zero matches. API capture: 327 structured rows, 70 distinct sentinels with zero matches and 242 response/status/ID correlations; machine evidence contains actual counts.
+
+### H21. Migration DB configuration
+
+Optional typed *DBConfig MigrationDB from MIGRATION_DATABASE_URL parsed through the existing constrained URL/TLS validator. It must target the runtime host/port/name. No environment reads in migrator. CLI selection is explicit. Separate URL CA setting is supplied in sslrootcert; no runtime TLS downgrade or URL logging.
+
+### H22. Runtime DB configuration
+
+Retain validated DATABASE_URL or DB_* and pool settings. API bootstrap/readiness/repositories and session cleanup use cfg.DB only. API startup does not need MigrationDB. Pin standard_conforming_strings=on with the existing allowlisted pgx runtime parameters; the ambient-PG test now asserts both safe parameters and preserves override rejection.
+
+### H23. Development credential behavior
+
+Fresh Compose creates separate fixed infrastructure logins by default; examples contain clearly published local-only values. API gets runtime DML credentials, explicit tools job gets the local migrator connection, admin stays in PostgreSQL. Absent migration URL may use cfg.DB only in development/test as a documented convenience. Integration uses generated distinct ignored 0600 credentials. Existing volumes retain passwords/owners and are never silently adopted.
+
+### H24. Production credential behavior
+
+API requires only valid runtime settings. Production migration actions require MIGRATION_DATABASE_URL, different username and the same target; missing URL cannot fall back. Both connections require explicit verify-full TLS, TLS >=1.2, hostname/chain verification and nil fallback. Configuration cannot prove deployed role privileges; actual hosted roles/CA handshake still require deployment checks. Production/test legacy adoption is refused before IO.
+
+### H25. PostgreSQL role structure
+
+Bootstrap admin creates DB/citext and local logins; elabtrack_migrator and elabtrack_runtime are both NOSUPERUSER/NOCREATEDB/NOCREATEROLE/NOREPLICATION/NOBYPASSRLS. No role membership between them. Roles are infrastructure only, unrelated to provisional user/admin product fields. Real current_user/catalog checks verify both and actual API runtime identity.
+
+### H26. Schema ownership strategy
+
+Stable public schema/application-table/tracking owner elabtrack_migrator. Database/citext bootstrap administrator retains extension responsibility; migrator has no database CREATE or cluster administration. Historical CREATE EXTENSION IF NOT EXISTS works with preinstalled citext. No random ownership transfer; future migrations run as that owner. Existing volume transfers require separate administrator review.
+
+### H27. Runtime grants
+
+CONNECT/database plus USAGE/public, SELECT/INSERT/UPDATE/DELETE on named users/refresh_tokens only. No grant option, schema/database CREATE/TEMP or owner membership. UUID IDs require no sequences; standard PostgreSQL/citext type/function access is retained, no custom security-definer surface. runtime-grants.sql is an explicit owner step after current foundation migrations; future approved table migrations grant only their named required objects transactionally, never blanket defaults.
+
+### H28. schema_migrations privileges
+
+Owned by migrator, explicit REVOKE ALL FROM runtime/PUBLIC; no runtime read or write dependency. Real runtime SELECT/UPDATE refused. Bootstrap source creates only runtime pool/ping; actual API has no migration URL/password/bootstrap password, and startup/reconnect/restart leave version/checksum/timestamps unchanged.
+
+### H29. API startup under runtime credentials
+
+PASS: final repository image starts with DB_USER=elabtrack_runtime and only its generated password. Safe Docker inspection verifies migration/admin secrets absent without printing Env. /ready returns 200 via runtime ping. Runtime lacks schema CREATE/tracking access; actual auth and browser work. No startup schema/adoption/grant command or test endpoint.
+
+### H30. Migration run under migrator credentials
+
+PASS: explicit compiled CLI from zero using elabtrack_migrator, plus explicit Compose tools job on current state. Non-superuser role owns schema/tables/tracking; required DDL succeeds. API/auth tests use elabtrack_runtime, not owner/admin credentials.
+
+### H31. Atomic up-failure test
+
+PASS live/race: temp paired 000099 executes CREATE TABLE then division-by-zero. Probe table absent, applied row absent, prior three versions unchanged. No permanent broken SQL file.
+
+### H32. Bookkeeping-failure test
+
+PASS live/race: temporary tracking CHECK rejects probe version after valid CREATE within tx; probe DDL and row absent. Also a temporary tracking delete trigger rejects Down bookkeeping; table and record retained. Fixture constraints/triggers/functions are removed.
+
+### H33. Down-failure test
+
+PASS live/race: applied fixture Down drops probe table then errors; rollback restores table and keeps checksum/applied record. Probe cleaned using owner credentials afterward.
+
+### H34. Checksum tampering test
+
+PASS live/race: separately edit applied temporary up and down bytes. Status/Up/Down all fail; restoring bytes verifies original tracking. Repository SQL untouched.
+
+### H35. Missing-applied-migration test
+
+PASS live/race: apply probe, remove both paired fixture files, Up refuses absent applied history. No automatic delete/repair; fixture table/row cleaned explicitly.
+
+### H36. Duplicate-version test
+
+PASS offline and live: two names with identical numeric 000003 are rejected before SQL. Additional invalid filename/zero/missing counterpart and ordering-gap tests pass.
+
+### H37. DB-error test
+
+PASS live: runtime tracking permission failure causes Down/Status error instead of no migrations. PASS offline closed pool and safe failure/log tests. Query/scan/iteration source paths all preserve errors; no permissive no-row fallback remains.
+
+### H38. Concurrent migrator test
+
+PASS mandatory real PostgreSQL: live different connections plus separate compiled CLI processes. Observer sees native pg_locks key; winner applies one table/record, second Up and simultaneous Status exit 1 with lock contention. Winning connection closes; status/down subsequently succeeds and history is coherent. No simultaneous schema mutation or in-memory lock claim.
+
+### H39. Runtime DDL denial test
+
+PASS live/race: runtime INSERT/UPDATE/SELECT/DELETE in a rolled-back synthetic-account tx; CREATE TABLE, ALTER disposable owner probe, CREATE ROLE, tracking SELECT/UPDATE denied. GRANT without grant option may yield only warning; effective PUBLIC privileges remain absent and runtime lacks grant option. No destructive project-table modification.
+
+### H40. Migrator DDL test
+
+PASS live/race: actual non-superuser owner CREATE/ALTER/DROP disposable table succeeds in a rolled-back transaction. Catalog checks confirm no cluster privileges, and all foundation/tracking ownership is stable.
+
+### H41. Existing migrations from-zero result
+
+PASS: exactly 000001_create_users, 000002_create_refresh_tokens, 000003_refresh_session_security apply in numeric order from a fresh PostgreSQL 18.6 volume; all checksum statuses verified. No changes to six SQL files or 000003 session-hash constraints/security intent. No additional permanent migration.
+
+### H42. Up/down/up result
+
+PASS: all three Up → three explicit latest Down operations → current version none → all three Up, then named runtime grants. Final hash-only schema/three verified records. Both 000003 directions intentionally invalidate sessions; the round trip preceded auth fixtures.
+
+### H43. API/auth regression result
+
+PASS: real runtime-role Go HTTP/repository suite under -race, six subtests plus parent; current-account demotion/disable, hash persistence/replay, 12-way one-success/11-denial refresh, actual post-consumption rollback, logout and bounded cleanup. Chromium memory-only/HttpOnly/reload/single-flight/bounded retry/CORS/CSP/three viewports pass; restart preserves DB/history/browser restoration. Runtime parser 413/431, readiness 503→200, rates/proxy/IDs/logs pass. Known cross-tab defect deliberately remains.
+
+### H44. TLS safety result
+
+PASS offline migration effective TLS configuration/username/target/fallback tests and actual production disable rejection before IO. Test startup permits no migration secret; production CLI refuses fallback. No real hosted verify-full certificate/hostname handshake performed; explicitly remains deployment-only.
+
+### H45. Seed safety result
+
+PASS: explicit development --seed selects migrator and executes existing synthetic seed SQL; production valid-config guard refuses before IO, test guard retained. API startup never seeds. Explicit --sessions-cleanup succeeds with runtime credentials (zero further eligible rows). No new seed accounts/policy or credentials in reports.
+
+### H46. integration/README changes
+
+Complete safe fresh-volume/bootstrap roles, separate ignored credentials, owner migrate/status/down/up/adoption, named runtime grants, runtime API readiness/auth, live fault/process tests, browser/runtime/restart/log checks and owned cleanup. Existing browser driver/artifact names are retained only for harness reuse; target is Phase 1H. Commands are deterministic later-CI inputs, not a CI implementation.
+
+### H47. Phase 1I cross-tab status
+
+Required before Phase 2/product UI; ROADMAP/backlog/DEC-044 name Cross-Tab Session Coordination explicitly. Actual repeated adverse race: winner refresh then late losing 401 clears shared new cookie; peer logout leaves other memory authenticated until refresh failure. No 1I code, usable-token broadcast/persistence, replay relaxation or institutional session policy.
+
+### H48. CI/deployment checks still open
+
+No CI pipeline. Hosted PostgreSQL role/ownership setup and verify-full CA/hostname handshake, real HTTPS/HSTS/CSP edge/proxy bypass, authorized release/backup/restore/recovery, external logging/sink/access/retention, cleanup operational ownership/cadence and measured workloads remain open. Local evidence is not production readiness or permission to deploy.
+
+### H49. Backend fmt/vet/test results
+
+PASS final go fmt ./..., go vet ./..., go test ./... using declared Go 1.27.1 and writable GOCACHE=/tmp/elabtrack-phase1b-go-cache. 425 passing offline nodes: 92 top-level +333 subtests across 14 packages; live suites skip without opt-in. Real migration database package has 39 passing nodes including live parent/15 cases; real auth suite has seven. No dependency/test/type weakening. Early working-directory/helper syntax and two PostgreSQL-semantics harness assertions were corrected; final recorded gates all exit zero.
+
+### H50. Targeted race results
+
+PASS auth application, bootstrap, HTTP middleware/routes/response, database and PostgreSQL persistence; additional CLI/config race checks. Actual live migration database suite and runtime-role HTTP/auth suite pass under -race, including connection/process/session races and rollback. No detected race in exercised paths.
+
+### H51. Frontend lint/test/build results
+
+PASS: lint zero errors/same 19 existing warnings; 73 tests/seven files; strict TypeScript/Vite build. Unchanged normal entry 459.35 kB/146.55 gzip, lazy transport 54.07/19.87 and CSS 179.94/27.63. All frontend production source/primitives/manifests/lockfiles unchanged. Only disposable ignored browser harness build emits expected static-import/chunk warning.
+
+### H52. Compose validation
+
+PASS six configurations: base default/full/tools/full+tools, retained Phase 1G full override and Phase 1H full+tools override, config --quiet. API/frontend/final API and explicit CLI job images build; actual PG/API/nginx and nginx -t pass. Documented container grant command passes. Isolated fixed names/project/volume only; normal development volume untouched. Owned resources/secrets are removed at closure; shared base-image cache/unrelated hello-world resource retained.
+
+### H53. git diff --check
+
+PASS final. A–G report prefix, six historical SQL files, frontend production source/primitives, manifests/locks, V1 audit, Phase 0 and OPEN_DECISIONS preserved against pre-H hashes. No tracked secret/generated browser/Python artifact. No git staging/commit/push/fetch/remote mutation.
+
+### H54. Exact git status
+
+Pre-H tree was clean on main; origin fetch/push remains https://github.com/Maaku050/elabtrack-v2.git. No staging/commit/push/remote mutation. Final git status --short:
+
+```text
+ M .env.example
+ M Makefile
+ M README.md
+ M backend/.env.example
+ M backend/.env.production.example
+ M backend/Makefile
+ M backend/README.md
+ M backend/cmd/api/main.go
+ M backend/cmd/api/main_test.go
+ M backend/internal/config/config.go
+ M backend/internal/config/config_test.go
+ M backend/internal/config/database.go
+ M backend/internal/infrastructure/database/migrator.go
+ M backend/tests/integration/foundation_test.go
+ M docker-compose.yml
+ M docs/project/DECISIONS.md
+ M docs/project/PHASE1_FOUNDATION.md
+ M docs/project/PHASE1_SECURITY_BACKLOG.md
+ M docs/project/ROADMAP.md
+ M integration/README.md
+ M integration/browser.mjs
+ M integration/env-run.py
+ M integration/logs.py
+ M integration/restart.mjs
+ M integration/runtime.py
+?? backend/database/
+?? backend/internal/config/migration_test.go
+?? backend/internal/infrastructure/database/migration_legacy.go
+?? backend/internal/infrastructure/database/migration_sql.go
+?? backend/internal/infrastructure/database/migrator_integration_test.go
+?? backend/internal/infrastructure/database/migrator_test.go
+?? integration/compose.phase1h.yml
+?? integration/evidence/2026-10-07-phase1h.json
+?? integration/migration-processes.py
+?? integration/roles.py
+?? integration/sql.py
+```
+
+### H55. Remaining product-policy decisions
+
+OPEN-001–020 unchanged: provisioning/eligibility, staff/admin/Super Administrator, verification/inactive/ongoing loans, stock/lifecycle/fines/settlement/history/terms/kiosk/email/V1 migration remain stakeholder/deferred work. Infrastructure DB roles establish no product permissions. Session family/global/immediate-access revocation/concurrent device/grace policy remains unresolved.
+
+### H56. Remaining Phase 1 security/foundation backlog
+
+Required 1I cross-tab coordination; SEC-004/006 local registration atomicity and unresolved session/institutional policy; SEC-017 automated CI; SEC-014 actual hosted HTTPS/CSP/TLS/edge; SEC-015 external logging retention/access; SEC-018 cleanup schedule/owner/load; SEC-019 retained warnings/dependency/image review. SEC-008 runner and separated-role source/local findings are verified resolved; deployed operator controls still unverified.
+
+### H57. Phase 1H exit gate
+
+**SATISFIED / COMPLETE for the authorized source and disposable local scope.** Atomic SQL/bookkeeping, native advisory exclusion, immutable checksums/history validation, safe state errors, coherent all-file round trip, real process concurrency, local least-privilege ownership/API/auth, explicit CLI, live/standard/race/frontend/Compose/diff gates pass. No later phase, business schema/feature, mockup, commit/push or deployment. Completion does not close production/CI/product-policy checks or authorize Phase 1I.

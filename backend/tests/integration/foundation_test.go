@@ -35,7 +35,7 @@ func TestRealFoundation(t *testing.T) {
 	cfg, err := config.Parse(map[string]string{
 		"APP_ENV": "test", "JWT_SECRET": os.Getenv("JWT_SECRET"),
 		"DB_HOST": "127.0.0.1", "DB_PORT": "15432", "DB_NAME": "elabtrack_v2_integration",
-		"DB_USER": "postgres", "DB_PASSWORD": os.Getenv("DB_PASSWORD"), "DB_SSLMODE": "disable",
+		"DB_USER": "elabtrack_runtime", "DB_PASSWORD": os.Getenv("DB_PASSWORD"), "DB_SSLMODE": "disable",
 	})
 	require(t, err == nil, "integration configuration")
 	db, err := database.New(ctx, cfg.DB)
@@ -44,6 +44,9 @@ func TestRealFoundation(t *testing.T) {
 	var identity string
 	err = db.Pool.QueryRow(ctx, `SELECT current_database()`).Scan(&identity)
 	require(t, err == nil && identity == "elabtrack_v2_integration", "disposable database identity")
+	var runtimeOnly bool
+	err = db.Pool.QueryRow(ctx, `SELECT current_user='elabtrack_runtime' AND NOT rolsuper AND NOT rolcreaterole FROM pg_roles WHERE rolname=current_user`).Scan(&runtimeOnly)
+	require(t, err == nil && runtimeOnly, "DML-only runtime identity")
 	users := postgres.NewUserRepository(db.Pool)
 	tokens := postgres.NewAuthRepository(db.Pool)
 	hasher := security.NewBcryptHasher(0)

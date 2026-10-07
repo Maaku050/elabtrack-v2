@@ -1,0 +1,28 @@
+# Disposable Phase 1H only. Combine with ../docker-compose.yml as the FIRST file.
+# Never use down -v on the normal development Compose project.
+services:
+  postgres:
+    container_name: elabtrack_v2_phase1h_postgres
+    ports: !override
+      - "127.0.0.1:15432:5432"
+  backend:
+    container_name: elabtrack_v2_phase1h_backend
+    env_file: !reset []
+    environment:
+      APP_ENV: development
+      JWT_SECRET: ${JWT_SECRET:?Use an ignored integration env file}
+      LOG_FORMAT: json
+      LOG_LEVEL: debug
+      FRONTEND_URL: http://localhost:15173
+      ALLOWED_ORIGINS: http://localhost:15173,http://localhost:14173
+      TRUSTED_PROXIES: ${INTEGRATION_TRUSTED_PROXY:-}
+      RATE_LIMIT_WINDOW: 5s
+    ports: !override
+      - "127.0.0.1:18080:8080"
+  frontend:
+    container_name: elabtrack_v2_phase1h_frontend
+    ports: !override
+      - "127.0.0.1:15173:80"
+volumes:
+  elabtrack_v2_pgdata:
+    name: elabtrack_v2_phase1h_pgdata

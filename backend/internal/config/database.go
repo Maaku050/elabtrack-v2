@@ -144,7 +144,7 @@ func (c DBConfig) PoolConfig() (*pgxpool.Config, error) {
 	cfg.ConnConfig.User = c.User
 	cfg.ConnConfig.Password = c.Password
 	cfg.ConnConfig.Fallbacks = nil
-	cfg.ConnConfig.RuntimeParams = map[string]string{"application_name": "elabtrack-v2"}
+	cfg.ConnConfig.RuntimeParams = map[string]string{"application_name": "elabtrack-v2", "standard_conforming_strings": "on"}
 	cfg.ConnConfig.TLSConfig = nil
 	if c.tlsConfig != nil {
 		cfg.ConnConfig.TLSConfig = c.tlsConfig.Clone()
@@ -155,4 +155,42 @@ func (c DBConfig) PoolConfig() (*pgxpool.Config, error) {
 	cfg.MaxConnIdleTime = c.MaxConnIdleTime
 	cfg.HealthCheckPeriod = time.Minute
 	return cfg, nil
+}
+
+// Migration credentials are optional for API startup. Production migration and
+// seed actions cannot fall back; development/test may explicitly use their local
+// runtime connection when no migration URL is configured.
+func parseMigrationDatabase(r *reader, env Environment, runtime DBConfig) *DBConfig {
+	raw, present := r.values["MIGRATION_DATABASE_URL"]
+	if !present {
+		return nil
+	}
+	values := map[string]string{"DATABASE_URL": raw}
+	for _, key := range []string{"DB_MAX_CONNS", "DB_MIN_CONNS", "DB_MAX_CONN_LIFETIME", "DB_MAX_CONN_IDLE_TIME"} {
+		if value, ok := r.values[key]; ok {
+			values[key] = value
+		}
+	}
+	migrationReader := reader{values: values}
+	cfg := parseDatabase(&migrationReader, env)
+	if len(migrationReader.errs) > 0 {
+		r.fail("MIGRATION_DATABASE_URL", "invalid migration connection; requires the same URL/TLS policy as DATABASE_URL")
+		return nil
+	}
+	if cfg.Host != runtime.Host || cfg.Port != runtime.Port || cfg.Name != runtime.Name {
+		r.fail("MIGRATION_DATABASE_URL", "must target the runtime database host, port and name")
+	}
+	if env == Production && cfg.User == runtime.User {
+		r.fail("MIGRATION_DATABASE_URL", "production migration and runtime users must differ")
+	}
+	return &cfg
+}
+func (c *Config) MigrationConnection() (DBConfig, error) {
+	if c.MigrationDB != nil {
+		return *c.MigrationDB, nil
+	}
+	if c.App.Env == Production {
+		return DBConfig{}, errors.New("MIGRATION_DATABASE_URL: required for production migration commands")
+	}
+	return c.DB, nil
 }

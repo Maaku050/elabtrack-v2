@@ -1,7 +1,7 @@
 # Root Makefile - convenience wrappers around backend/frontend tooling.
 # Linux development; equivalent commands are documented in README.md.
 
-.PHONY: help dev backend frontend migrate-up migrate-down migrate-status migrate-create compose-migrate-up seed sessions-cleanup test lint fmt vet install
+.PHONY: help dev backend frontend migrate-up migrate-down migrate-status migrate-create compose-migrate-up compose-runtime-grants migrate-adopt-legacy seed sessions-cleanup test lint fmt vet install
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
@@ -52,4 +52,10 @@ install: ## Install backend and frontend dependencies
 	cd frontend && npm install
 
 compose-migrate-up: ## Explicitly migrate the local Compose database
-	docker compose --profile full run --rm --build backend --migrate-up
+	docker compose --profile tools run --rm --build migrator
+
+compose-runtime-grants: ## Explicitly grant foundation DML after local migration
+	docker compose exec postgres sh -c 'PGPASSWORD="$$MIGRATION_DB_PASSWORD" psql -X -h 127.0.0.1 -U elabtrack_migrator -d "$$POSTGRES_DB" -v ON_ERROR_STOP=1 -f /opt/elabtrack/runtime-grants.sql'
+
+migrate-adopt-legacy: ## Attest verified pre-production foundation history (read integration docs first)
+	cd backend && go run ./cmd/api --migrate-adopt-legacy

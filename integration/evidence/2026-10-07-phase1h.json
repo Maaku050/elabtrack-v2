@@ -1,0 +1,1757 @@
+{
+  "phase": "1H",
+  "date": "2026-10-07",
+  "scope": "authorized disposable local foundation; no deployment",
+  "complete": true,
+  "migration": {
+    "tracking": [
+      "version",
+      "applied_at",
+      "checksum"
+    ],
+    "checksum": "SHA-256, versioned length-framed raw up/down pair",
+    "lockKey": "0x454c41424d494752",
+    "contention": "immediate fail",
+    "acquisitionTimeoutSeconds": 5,
+    "transactions": "SQL and tracking in same per-file transaction",
+    "legacyAdoption": "explicit development-only known foundation prefix and baseline digests; provenance attestation",
+    "existingSQLUnchanged": true,
+    "freshAllUpAllDownAllUp": true,
+    "faultCases": [
+      "partial up SQL rollback",
+      "up bookkeeping rollback",
+      "partial down SQL rollback",
+      "down bookkeeping rollback",
+      "up and down tampering",
+      "missing applied file",
+      "historical gap",
+      "duplicate numeric version",
+      "denied history reads",
+      "nontransactional SQL refusal",
+      "transaction control refusal",
+      "simultaneous connections",
+      "runtime DML and DDL/tracking/grant denial",
+      "non-superuser migrator DDL",
+      "explicit legacy adoption"
+    ],
+    "processProof": {
+      "separateProcesses": true,
+      "nativeAdvisoryLockObserved": true,
+      "winnerExit": 0,
+      "loserExit": 1,
+      "statusDuringMigrationExit": 1,
+      "oneCoherentAppliedRecord": true,
+      "lockReleasedAfterCommand": true,
+      "SQLAndBookkeepingRollback": true,
+      "structuredMigrationRecords": 6,
+      "secretSentinels": 6,
+      "secretMatches": 0
+    }
+  },
+  "roles": {
+    "runtimeAPIOnlyCredentials": true,
+    "migrationSecretAbsentFromAPI": true,
+    "ready": 200,
+    "roles": [
+      "elabtrack_migrator",
+      "elabtrack_runtime"
+    ],
+    "allRolesNonSuperuser": true,
+    "allRolesNoClusterAdministration": true,
+    "applicationAndTrackingOwner": "elabtrack_migrator",
+    "runtimeSchemaCreate": false,
+    "runtimeTrackingAccess": false,
+    "runtimeMigrationRoleMembership": false,
+    "versions": [
+      "000001_create_users",
+      "000002_create_refresh_tokens",
+      "000003_refresh_session_security"
+    ]
+  },
+  "tests": {
+    "offlineBackend": {
+      "passingNodes": 425,
+      "topLevel": 92,
+      "subtests": 333,
+      "packagesWithPassingNodes": 14
+    },
+    "liveMigrationDatabasePackageUnderRace": {
+      "passingNodes": 39,
+      "topLevel": 10,
+      "subtests": 29,
+      "packagesWithPassingNodes": 1
+    },
+    "liveRuntimeAuthUnderRace": {
+      "passingNodes": 7,
+      "topLevel": 1,
+      "subtests": 6,
+      "packagesWithPassingNodes": 1
+    },
+    "backendFmt": true,
+    "backendVet": true,
+    "targetedRacePackages": 9,
+    "frontendTests": 73,
+    "frontendTestFiles": 7,
+    "frontendLintErrors": 0,
+    "unchangedFrontendWarnings": 19,
+    "frontendStrictBuild": true,
+    "composeConfigurations": 6,
+    "dockerBuilds": true,
+    "explicitComposeMigrationAndGrantCommands": true,
+    "nginxConfiguration": true
+  },
+  "browser": {
+    "browser": "Chromium",
+    "checks": [
+      {
+        "name": "production SPA headers, routes, API proxy, theme and three responsive viewports",
+        "detail": true
+      },
+      {
+        "name": "browser login, safe current account, HttpOnly/Lax/path cookie, memory-only tokens",
+        "detail": true
+      },
+      {
+        "name": "reload starts with empty memory and exactly one real bootstrap refresh",
+        "detail": true
+      },
+      {
+        "name": "five concurrent real protected 401s share one refresh and retry successfully",
+        "detail": true
+      },
+      {
+        "name": "controlled protected 401 performs one actual refresh and one retry",
+        "detail": true
+      },
+      {
+        "name": "persistent protected 401 stops after one retry and clears memory",
+        "detail": true
+      },
+      {
+        "name": "revoked-session reload fails once and clears the dead cookie",
+        "detail": true
+      },
+      {
+        "name": "two tabs share the cookie but racing rotation forces one tab unauthenticated",
+        "detail": {
+          "refreshResults": [
+            "success",
+            "denied:401"
+          ],
+          "cookieSurvived": false,
+          "states": [
+            "authenticated",
+            "unauthenticated"
+          ],
+          "logoutOtherTabAccessRemainedValid": true,
+          "recommendation": "ADD CROSS-TAB SESSION COORDINATION BEFORE PRODUCT UI"
+        }
+      },
+      {
+        "name": "logout clears one tab; other tab remains authenticated until refresh fails",
+        "detail": true
+      },
+      {
+        "name": "real browser allowed-origin credentials/preflight and disallowed refresh/logout CSRF denial",
+        "detail": true
+      }
+    ],
+    "correlation": [
+      {
+        "id": "3acef72a-d983-4d9a-a3ce-9881340b857b",
+        "status": 401
+      },
+      {
+        "id": "10105eec-61fa-496f-8cfd-91a70dae30d4",
+        "status": 200
+      },
+      {
+        "id": "4ab1c058-d897-4f81-ba97-e1e8f1f1dc5d",
+        "status": 401
+      },
+      {
+        "id": "3b184fd8-32ca-4629-857c-a4ffdf9917bf",
+        "status": 401
+      },
+      {
+        "id": "1766bc00-18e4-42f0-8136-aed4eeffa091",
+        "status": 200
+      },
+      {
+        "id": "d0281bb1-2647-4efa-b19b-9bcd3bcd0662",
+        "status": 200
+      },
+      {
+        "id": "2ac2009d-6d44-42b6-8983-22c70736465d",
+        "status": 200
+      },
+      {
+        "id": "7af66c23-6a44-445d-8150-849e85d1b944",
+        "status": 401
+      },
+      {
+        "id": "ed65f537-3939-4ba2-9f53-da30032525cc",
+        "status": 401
+      },
+      {
+        "id": "fe255197-3cc2-46a5-8693-ec1b631ed3f0",
+        "status": 401
+      },
+      {
+        "id": "fcb65206-fda5-4bfb-8c04-226cfb2fd217",
+        "status": 200
+      },
+      {
+        "id": "bb611ddc-4fc2-4dea-a856-1f3691db0975",
+        "status": 401
+      },
+      {
+        "id": "9c099cd0-f9f1-4202-a21f-6f2fecc0ef96",
+        "status": 401
+      },
+      {
+        "id": "7bc1f70d-64d8-48ad-97cd-922e43c2ae79",
+        "status": 200
+      },
+      {
+        "id": "140b8459-3d76-405b-ba28-26480a83fa9f",
+        "status": 200
+      },
+      {
+        "id": "f583f349-e74b-4669-b7e0-5d2ce1060efd",
+        "status": 200
+      },
+      {
+        "id": "c4274990-b9a8-40f4-8313-8079234d1539",
+        "status": 200
+      },
+      {
+        "id": "0cef4922-49da-42ef-96a5-3b40d2ccc4c0",
+        "status": 200
+      },
+      {
+        "id": "b3293389-a175-4398-b020-9e4dbf7568e2",
+        "status": 200
+      },
+      {
+        "id": "42445b26-cd6e-4e70-b3a8-8077441b0c5f",
+        "status": 200
+      },
+      {
+        "id": "1ca855f9-6fcd-4732-a701-7390f37d8ce5",
+        "status": 200
+      },
+      {
+        "id": "52e419bf-5913-465f-b0c3-73fe8771400a",
+        "status": 200
+      },
+      {
+        "id": "d4aa06d7-2b1d-4e20-9ca3-b63c13a7de18",
+        "status": 401
+      },
+      {
+        "id": "5a3017f9-883d-4882-b5c6-5df9756d5d63",
+        "status": 200
+      },
+      {
+        "id": "8bf43f4f-7549-456e-b8f3-41a4f23e513f",
+        "status": 200
+      },
+      {
+        "id": "753677aa-3b36-43c7-9a92-a807de4d239f",
+        "status": 200
+      },
+      {
+        "id": "aba29545-c38f-4d4b-a0a7-616ab96db918",
+        "status": 401
+      },
+      {
+        "id": "b74982f5-c05b-4a6e-b6ec-f19c5589887b",
+        "status": 200
+      },
+      {
+        "id": "d1cc0c9e-95c4-4566-a23d-25cc57dcd346",
+        "status": 200
+      },
+      {
+        "id": "8443f2be-db5b-45f4-9a4a-22cfba86b035",
+        "status": 204
+      },
+      {
+        "id": "178427fd-036b-49dd-839b-ad7c01dab9ea",
+        "status": 200
+      },
+      {
+        "id": "24e596b6-a80c-4321-8338-448856e5a09f",
+        "status": 401
+      },
+      {
+        "id": "10cddaa4-2e6d-4ed1-99ed-fa938cd0ccde",
+        "status": 401
+      },
+      {
+        "id": "c3268b56-d3b7-49d0-9494-6c6391f92df5",
+        "status": 200
+      },
+      {
+        "id": "73e01db4-ae2a-4809-9ed2-fc27f5be3fdb",
+        "status": 200
+      },
+      {
+        "id": "7ca4508a-8997-4d03-bd93-7efc57f219b6",
+        "status": 200
+      }
+    ],
+    "crossTab": {
+      "refreshResults": [
+        "success",
+        "denied:401"
+      ],
+      "cookieSurvived": false,
+      "states": [
+        "authenticated",
+        "unauthenticated"
+      ],
+      "logoutOtherTabAccessRemainedValid": true,
+      "recommendation": "ADD CROSS-TAB SESSION COORDINATION BEFORE PRODUCT UI"
+    },
+    "chromiumVersion": "140.0.7339.16"
+  },
+  "runtime": {
+    "requests": [
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "b3b4a767-aff1-449b-8756-d05130fd9e66",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "fa549091-b2c4-44f7-8e4c-dab666cc97a3",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "7ad6e009-fa74-4bb8-bba6-fe469a221d34",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "548b7155-9e8e-4fca-a73f-bfd45bc269bf",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "33d68452-5cb7-403d-b4e4-2d156bd86a1f",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "7eacb0a6-0247-4864-86e2-81a79ea38aba",
+        "port": 15173
+      },
+      {
+        "path": "/not-implemented",
+        "status": 413,
+        "id": "439311a4-e639-4d0b-89ce-96803d162133",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 431,
+        "id": "5f70e7a5-3fbf-4ce2-b8f1-06c748ff680b",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 413,
+        "id": "994fcac5-93c8-48a7-a823-041a3767076e",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "2d63e303-86bd-4c52-a40d-c187f49a9bfb",
+        "port": 18080
+      },
+      {
+        "path": "/ready",
+        "status": 503,
+        "id": "29f19f68-3ade-4e5d-b407-1b7a8fd75e92",
+        "port": 18080
+      },
+      {
+        "path": "/ready",
+        "status": 503,
+        "id": "434667eb-6fcb-4de9-aaf0-d13d9a3f28e4",
+        "port": 18080
+      },
+      {
+        "path": "/ready",
+        "status": 200,
+        "id": "ef25c85d-a24e-43a1-a3fd-67abce67e23c",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "3ab96aa1-9de4-41cf-9524-b8772765818a",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "5b946a2d-34e2-4b19-b866-90ef681f3c9d",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "69431396-c6f7-4aa9-b361-59145137070c",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "656e6e4d-f53e-45dd-ab0f-43cd42674ddc",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "fe1c1d23-cba5-4ead-b400-2dab0d4c3c50",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "6aff0006-fb6c-4987-a892-6c5928c22b2c",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "7c50dda2-bd4b-4e76-8321-3646ace41dd8",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "a33d04b0-7fa1-4573-99f6-90fd4440f26a",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "16a3d4b0-168d-43d0-bcf4-3da2c49556ce",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 400,
+        "id": "3d9e08af-9840-4011-b658-80d01cc85064",
+        "port": 18080
+      },
+      {
+        "path": "/auth/login",
+        "status": 429,
+        "id": "c1567e28-2a7f-422e-929f-30148e1d6565",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "f916d869-50af-4d6b-b3d6-a9cd70a9f0a1",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "a31000a1-e5d8-4821-aa29-59b75e7e7a93",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "42d17681-d66d-49a8-8d1b-d2dd99c5a754",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "d73304ca-48b9-4505-a59e-26c6cca54c52",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "36041775-c6cb-436a-9b5e-6c65e4ae9dbd",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "bcd5df67-4fef-4168-8473-9112e63dcf0f",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "8f354d38-3f4c-429e-94d2-4743c3c7d5fe",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "3614e00b-7bba-4e64-9428-1208518e3893",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "1f605d4a-51bf-47d3-b87f-8f93cb639dee",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "2c6a3fec-34cc-4c3d-8a3a-92625e3c170c",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "17d39ae3-c083-4dcf-adef-c137985c4877",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "981781dd-ecae-46ce-bfb1-e72be5672ade",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "777795d9-a4f5-44fe-a07b-c19f3ad13d6f",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "581becaa-9fc1-45b4-8975-cbe0331d20e4",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "32894fbf-901e-4028-a28d-ec089c055f24",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "dfec1fa4-fd0b-44bf-b081-391bb0cf0e15",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "e7757f18-0731-4b9d-9405-c0cda8ad0e88",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "e55698dd-a6a9-4880-8751-ad6858ccf9ed",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "8c3cfc67-261d-47e0-aa87-739bd1af3024",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "32025e59-4573-4905-a15f-8d13434c6481",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "7400e30d-8bd2-4236-8699-e5ed4322ff8f",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "7d007d1d-b2bd-45b8-97ea-beaef7d5ffc6",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "24e85f57-db67-4025-9230-6aa94a2b2645",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "039f8075-8766-484d-9afd-55c55adedd3b",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "f0154534-9406-463c-8cbb-e488986daf94",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "1713a6f3-a63d-4ff0-9539-9f8484a07bc7",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "9de14a42-bf76-4f9d-b2db-fe1fdb10ee9d",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "7faf751b-2dae-46db-ab8c-67bc7cfcf447",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "5867311c-7aef-46df-aa38-64bc14d40e31",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "c45c26cd-e3ed-4f99-89a9-150bed1beeca",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "19429401-2764-4ee7-b077-0bddb0f96366",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "c227a7d9-757f-470b-868b-51ae879ad0cb",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "6111d959-c36a-4ad8-8722-9b42f9382269",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "6607c695-a738-463a-a5e4-ca757566ca25",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "5b8a2d15-4a49-454e-8f7f-f4b60ba90434",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "4bb81642-b0b8-452d-a5d9-40884dd81bb5",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "f1065d14-9d3d-4739-80fe-f372cfb0532e",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "fa84cdc2-b614-4fbb-b116-7b5ac4f7f40c",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "3680633e-ff1e-4245-aee2-11f0adc6cef7",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "8f119a4c-733b-4728-a036-e28c9a413076",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "8ab433ab-4ae2-4e3e-8a34-7ef4fbae96f6",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "2e42c1c2-8e16-4466-ae52-951c622c47f6",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "334d191a-b041-43e9-876a-8d7ae9c4aa63",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "05cfefae-8c16-4ed5-bc7d-c5a53cee0ac6",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "d61422c6-a4ce-4acb-8dfe-3303754db204",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "8e408879-47f5-4690-9d34-e85a4bca726b",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "2af7ae05-2c2b-499e-a3d3-b204a14a9026",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "85fe643e-f8a0-406b-9847-9b3c681ec125",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "76b90016-df2c-49fd-ad57-0e7d7dabeb21",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "7071cfd5-2681-4139-9bf1-98b54e4e4b90",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "7229e3bb-5696-433c-959d-bfa1506d0730",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "fc778444-4036-4ab0-a5d9-af77d381be56",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "b94b9217-b10b-4ebb-add5-e0f4d16556f5",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "eb0065f7-8e1f-4c22-8f3e-b1f17b6bf747",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "fd250a70-3066-4841-8da3-a896b047e735",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "3f95ca4c-53bc-41ab-80ae-5eb0fa59e66e",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "e89e214e-517c-4411-8549-9969282a4f74",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "397a18a4-072e-4615-9501-c249bbc808f2",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "275e2acf-e2a7-49e0-adaa-accccfc68784",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 401,
+        "id": "324abdca-ef45-4706-90a5-5777413f7b10",
+        "port": 18080
+      },
+      {
+        "path": "/auth/refresh",
+        "status": 429,
+        "id": "2dd34d88-1469-432e-8d69-4fe07ef76f2e",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "79704beb-a3ca-49ba-a5b4-483ab59c6f9d",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "a568e2b8-4111-4163-9e22-6e8aa77ed524",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "bd1a0357-f921-45f5-a841-7a342722a587",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "1eaaee33-f300-4079-8348-dcdc4499d970",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "cfd5a137-fdde-4725-9a70-1bb12503c01f",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "fb2ca991-764e-47ce-9271-e410785fc4cb",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "ca6ecd0a-c5bd-489b-8bd5-2f9418d798b3",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "bf7f97a9-45c5-4be6-adf6-fe018ac4c023",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "ea5429c8-7974-49da-a880-c9568ae1dbdb",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "efafdc8e-744d-439d-b2bc-63dffefea7e0",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "df80fc79-cb4d-4b97-ac55-52d4bf4b37e3",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "9608a121-eb11-4ed0-a212-5555f334f2dd",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "ebcab880-2abd-45ba-80f9-2534aa2fc9d3",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "0834601d-5c73-4732-a97e-43756bd91ff3",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "3050420e-0732-4b54-b30e-14c90ea573bd",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "3389cd03-9dba-4f36-bf6c-42b7cc36cfb7",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "137ce96a-7038-4270-a44a-362cf944d8e5",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "374a6a0e-eed4-4244-a481-fe6927ed7f96",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "c8823191-66c0-4b21-b143-4be5b8732284",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "5fe2a7c8-8de3-4c62-b579-630fe55d6370",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "912ae4c9-0b81-4ce0-ac4e-fbaf94516f3b",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "8b853a7e-9e82-4388-bc61-72afd8a47653",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "fd6bba5a-4eab-4d2a-8dfb-ec1963c3541f",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "8c75f31f-313d-45de-a4e3-0896c4dce184",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "1656d523-6e50-4b4e-9b1e-5524e559ec4b",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "03241e4a-d42f-49d5-a30a-0bc1fd824bfe",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "84c36d6f-5c2a-4387-a2c8-d0efe5a51986",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "5f34ee5a-995a-45dd-8ce3-7134080396c3",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "3c834057-1168-4f66-a32d-f28b1ee6f460",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "54bc65c1-9c74-487c-bf60-af7ec8d02778",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "b47d2d65-9d5a-4809-8843-6a2521607031",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "a101ecb5-92c1-4862-851d-7bce47bad930",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "bb10daf7-f740-431b-a592-f2bae7eba180",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "5e0a8c53-8304-48c3-8ef7-a4ed299c5f3b",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "40a2694a-b09b-4ea2-a886-d9d845ce1683",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "5ec27319-ce05-4335-9b7b-d1bef5f5ce72",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "ab2993eb-7f3d-4b6e-b5d9-eba63cb59d9f",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "856372ac-2afd-472a-a08a-3affb9a0ff04",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "520fe54c-8cda-4f8d-833a-e55e00616ea9",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "2e98f479-bcfe-4f13-ad90-4c6eab0b6529",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "8805ee04-8270-4e22-b725-a6b308abb420",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "9f7405cf-68d3-4c74-b0a8-64275acccd99",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "bf238ba8-f97e-47fe-9903-f0224421f8f1",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "c506ef51-d72f-4c20-aacb-11654cdb2ca3",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "9ffd4b5a-dfe2-44dd-add1-bafb0615d917",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "24793df2-2e55-48f4-ba68-63259d7ef905",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "aabeff2c-f64d-4310-8126-0e7528b223af",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "370ff759-8e37-4405-b077-88ad9514df9e",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "7fdd9019-7016-492d-baf0-e18792987e3a",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "1a32c095-2141-4694-9387-bf2e277b8224",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "f12547ca-625d-408a-9fbc-725397a63c68",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "242f3c93-e032-4b65-a056-7147ae3c9e3b",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "d7b850aa-98c3-449d-9cca-5a17827184f9",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "dd645d84-8e4f-48c9-9ef5-5c2b8e16045d",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "fcbf0e52-6bba-4be0-a45f-7c2ef02ad48d",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "846fd214-df5b-4652-91b2-52aecdf8d503",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "021829f4-68e1-491e-b945-29ba2b1f9af1",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "b39afb6a-71e1-40b8-be3d-d68661b1e105",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "9e34d597-2824-4c7a-a103-056f40a824fd",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "0d2829f6-c584-49fd-bb70-654719ddef81",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "f61947cb-1207-402b-9b37-d5d4eb5cf182",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "272fce59-3e1a-4b0b-a222-22e6be2a6a36",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "f068a0ef-432b-4ad7-b2b0-f84a507a213f",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "df8c8b05-0f84-40a2-ae20-74306074dca4",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "d569d326-1cd4-462e-a4e4-e634da5b3ade",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "bf9bf013-c3ed-472b-aac6-ef73b529edc5",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "f29d557c-6d40-4b46-975d-afcc99134aa0",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "ce52d29b-b3d5-49ab-a7e1-4ff1b038e60a",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "79a9f9f2-4688-4ed5-9c64-b618a729ed9e",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "982c198a-6a27-43b8-ab52-0188992a4eb7",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "217202ca-327e-4a63-be0d-dc2783aff47f",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "43193948-2e10-421a-8f97-f886060f6fce",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "48e6ab0d-35bf-468a-a289-504a55938cca",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "466a524e-e489-4e61-98f2-37825a8ab1e3",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "2fb21d82-bb23-49ca-b429-2d3e405024d1",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "682bd094-7aca-40cb-b04b-73dc51698349",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "2d73821a-c332-4125-9847-0e35b2ccf50c",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "7964bd22-910b-417c-a278-8bd0d09bf6c9",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "76a68a9b-1da1-41e4-913d-c1df9d5fe6a9",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "f527e4ca-3aaf-4237-b0d7-417cdaaffe13",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "9ea7c282-b709-44d5-b829-6e9b48ce5eef",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "4732947b-d5dc-421f-9b51-a76270ac6b02",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "b6945de1-7efc-4d4f-b0a7-07b5f3710dce",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "ec831b2a-a279-46ba-befa-ece10315fa83",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "87527c3e-7eb3-4e14-a19b-16174a39a6f4",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "760ebd6d-7a31-4453-a956-60e2357de649",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "596797c9-1447-4edc-b8f3-9d6cc0fb7ace",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "d202f82a-a3bb-44b3-aced-7fdb54f13989",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "657eea11-3386-4221-be71-1ebd1697eafd",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "5680a4da-9c60-45d1-9cde-8d407b6a98f0",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "510a23fb-d237-4b65-8358-1555f1ecc1ec",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "b500e113-5eb0-4fda-907b-5ae213f1165e",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "cd63e8dc-5c44-463c-a697-0fee42ef509d",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "4b548db4-9b42-435e-bb41-5016ae72748e",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "f8bc8dbe-573e-41df-b2c4-7e88ce2a0b71",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "734f99a2-b3b8-480f-a15e-45c47e18b574",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "6771bf5e-0de4-4e18-acce-cf2bbc6796a5",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "5726a970-e0d1-4104-bf10-846ce27e9ca0",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "34197119-b143-4979-a7b7-429cec24d535",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "d560501f-329f-4456-bf65-3b13e20b657c",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "73187d9f-d287-4ca3-a134-44eec2c82eb1",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "891cfce3-293c-4eaf-a71c-d9d8b565c8c9",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "8621d060-2d60-4d45-bcb9-3f4d79efd783",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "fc99ea91-2ee4-4faf-815f-2260cde78521",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "efe1972a-1267-4f36-8128-fc65753dbe32",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "2e7500b8-8131-4353-951e-a3abf86eb3a3",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "03312ffb-3a6c-4686-b917-e008c620c16e",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "61613834-2117-4ebe-a14e-41e37b06cf6f",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "5d90a070-fecc-4dc9-ab7f-3e5923f38d76",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "c67bb683-d85a-4d91-bb6d-9d08dd36652a",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "97ca9096-fb30-4fa9-b992-8fc67bbe35eb",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "8730c286-476e-4f7a-a8a9-528cd90472b4",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "aa2eea37-17b6-4d81-99e1-3b2ac54e4560",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "fdeda320-2c27-4825-9aaf-e513bbc304f1",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "4611f584-c891-4514-b02e-cb7e16c3537c",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "d16fcc20-7cc9-4bc3-b6ed-9f13c7b7f3ae",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "0ed5b8d9-8eb4-4151-acf8-6b3c82bb3f93",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "8770f26d-9ec3-4571-90b8-05914c5e8083",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "f91ec2e6-c0c2-4232-96d3-7126e5820303",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "id": "0e2c682f-8a6c-432a-a3b7-0a1d7617788c",
+        "port": 18080
+      },
+      {
+        "path": "/health",
+        "status": 429,
+        "id": "13070b92-defb-4ea6-bb9a-9f977425cad7",
+        "port": 18080
+      }
+    ],
+    "checks": {
+      "final_schema": {
+        "columns": [
+          "id",
+          "token_hash",
+          "user_id",
+          "expires_at",
+          "created_at",
+          "updated_at",
+          "revoked_at",
+          "replaced_by"
+        ],
+        "constraints": [
+          "refresh_tokens_created_at_not_null",
+          "refresh_tokens_expires_at_not_null",
+          "refresh_tokens_hash_format",
+          "refresh_tokens_id_not_null",
+          "refresh_tokens_lifetime",
+          "refresh_tokens_not_self_replaced",
+          "refresh_tokens_pkey",
+          "refresh_tokens_replaced_by_fkey",
+          "refresh_tokens_replacement_revoked",
+          "refresh_tokens_token_hash_key",
+          "refresh_tokens_token_not_null",
+          "refresh_tokens_updated_at_not_null",
+          "refresh_tokens_user_id_fkey",
+          "refresh_tokens_user_id_not_null"
+        ],
+        "indexes": [
+          "idx_refresh_tokens_replaced_by",
+          "idx_refresh_tokens_terminal",
+          "idx_refresh_tokens_user_id",
+          "refresh_tokens_pkey",
+          "refresh_tokens_token_hash_key"
+        ],
+        "versions": [
+          "000001_create_users",
+          "000002_create_refresh_tokens",
+          "000003_refresh_session_security"
+        ],
+        "roles": "elabtrack_migrator|f"
+      },
+      "migration_checksums_present": true,
+      "production_unsafe_TLS_rejected": "startup validation rejects disabled TLS before connection/seed IO",
+      "production_seed_rejected": "startup validation rejects disabled TLS before connection/seed IO",
+      "production_seed_guard": "valid production config refuses seed before database IO",
+      "incoming_IDs_ignored": true,
+      "direct": {
+        "requestId": "548b7155-9e8e-4fca-a73f-bfd45bc269bf"
+      },
+      "direct_spoof": {
+        "requestId": "33d68452-5cb7-403d-b4e4-2d156bd86a1f"
+      },
+      "proxied_spoof": {
+        "requestId": "7eacb0a6-0247-4864-86e2-81a79ea38aba"
+      },
+      "local_HSTS_absent": true,
+      "socket_global_body_limit": {
+        "requestId": "439311a4-e639-4d0b-89ce-96803d162133"
+      },
+      "socket_header_limit": {
+        "requestId": "5f70e7a5-3fbf-4ce2-b8f1-06c748ff680b"
+      },
+      "socket_auth_body_limit": true,
+      "DB_unavailable_liveness_and_readiness": {
+        "liveness": 200,
+        "readiness": 503
+      },
+      "API_pool_reconnect": true,
+      "rate_limit_/auth/login": {
+        "allowed": 10,
+        "next": 429,
+        "retryAfter": "5",
+        "requestId": "c1567e28-2a7f-422e-929f-30148e1d6565",
+        "window": "5s"
+      },
+      "rate_limit_/auth/refresh": {
+        "allowed": 60,
+        "next": 429,
+        "retryAfter": "5",
+        "requestId": "2dd34d88-1469-432e-8d69-4fe07ef76f2e",
+        "window": "5s"
+      },
+      "rate_limit_/health": {
+        "allowed": 120,
+        "next": 429,
+        "retryAfter": "5",
+        "requestId": "13070b92-defb-4ea6-bb9a-9f977425cad7",
+        "window": "5s"
+      },
+      "explicit_migrations_unchanged_by_reconnect": true
+    }
+  },
+  "restart": {
+    "postgresVolumePreserved": true,
+    "migrationVersionsAndTimestampsUnchanged": true,
+    "oldAccessWorks": true,
+    "cookieSurvives": true,
+    "reloadRotatesAndRestores": true,
+    "logoutWorks": true,
+    "nginxSPAAvailable": true
+  },
+  "logs": {
+    "secretSentinelsChecked": 70,
+    "secretMatches": 0,
+    "structuredRowsChecked": 327,
+    "correlatedResponses": 242,
+    "securityEvents": [
+      "auth.login_failed",
+      "auth.login_succeeded",
+      "auth.logout_completed",
+      "auth.refresh_failed",
+      "auth.refresh_succeeded"
+    ],
+    "finalStatuses": [
+      200,
+      201,
+      204,
+      400,
+      401,
+      403,
+      413,
+      429,
+      431,
+      503
+    ],
+    "clientIPs": {
+      "direct": "172.18.0.1",
+      "direct_spoof": "172.18.0.1",
+      "proxied_spoof": "172.18.0.1"
+    },
+    "parserCompletionsAccurate": true
+  },
+  "preservation": {
+    "priorFoundationExactPrefix": true,
+    "historicalMigrationsFrontendManifestsPoliciesReferencesHashedFiles": 154,
+    "businessMigrationsAdded": 0,
+    "frontendProductionChanges": 0
+  },
+  "cleanup": {
+    "ownedContainersNetworkVolumeImagesRemoved": true,
+    "generatedEnvAndCredentialSentinelsRemoved": true,
+    "ignoredBrowserBuildRemoved": true,
+    "unrelatedHelloWorldRetained": true,
+    "normalDevelopmentVolumeUntouched": true
+  },
+  "remaining": [
+    "required unimplemented Phase 1I cross-tab coordination",
+    "automated CI",
+    "hosted role/ownership and verify-full TLS handshake",
+    "production HTTPS/HSTS/CSP/edge/proxy bypass",
+    "backup/restore/release/recovery operations",
+    "logging/cleanup operational owners and retention/schedule",
+    "unchanged product-policy decisions",
+    "registration atomicity and unresolved session policy",
+    "retained warning and dependency/image review"
+  ],
+  "gitDiffCheck": true,
+  "commitPushDeploy": false,
+  "changedFiles": [
+    ".env.example",
+    "Makefile",
+    "README.md",
+    "backend/.env.example",
+    "backend/.env.production.example",
+    "backend/Makefile",
+    "backend/README.md",
+    "backend/cmd/api/main.go",
+    "backend/cmd/api/main_test.go",
+    "backend/database/bootstrap-roles.sh",
+    "backend/database/runtime-grants.sql",
+    "backend/internal/config/config.go",
+    "backend/internal/config/config_test.go",
+    "backend/internal/config/database.go",
+    "backend/internal/config/migration_test.go",
+    "backend/internal/infrastructure/database/migration_legacy.go",
+    "backend/internal/infrastructure/database/migration_sql.go",
+    "backend/internal/infrastructure/database/migrator.go",
+    "backend/internal/infrastructure/database/migrator_integration_test.go",
+    "backend/internal/infrastructure/database/migrator_test.go",
+    "backend/tests/integration/foundation_test.go",
+    "docker-compose.yml",
+    "docs/project/DECISIONS.md",
+    "docs/project/PHASE1_FOUNDATION.md",
+    "docs/project/PHASE1_SECURITY_BACKLOG.md",
+    "docs/project/ROADMAP.md",
+    "integration/README.md",
+    "integration/browser.mjs",
+    "integration/compose.phase1h.yml",
+    "integration/env-run.py",
+    "integration/evidence/2026-10-07-phase1h.json",
+    "integration/logs.py",
+    "integration/migration-processes.py",
+    "integration/restart.mjs",
+    "integration/roles.py",
+    "integration/runtime.py",
+    "integration/sql.py"
+  ]
+}

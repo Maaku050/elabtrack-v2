@@ -13,12 +13,13 @@ import (
 	"github.com/Maaku050/elabtrack-v2/backend/internal/bootstrap"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/persistence/postgres"
 )
 
 type command struct {
-	up, down, status, seed, cleanup bool
-	create                          string
+	up, down, status, seed, cleanup, adopt bool
+	create                                 string
 }
 
 func main() {
@@ -39,6 +40,7 @@ func parseCommand(args []string) (command, error) {
 	flags := flag.NewFlagSet("api", flag.ContinueOnError)
 	// Flag errors can contain supplied values; print only our safe errors.
 	flags.SetOutput(io.Discard)
+	flags.BoolVar(&cmd.adopt, "migrate-adopt-legacy", false, "attest and adopt verified local foundation history (development only)")
 	flags.BoolVar(&cmd.up, "migrate-up", false, "apply pending migrations")
 	flags.BoolVar(&cmd.down, "migrate-down", false, "roll back the latest migration")
 	flags.BoolVar(&cmd.status, "migrate-status", false, "show migration status without schema changes")
@@ -47,13 +49,13 @@ func parseCommand(args []string) (command, error) {
 	flags.BoolVar(&cmd.cleanup, "sessions-cleanup", false, "delete at most 1000 sessions terminal for over seven days")
 	if err := flags.Parse(args); err != nil {
 		if errors.Is(err, flag.ErrHelp) {
-			fmt.Println("api [--migrate-up | --migrate-down | --migrate-status | --migrate-create NAME | --seed | --sessions-cleanup]")
+			fmt.Println("api [--migrate-up | --migrate-down | --migrate-status | --migrate-adopt-legacy | --migrate-create NAME | --seed | --sessions-cleanup]")
 			return cmd, flag.ErrHelp
 		}
 		return cmd, errors.New("command: invalid arguments; use --help")
 	}
 	count := 0
-	for _, active := range []bool{cmd.up, cmd.down, cmd.status, cmd.create != "", cmd.seed, cmd.cleanup} {
+	for _, active := range []bool{cmd.up, cmd.down, cmd.status, cmd.adopt, cmd.create != "", cmd.seed, cmd.cleanup} {
 		if active {
 			count++
 		}
@@ -76,7 +78,7 @@ func parseCommand(args []string) (command, error) {
 	return cmd, nil
 }
 func run(ctx context.Context, cmd command) error {
-	if !cmd.up && !cmd.down && !cmd.status && cmd.create == "" && !cmd.seed && !cmd.cleanup {
+	if !cmd.up && !cmd.down && !cmd.status && !cmd.adopt && cmd.create == "" && !cmd.seed && !cmd.cleanup {
 		app, err := bootstrap.New(ctx)
 		if err != nil {
 			return err
@@ -96,7 +98,17 @@ func run(ctx context.Context, cmd command) error {
 		_, err := database.NewMigrator(nil, "migrations").Create(sanitizeName(cmd.create))
 		return err
 	}
-	db, err := database.New(ctx, cfg.DB)
+	if cmd.adopt && cfg.App.Env != config.Development {
+		return errors.New("migration: legacy adoption permitted only in development")
+	}
+	dbCfg := cfg.DB
+	if !cmd.cleanup {
+		dbCfg, err = cfg.MigrationConnection()
+		if err != nil {
+			return err
+		}
+	}
+	db, err := database.New(ctx, dbCfg)
 	if err != nil {
 		return err
 	}
@@ -109,8 +121,12 @@ func run(ctx context.Context, cmd command) error {
 		fmt.Printf("sessions: deleted %d terminal records\n", count)
 		return nil
 	}
-	migrator := database.NewMigrator(db.Pool, "migrations")
+	log := logger.Must(cfg.Log.Level, cfg.Log.Format)
+	defer log.Sync()
+	migrator := database.NewMigrator(db.Pool, "migrations", log.Logger)
 	switch {
+	case cmd.adopt:
+		err = migrator.AdoptLegacy(ctx)
 	case cmd.up:
 		err = migrator.Up(ctx)
 	case cmd.down:
@@ -122,7 +138,11 @@ func run(ctx context.Context, cmd command) error {
 	}
 	// SQL errors may include server details. Do not send them to startup logs.
 	if err != nil {
-		return errors.New("migration: command failed; inspect database state through an authorized operator")
+		var safe *database.MigrationError
+		if errors.As(err, &safe) {
+			return safe
+		}
+		return errors.New("migration: command failed")
 	}
 	return nil
 }

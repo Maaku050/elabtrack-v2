@@ -233,7 +233,7 @@ func TestAmbientPostgresSettingsRejected(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if pool.ConnConfig.Host != "db.example.invalid" || pool.ConnConfig.Password != "synthetic-db-value" || pool.ConnConfig.TLSConfig == nil || len(pool.ConnConfig.RuntimeParams) != 1 {
+	if pool.ConnConfig.Host != "db.example.invalid" || pool.ConnConfig.Password != "synthetic-db-value" || pool.ConnConfig.TLSConfig == nil || len(pool.ConnConfig.RuntimeParams) != 2 || pool.ConnConfig.RuntimeParams["standard_conforming_strings"] != "on" {
 		t.Fatal("ambient configuration won")
 	}
 }

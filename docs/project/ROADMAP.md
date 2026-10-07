@@ -1,6 +1,6 @@
 # Initial delivery roadmap
 
-Confirmed sequence from current stakeholder direction. **Phase 0 and 1A–1G are complete within their recorded scope. The latest authorization covers Phase 1G only; Phase 1H has not begun.** Later deliverables describe phase-level outcomes, not a speculative task backlog or permission to execute them. Dependencies include the relevant accepted policy decisions, not merely a checked phase number.
+Confirmed sequence from current stakeholder direction. **Phase 0 and 1A–1H are complete within their recorded scope. The latest authorization covers Phase 1H only; Phase 1I has not begun.** Later deliverables describe phase-level outcomes, not a speculative task backlog or permission to execute them. Dependencies include the relevant accepted policy decisions, not merely a checked phase number.
 
 ## Phase 0 — Rebaseline & Template Adaptation
 
@@ -36,13 +36,21 @@ Production configuration/runtime safety; authentication/current-account authoriz
 - **Non-goals:** No business features or automatic migration-runner redesign; record runner limitations for 1H.
 - **Exit gate:** Actual runtime/integration evidence with recovery and concurrent cases; offline doubles alone do not establish completion.
 
-## Phase 1H — Migration Runner Hardening
+## Phase 1H — Migration Runner & Database Privilege Hardening
 
-- **Goal/deliverables:** Atomic DDL and schema_migrations bookkeeping, checksums, advisory lock/concurrent-runner exclusion, correct last-applied lookup error handling and isolated failure/recovery tests.
+- **Goal/deliverables:** Atomic DDL/bookkeeping, immutable paired checksums, native advisory exclusion, strict history/discovery/error handling, explicit CLI, migration/runtime credential and ownership separation, real failure/concurrency/privilege/API/auth tests.
 - **Evidence:** Stakeholder's boss-rebuild audit comparison and current runner both identify DDL commit before separate bookkeeping, no checksums/lock and lookup failure ambiguity.
 - **Dependencies:** Phase 1G evidence and separate authorization; must precede heavy reliance on business-domain migrations.
 - **Non-goals:** No product tables, automatic startup migrations or infrastructure platform redesign.
-- **Exit gate:** Transaction/version integrity, corruption/concurrent-run denial, error classification and recovery demonstrated against isolated PostgreSQL; operator contract updated.
+- **Exit gate:** Satisfied locally: transaction/version integrity, corruption/concurrent-run denial, correct error propagation and separated-role API/auth operation demonstrated against isolated PostgreSQL; standard/race/Compose gates pass. Production role/TLS deployment remains unverified.
+
+## Phase 1I — Cross-Tab Session Coordination
+
+- **Goal/deliverables:** Coordinate same-origin cookie-changing operations and peer session/logout lifecycle before product UI, preserving memory-only access/HttpOnly refresh and strict single-use server rotation.
+- **Evidence:** Real Phase 1G/1H browser race: one refresh succeeds; a late losing 401 clears the shared winner cookie. Peer logout leaves another tab apparently authenticated until refresh fails.
+- **Dependencies:** Completed 1H and separate explicit authorization; required before Phase 2/product UI. Detailed locking/fallback/late-operation design remains this phase's work.
+- **Non-goals:** No usable-token broadcast/persistence, server replay relaxation, business schema/features or CI platform implementation inferred from this requirement.
+- **Exit gate:** Real multi-tab simultaneous refresh/reload/logout/late-response behavior is coherent; bounded failure/fallback and generation safeguards verified, standard/browser/race gates pass. **Not begun.**
 
 ## Phase 2 — Domain & Database Design
 

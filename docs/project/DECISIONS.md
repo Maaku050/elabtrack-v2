@@ -284,3 +284,31 @@ Recorded 2026-10-05. Status vocabulary: **Accepted**, **Proposed**, **Deferred**
 - Decision: Phase 1H explicitly owns DDL/bookkeeping atomicity, migration checksum validation, advisory lock/concurrent-runner protection and correct last-applied lookup failure semantics. It follows Phase 1G and precedes heavy reliance on business-domain migrations.
 - Authority/date: stakeholder Phase 1F request and stated boss-rebuild comparison, 2026-10-07; current runner source independently exhibits separate commits and missing checksum/lock handling.
 - Impact: No runner/SQL change or migration execution during Phase 1F. Prior Phase 1A partial SEC-008 status remains; no automatic authorization for 1G/1H.
+
+## ELAB-V2-DEC-041 — Immutable paired transactional migrations
+
+- Status: Accepted (technical migration contract)
+- Decision: Applied up/down files are immutable. SHA-256 covers a versioned marker and length-framed raw up/down bytes; the digest is stored with canonical version/applied timestamp and verified on inspection/execution. Six-digit numeric ordering, unique version mapping, paired files and applied-prefix consistency are mandatory; numbering gaps are allowed. SQL and version INSERT/DELETE share one PostgreSQL transaction per file. Transaction/session-control SQL is rejected; exceptional nontransactional support and dirty recovery are deferred until needed.
+- Authority/date: stakeholder Phase 1H direction, 2026-10-07; current three historical pairs remain unchanged.
+- Impact: No silent checksum replacement or history repair. Explicit development-only adoption attests known local foundation provenance, accepts only baseline-verified foundation prefixes and preserves timestamps; unknown external histories require separate reconciliation. Commit acknowledgement loss requires status inspection, not blind assumption of rollback.
+
+## ELAB-V2-DEC-042 — PostgreSQL migration exclusion and explicit execution
+
+- Status: Accepted (technical operator contract)
+- Decision: Up/down/status/legacy adoption acquire project key `0x454c41424d494752` with pg_try_advisory_lock on one dedicated connection before history access. Contention fails immediately; connection/lock-query acquisition is bounded to five seconds. Hold through the entire command and close the connection on exit. Migration and seed CLI actions remain explicit and separate from API/Docker startup.
+- Authority/date: stakeholder Phase 1H direction, 2026-10-07; verified across real concurrent connections and separate CLI processes.
+- Impact: Status refuses concurrent mutation instead of reporting a mixed snapshot. No in-process mutex substitutes for PostgreSQL. No automatic release migration, repair or startup adoption.
+
+## ELAB-V2-DEC-043 — Schema-owner migration and runtime DML credentials
+
+- Status: Accepted (infrastructure privilege contract)
+- Decision: Bootstrap administration creates the database/extension and two non-superuser logins. Stable `elabtrack_migrator` owns public schema/application tables/tracking; `elabtrack_runtime` gets CONNECT, schema USAGE and SELECT/INSERT/UPDATE/DELETE on named application tables only. No schema CREATE, role membership/cluster administration/grant option/tracking access. Future approved migrations grant explicit per-object DML and only needed sequences/functions in their transaction; blanket table/default runtime grants are excluded.
+- Authority/date: stakeholder Phase 1H direction, 2026-10-07; real API/auth/browser/privilege verification in disposable PostgreSQL.
+- Impact: Typed MIGRATION_DATABASE_URL selects operator credentials and shares production verify-full/no-fallback policy. Production CLI requires it, a different user and the same target; API needs no migration secret. Development/test permit a documented absent-URL local fallback; fresh Compose separates roles by default, with an explicit tools-profile CLI job. Seeds use the operator path, retain development-only guards; cleanup/readiness use runtime. Existing volumes/ownership are never silently converted. Hosted role/TLS rollout remains deployment verification, not product-role policy.
+
+## ELAB-V2-DEC-044 — Required Phase 1I cross-tab session coordination
+
+- Status: Accepted (sequencing and engineering requirement only)
+- Decision: Phase 1I — Cross-Tab Session Coordination precedes Phase 2/product UI. Preserve strict single-use rotation while addressing shared-cookie concurrent refresh and peer logout/session lifecycle; do not broadcast/persist usable credentials. The detailed coordination/fallback design belongs to separately authorized 1I.
+- Authority/date: stakeholder Phase 1H direction, 2026-10-07, accepting the Phase 1G adverse finding as required follow-up.
+- Impact: One tab's losing refresh 401 can clear the winner's new cookie; another tab can retain authenticated memory after peer logout. Both recur in 1H browser regression. No 1I implementation, replay grace, institutional session policy or later-phase authorization is included.

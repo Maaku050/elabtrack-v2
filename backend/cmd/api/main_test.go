@@ -8,13 +8,13 @@ import (
 )
 
 func TestCommandSelection(t *testing.T) {
-	for _, args := range [][]string{{"--sessions-cleanup", "--seed"}, {"--sessions-cleanup", "--migrate-up"}, {"--seed", "--migrate-up"}, {"--migrate-up", "--migrate-down"}, {"--migrate-create="}, {"--migrate-create", "!!!"}, {"--seed", "extra"}, {"--unknown=credential-sentinel"}} {
+	for _, args := range [][]string{{"--migrate-adopt-legacy", "--migrate-up"}, {"--sessions-cleanup", "--seed"}, {"--sessions-cleanup", "--migrate-up"}, {"--seed", "--migrate-up"}, {"--migrate-up", "--migrate-down"}, {"--migrate-create="}, {"--migrate-create", "!!!"}, {"--seed", "extra"}, {"--unknown=credential-sentinel"}} {
 		_, err := parseCommand(args)
 		if err == nil || strings.Contains(err.Error(), "credential-sentinel") {
 			t.Fatal("invalid command must fail safely")
 		}
 	}
-	for _, args := range [][]string{nil, {"--sessions-cleanup"}, {"--migrate-up"}, {"--migrate-down"}, {"--migrate-status"}, {"--migrate-create", "add_test"}, {"--seed"}} {
+	for _, args := range [][]string{nil, {"--sessions-cleanup"}, {"--migrate-up"}, {"--migrate-down"}, {"--migrate-status"}, {"--migrate-adopt-legacy"}, {"--migrate-create", "add_test"}, {"--seed"}} {
 		if _, err := parseCommand(args); err != nil {
 			t.Fatal(err)
 		}
@@ -25,7 +25,7 @@ func TestStartupValidationAndProductionSeedBeforeDatabase(t *testing.T) {
 	for _, entry := range os.Environ() {
 		key, value, _ := strings.Cut(entry, "=")
 		controlled := key == "PORT" || key == "DATABASE_URL" || key == "FRONTEND_URL" || key == "ALLOWED_ORIGINS"
-		for _, prefix := range []string{"APP_", "DB_", "JWT_", "RATE_LIMIT_", "LOG_", "PG"} {
+		for _, prefix := range []string{"APP_", "DB_", "JWT_", "RATE_LIMIT_", "LOG_", "PG", "MIGRATION_"} {
 			controlled = controlled || strings.HasPrefix(key, prefix)
 		}
 		if controlled {
@@ -45,6 +45,14 @@ func TestStartupValidationAndProductionSeedBeforeDatabase(t *testing.T) {
 		t.Fatal("startup must validate before connecting")
 	}
 	t.Setenv("JWT_SECRET", "t9K2m7Q4v8R1z6N3p5W0x2C7b9H4f8L1")
+	err = run(ctx, command{up: true})
+	if err == nil || !strings.Contains(err.Error(), "MIGRATION_DATABASE_URL") {
+		t.Fatal("production migration must refuse runtime fallback before IO")
+	}
+	err = run(ctx, command{adopt: true})
+	if err == nil || err.Error() != "migration: legacy adoption permitted only in development" {
+		t.Fatal("production adoption must fail before IO")
+	}
 	err = run(ctx, command{seed: true})
 	if err == nil || err.Error() != "seed: permitted only in development" {
 		t.Fatal("production seed must fail before connection")

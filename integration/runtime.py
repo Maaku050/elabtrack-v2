@@ -11,12 +11,12 @@ import uuid
 
 root = Path(__file__).resolve().parent.parent
 docker = os.environ.get("DOCKER_BIN", "docker")
-api = "/tmp/elabtrack-phase1g-api"
+api = "/tmp/elabtrack-phase1h-api"
 evidence = {"requests": [], "checks": {}}
 
 def sql(query):
-    result = subprocess.run(["psql", "-h", "127.0.0.1", "-p", "15432", "-U", "postgres", "-d", "elabtrack_v2_integration", "-At", "-v", "ON_ERROR_STOP=1"],
-                            input=query, env={**os.environ, "PGPASSWORD": os.environ["DB_PASSWORD"]}, capture_output=True, text=True)
+    result = subprocess.run(["psql", "-h", "127.0.0.1", "-p", "15432", "-U", "elabtrack_migrator", "-d", "elabtrack_v2_integration", "-At", "-v", "ON_ERROR_STOP=1"],
+                            input=query, env={**os.environ, "PGPASSWORD": os.environ["MIGRATION_DB_PASSWORD"]}, capture_output=True, text=True)
     if result.returncode:
         raise RuntimeError("isolated fixture SQL failed (detail intentionally withheld)")
     return result.stdout.strip()
@@ -52,53 +52,13 @@ check("final_schema", {"columns":schema.splitlines(),
     "versions":sql("SELECT version FROM schema_migrations ORDER BY version").splitlines(),
     "roles":sql("SELECT current_user, rolsuper FROM pg_roles WHERE rolname=current_user")})
 
-# A synthetic migration probe is confined to this disposable database and an
-# external temporary directory. Existing migration files remain untouched.
-with tempfile.TemporaryDirectory(prefix="elabtrack-phase1g-migrator-") as directory:
-    migrations = Path(directory)/"migrations"
-    migrations.mkdir()
-    version="000099_phase1g_probe"
-    (migrations/(version+".up.sql")).write_text("SELECT pg_sleep(1); CREATE TABLE phase1g_runner_probe(id integer);")
-    (migrations/(version+".down.sql")).write_text("DROP TABLE phase1g_runner_probe;")
-    def run_up():
-        return subprocess.run([api,"--migrate-up"],cwd=directory,capture_output=True,text=True)
-    try:
-        sql("ALTER TABLE schema_migrations ADD CONSTRAINT phase1g_reject_probe CHECK(version <> '000099_phase1g_probe')")
-        failed=run_up()
-        assert failed.returncode==1
-        assert sql("SELECT to_regclass('phase1g_runner_probe') IS NOT NULL") == "t"
-        assert sql("SELECT count(*) FROM schema_migrations WHERE version='000099_phase1g_probe'") == "0"
-        check("DDL_committed_before_failed_bookkeeping",True)
-    finally:
-        sql("DROP TABLE IF EXISTS phase1g_runner_probe; ALTER TABLE schema_migrations DROP CONSTRAINT IF EXISTS phase1g_reject_probe")
-    try:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-            runs=list(executor.map(lambda _:run_up(),range(2)))
-        assert sorted(r.returncode for r in runs)==[0,1]
-        assert sql("SELECT count(*) FROM schema_migrations WHERE version='000099_phase1g_probe'")=="1"
-        check("concurrent_runner", {"exitCodes":[r.returncode for r in runs],"oneDDLFailure":True,"advisoryLock":False})
-        (migrations/(version+".up.sql")).write_text("SELECT 'modified migration content';")
-        assert run_up().returncode==0
-        check("modified_applied_migration_not_detected",True)
-    finally:
-        sql("DROP TABLE IF EXISTS phase1g_runner_probe; DELETE FROM schema_migrations WHERE version='000099_phase1g_probe'")
-
-# A temporary restricted login is solely a fault fixture, not a new credential
-# architecture. Denied tracking reads must not masquerade as an empty database.
-lookup_password=uuid.uuid4().hex+uuid.uuid4().hex
-sentinels=Path('/tmp/elabtrack-phase1g-secrets.json')
-sentinels.write_text(json.dumps(json.loads(sentinels.read_text())+[lookup_password]))
-assert sql("SELECT count(*) FROM pg_roles WHERE rolname='phase1g_lookup_probe'")=="0"
-try:
-    sql("CREATE ROLE phase1g_lookup_probe LOGIN PASSWORD '"+lookup_password+"'; GRANT USAGE, CREATE ON SCHEMA public TO phase1g_lookup_probe")
-    p=subprocess.run([api,"--migrate-down"],env={**os.environ,"DB_USER":"phase1g_lookup_probe","DB_PASSWORD":lookup_password},cwd=root/"backend",capture_output=True,text=True)
-    assert p.returncode==0 and "no migrations to roll back" in p.stdout
-    check("denied_last_applied_lookup_swallowed",{"exitCode":0,"realState":"three versions applied","reported":"no migrations to roll back"})
-finally:
-    sql("REVOKE USAGE, CREATE ON SCHEMA public FROM phase1g_lookup_probe; DROP ROLE IF EXISTS phase1g_lookup_probe")
+# Phase 1G defects remain historical evidence. The corrected failure/lock/role
+# assertions live in TestRealMigrator and migration-processes.py.
+check("migration_checksums_present", all(len(row.split("|"))==2 for row in sql("SELECT version, checksum FROM schema_migrations ORDER BY version").splitlines()))
 
 # Config validation must fail before the unreachable production endpoint is used.
 production={**os.environ,"APP_ENV":"production","DB_HOST":"127.0.0.1","DB_SSLMODE":"disable","FRONTEND_URL":"https://app.example.invalid","ALLOWED_ORIGINS":"https://app.example.invalid"}
+production.pop("MIGRATION_DATABASE_URL", None)
 for args,label in [([],"production_unsafe_TLS_rejected"),(["--seed"],"production_seed_rejected")]:
     p=subprocess.run([api,*args],env=production,cwd=root/"backend",capture_output=True,text=True)
     assert p.returncode==1 and "DB_SSLMODE" in p.stderr
@@ -128,13 +88,13 @@ _,_,_=request("/auth/login","POST",{"Origin":"http://localhost:15173","Content-T
 check("socket_auth_body_limit",True)
 
 before=sql("SELECT string_agg(version||':'||applied_at::text,',' ORDER BY version) FROM schema_migrations")
-subprocess.run([docker,"stop","elabtrack_v2_phase1g_postgres"],check=True,capture_output=True)
+subprocess.run([docker,"stop","elabtrack_v2_phase1h_postgres"],check=True,capture_output=True)
 try:
     request("/health",expected=200)
     request("/ready",expected=503)
     check("DB_unavailable_liveness_and_readiness",{"liveness":200,"readiness":503})
 finally:
-    subprocess.run([docker,"start","elabtrack_v2_phase1g_postgres"],check=True,capture_output=True)
+    subprocess.run([docker,"start","elabtrack_v2_phase1h_postgres"],check=True,capture_output=True)
 for _ in range(20):
     status,_,_=request("/ready")
     if status==200:break

@@ -81,6 +81,18 @@ Actual local PostgreSQL 18.6, full Compose/nginx and Chromium evidence is in the
 - **SEC-008 remains partial for Phase 1H:** up/down/up passes, but safe live probes demonstrate orphan DDL after bookkeeping failure, one failing concurrent runner, no edited-file detection and denied last-applied read reported as no migrations. Migration/runtime both use local PostgreSQL superuser credentials; deployment separation is unimplemented. Runner and migrations remain unchanged; no Phase 1H implementation.
 - SEC-001/005/007/009/011 retain prior source evidence; production disabled TLS and valid-config production seed refusal are additionally verified before IO. SEC-019 warning/dependency/image review, unresolved product policies and all deployment-only checks remain open. Disposable resources and generated secrets are removed.
 
+## Phase 1H migration and database privilege verification — 2026-10-07
+
+Earlier sections/finding tables are historical evidence. The [57-item Phase 1H
+report](PHASE1_FOUNDATION.md#phase-1h--migration-runner--database-privilege-hardening)
+and [machine summary](../../integration/evidence/2026-10-07-phase1h.json) record actual results.
+
+- **SEC-008 verified local runner/runtime findings resolved:** atomic per-file up/down SQL plus bookkeeping, immutable paired SHA-256, locked native PostgreSQL inspection/execution, immediate contention refusal, safe query/scan/iteration errors, duplicate/pair/order/applied-prefix validation and controlled explicit legacy adoption. Real partial SQL and tracking failures roll back; tampering/missing history fail; separate CLI processes cannot mutate concurrently. Historical SQL unchanged; no dirty/nontransactional execution mode or automatic startup migration.
+- **SEC-008 least-privilege source/local gap resolved:** fresh Compose/bootstrap uses non-superuser schema-owner migrator plus DML runtime, stable object ownership and named application grants. Runtime has no schema CREATE, tracking access, grant option or migrator membership. Actual API contains only runtime credentials; readiness, auth/current-account, refresh race/rollback/logout/cleanup and Chromium pass. Production role deployment/TLS/ownership/recovery/release controls still require operational verification; do not infer production readiness.
+- **SEC-002/010 required Phase 1I:** same-cookie two-tab rotation again produces a losing 401 that clears the winner's cookie; peer logout leaves other-tab memory authenticated until refresh fails. **Cross-Tab Session Coordination is required before Phase 2/product UI and is not implemented in 1H.** No server replay relaxation or credential broadcast.
+- **SEC-017 expanded reproducible tests, CI still open:** real migration faults/history/privileges/connections/processes, runtime-role auth under race, browser/runtime/restart and log redaction plus all standard gates. Local execution is not automated CI.
+- SEC-004/006 registration atomicity/institutional session/revocation policy, SEC-014 hosted HTTPS/CSP/edge/TLS, SEC-015 log sink/access/retention, SEC-018 cleanup scheduling/ownership and SEC-019 warnings/dependency/image review remain. OPEN-001–020 unchanged. No Phase 1I/business/mockup/deployment work.
+
 ## CRITICAL
 
 | ID | Finding / evidence | Required hardening and acceptance evidence | Owner |

@@ -1,6 +1,6 @@
 # eLabTrack V2
 
-eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phases 1A–1F add configuration safeguards, current-account authorization, strict access JWTs, hash-only transactional refresh sessions, browser sessions, HTTP perimeter controls and API contracts/structured observability to the Go Fiber/React/PostgreSQL foundation. Product workflows are planned for later approved phases.
+eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phases 1A–1H add configuration safeguards, current-account authorization, strict access JWTs, hash-only transactional refresh sessions, browser sessions, HTTP perimeter controls and API contracts/structured observability, real local verification and atomic/checksummed/locked migrations with database role separation to the Go Fiber/React/PostgreSQL foundation. Product workflows are planned for later approved phases.
 
 Start with the [project charter](docs/project/PROJECT_CHARTER.md), [source policy](docs/project/SOURCE_OF_TRUTH.md), [decision register](docs/project/DECISIONS.md), [open decisions](docs/project/OPEN_DECISIONS.md), and [roadmap](docs/project/ROADMAP.md). The [foundation audit](docs/project/FOUNDATION_AUDIT.md) distinguishes inherited code from approved product requirements. See the [Phase 1 security backlog](docs/project/PHASE1_SECURITY_BACKLOG.md), [Phase 0 report](docs/project/PHASE0_REPORT.md), and [Phase 1 foundation report](docs/project/PHASE1_FOUNDATION.md) before treating this foundation as production ready.
 
@@ -21,7 +21,7 @@ cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
 ```
 
-Set matching local database credentials in `backend/.env`. Its published signing key is development-only and production rejects it. Root `.env` configures Compose; backend `.env` configures host runs. For a host PostgreSQL server, create a dedicated local `elabtrack_v2` database using your PostgreSQL administration tools. Never point this environment at V1.
+Set matching local database credentials in `backend/.env`. Its published signing key is development-only and production rejects it. Root `.env` configures Compose; backend `.env` configures host runs. For a host PostgreSQL server, have its administrator create the dedicated local `elabtrack_v2` database and the same schema-owner/runtime role boundary shown in [the bootstrap script](backend/database/bootstrap-roles.sh); apply named runtime grants after migration. Never point this environment at V1.
 
 For an available Docker installation, start the development database:
 
@@ -29,7 +29,7 @@ For an available Docker installation, start the development database:
 docker compose up -d postgres
 ```
 
-Compose and the examples use the published local credentials `postgres`/`postgres`. Use matching custom root/backend credentials if desired. Existing PostgreSQL volumes retain their original password; changing an environment value does not rotate it. Use the existing credentials or change them explicitly through your local database administrator; do not delete a volume to solve a password mismatch. Renaming Compose resources does not migrate old volumes; preserve and handle any existing data separately.
+Fresh Compose databases bootstrap separate `elabtrack_migrator` schema-owner and `elabtrack_runtime` DML logins. The examples contain obvious local-only passwords; match custom runtime/migration values between root and backend configuration. Bootstrap administrator credentials stay in the PostgreSQL container. Existing PostgreSQL volumes retain their original password; changing an environment value does not rotate it. Use the existing credentials or change them explicitly through your local database administrator; do not delete a volume to solve a password mismatch. Renaming Compose resources does not migrate old volumes; preserve and handle any existing data separately.
 
 Install dependencies with a compatible toolchain and access to their registries:
 
@@ -38,12 +38,15 @@ cd backend
 go mod download
 cd ../frontend
 npm ci
+cd ..
 ```
 
 Only against your dedicated development database, apply the **generic auth** migrations:
 
 ```bash
 make migrate-up
+# From root, explicitly grant current application-table DML after migration:
+make compose-runtime-grants
 ```
 
 There are no equipment/borrowing/fine/report/notification domain tables. Optional `make seed` loads synthetic starter accounts with published development passwords; never use it on real data or production.
@@ -69,13 +72,14 @@ The full development profile requires an explicit migration first:
 
 ```bash
 make compose-migrate-up
-# Equivalent: docker compose --profile full run --rm --build backend --migrate-up
+# Equivalent: docker compose --profile tools run --rm --build migrator
+make compose-runtime-grants
 docker compose --profile full up --build
 ```
 
 The frontend uses `/api/v1` through nginx. Normal host/container API startup performs no migrations or seeding. `make migrate-status` reads migration state without creating bookkeeping tables. `make seed` requires development and an explicit request; production and test reject it. Production must inject validated settings and run migrations as a distinct, authorized release step. See the [environment inventory and requirements](docs/project/PHASE1_FOUNDATION.md). Image builds, service startup and actual PostgreSQL migration/TLS checks were not run during Phase 1A.
 
-API JSON successes retain the existing envelope; errors contain code/message/requestId and optional field errors. Server-owned X-Request-ID and safe structured Zap events support correlation. See [API contracts and logging](docs/API_CONTRACTS.md) and the [Phase 1G report](docs/project/PHASE1_FOUNDATION.md#phase-1g--real-integration-verification). Local integration is verified; cross-tab coordination is recommended before product UI. Phase 1H migration-runner hardening requires separate authorization and has not begun.
+API JSON successes retain the existing envelope; errors contain code/message/requestId and optional field errors. Server-owned X-Request-ID and safe structured Zap events support correlation. See [API contracts and logging](docs/API_CONTRACTS.md) and the [Phase 1G report](docs/project/PHASE1_FOUNDATION.md#phase-1g--real-integration-verification). Phase 1H verifies atomic up/down bookkeeping, paired SHA-256 checksums, PostgreSQL advisory exclusion and API/auth under a DML-only database role. Applied files are immutable. CLI migration actions use MIGRATION_DATABASE_URL; production refuses missing credentials or the runtime user. API startup does not need that secret. Known checksum-free local history requires the explicit development-only adoption procedure, never automatic backfill. See the [Phase 1H report](docs/project/PHASE1_FOUNDATION.md#phase-1h--migration-runner--database-privilege-hardening). Phase 1I cross-tab session coordination is required before product UI and has not begun.
 
 ## Validation
 
