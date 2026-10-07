@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"bytes"
 	"encoding/json"
+	"fmt"
 	"net"
 	"net/netip"
 	"strings"
@@ -11,8 +11,11 @@ import (
 	"time"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger"
 	"github.com/gofiber/fiber/v3"
 	"github.com/valyala/fasthttp"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zaptest/observer"
 )
 
 func proxyPrefixes() []netip.Prefix {
@@ -267,14 +270,15 @@ func TestRepeatedForwardingHeaders(t *testing.T) {
 }
 
 func TestRequestLogSecretSafety(t *testing.T) {
-	var output bytes.Buffer
+	core, logs := observer.New(zap.DebugLevel)
+	log := &logger.Logger{Logger: zap.New(core)}
 	app := fiber.New()
 	app.Use(ClientInfo(config.SecurityConfig{TrustedProxies: proxyPrefixes()}))
-	app.Use(Logger(&output))
+	app.Use(Logger(log))
 	app.Post("/api/v1/auth/login", func(c fiber.Ctx) error { return c.SendStatus(204) })
 	const secret = "synthetic-private-credential-sentinel"
 	status, _, _ := perimeterRequest(app, "10.20.0.2", "POST", "/api/v1/auth/login", map[string]string{"Authorization": "Bearer " + secret, "Cookie": "elabtrack_v2_refresh=" + secret, "X-Forwarded-For": "203.0.113.8"}, `{"password":"`+secret+`"}`)
-	if status != 204 || strings.Contains(output.String(), secret) || !strings.Contains(output.String(), "client_ip=203.0.113.8") {
+	if status != 204 || logs.Len() != 1 || strings.Contains(fmt.Sprint(logs.All()), secret) || logs.All()[0].ContextMap()["client_ip"] != "203.0.113.8" {
 		t.Fatal("request log leaked credentials or ignored shared IP")
 	}
 }

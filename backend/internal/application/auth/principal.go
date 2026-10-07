@@ -36,7 +36,7 @@ func (s *CurrentAccountService) ResolveCurrentAccount(ctx context.Context, ident
 		return Principal{}, shared.ErrUnauthorized
 	}
 	if err != nil {
-		return Principal{}, shared.ErrInternal
+		return Principal{}, shared.Internal("auth.current_account", err)
 	}
 	if account == nil || account.ID != identity.UserID {
 		return Principal{}, shared.ErrUnauthorized

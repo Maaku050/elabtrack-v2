@@ -16,6 +16,7 @@ func Register(app *fiber.App, deps *Deps) {
 
 	// Public health check.
 	v1.Get("/health", deps.Health.Health)
+	v1.Get("/ready", deps.Health.Ready)
 
 	// Feature route groups.
 	protected := middleware.Auth(deps.TokenIssuer, deps.Accounts)

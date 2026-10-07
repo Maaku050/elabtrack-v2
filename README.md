@@ -1,6 +1,6 @@
 # eLabTrack V2
 
-eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phases 1A–1E add configuration safeguards, current-account authorization, strict access JWTs, hash-only transactional refresh sessions, browser sessions and HTTP perimeter controls to the Go Fiber/React/PostgreSQL foundation. Product workflows are planned for later approved phases.
+eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phases 1A–1F add configuration safeguards, current-account authorization, strict access JWTs, hash-only transactional refresh sessions, browser sessions, HTTP perimeter controls and API contracts/structured observability to the Go Fiber/React/PostgreSQL foundation. Product workflows are planned for later approved phases.
 
 Start with the [project charter](docs/project/PROJECT_CHARTER.md), [source policy](docs/project/SOURCE_OF_TRUTH.md), [decision register](docs/project/DECISIONS.md), [open decisions](docs/project/OPEN_DECISIONS.md), and [roadmap](docs/project/ROADMAP.md). The [foundation audit](docs/project/FOUNDATION_AUDIT.md) distinguishes inherited code from approved product requirements. See the [Phase 1 security backlog](docs/project/PHASE1_SECURITY_BACKLOG.md), [Phase 0 report](docs/project/PHASE0_REPORT.md), and [Phase 1 foundation report](docs/project/PHASE1_FOUNDATION.md) before treating this foundation as production ready.
 
@@ -54,7 +54,7 @@ Browser access tokens live only in memory; refresh credentials use the host-only
 
 The HTTP perimeter uses the socket peer by default. `TRUSTED_PROXIES` accepts deliberately chosen literal proxy IPs/CIDRs; forwarded client IP is honored only from those peers, using the first untrusted hop from the right. Proxy operators must sanitize forwarding headers and restrict bypass; no hosting provider or production network is selected. Limits are per process and effective client IP: login 10, refresh 60, local registration 5, general API/logout 120 per one-minute window, with safe 429/Retry-After. Shared/NAT clients share budgets; configure operational values deliberately before deployment. CORS permits only explicit canonical origins and current GET/POST/PATCH/OPTIONS methods. Global body ceiling defaults to 1 MiB, auth POSTs to 16 KiB; read/write/idle defaults are 10/15/60 seconds.
 
-The nginx container serves same-origin production assets/API with a baseline document CSP and security headers; its Docker build defaults to `/api/v1`. External API build overrides require a reviewed matching connect-src policy. Host Vite development retains the explicit separate localhost API origin. The supplied nginx template is HTTP development only and does not assert HSTS. Production's authoritative HTTPS edge must own TLS/HSTS; API HSTS is emitted only in production on actual TLS or exact `https` from an explicitly trusted peer. Real nginx/browser/proxy/rate-limit verification remains Phase 1G; full contracts/observability remain Phase 1F. See the [Phase 1E report](docs/project/PHASE1_FOUNDATION.md#phase-1e--http--api-security).
+The nginx container serves same-origin production assets/API with a baseline document CSP and security headers; its Docker build defaults to `/api/v1`. External API build overrides require a reviewed matching connect-src policy. Host Vite development retains the explicit separate localhost API origin. The supplied nginx template is HTTP development only and does not assert HSTS. Production's authoritative HTTPS edge must own TLS/HSTS; API HSTS is emitted only in production on actual TLS or exact `https` from an explicitly trusted peer. Real nginx/browser/proxy/rate-limit verification remains Phase 1G; API contracts and structured logging are implemented in Phase 1F; live evidence remains Phase 1G. See the [Phase 1E report](docs/project/PHASE1_FOUNDATION.md#phase-1e--http--api-security).
 
 Start each service in its own terminal:
 
@@ -63,7 +63,7 @@ make backend
 make frontend
 ```
 
-The frontend at `http://localhost:5173/` displays a minimal eLabTrack V2 placeholder, a theme toggle, and a link to `/status`. Application loading first makes one credentialed refresh-cookie restoration attempt, shared across StrictMode effects. Invalid/missing sessions become unauthenticated; network/server failures show a recoverable session banner and allow public content. Restoration can rotate an existing refresh session. The status button separately reads `GET http://localhost:8080/api/v1/health` when clicked; that health request does not authenticate or mutate data. The API must be running and connected to PostgreSQL for a real success result. Final login/dashboard screens have not been implemented.
+The frontend at `http://localhost:5173/` displays a minimal eLabTrack V2 placeholder, a theme toggle, and a link to `/status`. Application loading first makes one credentialed refresh-cookie restoration attempt, shared across StrictMode effects. Invalid/missing sessions become unauthenticated; network/server failures show a recoverable session banner and allow public content. Restoration can rotate an existing refresh session. The status button separately reads `GET http://localhost:8080/api/v1/health` when clicked; that health request is cookie/bearer-free and checks process liveness only. Bootstrap requires PostgreSQL; an already-running process can stay live during DB loss. GET /api/v1/ready separately checks the DB and returns a standard 503 on failure. Final login/dashboard screens have not been implemented.
 
 The full development profile requires an explicit migration first:
 
@@ -74,6 +74,8 @@ docker compose --profile full up --build
 ```
 
 The frontend uses `/api/v1` through nginx. Normal host/container API startup performs no migrations or seeding. `make migrate-status` reads migration state without creating bookkeeping tables. `make seed` requires development and an explicit request; production and test reject it. Production must inject validated settings and run migrations as a distinct, authorized release step. See the [environment inventory and requirements](docs/project/PHASE1_FOUNDATION.md). Image builds, service startup and actual PostgreSQL migration/TLS checks were not run during Phase 1A.
+
+API JSON successes retain the existing envelope; errors contain code/message/requestId and optional field errors. Server-owned X-Request-ID and safe structured Zap events support correlation. See [API contracts and logging](docs/API_CONTRACTS.md) and the [Phase 1F report](docs/project/PHASE1_FOUNDATION.md#phase-1f--api-contracts-logging--observability). Phase 1G live verification and Phase 1H migration-runner hardening remain separately authorized work.
 
 ## Validation
 

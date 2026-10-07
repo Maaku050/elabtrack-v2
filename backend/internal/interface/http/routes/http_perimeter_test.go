@@ -100,9 +100,10 @@ func TestLoginFailureEnvelopeDoesNotEnumerateAccounts(t *testing.T) {
 			if status != 401 || len(cookies) != 0 || len(sessions.created) != 0 || strings.Contains(body, password) || strings.Contains(body, "inactive") || strings.Contains(body, "SQL") {
 				t.Fatal("login failure enumerated account")
 			}
+			comparable := errorWithoutRequestID(t, body)
 			if expected == "" {
-				expected = body
-			} else if body != expected {
+				expected = comparable
+			} else if comparable != expected {
 				t.Fatal("login failure envelopes differ")
 			}
 		})

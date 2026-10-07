@@ -24,12 +24,15 @@ func newServer(cfg *config.Config, c *Container, log *logger.Logger) *fiber.App 
 		TrustProxy:     false, // Only middleware.ClientInfo may honor forwarding headers.
 	})
 
-	// Global middleware (order matters).
+	// Global middleware (order matters). The outer recovery is a fallback
+	// for correlation/IP/completion failures; inner recovery lets Logger observe
+	// the final status of panics from the remaining pipeline.
 	app.Use(middleware.Recovery(log))
 	app.Use(middleware.RequestID())
 	app.Use(middleware.ClientInfo(cfg.Security))
+	app.Use(middleware.Logger(log))
+	app.Use(middleware.Recovery(log))
 	app.Use(middleware.SecurityHeaders(cfg.App.Env))
-	app.Use(middleware.Logger())
 	app.Use(middleware.CORS(cfg.Security))
 	app.Use(middleware.RateLimit(cfg.Security))
 	app.Use(middleware.RequestSafety())

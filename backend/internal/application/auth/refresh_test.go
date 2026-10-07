@@ -255,7 +255,7 @@ func TestRefreshRollbackAndSafeErrors(t *testing.T) {
 			}
 			pair, err := s.Refresh(context.Background(), RefreshRequest{RefreshToken: raw})
 			assertEmptyPair(t, pair)
-			if err != shared.ErrInternal || strings.Contains(err.Error(), raw) || strings.Contains(err.Error(), hash) {
+			if !errors.Is(err, shared.ErrInternal) || strings.Contains(err.Error(), raw) || strings.Contains(err.Error(), hash) {
 				t.Fatal("unsafe/non-internal error")
 			}
 			if len(h.sessions) != 1 || h.sessions[hash].RevokedAt != nil || h.sessions[hash].ReplacedBy != nil {
@@ -321,7 +321,7 @@ func TestLogoutIdempotentAndHashed(t *testing.T) {
 		}
 	}
 	h.consumeErr = errors.New(raw + hash)
-	if err := s.Logout(context.Background(), RefreshRequest{RefreshToken: raw}); err != shared.ErrInternal {
+	if err := s.Logout(context.Background(), RefreshRequest{RefreshToken: raw}); !errors.Is(err, shared.ErrInternal) {
 		t.Fatal("logout leaked backend error")
 	}
 }
@@ -340,7 +340,7 @@ func TestInitialIssuancePersistsDigestOnly(t *testing.T) {
 	h.createErr = errors.New(pair.RefreshToken + hash)
 	failed, err := s.issueTokenPair(context.Background(), u)
 	assertEmptyPair(t, failed)
-	if err != shared.ErrInternal {
+	if !errors.Is(err, shared.ErrInternal) {
 		t.Fatal("initial session error exposed detail")
 	}
 }

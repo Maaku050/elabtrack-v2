@@ -42,7 +42,7 @@ func (v *Validator) Validate(s any) FieldErrors {
 	}
 	errs, ok := err.(validator.ValidationErrors)
 	if !ok {
-		return FieldErrors{"_": err.Error()}
+		return FieldErrors{"_": "is invalid"}
 	}
 	out := FieldErrors{}
 	for _, e := range errs {

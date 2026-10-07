@@ -32,7 +32,7 @@ func (r *AuthRepository) Create(ctx context.Context, t *domainauth.RefreshToken)
   VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 	_, err := r.executor(ctx).Exec(ctx, q, t.ID, t.TokenHash, t.UserID, t.ExpiresAt, t.RevokedAt, t.ReplacedBy, t.CreatedAt, t.UpdatedAt)
 	if err != nil {
-		return shared.ErrInternal
+		return shared.Internal("session_store.create", err)
 	}
 	return nil
 }
@@ -50,7 +50,7 @@ func (r *AuthRepository) FindByHashForUpdate(ctx context.Context, hash string) (
 		return nil, domainauth.ErrTokenNotFound
 	}
 	if err != nil {
-		return nil, shared.ErrInternal
+		return nil, shared.Internal("session_store.lookup", err)
 	}
 	return t, nil
 }
@@ -64,7 +64,7 @@ func (r *AuthRepository) Consume(ctx context.Context, hash string, replacement u
   WHERE token_hash = $1 AND revoked_at IS NULL AND expires_at > $3 AND expires_at > clock_timestamp()`
 	tag, err := tx.Exec(ctx, q, hash, replacement, now)
 	if err != nil {
-		return shared.ErrInternal
+		return shared.Internal("session_store.consume", err)
 	}
 	if tag.RowsAffected() != 1 {
 		return domainauth.ErrTokenInvalid
@@ -77,7 +77,7 @@ func (r *AuthRepository) Revoke(ctx context.Context, hash string) error {
   WHERE token_hash = $1 AND revoked_at IS NULL`
 	_, err := r.executor(ctx).Exec(ctx, q, hash)
 	if err != nil {
-		return shared.ErrInternal
+		return shared.Internal("session_store.revoke", err)
 	}
 	return nil
 }
@@ -89,7 +89,7 @@ func (r *AuthRepository) RevokeAllForUser(ctx context.Context, userID uuid.UUID)
   WHERE user_id = $1 AND revoked_at IS NULL`
 	_, err := r.executor(ctx).Exec(ctx, q, userID)
 	if err != nil {
-		return shared.ErrInternal
+		return shared.Internal("session_store.revoke_all", err)
 	}
 	return nil
 }
@@ -107,7 +107,7 @@ func (r *AuthRepository) Cleanup(ctx context.Context, cutoff time.Time, limit in
  ) DELETE FROM refresh_tokens AS sessions USING candidates WHERE sessions.id = candidates.id`
 	tag, err := r.executor(ctx).Exec(ctx, q, cutoff, limit)
 	if err != nil {
-		return 0, shared.ErrInternal
+		return 0, shared.Internal("session_store.cleanup", err)
 	}
 	return tag.RowsAffected(), nil
 }

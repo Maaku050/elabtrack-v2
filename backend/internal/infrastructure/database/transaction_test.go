@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/observability"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -39,7 +40,7 @@ func TestTransactionPortCommitRollbackAndContext(t *testing.T) {
 			tx := &managedTx{}
 			pool := &transactionPool{tx: tx}
 			m := &TxManager{pool: pool}
-			ctx, cancel := context.WithCancel(context.Background())
+			ctx, cancel := context.WithCancel(observability.WithRequestID(context.Background(), "synthetic-correlation"))
 			defer cancel()
 			failure := errors.New("sensitive-database-detail")
 			called := false
@@ -51,6 +52,9 @@ func TestTransactionPortCommitRollbackAndContext(t *testing.T) {
 			}
 			err := m.Within(ctx, func(bound context.Context) error {
 				called = true
+				if observability.RequestID(bound) != "synthetic-correlation" {
+					t.Fatal("transaction context lost request correlation")
+				}
 				if actual, ok := TxFromContext(bound); !ok || actual != tx {
 					t.Fatal("repositories do not share actual transaction")
 				}
@@ -72,11 +76,11 @@ func TestTransactionPortCommitRollbackAndContext(t *testing.T) {
 					t.Fatal("commit lifecycle incorrect")
 				}
 			case "begin failure":
-				if err != shared.ErrInternal || called || tx.commits != 0 || tx.rollbacks != 0 {
+				if !errors.Is(err, shared.ErrInternal) || called || tx.commits != 0 || tx.rollbacks != 0 {
 					t.Fatal("begin failure unsafe")
 				}
 			case "commit failure":
-				if err != shared.ErrInternal || tx.commits != 1 || tx.rollbacks != 1 {
+				if !errors.Is(err, shared.ErrInternal) || tx.commits != 1 || tx.rollbacks != 1 {
 					t.Fatal("commit failure returned success/unsafe detail")
 				}
 			default:

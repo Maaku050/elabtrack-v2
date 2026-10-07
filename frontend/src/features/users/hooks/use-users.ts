@@ -1,3 +1,4 @@
+import { apiErrorMessage } from '@/lib/api-error'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { usersApi } from '../api/users.api'
 import { queryKeys } from '@/lib/query-keys'
@@ -59,7 +60,7 @@ export function useUpdateProfile() {
       return { previous }
     },
 
-    onError: (_err, _input, context) => {
+    onError: (err, _input, context) => {
       // 5. Rollback to the snapshot on failure.
       if (context?.previous) {
         queryClient.setQueryData(queryKeys.users.me(), context.previous)
@@ -71,7 +72,7 @@ export function useUpdateProfile() {
           is_active: context.previous.is_active,
         })
       }
-      toast.error('Update failed', 'Your profile was not changed. Please try again.')
+      toast.error('Update failed', apiErrorMessage(err))
     },
 
     onSuccess: (user) => {

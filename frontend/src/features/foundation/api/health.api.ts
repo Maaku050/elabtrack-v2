@@ -1,15 +1,14 @@
 import { z } from 'zod'
+import { ApiRequestError } from '@/lib/api-error'
 
-const healthSchema = z.object({
-  status: z.enum(['ok', 'degraded']),
-  services: z.record(z.string(), z.enum(['healthy', 'unhealthy', 'unknown'])),
-})
+const healthSchema = z.object({ status: z.literal('ok'), service: z.literal('elabtrack-v2') })
 
-// The retained health endpoint predates the normal response envelope.
-// This unauthenticated read never attaches the provisional starter session.
+// Central transport/envelope/error normalization; diagnostic remains cookie-free,
+// bearer-free and outside automatic session refresh. Liveness only, not DB readiness.
 export async function getHealth(signal?: AbortSignal) {
-  const base = (import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1').replace(/\/$/, '')
-  const response = await fetch(`${base}/health`, { signal, credentials: 'omit' })
-  if (!response.ok) throw new Error('Service unavailable. Check that the API and database are running, then try again.')
-  return healthSchema.parse(await response.json())
+  const { apiClient } = await import('@/lib/api-client')
+  const data = await apiClient.get<unknown>('/health', { signal, withCredentials: false, attachAuth: false, retryAuth: false })
+  const result = healthSchema.safeParse(data)
+  if (!result.success) throw new ApiRequestError('Invalid service response.', 502, 'INVALID_RESPONSE')
+  return result.data
 }

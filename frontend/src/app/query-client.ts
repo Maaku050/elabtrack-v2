@@ -1,4 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
+import { ApiRequestError } from '@/lib/api-error'
 
 /**
  * TanStack Query client configured for the app.
@@ -11,7 +12,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: (failureCount, error) => {
-        if ('status' in error && (error.status === 401 || error.status === 403)) return false
+        if (error instanceof ApiRequestError && error.status >= 400 && error.status < 500) return false
         return failureCount < 1
       },
       staleTime: 30_000,

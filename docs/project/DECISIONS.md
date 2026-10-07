@@ -241,3 +241,46 @@ Recorded 2026-10-05. Status vocabulary: **Accepted**, **Proposed**, **Deferred**
 - Decision: Retain 1 MiB default global ceiling, add 16 KiB auth POST ceiling before credential work, require JSON on current JSON mutation routes and strict-bind login. Explicit 10/15/60-second read/write/idle defaults and 8 KiB header buffer. Move recovery outermost; log safe panic type/source stack and error type rather than arbitrary values. Framework/validation HTTP text is generic; login account/status/lookup failures share one generic 401 envelope while service password-before-status ordering remains.
 - Authority/date: stakeholder Phase 1E request, 2026-10-06; HTTP parser/body/panic/redaction/health/login tests.
 - Impact: no full envelope/error taxonomy/logging/correlation redesign. Health shape stays unchanged; network timing equalization is not claimed. Future upload/report routes require separately reviewed bounds. Live HTTP/proxy/browser enforcement remains Phase 1G.
+
+
+## ELAB-V2-DEC-035 — Foundation API contract and validation
+
+- Status: Accepted (technical contract)
+- Decision: Retain success/message/data/meta successes and bodyless 204; all API failures add required error.code/message/requestId with optional JSON-field-to-message details. Central wrapped-error mapping; safe generic infrastructure/panic responses, stable uppercase foundation taxonomy and current 409 duplicate semantics. One 400 syntax/semantic input policy, with transport 413/415; no speculative product pagination/errors.
+- Authority/date: stakeholder Phase 1F request, 2026-10-07.
+- Impact: Health adopts the envelope and becomes liveness; /ready checks existing dependency with standard 503. Client error normalization changes with the API. Phase 1E generic login lookup containment remains, now internally observable. See [contracts](../API_CONTRACTS.md); no product permission policy accepted.
+
+## ELAB-V2-DEC-036 — Server-owned correlation and structured operational logging
+
+- Status: Accepted (technical contract)
+- Decision: Ignore all incoming request IDs; generate UUIDv4, return X-Request-ID and error.requestId, propagate a private-key context.Context value to ports. Use existing Zap for structured completion, unexpected failure, panic and lifecycle events. Route templates/effective IP/status/numeric milliseconds/code/type/operation only; no raw paths/query, headers/bodies/config/error values, credentials/digests or unnecessary PII. Panic source stack stays server-side. Production retains JSON default; injectable core enables assertions.
+- Authority/date: stakeholder Phase 1F request, 2026-10-07.
+- Impact: Correlation is not authentication/idempotency; no vendor chosen. Expected password failures are not ERROR. Live parser/ingress/log propagation still requires Phase 1G verification. This supersedes plaintext logging and arbitrary incoming-ID preservation.
+
+## ELAB-V2-DEC-037 — Operational logs and durable business evidence
+
+- Status: Accepted (architectural distinction)
+- Decision: Operational logs serve debugging, operations, security and performance, with later chosen retention/rotation/access. They do not substitute for future durable business audit events/history/ledger evidence recording who changed what and when under approved domain integrity and retention policy.
+- Authority/date: stakeholder Phase 1F direction and supplied boss-rebuild audit finding, 2026-10-07.
+- Impact: No business audit schema/workflow or retention policy is implemented in this phase; no observability vendor integration.
+
+## ELAB-V2-DEC-038 — Audience-specific responsive UX foundation
+
+- Status: Accepted (confirmed future design direction)
+- Decision: React + TypeScript + Vite, Tailwind CSS v4, shadcn/ui and Lucide remain the eLabTrack V2 UI foundation. Borrower/customer experience is mobile-first: mobile composition first, tablet/desktop progressively enhanced. Kiosk is touch-first with large targets, privacy/session-reset awareness and a dedicated shell. Staff/admin is desktop/tablet-first, responsive on smaller screens where practical; complex administration need not be forced into tiny mobile layouts.
+- Authority/date: explicit stakeholder Phase 1F UX direction, 2026-10-07.
+- Impact: These are accepted design principles, not approved product screens/permissions/kiosk workflows. Existing 62 primitives and components.json remain unchanged. No mockups or feature UI created.
+
+## ELAB-V2-DEC-039 — Mockups before feature UI completion
+
+- Status: Accepted (future delivery process)
+- Decision: Phase 3A owns UX architecture, wireframes and high-fidelity mockups: borrower mobile views first, tablet/desktop adaptations, dedicated kiosk layouts and staff/admin layouts. Phase 3B implements the approved mockups through the shadcn-based eLabTrack design system, application shell and reusable domain UI components. Later feature UI is complete only after comparison against approved mockups and responsive behavior.
+- Authority/date: explicit stakeholder Phase 1F direction, 2026-10-07.
+- Impact: ROADMAP records the split; Phase 3A/3B have not begun. Product decisions still gate dependent designs.
+
+## ELAB-V2-DEC-040 — Migration-runner hardening phase boundary
+
+- Status: Accepted (sequencing only)
+- Decision: Phase 1H explicitly owns DDL/bookkeeping atomicity, migration checksum validation, advisory lock/concurrent-runner protection and correct last-applied lookup failure semantics. It follows Phase 1G and precedes heavy reliance on business-domain migrations.
+- Authority/date: stakeholder Phase 1F request and stated boss-rebuild comparison, 2026-10-07; current runner source independently exhibits separate commits and missing checksum/lock handling.
+- Impact: No runner/SQL change or migration execution during Phase 1F. Prior Phase 1A partial SEC-008 status remains; no automatic authorization for 1G/1H.

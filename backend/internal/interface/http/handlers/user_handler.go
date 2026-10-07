@@ -57,6 +57,9 @@ func (h *UserHandler) UpdateMe(c fiber.Ctx) error {
 
 // List handles GET /api/v1/users (admin-only).
 func (h *UserHandler) List(c fiber.Ctx) error {
+	if fields := pagination.ValidateQuery(c); fields != nil {
+		return response.Error(c, fields)
+	}
 	page := pagination.FromContext(c)
 	result, err := h.svc.List(c.Context(), appuser.ListUsersQuery{Page: page})
 	if err != nil {

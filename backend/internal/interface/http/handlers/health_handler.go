@@ -1,45 +1,37 @@
 package handlers
 
 import (
-	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
+	"context"
+	"errors"
+
+	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
 	"github.com/gofiber/fiber/v3"
 )
 
-// HealthHandler exposes the health-check endpoint.
-type HealthHandler struct {
-	db *database.HealthChecker
+type HealthChecker interface{ Check(context.Context) error }
+type HealthHandler struct{ db HealthChecker }
+
+func NewHealthHandler(db HealthChecker) *HealthHandler { return &HealthHandler{db: db} }
+
+type HealthDTO struct {
+	Status  string `json:"status"`
+	Service string `json:"service"`
 }
 
-// NewHealthHandler constructs a HealthHandler.
-func NewHealthHandler(db *database.HealthChecker) *HealthHandler {
-	return &HealthHandler{db: db}
-}
-
-// Health returns the aggregated health of the API and its dependencies.
-//
-// GET /api/v1/health
+// Health is process liveness only. It does not touch dependencies or claim DB readiness.
 func (h *HealthHandler) Health(c fiber.Ctx) error {
 	c.Set("Cache-Control", "no-store")
-	services := map[string]string{
-		"api": "healthy",
-	}
-	status := "ok"
-	httpStatus := 200
+	return response.OK(c, "Service is alive.", HealthDTO{Status: "ok", Service: "elabtrack-v2"})
+}
 
-	if h.db != nil {
-		if err := h.db.Check(c.Context()); err != nil {
-			services["database"] = "unhealthy"
-			status = "degraded"
-			httpStatus = 503
-		} else {
-			services["database"] = "healthy"
-		}
-	} else {
-		services["database"] = "unknown"
+// Ready uses the existing two-second DB checker; nil dependencies fail closed.
+func (h *HealthHandler) Ready(c fiber.Ctx) error {
+	c.Set("Cache-Control", "no-store")
+	if h.db == nil {
+		return response.Unavailable(c, errors.New("readiness dependency absent"))
 	}
-
-	return c.Status(httpStatus).JSON(fiber.Map{
-		"status":   status,
-		"services": services,
-	})
+	if err := h.db.Check(c.Context()); err != nil {
+		return response.Unavailable(c, err)
+	}
+	return response.OK(c, "Service is ready.", HealthDTO{Status: "ready", Service: "elabtrack-v2"})
 }

@@ -118,10 +118,11 @@ func TestRefreshFailuresHaveSameUnauthorizedResponse(t *testing.T) {
 			if status != http.StatusUnauthorized {
 				t.Fatalf("status=%d", status)
 			}
+			comparable := errorWithoutRequestID(t, body)
 			if canonical == "" {
-				canonical = body
+				canonical = comparable
 			}
-			if body != canonical || strings.Contains(body, raw) || strings.Contains(body, hash) || strings.Contains(body, presented) {
+			if comparable != canonical || strings.Contains(body, raw) || strings.Contains(body, hash) || strings.Contains(body, presented) {
 				t.Fatal("token-existence detail/credential leaked")
 			}
 		})

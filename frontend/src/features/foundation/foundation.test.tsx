@@ -4,6 +4,8 @@ import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { routes } from '@/app/router'
 import { useUIStore } from '@/stores/ui-store'
+import { apiClient } from '@/lib/api-client'
+import { ApiRequestError } from '@/lib/api-error'
 
 function renderRoute(path = '/') {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
@@ -12,10 +14,10 @@ function renderRoute(path = '/') {
 }
 
 beforeEach(() => {
-  vi.stubGlobal('fetch', vi.fn())
+  vi.spyOn(apiClient, 'get')
   useUIStore.getState().setTheme('light')
 })
-afterEach(() => vi.unstubAllGlobals())
+afterEach(() => vi.restoreAllMocks())
 
 describe('Phase 0 application boundaries', () => {
   it('loads without authentication, applies the theme, and navigates without fetching automatically', async () => {
@@ -25,22 +27,23 @@ describe('Phase 0 application boundaries', () => {
     expect(document.documentElement).toHaveClass('dark')
     fireEvent.click(screen.getByRole('link', { name: 'Check service connection' }))
     expect(await screen.findByRole('heading', { name: 'eLabTrack V2 service connection' })).toBeInTheDocument()
-    expect(fetch).not.toHaveBeenCalled()
+    expect(apiClient.get).not.toHaveBeenCalled()
   })
 
-  it('checks the unauthenticated API only on request and shows backend dependency status', async () => {
-    vi.mocked(fetch).mockResolvedValue(new Response(JSON.stringify({ status: 'ok', services: { api: 'healthy', database: 'unknown' } })))
+  it('checks the unauthenticated API only on request and shows minimal process liveness', async () => {
+    vi.mocked(apiClient.get).mockResolvedValue({ status: 'ok', service: 'elabtrack-v2' })
     renderRoute('/status')
-    expect(fetch).not.toHaveBeenCalled()
+    expect(apiClient.get).not.toHaveBeenCalled()
     fireEvent.click(screen.getByRole('button', { name: 'Check connection' }))
     expect(await screen.findByText('API connected.')).toBeInTheDocument()
-    expect(screen.getByText('database: unknown')).toBeInTheDocument()
-    expect(fetch).toHaveBeenCalledWith(expect.stringMatching(/\/api\/v1\/health$/), expect.objectContaining({ credentials: 'omit', signal: expect.any(AbortSignal) }))
+    expect(screen.getByText('elabtrack-v2')).toBeInTheDocument()
+    expect(screen.getByText(/checks API liveness/)).toBeInTheDocument()
+    expect(apiClient.get).toHaveBeenCalledWith('/health', expect.objectContaining({ withCredentials: false, attachAuth: false, retryAuth: false, signal: expect.any(AbortSignal) }))
   })
 
   it('handles backend failure and a manual retry without exposing internal responses', async () => {
-    vi.mocked(fetch).mockResolvedValueOnce(new Response('private database detail', { status: 503 }))
-      .mockResolvedValueOnce(new Response(JSON.stringify({ status: 'ok', services: { api: 'healthy', database: 'healthy' } })))
+    vi.mocked(apiClient.get).mockRejectedValueOnce(new ApiRequestError('Something went wrong.', 503, 'SERVICE_UNAVAILABLE'))
+      .mockResolvedValueOnce({ status: 'ok', service: 'elabtrack-v2' })
     renderRoute('/status')
     fireEvent.click(screen.getByRole('button', { name: 'Check connection' }))
     expect(await screen.findByText(/Unable to connect/)).toBeInTheDocument()
@@ -51,7 +54,7 @@ describe('Phase 0 application boundaries', () => {
   })
 
   it('rejects malformed health payloads', async () => {
-    vi.mocked(fetch).mockResolvedValue(new Response(JSON.stringify({ success: true, data: {} })))
+    vi.mocked(apiClient.get).mockResolvedValue({})
     renderRoute('/status')
     fireEvent.click(screen.getByRole('button', { name: 'Check connection' }))
     expect(await screen.findByText(/Unable to connect/)).toBeInTheDocument()
@@ -61,6 +64,6 @@ describe('Phase 0 application boundaries', () => {
   it.each(['/register', '/app/dashboard', '/app/components', '/missing'])('keeps removed starter route %s outside the application', (path) => {
     renderRoute(path)
     expect(screen.getByRole('heading', { name: /Page not found/ })).toBeInTheDocument()
-    expect(fetch).not.toHaveBeenCalled()
+    expect(apiClient.get).not.toHaveBeenCalled()
   })
 })

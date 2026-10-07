@@ -1,3 +1,4 @@
+import { apiErrorMessage } from '@/lib/api-error'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { authApi } from '../api/auth.api'
@@ -20,7 +21,7 @@ export function useLogin() {
       navigate('/', { replace: true })
     },
     onError: (err) => {
-      const message = err instanceof Error ? err.message : 'Login failed'
+      const message = apiErrorMessage(err)
       toast.error('Login failed', message)
     },
   })
@@ -40,7 +41,7 @@ export function useRegister() {
       navigate('/', { replace: true })
     },
     onError: (err) => {
-      const message = err instanceof Error ? err.message : 'Registration failed'
+      const message = apiErrorMessage(err)
       toast.error('Registration failed', message)
     },
   })

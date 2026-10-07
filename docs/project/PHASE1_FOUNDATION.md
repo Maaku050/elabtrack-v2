@@ -1073,3 +1073,254 @@ OPEN_DECISIONS retain all statuses: provisioning/signup/eligibility, staff/admin
 ### E41. Phase 1E exit gate
 
 **SATISFIED / COMPLETE** for authorized source-level scope: explicit trusted-proxy/client-IP boundary, spoof resistance, focused auth/public/general rate controls with safe 429, exact credential-safe CORS and preserved Phase 1D CSRF/session architecture, separate API/SPA header/CSP baseline, coherent production/HTTP development HSTS responsibility, explicit body/header/timeouts and safe panic/error/log boundaries, focused tests, backend fmt/vet/tests/race, frontend lint/tests/build, all Compose configuration checks and diff check. Runtime reverse-proxy/browser/PostgreSQL/Docker evidence remains required Phase 1G as permitted by this request; this is not production-readiness proof. No Phase 1F/1G, business feature, migration execution, commit, push or deployment occurred.
+
+## Phase 1F — API Contracts, Logging & Observability
+
+Authorized and verified 2026-10-07 (Asia/Shanghai). Phase 0 and 1A–1E remain COMPLETE within their recorded scope. This phase is engineering foundation only. No Phase 1G/1H execution, business feature, product UI/mockup, migration/seed/cleanup execution, commit, push or deployment occurred. The preceding reports are preserved byte-for-byte as a prefix. Current permanent conventions and route inventory are in [API_CONTRACTS.md](../API_CONTRACTS.md).
+
+### Pre-change source audit
+
+Read project instructions/charter/source policy/decisions/open questions/roadmap, inherited foundation audit/backlog/prior reports, architecture/stack/manifests; inspected current HTTP/application/domain/infrastructure/bootstrap/config, actual installed Fiber, current auth/users/health, central client/types/hooks/Query and Docker/nginx sources. Working tree started clean. No optional plugin/private-note service or sub-agent was required.
+
+| Actual pre-1F pattern | Retained route/path evidence | Resulting action |
+|---|---|---|
+| Success/message/data/meta normal envelope; logout 204 | Login/register/refresh/me/self/list HTTP handlers | Retain successes and existing list metadata; preserve bodyless logout |
+| Failure outer success=false/message/data=null/meta=null, nested code/optional fields, no correlation | response/errors.go, middleware/handlers | Require nested code/message/requestId/optional fields; mirror safe outer message |
+| Field validation 422, domain input 400, wrapped FieldErrors lose structure | Validator, response.Error | One 400 input policy; detect wrapped field errors and retain trusted field map |
+| Raw status/services health with optional DB ping, 503 has no normal error | GET /api/v1/health | Enveloped minimal liveness; separate simple readiness using existing checker |
+| Framework errors use FIBER_ERROR; default 404/405 text adapted generically | Global Fiber ErrorHandler | Stable current code/status mapping, no raw framework text |
+| Direct response.Error handlers sanitize but bypass upstream diagnostics | Auth/user services/repositories | Safe outcome metadata and completion/failure logging for both direct and returned paths |
+| Arbitrary incoming request IDs accepted; no standard application context propagation | Fiber request-id wrapper | Server-generated UUIDv4, private-key standard context, error/header/log propagation |
+| Fiber plaintext method/raw path/status/latency/IP/ID plus separate Zap app logs | Logger/newServer | Existing Zap for structured safe route templates/status/numeric duration; render routed errors before completion |
+| Recovery logs safe type/source but outer placement prevents request completion on panic | Recovery/Logger/bootstrap | Inner recovery for accurate panic completion plus retained outer fallback; any panic is generic 500 |
+| Generic infrastructure errors discarded in session boundaries | Application auth, transaction/session/account adapters | Transport-independent generic InternalFailure with safe operation/type metadata, no raw credential-bearing detail |
+| Frontend expects inconsistent nested error type and reads arbitrary outer messages; health uses separate fetch | API client/types/health/hooks/Query | One normalized typed failure, safe 5xx/proxy fallback, common health transport and typed Query errors |
+
+There were no retained {error:string} or raw infrastructure-string handler successes to preserve. The relevant inconsistencies were raw health, missing IDs, FIBER_ERROR, mixed validation statuses, frontend type/message disagreement and logging completeness. No external production compatibility requirement prevents correction.
+
+### F1. Files changed
+
+54 unstaged entries: 45 modified tracked files and nine new files. F32 contains the exact inventory. Backend changes cover centralized mapping/envelope/correlation, safe structured request/recovery/lifecycle logging, safe cause metadata at existing auth/transaction/repository boundaries, query validation and liveness/readiness. Focused tests update only explicitly changed contracts and extend critical boundary evidence. Frontend changes normalize typed failures/Query/hooks and adapt the existing minimal status diagnostic to common transport/liveness. Documentation records contracts, accepted future UX/process direction, exact phase sequencing and remaining verification. No dependencies, migrations, product tables/workflows, mockups, UI primitives or serving/network configuration changed.
+
+### F2. Previous API response/error patterns
+
+The audit above is pre-change evidence. Every retained route is inventoried in API_CONTRACTS: local register, login, refresh/logout, auth/me, users/me GET/PATCH, generic admin users GET, health; not-found/method/perimeter/recovery paths. Normal successes had a consistent envelope except health. Generic failures were largely sanitized in 1E, but did not contain request IDs; field errors used 422, other validation used 400, framework errors had one broad code, and handler service failures bypassed diagnostics. The client had no requestId and incompatible nested message typing.
+
+### F3. Final success convention
+
+Retain `{success:true,message,data,meta}` for all JSON successes, including health/readiness. `meta:null` normally; only the already-existing user list retains its page/per_page/total/last_page metadata. No nonexistent business pagination is designed. 201 local registration remains; logout and accepted preflight are bodyless 204. Successful correlation stays in X-Request-ID rather than domain entities.
+
+### F4. Final error envelope
+
+`{success:false,message,data:null,meta:null,error:{code,message,requestId,fields?}}`. Nested and outer messages agree. Required safe code/message/requestId; optional map of field names to one safe message. Standard mapper/error handler/perimeter writers use it. No raw errors, SQL, pgx values, JWT internals, stack traces or credential values appear in client JSON. No raw framework 404/plain-text API error fallback in retained routed paths. Ingress-generated failures are outside API middleware and normalize to generic client failures.
+
+### F5. Error taxonomy
+
+Fourteen current uppercase codes: BAD_REQUEST, VALIDATION_ERROR, UNAUTHORIZED, INVALID_CREDENTIALS, TOKEN_INVALID, FORBIDDEN, NOT_FOUND, METHOD_NOT_ALLOWED, CONFLICT, PAYLOAD_TOO_LARGE, UNSUPPORTED_MEDIA_TYPE, RATE_LIMITED, INTERNAL_ERROR, SERVICE_UNAVAILABLE. Existing meaningful names retained; no Go type names or speculative business codes. API_CONTRACTS maps all current statuses/meanings. Future modules extend the backend/client catalog deliberately.
+
+### F6. HTTP/application mapping
+
+One response.Map uses errors.Is/As for wrapped auth/user/shared/field/framework errors. Domain/application retain transport-independent errors and standard context; no Fiber/pgx inward dependency introduced. Known absent resources 404, current duplicates/conflicts 409, login credentials 401, generic invalid session 401, authenticated authorization 403, validation 400. Internal classification wins over joined lower causes. Unknown or unsupported framework errors become generic 500. Handlers do not duplicate mapping switches. A narrow LoginError adapter preserves 1E uniform inactive/unknown-role/credential-lookup rejection while making unexpected lookup failure an ERROR event; successful credential verification followed by issuance/storage failure remains 500.
+
+### F7. Validation behavior
+
+400 for both malformed and semantic input, including wrapped FieldErrors. Wrong required JSON media remains 415 and body bounds remain 413. Strict JSON still rejects unknown/multiple documents; validator messages contain only code-owned rule text, no submitted values. Domain email/name/password errors get structured fields. Supplied invalid current list page/per_page/order/sort/search and unsafe offset now get 400 fields instead of silent fallback; omitted defaults and valid per_page cap 100 remain. Unknown paths are 404; no new dynamic-ID endpoint/path contract is fabricated. Frontend consumes field keys directly.
+
+### F8. Request-ID design
+
+One server-owned UUIDv4 per API request. All incoming X-Request-ID values are ignored, including syntactically valid IDs, malformed/oversized values. Header returned on normal/error/204 paths; error body carries same ID. No inbound trust/echo protocol, authentication or idempotency meaning. Error rendering ensures an ID even before regular middleware when possible. Existing CORS exposes the header; no CORS relaxation.
+
+### F9. Request-ID propagation
+
+Request middleware writes a private-key context.Context through Fiber SetContext; response mapper, completion/failure/panic logs and application/repository calls retrieve it. Existing transaction context wrapping preserves it, now asserted in actual transaction-manager double tests. No Fiber types or observability fields enter entities. Normal success context/header, error header/body/log and panic correlations are tested.
+
+### F10. Structured logging design
+
+One existing Zap logger/core for HTTP and application lifecycle, with production JSON default and configurable structured console locally. Removed Fiber plaintext logging. Completion middleware renders returned errors before recording routed final status; direct handler error outcomes are also diagnosed. Inner recovery permits panic 500 completion; outer recovery remains a fallback around correlation/IP/logger. Safe failure diagnostic once per direct/returned unexpected error; panic gets its own diagnostic without a duplicate request-error entry. No dependency graph rewrite or second logging framework.
+
+### F11. Log fields
+
+request_id, method, registered route template/unmatched, Phase 1E client_ip, final routed status, numeric duration_ms, optional error_code/security_event; diagnostics add error_class/operation, panic_type/source stack. No raw path/query/URL, headers/body/account/config. Current account IDs/emails are omitted as unnecessary. Lifecycle fields include environment/listen address, explicit migration policy, startup_seed_enabled=false, trusted_proxy_enabled and origin count. No invented build/version metadata.
+
+### F12. Log levels
+
+DEBUG routine input/404/405 and other ordinary 4xx diagnostics. INFO successful requests/lifecycle and expected generic login/refresh 401 events. WARN 403 and 429. ERROR internal/dependency/unexpected failure and panic; masked login lookup retains client 401 but logs ERROR. Wrong passwords are not ERROR. Production info suppresses routine 404 noise; explicit level configuration is retained. No production SLO/slow threshold invented.
+
+### F13. Secret and PII policy
+
+Metadata allowlists, not secret regex scanning. Never log passwords/hashes, signing material, access/refresh credentials/digests, Authorization/Cookie/Set-Cookie, DB password/full credential-bearing URL, mail/API/reset/future kiosk secrets, arbitrary body/header/config/error values. Avoid emails/names/IDs where unnecessary. Safe internal failures retain only type/operation while discarding raw detail; mapper/loggers never blindly call err.Error or zap.Error/Any. Synthetic captured-record tests cover body, query/unmatched path, bearer/cookie/response cookie, panic/error, successful access/raw refresh and startup signing/DB values. Public validation details are trusted rule messages.
+
+### F14. Panic response/logging
+
+Always generic 500 INTERNAL_ERROR with correlated ID, even panic carrying fiber.ErrUnauthorized. Server diagnostic has same ID, safe metadata/type and source stack without raw panic value. Stack stays server-side; completion logs actual routed 500. Panic and ordinary unexpected failure records remain testable through injectable Zap cores. Rare outer fallback contains foundational middleware failures; no live process fault/ingress proof claimed.
+
+### F15. Auth/security logging
+
+Safe security_event categories for executed login/refresh success/failure and logout completion/failure; generic reason via public error code/status. Successful idempotent logout means completed, not proof a particular row existed. 403/429 notable perimeter categories are visible without fabricating identity. Masked credential-lookup infrastructure failures are separately diagnosable by safe type/operation/ID. No email/token/body/user snapshot or business audit entry is emitted.
+
+### F16. Operational logs vs business audit
+
+Accepted DEC-037: operational debugging/security/performance/lifecycle records may be rotated/deleted under later operations policy. They are not durable product evidence. Future business audit/history/ledger design records who changed what/when under approved transactional/retention requirements, informed by the stakeholder's boss-rebuild audit emphasis. No business audit schema, retention duration or workflow is invented/implemented here.
+
+### F17. Health/readiness
+
+GET /api/v1/health: process liveness only, envelope data status=ok/service=elabtrack-v2, no DB access. GET /api/v1/ready: existing two-second DB checker, envelope data status=ready/service=elabtrack-v2 on success; nil/failing dependency standard 503 SERVICE_UNAVAILABLE with safe generic message. Both no-store and general-budget public reads. Bootstrap still requires initial DB connection; ping readiness does not prove schema/migration/privilege/business correctness. Handler accepts a tiny standard-context interface instead of infrastructure type. Offline doubles prove routing/data/context contracts; the existing two-second checker timeout is source-inspected. Live PG readiness remains 1G.
+
+### F18. Frontend normalized error
+
+ApiResponse is a typed success/failure union. ApiRequestError has numeric status, code, safe message, optional requestId/fields; no retained Axios config/body/header/raw error object. Central adapter validates known codes/UUID/rule field shapes, rejects arbitrary legacy/proxy bodies, prefers a valid response-header reference and substitutes generic 5xx text. Network status=0/NETWORK_ERROR; malformed/unknown error fallback is safe. No component string parsing.
+
+### F19. Frontend handling changes
+
+Auth/user hooks consume typed safe error messages; TanStack default error type is registered. Query never retries 4xx, including 429; server/network reads retain one bounded ordinary retry and mutations none. Existing Phase 1D refresh single flight, endpoint exclusions, one auth retry, generation guards, queued cookie operations and memory-only state remain. apiErrorMessage optionally adds support reference for unexpected failures, never routine field failures; no global toast spam or product UI. Health dynamically imports the same singleton transport with attachAuth=false/retryAuth=false/withCredentials=false and schema-checks minimal liveness. The existing status placeholder says liveness explicitly, without implementing a feature screen.
+
+### F20. 404/405
+
+Fiber unknown routes and practical method errors map to NOT_FOUND/METHOD_NOT_ALLOWED standard envelopes, generic text and ID. No custom unsupported-method matrix or catch-all overrides that bypass auth. Absent production registration remains contained; existing global perimeter rejection may occur first. GET auth mutations remain unhandled 404/405 and never mutate sessions. SPA 404 remains frontend routing, separate from API.
+
+### F21. 429
+
+Existing limiter still uses independent effective-IP budgets and safe conservative Retry-After/no-store. It automatically gains nested message/requestId via shared Fail. Client normalizes 429 and does not Query-retry it; Phase 1D session recovery remains deliberate. Proxy/counter/window/NAT/process scope is unchanged, with real ingress/IP/429 tuning still 1G.
+
+### F22. Error-envelope tests
+
+Actual bootstrap pipeline tests malformed JSON, structured validation, unauthorized/forbidden, unknown path, 405, rate limit, direct/returned unexpected errors and panics. Assert status/code/safe mirrored message, UUID header/body, fields and no internals. Real retained route tests exercise auth/me/self/admin, local validation/current query/name/domain failure, success/meta/204; existing account/refresh/Origin/storage tests remain. Map tests cover 34 known/framework/infrastructure/joined cases directly and wrapped, including pgx error detail redaction.
+
+### F23. Request-ID tests
+
+Absent ID generated; safe valid-looking incoming ID replaced by policy; malformed/oversized IDs ignored safely; distinct UUIDv4s, header/body/log agreement, application repository context and transaction context preservation. Normal success correlation, direct error, returned error, panic and readiness check all covered without listeners/external services.
+
+### F24. Redaction tests
+
+Captured Zap records assert obvious synthetic secret values absent from body/header/query/unmatched-route/Set-Cookie/error/panic/startup/auth-success paths, while effective IP and ID remain. Safe InternalFailure tests preserve classification/type/operation without invoking a raw credential Error method. Existing repository tests still reject raw token/hash exception detail; errors.Is assertions accommodate new safe metadata wrappers without dropping rollback/locking/secret assertions.
+
+### F25. Panic tests
+
+String panic and framework-error panic both return 500 INTERNAL_ERROR, generic text and same UUID in diagnostics/completion. Diagnostic has source stack/type, never value; client lacks stack/source/secret. Accurate numeric status/duration and event severity are asserted via observer fields, not terminal text. Direct vs returned failure diagnostic counts prevent silent bypass/duplicates.
+
+### F26. Frontend tests
+
+73 passing tests across seven files (19 added). New tests exercise real central transport for 400/401/403/404/405/409/429/500/503, structured fields, request-ID header/body fallback, malformed/legacy/unknown payload safety, generic 5xx/support reference, network/unexpected failure and Query policy. All previous memory/bootstrap/single-flight/bounded retry/logout/account tests remain passing. Existing status tests now exercise common transport options/liveness/schema/manual retry. No real browser cookie jar/PG/nginx behavior claimed.
+
+### F27. Backend fmt/vet/tests
+
+PASS: go fmt ./..., go vet ./..., go test ./... via JSON run. **83 top-level tests + 321 subtests = 404 passing nodes across 14 tested packages**, zero failures; seven new top-level tests and 62 subtests relative to Phase 1E. Commands from backend/ with Go 1.27.1 and GOCACHE=/tmp/elabtrack-phase1b-go-cache. No dependency/toolchain/gate changes. Initial root-directory fmt invocation was outside the module and failed; corrected backend command passes. Initial fixture assertions were adapted to intentional 400/UUID/metadata changes; no security/concurrency/type gates removed.
+
+### F28. Race checks
+
+PASS: go test -race for internal/application/auth, domain/shared, bootstrap, interface/http/middleware, interface/http/response, interface/http/routes, infrastructure/database and infrastructure/persistence/postgres. After the final logger level adjustment, affected bootstrap/middleware/routes race checks were repeated and passed. This is local code/test-double evidence, not real PostgreSQL concurrency or cross-tab proof.
+
+### F29. Frontend lint/test/build
+
+PASS: npm run lint, zero errors and same **19 unchanged** shadcn/hook warnings; npm run test:run, **73 tests/seven files**; npm run build, strict TypeScript + Vite. Node 24.19.0 / npm 11.17.0. Entry JS 459.35 kB / 146.55 kB gzip; lazy transport 54.07 kB / 19.87 kB gzip; CSS 179.94 kB / 27.63 kB gzip. Dynamic transport boundary retained, no chunk threshold/lint/type/test weakening. Initial root npm invocation lacked package.json; the correct frontend invocation passes. A new control-regex warning was eliminated in source, retaining character validation without rule suppression.
+
+### F30. Compose validation
+
+PASS for default and full profile using the installed Docker Desktop Windows Compose CLI: docker-compose.exe -f docker-compose.yml config --quiet; docker-compose.exe --profile full -f docker-compose.yml config --quiet. Current WSL docker/docker-compose wrappers report disabled/unavailable integration and sandbox Windows interop initially fails. Authorized read-only execution outside the sandbox successfully validated both configurations. No integration settings changed, alternate binary downloaded, service started, image built, container/volume touched or DB connected. Compose/nginx/Docker/env source is unchanged. This is configuration evidence only.
+
+### F31. Diff and preservation
+
+PASS git diff --check, including final documentation. Baseline hashes prove **111 protected files unchanged**: all six migrations, 16 V1 audit documents, all 62 UI primitives, manifests/locks/configuration, Phase 0/open-policy registers, JWT/hash/migrator/session-cookie/Origin/client-IP/CORS/rate/request-safety/header controls, memory/store/storage/bootstrap and Docker/nginx/Compose serving configuration. Prior 1A–1E foundation text is an exact preserved prefix. Repository SQL and transaction semantics remain unchanged; only safe diagnostic wrapping changed at those boundaries. Read-only remotes still point to the verified eLabTrack repository; no staging/remote mutation.
+
+### F32. Exact Git status
+
+All changes are unstaged; no commit/push/remote change. Exact git status --short at closure:
+
+```text
+ M README.md
+ M backend/README.md
+ M backend/internal/application/auth/login.go
+ M backend/internal/application/auth/principal.go
+ M backend/internal/application/auth/refresh.go
+ M backend/internal/application/auth/refresh_test.go
+ M backend/internal/bootstrap/app.go
+ M backend/internal/bootstrap/http_security_test.go
+ M backend/internal/bootstrap/infrastructure.go
+ M backend/internal/bootstrap/migration_test.go
+ M backend/internal/bootstrap/server.go
+ M backend/internal/infrastructure/database/transaction.go
+ M backend/internal/infrastructure/database/transaction_test.go
+ M backend/internal/infrastructure/persistence/postgres/auth_repository.go
+ M backend/internal/infrastructure/persistence/postgres/auth_repository_test.go
+ M backend/internal/infrastructure/persistence/postgres/user_repository.go
+ M backend/internal/interface/http/handlers/auth_handler.go
+ M backend/internal/interface/http/handlers/health_handler.go
+ M backend/internal/interface/http/handlers/user_handler.go
+ M backend/internal/interface/http/middleware/logger.go
+ M backend/internal/interface/http/middleware/perimeter_test.go
+ M backend/internal/interface/http/middleware/recovery.go
+ M backend/internal/interface/http/middleware/requestid.go
+ M backend/internal/interface/http/response/errors.go
+ M backend/internal/interface/http/response/response.go
+ M backend/internal/interface/http/routes/http_perimeter_test.go
+ M backend/internal/interface/http/routes/refresh_session_test.go
+ M backend/internal/interface/http/routes/routes.go
+ M backend/internal/shared/constants/constants.go
+ M backend/internal/shared/pagination/pagination.go
+ M backend/internal/shared/validator/validator.go
+ M docs/ARCHITECTURE.md
+ M docs/STACK.md
+ M docs/project/DECISIONS.md
+ M docs/project/PHASE1_FOUNDATION.md
+ M docs/project/PHASE1_SECURITY_BACKLOG.md
+ M docs/project/ROADMAP.md
+ M frontend/src/app/query-client.ts
+ M frontend/src/features/auth/hooks/use-auth.ts
+ M frontend/src/features/foundation/api/health.api.ts
+ M frontend/src/features/foundation/foundation.test.tsx
+ M frontend/src/features/foundation/pages/status-page.tsx
+ M frontend/src/features/users/hooks/use-users.ts
+ M frontend/src/lib/api-client.ts
+ M frontend/src/types/api.ts
+?? backend/internal/bootstrap/contracts_test.go
+?? backend/internal/domain/shared/failure.go
+?? backend/internal/domain/shared/failure_test.go
+?? backend/internal/interface/http/response/errors_test.go
+?? backend/internal/interface/http/routes/contracts_test.go
+?? backend/internal/shared/observability/
+?? docs/API_CONTRACTS.md
+?? frontend/src/lib/api-error.test.ts
+?? frontend/src/lib/api-error.ts
+```
+
+### F33. Mobile-first decision documentation
+
+Accepted future direction in DEC-038: borrower/customer mobile composition first, progressively enhanced tablet/desktop; kiosk touch-first, large targets, dedicated shell and privacy/session-reset awareness; staff/admin desktop/tablet-first with practical small-screen responsiveness. This does not settle borrower eligibility, staff/admin authority or kiosk authentication policy. No mockup/UI feature created.
+
+### F34. shadcn decision documentation
+
+DEC-038 reaffirms React/TypeScript/Vite, Tailwind v4, shadcn/ui and Lucide as the eLabTrack UI foundation. All 62 primitives/components.json unchanged. DEC-039 requires approved designs implemented using the shadcn-based system in 3B; no replacement framework or default demo.
+
+### F35. Phase 3A roadmap
+
+ROADMAP now explicitly sequences 1F contracts/observability → 1G real integration → 1H runner hardening → 2 domain/database → 3A UX architecture/wireframes/high-fidelity mockups → 3B shadcn design system/application shell/reusable domain components. 3A prioritizes mobile borrower views/adaptations, kiosk-specific and staff/admin layouts; subsequent feature UI must compare against approved mockups/responsive behavior before completion. No later phase authorized or begun.
+
+### F36. Remaining Phase 1G live verification
+
+Required isolated runtime evidence, carried forward without closure from unit tests:
+
+- PostgreSQL bootstrap, actual migrations 000001–000003 up/down/reapply/invalidation, constraints/hash persistence/presented-digest rejection, rollback/error/commit/lost acknowledgement; actual DB verify-full TLS/CA/host behavior and restricted release/runtime credentials where supported.
+- Separate-connection/process transactional refresh/concurrent use at most one successor, account status/role locks, logout/revoke-all/rotation races, expiry clock predicates, cleanup/FK/index/retention and operational batch ownership/cadence. Local registration atomicity/recovery remains unresolved account work.
+- Docker image/service startup, nginx syntax/proxy/static/error behavior and SPA/API/database flow; chosen HTTPS edge/trust/source/bypass, effective-IP separation, forwarded-header sanitization/NAT budgets/preflight/429/Retry-After, body/header/timeouts on real sockets.
+- Browser login/HttpOnly/Secure/Lax/host/path/expiry/clear cookies, reload/bootstrap/expiry/single-flight/bounded retry/logout acknowledgement, recoverable/lost network responses, independent two-tab rotation/loser clearing winner cookie; no cross-tab coordination/grace policy claimed.
+- Actual CORS/CSP/styles/assets/API/error headers on chosen serving path; liveness/readiness transitions and ping-only limits; request-ID header/body/context/proxy/browser correlation, structured console/JSON/log output/redaction, server lifecycle and log collection/access/rotation.
+- Fiber's pre-handler parser lifecycle can traverse middleware before final parser mapping; App.Test reports oversized global body parse errors instead of an HTTP413. Real socket parser final response/status/correlation/log ordering and ingress-generated error boundaries need explicit 1G evidence. Routed final-status tests do not prove this lifecycle; no framework parser redesign performed here.
+- Reproducible integration/CI gates and recovery observations. Current runner defects must be recorded in 1G, with fixes explicitly owned by 1H.
+
+No live PostgreSQL/browser/nginx/Docker/container/production check is claimed in Phase 1F.
+
+### F37. Phase 1H runner issue
+
+Stakeholder's boss-rebuild audit identifies the shared runner weakness; current source independently shows execTx commits DDL before separate schema_migrations INSERT/DELETE, no checksum validation or advisory/concurrent-runner lock, and lastAppliedVersion treats every Scan failure as no migrations. Record **Phase 1H—Migration Runner Hardening**, before heavy reliance on business-domain migrations. Runner and all SQL are hash-identical and unrun here. Phase 1G observes current integration limitations; it does not automatically authorize these fixes.
+
+### F38. Product-policy decisions unresolved
+
+OPEN_DECISIONS unchanged: signup/provisioning, borrower types/eligibility, staff/admin/Super Administrator scope, verification/deactivation/ongoing-loan consequences and all inventory/loan/fine/history/kiosk/notification policies retain their prior status. Session families/device management/concurrent-session/global issuance/logout-all/immediate access revocation/grace recovery/cross-tab policy remain unresolved. DEC-035–037 accept engineering contracts, DEC-038/039 explicit future UX direction, DEC-040 sequencing only; none resolve institutional rules.
+
+### F39. Remaining Phase 1 security backlog
+
+SEC-015/016 source-level contracts/logging implemented, runtime still 1G. SEC-017 offline coverage expanded, real integration/CI unverified. SEC-008 partial with hardening 1H. SEC-004/006 stronger session/registration policy limits; SEC-018 cleanup scheduling/ownership/load verification; SEC-014 serving/HTTPS/CSP runtime; SEC-019 known warnings/dependency/image review remain. Production deployment topology/proxy budgets/log access-retention/operational ownership still require explicit operational decisions. No Sentry/Datadog/New Relic/OpenTelemetry/Prometheus/Grafana/cloud SDK/provider integrated; existing Zap core and standard context remain vendor-neutral extension points.
+
+### F40. Phase 1F exit gate and security review
+
+**SATISFIED / COMPLETE** for the authorized source/offline Phase 1F scope: consistent retained JSON/error/field contract and centralized safe mapping, correlated server-owned UUIDs/context, structured safe metadata/log levels/lifecycle/auth/error/panic records, tested secret exclusions, explicit minimal health/readiness, typed normalized frontend failure and preserved 1D refresh lifecycle / 1E perimeter, accepted UX/mockup/shadcn documentation and exact sequencing, backend fmt/vet/tests/race, frontend lint/tests/build, both supported Compose configurations and diff check all pass. All 40 requested final-report items are recorded above. Live parser/PG/browser/proxy/Docker/logging verification remains1G; runner hardening remains1H. This is not production deployment approval. No later phase, business feature, UI/mockup, migration execution, staging/commit/push or deployment occurred.

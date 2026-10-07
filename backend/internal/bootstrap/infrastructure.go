@@ -4,10 +4,12 @@ import (
 	"context"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/persistence/postgres"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/security"
+	"go.uber.org/zap"
 )
 
 // Infrastructure bundles the infrastructure-layer singletons created
@@ -27,7 +29,8 @@ func initInfrastructure(ctx context.Context, cfg *config.Config) (*Infrastructur
 
 	db, err := database.New(ctx, cfg.DB)
 	if err != nil {
-		log.Error("failed to init database")
+		class, _ := shared.FailureDetails(err)
+		log.Error("failed to init database", zap.String("event", "database.init_failed"), zap.String("error_class", class))
 		log.Sync()
 		return nil, err
 	}

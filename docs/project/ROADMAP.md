@@ -1,6 +1,6 @@
 # Initial delivery roadmap
 
-Confirmed sequence from current stakeholder direction. **Only Phase 0 is authorized in this task.** Later deliverables describe phase-level outcomes, not a speculative task backlog or permission to execute them. Dependencies include the relevant accepted policy decisions, not merely a checked phase number.
+Confirmed sequence from current stakeholder direction. **Current authorization is Phase 1F only; Phase 0 and 1A–1E are complete.** Later deliverables describe phase-level outcomes, not a speculative task backlog or permission to execute them. Dependencies include the relevant accepted policy decisions, not merely a checked phase number.
 
 ## Phase 0 — Rebaseline & Template Adaptation
 
@@ -18,6 +18,32 @@ Confirmed sequence from current stakeholder direction. **Only Phase 0 is authori
 - **Explicit non-goals:** No equipment/borrowing/report/kiosk business behavior; no premature infrastructure.
 - **Exit gate:** Foundation quality gates and critical security acceptance tests pass; production defaults fail safely; remaining risks recorded. Product auth policy remains Phase 4 work.
 
+## Phase 1A–1E — Completed source foundation
+
+Production configuration/runtime safety; authentication/current-account authorization; JWT/hash-only transactional refresh; browser session architecture; HTTP/API security. Completion is scoped to each report, with all live integration requirements retained. No product policies were inferred.
+
+## Phase 1F — API Contracts, Logging & Observability
+
+- **Goal/deliverables:** Consistent API success/error/validation contracts, centralized safe mapping, request ID propagation, structured redacted operational/security/lifecycle logging, typed client failures and explicit health/readiness.
+- **Dependencies:** Completed 1A–1E; current retained routes/session/perimeter preserved.
+- **Non-goals:** No real PostgreSQL/migration/browser/Docker runtime, telemetry vendor, business audit schema, product UI or mockups.
+- **Exit gate:** Foundation contracts/logging/security tests and required local quality/Compose checks pass; unverified runtime evidence carried to 1G. Current report records actual gate state.
+
+## Phase 1G — Real Integration Verification
+
+- **Goal/deliverables:** Authorized isolated PostgreSQL startup/migrations/rollback/TLS/credential restrictions, hash persistence/transaction/concurrent refresh, cleanup; Docker/nginx/browser cookie/bootstrap/logout/CORS/CSP/proxy/rate and health/readiness verification; real request-ID/log/redaction and cross-tab/lost-response checks.
+- **Dependencies:** Phase 1F and an explicitly authorized isolated environment; no V1 access implied.
+- **Non-goals:** No business features or automatic migration-runner redesign; record runner limitations for 1H.
+- **Exit gate:** Actual runtime/integration evidence with recovery and concurrent cases; offline doubles alone do not establish completion.
+
+## Phase 1H — Migration Runner Hardening
+
+- **Goal/deliverables:** Atomic DDL and schema_migrations bookkeeping, checksums, advisory lock/concurrent-runner exclusion, correct last-applied lookup error handling and isolated failure/recovery tests.
+- **Evidence:** Stakeholder's boss-rebuild audit comparison and current runner both identify DDL commit before separate bookkeeping, no checksums/lock and lookup failure ambiguity.
+- **Dependencies:** Phase 1G evidence and separate authorization; must precede heavy reliance on business-domain migrations.
+- **Non-goals:** No product tables, automatic startup migrations or infrastructure platform redesign.
+- **Exit gate:** Transaction/version integrity, corruption/concurrent-run denial, error classification and recovery demonstrated against isolated PostgreSQL; operator contract updated.
+
 ## Phase 2 — Domain & Database Design
 
 - **Goal:** Agree domain boundaries, lifecycle vocabulary and integrity model before product tables.
@@ -26,19 +52,27 @@ Confirmed sequence from current stakeholder direction. **Only Phase 0 is authori
 - **Explicit non-goals:** No speculative campus entities or implementation of later workflows before design approval.
 - **Exit gate:** FSMO model and policy-dependent contracts approved; invariants, migration reversibility and concurrency expectations reviewable before business-domain tables are created.
 
-## Phase 3 — UI Design System & Application Shell
+## Phase 3A — UX Architecture & Mockups
+
+- **Goal:** Approve experience architecture before feature UI implementation.
+- **Deliverables:** UX architecture, wireframes, high-fidelity mockups; borrower/customer mobile composition first and tablet/desktop adaptations, touch-first kiosk-specific layouts with large targets/privacy/session reset, staff/admin desktop/tablet layouts responsive where practical.
+- **Dependencies:** Phases 1–2 and sufficient confirmed product/role/navigation direction.
+- **Non-goals:** No implemented feature UI, guessed permissions or kiosk policy.
+- **Exit gate:** Approved mockups/responsive behavior/accessibility expectations for relevant audiences; unresolved product assumptions remain explicit.
+
+## Phase 3B — shadcn Design System & Application Shell
 
 - **Goal:** Create the eLabTrack visual language and responsive accessible shell.
-- **Primary deliverables:** Project tokens, shadcn compositions, navigation/layout, loading/error/empty states, accessible responsive patterns.
-- **Dependencies:** Phases 1–2 and role/navigation direction sufficient to design the shell.
+- **Primary deliverables:** shadcn-based eLabTrack design system, project tokens, application shell/navigation, reusable domain UI components and accessible loading/error/empty/responsive patterns based on approved mockups.
+- **Dependencies:** Phases 1–2, approved Phase 3A mockups and role/navigation direction sufficient to design the shell.
 - **Explicit non-goals:** No full business dashboard, inventory/loan implementation or replacement UI framework.
-- **Exit gate:** Shell and tokens approved; keyboard/mobile/theme checks pass; primitives remain reusable.
+- **Exit gate:** Shell/tokens approved; compared against approved mockups/responsive behavior, keyboard/mobile/theme checks pass, primitives remain reusable. No later feature UI is complete without that comparison.
 
 ## Phase 4 — Authentication & Authorization
 
 - **Goal:** Implement confirmed product account and permission policy on hardened infrastructure.
 - **Primary deliverables:** Approved role/operation matrix, access/recovery/onboarding flows, current-account authorization, verification/session behavior and tests.
-- **Dependencies:** Phases 1–3; decisions on provisioning, staff/admin, Super Admin, suspension and verification.
+- **Dependencies:** Phases 1–3B; decisions on provisioning, staff/admin, Super Admin, suspension and verification.
 - **Explicit non-goals:** No guessed public signup, campus roles or borrower/equipment operations.
 - **Exit gate:** Server denies unauthorized/inactive access and stale privileges per approved policy; session/recovery and critical abuse tests pass.
 

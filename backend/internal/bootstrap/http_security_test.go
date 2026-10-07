@@ -54,6 +54,7 @@ func securityRequest(t *testing.T, app *fiber.App, method, path, contentType, bo
 	for key := range res.Header {
 		h[key] = res.Header.Get(key)
 	}
+	h["X-Request-ID"] = res.Header.Get("X-Request-ID")
 	return res.StatusCode, string(raw), h
 }
 
@@ -66,14 +67,14 @@ func TestHTTPBodyAndParserSafety(t *testing.T) {
 	}{
 		{"auth oversized", "/api/v1/auth/login", "application/json", strings.Repeat(" ", 16<<10) + "{}", 413},
 		{"auth alias oversized", "/API/V1/AUTH/LOGIN/", "application/json", strings.Repeat(" ", 16<<10) + "{}", 413},
-		{"auth exact ceiling", "/api/v1/auth/login", "application/json", strings.Repeat(" ", (16<<10)-2) + "{}", 422},
+		{"auth exact ceiling", "/api/v1/auth/login", "application/json", strings.Repeat(" ", (16<<10)-2) + "{}", 400},
 		{"text rejected", "/api/v1/auth/login", "text/plain", "{}", 415},
 		{"form rejected", "/api/v1/auth/login", "application/x-www-form-urlencoded", "email=a&password=b", 415},
 		{"missing media rejected", "/api/v1/auth/login", "", "{}", 415},
 		{"malformed JSON", "/api/v1/auth/login", "application/json", "{", 400},
 		{"multiple documents", "/api/v1/auth/login", "application/json", "{} {}", 400},
 		{"unknown login field", "/api/v1/auth/login", "application/json", `{"role":"admin"}`, 400},
-		{"JSON charset supported", "/api/v1/auth/login", "application/json; charset=utf-8", "{}", 422},
+		{"JSON charset supported", "/api/v1/auth/login", "application/json; charset=utf-8", "{}", 400},
 		{"bodyless refresh", "/api/v1/auth/refresh", "", "", 204},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
@@ -137,7 +138,7 @@ func TestPanicAndErrorRedaction(t *testing.T) {
 			t.Fatal("internal error/transport leakage")
 		}
 	}
-	if logs.FilterMessage("panic recovered").Len() != 1 || logs.FilterMessage("request error").Len() != 2 {
+	if logs.FilterMessage("panic recovered").Len() != 1 || logs.FilterMessage("request error").Len() != 1 {
 		t.Fatal("safe diagnostics absent")
 	}
 	for _, entry := range logs.All() {
@@ -156,14 +157,18 @@ func TestHealthAndServerBoundaries(t *testing.T) {
 	app := newServer(cfg, nil, nil)
 	app.Get("/api/v1/health", handlers.NewHealthHandler(nil).Health)
 	status, body, headers := securityRequest(t, app, "GET", "/api/v1/health", "", "")
-	var health struct {
-		Status   string            `json:"status"`
-		Services map[string]string `json:"services"`
+	var envelope struct {
+		Success bool `json:"success"`
+		Data    struct {
+			Status  string `json:"status"`
+			Service string `json:"service"`
+		} `json:"data"`
 	}
 	var fields map[string]any
-	if status != 200 || json.Unmarshal([]byte(body), &health) != nil || json.Unmarshal([]byte(body), &fields) != nil || len(fields) != 2 || len(health.Services) != 2 || health.Status != "ok" || health.Services["api"] != "healthy" || health.Services["database"] != "unknown" || headers["Cache-Control"] != "no-store" {
-		t.Fatal("public health exposure changed")
+	if status != 200 || json.Unmarshal([]byte(body), &envelope) != nil || !envelope.Success || envelope.Data.Status != "ok" || envelope.Data.Service != "elabtrack-v2" || json.Unmarshal([]byte(body), &fields) != nil || len(fields) != 4 || headers["Cache-Control"] != "no-store" {
+		t.Fatal("health envelope/liveness exposure incorrect")
 	}
+
 	actual := app.Config()
 	if actual.ReadTimeout != 10*time.Second || actual.WriteTimeout != 15*time.Second || actual.IdleTimeout != time.Minute || actual.ReadBufferSize != 8192 || actual.BodyLimit != 1<<20 || actual.TrustProxy || actual.ProxyHeader != "" || actual.ServerHeader != "" {
 		t.Fatal("server safety settings not wired")

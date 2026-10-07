@@ -2,7 +2,9 @@ package auth
 
 import (
 	"context"
+	"errors"
 
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 )
 
@@ -16,7 +18,13 @@ func (s *Service) Login(ctx context.Context, req LoginRequest) (TokenPairDTO, er
 	}
 
 	u, err := s.users.FindByEmail(ctx, email.String())
-	if err != nil || u == nil {
+	if err != nil {
+		if errors.Is(err, domainuser.ErrUserNotFound) || errors.Is(err, shared.ErrNotFound) {
+			return TokenPairDTO{}, domainuser.ErrInvalidCredentials
+		}
+		return TokenPairDTO{}, shared.Internal("auth.login_lookup", err)
+	}
+	if u == nil {
 		return TokenPairDTO{}, domainuser.ErrInvalidCredentials
 	}
 	if err := s.hasher.Compare(u.Password, req.Password); err != nil {

@@ -77,7 +77,7 @@ func TestSessionRepositoryHashOnlyAndLocking(t *testing.T) {
 	if !strings.Contains(tx.query, "token_hash = $1 FOR UPDATE") || tx.args[0] != session.TokenHash || strings.Contains(tx.query, session.TokenHash) {
 		t.Fatal("parameterized locking lookup missing")
 	}
-	if _, err := repo.FindByHashForUpdate(context.Background(), session.TokenHash); err != shared.ErrInternal {
+	if _, err := repo.FindByHashForUpdate(context.Background(), session.TokenHash); !errors.Is(err, shared.ErrInternal) {
 		t.Fatal("autocommit lookup would release lock")
 	}
 	tx.err = pgx.ErrNoRows
@@ -104,7 +104,7 @@ func TestConsumeConditionalAndTransactional(t *testing.T) {
 	if err := repo.Consume(ctx, session.TokenHash, replacement, session.CreatedAt); err != domainauth.ErrTokenInvalid {
 		t.Fatal("losing claim must fail")
 	}
-	if err := repo.Consume(context.Background(), session.TokenHash, replacement, session.CreatedAt); err != shared.ErrInternal {
+	if err := repo.Consume(context.Background(), session.TokenHash, replacement, session.CreatedAt); !errors.Is(err, shared.ErrInternal) {
 		t.Fatal("autocommit consume accepted")
 	}
 }
@@ -157,7 +157,7 @@ func TestSessionDatabaseErrorsDiscardCredentialDetail(t *testing.T) {
 	}
 	for _, check := range checks {
 		err := check()
-		if err != shared.ErrInternal || strings.Contains(err.Error(), session.TokenHash) || strings.Contains(err.Error(), "raw-token-sentinel") {
+		if !errors.Is(err, shared.ErrInternal) || strings.Contains(err.Error(), session.TokenHash) || strings.Contains(err.Error(), "raw-token-sentinel") {
 			t.Fatal("database detail escaped repository")
 		}
 	}
@@ -174,7 +174,7 @@ func TestRefreshAccountLockUsesSafeProjectionAndTransaction(t *testing.T) {
 	if !strings.Contains(tx.query, "FOR SHARE") || strings.Contains(tx.query, "KEY SHARE") || strings.Contains(tx.query, "password") || tx.args[0] != id {
 		t.Fatal("lock must conflict with non-key status/role updates and omit secrets")
 	}
-	if _, err := repo.LockAccountByID(context.Background(), id); err != shared.ErrInternal {
+	if _, err := repo.LockAccountByID(context.Background(), id); !errors.Is(err, shared.ErrInternal) {
 		t.Fatal("autocommit account lock accepted")
 	}
 	tx.err = pgx.ErrNoRows
@@ -182,7 +182,7 @@ func TestRefreshAccountLockUsesSafeProjectionAndTransaction(t *testing.T) {
 		t.Fatal("missing account accepted")
 	}
 	tx.err = errors.New("password-sentinel")
-	if _, err := repo.LockAccountByID(ctx, id); err != shared.ErrInternal {
+	if _, err := repo.LockAccountByID(ctx, id); !errors.Is(err, shared.ErrInternal) {
 		t.Fatal("locked account leaked detail")
 	}
 }

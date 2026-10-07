@@ -34,7 +34,7 @@ func TestFiberV3HTTPContracts(t *testing.T) {
 	}{
 		{"health", "GET", "/api/v1/health", "", 200},
 		{"malformed JSON", "POST", "/api/v1/auth/login", "{", 400},
-		{"invalid credentials input", "POST", "/api/v1/auth/login", "{}", 422},
+		{"invalid credentials input", "POST", "/api/v1/auth/login", "{}", 400},
 		{"missing bearer", "GET", "/api/v1/users/me", "", 401},
 		{"missing principal helper", "GET", "/missing-principal", "", 401},
 		{"panic recovery", "GET", "/panic", "", 500},

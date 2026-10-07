@@ -9,21 +9,11 @@ import type { ApiResponse } from '@/types/api'
 import type { BrowserSession, AuthUser } from '@/types/common'
 import { useAuthStore } from '@/stores/auth-store'
 import { clearLegacyAuthStorage } from '@/lib/storage'
+import { ApiRequestError, normalizeApiError, normalizeApiResponseError } from '@/lib/api-error'
+export { ApiRequestError } from '@/lib/api-error'
 
 const baseURL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api/v1'
 
-export class ApiRequestError extends Error {
-  status: number
-  code?: string
-  fields?: Record<string, string>
-  constructor(message: string, status: number, code?: string, fields?: Record<string, string>) {
-    super(message)
-    this.name = 'ApiRequestError'
-    this.status = status
-    this.code = code
-    this.fields = fields
-  }
-}
 export interface RequestOptions extends Omit<AxiosRequestConfig, 'auth'> {
   attachAuth?: boolean
   retryAuth?: boolean
@@ -59,7 +49,7 @@ export class ApiClient {
     try {
       const response = await this.axios.request<ApiResponse<T>>({ ...opts, method, url, data: body })
       if (response.status === 204) return undefined as T
-      if (!response.data.success) throw new ApiRequestError(response.data.message || 'Request failed', response.status, response.data.error?.code, response.data.error?.fields)
+      if (response.data?.success !== true) throw normalizeApiResponseError(response.status, response.data, response.headers['x-request-id'])
       return response.data.data
     } catch (error) { throw this.normalize(error) }
   }
@@ -166,14 +156,7 @@ export class ApiClient {
     useAuthStore.getState().clear()
     return this.scheduleSession(() => this.post<void>('/auth/logout', undefined, { attachAuth: false, retryAuth: false }))
   }
-  private normalize(error: unknown): ApiRequestError {
-    if (error instanceof ApiRequestError) return error
-    if (axios.isAxiosError<ApiResponse>(error)) {
-      const payload = error.response?.data
-      return new ApiRequestError(payload?.message || 'Request failed', error.response?.status ?? 0, payload?.error?.code, payload?.error?.fields)
-    }
-    return new ApiRequestError('Request failed', 0)
-  }
+  private normalize(error: unknown): ApiRequestError { return normalizeApiError(error) }
 }
 
 export const apiClient = new ApiClient()

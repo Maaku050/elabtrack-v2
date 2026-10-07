@@ -104,7 +104,7 @@ func (r *UserRepository) LockAccountByID(ctx context.Context, id uuid.UUID) (*do
 		return nil, domainuser.ErrUserNotFound
 	}
 	if err != nil {
-		return nil, shared.ErrInternal
+		return nil, shared.Internal("account_store.lock", err)
 	}
 	return account, nil
 }

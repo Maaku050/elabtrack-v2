@@ -6,7 +6,6 @@ import (
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
-	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/middleware"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
@@ -59,10 +58,7 @@ func (h *AuthHandler) Login(c fiber.Ctx) error {
 	}
 	pair, err := h.auth.Login(c.Context(), req)
 	if err != nil {
-		if errors.Is(err, domainuser.ErrUserInactive) {
-			err = domainuser.ErrInvalidCredentials
-		}
-		return response.Error(c, err)
+		return response.LoginError(c, err)
 	}
 	h.browser.issue(c, pair)
 	return response.OK(c, "Login successful.", browserSession(pair))

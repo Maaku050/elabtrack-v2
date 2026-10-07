@@ -14,8 +14,8 @@ export function StatusPage() {
           <Button onClick={() => void health.refetch()} disabled={health.isFetching}>Check connection</Button>
           <div role="status" aria-live="polite">
             {health.isFetching ? <p>Checking connection…</p> : health.isError ? <p>Unable to connect. Check that the API and database are running, then try again.</p> : health.data ? (
-              <div><p>{health.data.status === 'ok' ? 'API connected.' : 'Service is degraded.'}</p>
-                <ul>{Object.entries(health.data.services).map(([service, status]) => <li key={service}>{service}: {status}</li>)}</ul>
+              <div><p>API connected.</p>
+                <p>{health.data.service}</p><p>This checks API liveness. Database readiness is checked separately.</p>
               </div>
             ) : <p>Connection has not been checked yet.</p>}
           </div>

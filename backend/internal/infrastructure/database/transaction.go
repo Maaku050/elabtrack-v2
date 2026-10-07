@@ -47,7 +47,7 @@ func (m *TxManager) Run(ctx context.Context, fn func(ctx context.Context, tx pgx
 	// revoked row after waiting, even when the server's default is different.
 	tx, err := m.pool.BeginTx(ctx, pgx.TxOptions{IsoLevel: pgx.ReadCommitted})
 	if err != nil {
-		return shared.ErrInternal
+		return shared.Internal("transaction.begin", err)
 	}
 	defer func() {
 		rollbackCtx, cancel := context.WithTimeout(context.WithoutCancel(ctx), 5*time.Second)
@@ -60,7 +60,7 @@ func (m *TxManager) Run(ctx context.Context, fn func(ctx context.Context, tx pgx
 		return err
 	}
 	if err := tx.Commit(ctx); err != nil {
-		return shared.ErrInternal
+		return shared.Internal("transaction.commit", err)
 	}
 	return nil
 }

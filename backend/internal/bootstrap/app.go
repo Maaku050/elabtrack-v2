@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger"
 	"github.com/gofiber/fiber/v3"
@@ -53,9 +54,10 @@ func New(ctx context.Context) (*App, error) {
 func (a *App) Run() error {
 	addr := ":" + a.cfg.App.Port
 	go func() {
-		a.log.Info("starting http server", zap.String("addr", addr), zap.String("env", string(a.cfg.App.Env)))
-		if err := a.server.Listen(addr, fiber.ListenConfig{DisableStartupMessage: false}); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			a.log.Fatal("server stopped unexpectedly")
+		logStartup(a.log, a.cfg)
+		if err := a.server.Listen(addr, fiber.ListenConfig{DisableStartupMessage: true}); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			class, _ := shared.FailureDetails(err)
+			a.log.Fatal("server stopped unexpectedly", zap.String("event", "server.listen_failed"), zap.String("error_class", class))
 		}
 	}()
 
@@ -63,7 +65,8 @@ func (a *App) Run() error {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	a.log.Info("shutdown signal received")
+	signal.Stop(quit)
+	a.log.Info("shutdown signal received", zap.String("event", "server.shutdown_started"))
 
 	return a.Shutdown(context.Background())
 }
@@ -74,10 +77,11 @@ func (a *App) Shutdown(ctx context.Context) error {
 	defer cancel()
 
 	if err := a.server.ShutdownWithContext(shutdownCtx); err != nil {
-		a.log.Error("server shutdown error", zap.Error(err))
+		class, _ := shared.FailureDetails(err)
+		a.log.Error("server shutdown error", zap.String("event", "server.shutdown_failed"), zap.String("error_class", class))
 	}
 	a.db.Close()
-	a.log.Info("database pool closed")
+	a.log.Info("database pool closed", zap.String("event", "server.shutdown_completed"))
 	a.log.Sync()
 	return nil
 }
@@ -87,3 +91,7 @@ func (a *App) Logger() *logger.Logger { return a.log }
 
 // Config exposes the application config.
 func (a *App) Config() *config.Config { return a.cfg }
+
+func logStartup(log *logger.Logger, cfg *config.Config) {
+	log.Info("starting http server", zap.String("event", "server.starting"), zap.String("addr", ":"+cfg.App.Port), zap.String("env", string(cfg.App.Env)), zap.String("migration_policy", "explicit_command"), zap.Bool("startup_seed_enabled", false), zap.Bool("trusted_proxy_enabled", len(cfg.Security.TrustedProxies) > 0), zap.Int("allowed_origin_count", len(cfg.Security.AllowedOrigins)))
+}

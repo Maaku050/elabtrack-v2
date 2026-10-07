@@ -26,4 +26,8 @@ const (
 	CodeRateLimited        = "RATE_LIMITED"
 	CodeInternal           = "INTERNAL_ERROR"
 	CodeBadRequest         = "BAD_REQUEST"
+	CodeMethodNotAllowed   = "METHOD_NOT_ALLOWED"
+	CodePayloadTooLarge    = "PAYLOAD_TOO_LARGE"
+	CodeUnsupportedMedia   = "UNSUPPORTED_MEDIA_TYPE"
+	CodeUnavailable        = "SERVICE_UNAVAILABLE"
 )

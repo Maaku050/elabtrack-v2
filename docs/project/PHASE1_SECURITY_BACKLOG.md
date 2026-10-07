@@ -55,6 +55,15 @@ The finding tables and earlier phase sections are historical evidence. Current H
 - **SEC-017 focused coverage expanded:** offline config, socket-context proxy, concurrent limiter, CORS/headers, auth budget/rotation, parser/redaction/health tests and targeted Go race checks. No PostgreSQL, real browser, Docker runtime, migration or CI verification claimed. All Phase 1C/D live requirements—including two-tab rotation—remain Phase 1G.
 - Product questions, SEC-004/006/008/018 limitations and migration 000003 status are unchanged. No Phase 1F/1G execution or business feature implemented.
 
+## Phase 1F implementation status — 2026-10-07
+
+- **SEC-015 source implementation complete:** existing Zap handles structured HTTP/lifecycle/security/panic/failure records, UUIDv4 context/header/body correlation and metadata allowlisting. Raw errors, URLs/query, request/response headers/bodies/config and unnecessary PII are excluded; captured sentinel tests cover relevant paths. Production default JSON remains vendor-neutral. Real socket/parser/proxy/log collection/redaction still needs Phase 1G.
+- **SEC-016 source implementation complete:** consistent retained success envelope and standard error code/message/requestId/fields, centralized wrapped-error mapping, one 400 input policy, safe framework/404/405/429/panic/internal responses, typed frontend normalization and common health transport. /health is process liveness; /ready checks dependency and standard 503. Live readiness/browser/ingress behavior remains 1G.
+- **SEC-017 expanded offline coverage only:** contracts, correlation, redaction, panic, safe error metadata and client statuses/fields/retry tests; previous single-flight/rotation/proxy/CORS controls retained. Actual PostgreSQL, migrations, Docker/browser and CI execution remain unverified.
+- **SEC-008 stays partial, assigned Phase 1H:** DDL commits before separate bookkeeping; no checksum/advisory lock; last-applied lookup failure ambiguity. No runner/SQL change here. 1G observes existing behavior; 1H hardens it before heavy product migrations.
+- SEC-004/006 session-policy and local-registration atomicity limits, SEC-018 cleanup ownership/cadence, SEC-014 live CSP/TLS/edge verification and SEC-019 retained warnings/dependency/image review remain. No product-policy question is resolved by observability.
+- [API_CONTRACTS.md](../API_CONTRACTS.md) gives the current route/catalog/log policy; Phase 1F closure report gives actual gate state. Phase 1G/1H have not begun.
+
 ## CRITICAL
 
 | ID | Finding / evidence | Required hardening and acceptance evidence | Owner |

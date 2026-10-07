@@ -9,7 +9,7 @@ Inspected 2026-10-05 (Asia/Shanghai). This is a source inventory, not a claim th
 | Frontend | React/react-dom ^19.3.0, Vite ^8.3.2, TypeScript ~6.0.3 | React + TypeScript + Vite |
 | UI | Tailwind ^4.3.3, Base UI 1.8.0, shadcn `base-nova`, Lucide ^1.51.0 | Tailwind v4 + official shadcn primitive foundation + Lucide |
 | State/forms | TanStack Query ^5.104.1, Zustand ^5.0.15, React Hook Form ^7.89.0, Zod ^4.6.5 | Query: server state; Zustand: appropriate global client state; React: local state |
-| Routing/transport | React Router ^7.18.4, Axios ^1.20.0 | SPA routing, centralized transport; health temporarily adapts its legacy response |
+| Routing/transport | React Router ^7.18.4, Axios ^1.20.0 | SPA routing, centralized transport; Phase 1F also normalizes health/error contracts |
 | Testing | Vitest ^5.0.3, Testing Library, jsdom; Go testing | Retain tests; expand around approved invariants later |
 | Lint/build | oxlint ^1.86.0; `tsc -b && vite build` | Keep lint and strict type checking |
 | Database | SQL migrations, pgxpool, `postgres:18.6-alpine` in Compose | PostgreSQL with explicit constraints and transactions |

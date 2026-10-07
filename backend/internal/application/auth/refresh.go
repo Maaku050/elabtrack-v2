@@ -23,7 +23,7 @@ func (s *Service) Refresh(ctx context.Context, req RefreshRequest) (TokenPairDTO
 			return domainauth.ErrTokenInvalid
 		}
 		if err != nil {
-			return shared.ErrInternal
+			return shared.Internal("auth.refresh_lookup", err)
 		}
 		if stored == nil || stored.TokenHash != hash || stored.UserID == uuid.Nil || !stored.ValidAt(s.now()) {
 			return domainauth.ErrTokenInvalid
@@ -33,7 +33,7 @@ func (s *Service) Refresh(ctx context.Context, req RefreshRequest) (TokenPairDTO
 			return domainauth.ErrTokenInvalid
 		}
 		if err != nil {
-			return shared.ErrInternal
+			return shared.Internal("auth.refresh_account", err)
 		}
 		if account == nil || account.ID != stored.UserID || !account.IsActive || !account.Role.Valid() {
 			return domainauth.ErrTokenInvalid
@@ -45,18 +45,18 @@ func (s *Service) Refresh(ctx context.Context, req RefreshRequest) (TokenPairDTO
 		u := &domainuser.User{ID: account.ID, Email: account.Email, Name: account.Name, Role: account.Role, IsActive: account.IsActive}
 		candidate, replacement, err := s.newTokenPair(txCtx, u)
 		if err != nil {
-			return shared.ErrInternal
+			return shared.Internal("auth.refresh_pair", err)
 		}
 		// Insert first to satisfy the immediate replacement FK. Both writes are
 		// invisible outside this transaction until consumption and commit succeed.
 		if err := s.tokens.Create(txCtx, replacement); err != nil {
-			return shared.ErrInternal
+			return shared.Internal("auth.refresh_create", err)
 		}
 		if err := s.tokens.Consume(txCtx, hash, replacement.ID, s.now()); err != nil {
 			if errors.Is(err, domainauth.ErrTokenInvalid) {
 				return domainauth.ErrTokenInvalid
 			}
-			return shared.ErrInternal
+			return shared.Internal("auth.refresh_consume", err)
 		}
 		pair = candidate
 		return nil
@@ -65,7 +65,7 @@ func (s *Service) Refresh(ctx context.Context, req RefreshRequest) (TokenPairDTO
 		if errors.Is(err, domainauth.ErrTokenInvalid) {
 			return TokenPairDTO{}, domainauth.ErrTokenInvalid
 		}
-		return TokenPairDTO{}, shared.ErrInternal
+		return TokenPairDTO{}, shared.Internal("auth.refresh", err)
 	}
 	return pair, nil
 }
@@ -77,7 +77,7 @@ func (s *Service) Logout(ctx context.Context, req RefreshRequest) error {
 		return nil
 	}
 	if err := s.tokens.Revoke(ctx, hash); err != nil {
-		return shared.ErrInternal
+		return shared.Internal("auth.logout_revoke", err)
 	}
 	return nil
 }
@@ -85,10 +85,10 @@ func (s *Service) Logout(ctx context.Context, req RefreshRequest) error {
 func (s *Service) issueTokenPair(ctx context.Context, u *domainuser.User) (TokenPairDTO, error) {
 	pair, session, err := s.newTokenPair(ctx, u)
 	if err != nil {
-		return TokenPairDTO{}, shared.ErrInternal
+		return TokenPairDTO{}, shared.Internal("auth.issue_pair", err)
 	}
 	if err := s.tokens.Create(ctx, session); err != nil {
-		return TokenPairDTO{}, shared.ErrInternal
+		return TokenPairDTO{}, shared.Internal("auth.session_create", err)
 	}
 	return pair, nil
 }
@@ -98,15 +98,15 @@ func (s *Service) issueTokenPair(ctx context.Context, u *domainuser.User) (Token
 func (s *Service) newTokenPair(ctx context.Context, u *domainuser.User) (TokenPairDTO, *domainauth.RefreshToken, error) {
 	access, err := s.issuer.IssueAccessToken(ctx, u)
 	if err != nil {
-		return TokenPairDTO{}, nil, shared.ErrInternal
+		return TokenPairDTO{}, nil, shared.Internal("auth.issue_access", err)
 	}
 	raw, err := s.issuer.GenerateRefreshToken()
 	if err != nil {
-		return TokenPairDTO{}, nil, shared.ErrInternal
+		return TokenPairDTO{}, nil, shared.Internal("auth.refresh_generate", err)
 	}
 	hash, err := s.tokenHasher.Hash(raw)
 	if err != nil {
-		return TokenPairDTO{}, nil, shared.ErrInternal
+		return TokenPairDTO{}, nil, shared.Internal("auth.refresh_hash", err)
 	}
 	now := s.now()
 	session := domainauth.NewRefreshToken(hash, u.ID, now, now.Add(s.refreshTTL))
