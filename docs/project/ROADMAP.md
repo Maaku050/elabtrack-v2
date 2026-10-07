@@ -1,6 +1,6 @@
 # Initial delivery roadmap
 
-Confirmed sequence from current stakeholder direction. **Phase 0 and 1A–1I are complete within their recorded source/disposable local scope. The latest authorization covers Phase 1I only; Phase 2 has not begun.** The Phase 1 engineering foundation has no remaining blocker to authorized domain/database design. CI, production deployment verification and product-policy decisions remain explicitly tracked. Later deliverables describe phase-level outcomes, not permission to execute them. Dependencies include accepted policy decisions, not merely a checked phase number.
+Confirmed sequence from current stakeholder direction. **Phase 0 and 1A–1I are complete within their recorded source/disposable local scope. Phase 2 design documentation is delivered for review; Phase 2 is BLOCKED FOR IMPLEMENTATION by the explicit policy gate. The latest authorization covers Phase 2 design only.** CI, production deployment verification and product-policy decisions remain explicitly tracked. Later deliverables describe phase-level outcomes, not permission to execute them. Dependencies include accepted policy decisions, not merely a checked phase number.
 
 ## Phase 0 — Rebaseline & Template Adaptation
 
@@ -58,7 +58,9 @@ Production configuration/runtime safety; authentication/current-account authoriz
 - **Primary deliverables:** Approved domain model, SQL schema/migration design, constraints/indexes, transaction/concurrency strategy, history/audit/retention design.
 - **Dependencies:** Phase 1; stakeholder decisions affecting roles, eligibility, stock and accountability.
 - **Explicit non-goals:** No speculative campus entities or implementation of later workflows before design approval.
-- **Exit gate:** FSMO model and policy-dependent contracts approved; invariants, migration reversibility and concurrency expectations reviewable before business-domain tables are created.
+- **Current status (2026-10-08):** Eight [domain design documents](../domain/DOMAIN_MODEL.md) and [Phase 2 report](PHASE2_REPORT.md) delivered; 57 future invariant specifications and 15 conditional scenario traces. No business code, UI or migrations. This is a reviewable draft, not stakeholder-approved schema/policy.
+- **Policy gate:** [BUSINESS_RULES matrix](../domain/BUSINESS_RULES.md#policy-decision-matrix) and OPEN-001–027 distinguish blocking dependent implementation from later core questions. Approval/release (OPEN-021), reservation/limits/direct (020), due model (015), terms (016), valuation/posting (023/024) and settlement/payment (007) fundamentally affect contracts. Eligibility/actor/disposition rules also need confirmation before dependent commands.
+- **Exit gate:** Design artifacts and documentation validation are delivered; **unconditional Phase 2 COMPLETE is not claimed** while state/schema policy is unresolved. Confirm blocking choices, revise/approve model and invariants, and recheck scope/diff before business-domain migrations. Phase 3A/3B requires separate authorization; final promise-bearing/role/kiosk mockups require sufficient policy confirmation.
 
 ## Phase 3A — UX Architecture & Mockups
 

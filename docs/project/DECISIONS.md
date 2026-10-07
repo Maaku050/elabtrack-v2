@@ -1,6 +1,6 @@
 # eLabTrack V2 decision register
 
-Recorded 2026-10-05. Status vocabulary: **Accepted**, **Proposed**, **Deferred**, **Needs Stakeholder Input**, **Rejected**. Acceptance records direction, not completed implementation. All accepted entries below derive from the current stakeholder Phase 0 request; workflow cleanup follows the authorized inspection and dependency check. Unresolved product policies are in `OPEN_DECISIONS.md`.
+Recorded initially 2026-10-05; subsequent entries cite their own phase/date/authority. Status vocabulary: **Accepted**, **Proposed**, **Deferred**, **Needs Stakeholder Input**, **Rejected**. Acceptance records direction, not completed implementation. Unresolved product policies are in `OPEN_DECISIONS.md`; Phase 2 proposals do not accept institutional policy.
 
 ## ELAB-V2-DEC-001 — FSMO scope
 
@@ -335,3 +335,24 @@ Recorded 2026-10-05. Status vocabulary: **Accepted**, **Proposed**, **Deferred**
 - Authority/evidence: Phase 1I lifecycle/cache/failure requirements; unit cancellation/public-cache tests and actual three-tab logout, held committed refresh response, disable/current-account 403 and revoked-session refresh 401.
 - Impact: Login/register intent and successful completion discard peers' old account presentation without transferring role/status/account objects or automatically signing them in. The completion hint covers peers that missed the intent. Reload/deliberate server restoration obtains trusted state. Exclusive refresh 401 infers generic invalidation among participating documents; without Web Locks it is an ambiguous denial and only clears the failing document. Network/5xx/Origin denial/coordination timeout do not globally log out peers. Current-account `/auth/me`/`/users/me` resolver 403 and persistent retried 401 invalidate with request-start fencing; ordinary resource 403 does not. Old token/generation/attempt failures cannot erase newer state.
 - Browser limits: Chromium 140 verified. Web Locks without BroadcastChannel still serialize but cannot reliably propagate peer UI lifecycle; BroadcastChannel without Web Locks provides lifecycle hints without atomic refresh optimization. With neither, local single-flight and safe server cookie rejection remain, with possible local denial/re-login. Missed messages do not hold ownership; reload/stale-token request recovery consults the server. There is no durable client logout history or cross-device/access-token revocation guarantee. Institutional family/concurrent-session/immediate-access-revocation policy remains open.
+
+## ELAB-V2-DEC-048 — Phase 2 design-only authorization and evidence order
+
+- Status: **Accepted — scope and evidence contract**, 2026-10-08.
+- Decision: Authorize FSMO domain/database documentation and read-only boss reference inspection. Authority is current stakeholder/Dean direction, current V2 decisions, capstone intent, audited V1 behavior, boss design reference, then engineering recommendation. Use the seven explicit Phase 2 evidence labels; current source establishes implementation facts, not institutional policy.
+- Authority: Explicit current stakeholder Phase 2 request; expands source-policy detail without changing Phase 1 implementation.
+- Impact: No business migrations/services/UI, Phase 3A/mockups, boss writes, commit/push/deployment. Phase 1A–1I is complete. Policy-dependent state/schema remains blocked pending confirmation; [Phase 2 report](PHASE2_REPORT.md) records actual delivery/readiness.
+
+## ELAB-V2-DEC-049 — Retained canonical business history and distinct evidence
+
+- Status: **Accepted — required design boundary**, 2026-10-08.
+- Decision: Preserve canonical borrowing transactions through denial/cancellation/completion; distinguish borrowing history, immutable return evidence, inventory movement ledger, financial assessment/adjustment history and durable business audit. Operational logs do not replace evidence. Do not replicate V1's terminal copy/delete or independent conflicting fine truths.
+- Authority: Explicit Phase 2 Parts 18/21/22 and existing DEC-017/037. This accepts the required integrity boundary, not a fine amount, payment procedure, retention duration or role matrix.
+- Impact: [Domain designs](../domain/DOMAIN_MODEL.md) recommend exact tables/immutability/concurrency for later review; none implemented. Assessment, administrative settlement and actual payment/revenue remain distinct; OPEN-007/024/026 unresolved.
+
+## ELAB-V2-DEC-050 — FSMO aggregate-stock design constraint
+
+- Status: **Accepted — required scope constraint**, 2026-10-08.
+- Decision: Phase 2 designs catalog stock pools and aggregate quantities, without per-physical-unit/serialized tracking unless a later requirement changes. Do not adopt boss organization/unit/lab/global-role scope, generic file authorization or unsafe importer/migrations wholesale.
+- Authority: Explicit Phase 2 scope/Parts 4/26/41; charter/AGENTS; V1 audit 04/06 evidence.
+- Impact: Six inventory buckets, exact movement/locking design and valuation timing remain labeled engineering recommendations and policy-dependent OPEN-020/022/023. This entry does not accept boss's stock/role/financial defaults.
