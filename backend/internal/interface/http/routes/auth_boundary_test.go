@@ -66,6 +66,9 @@ func (r *users) FindByID(_ context.Context, id uuid.UUID) (*domainuser.User, err
 	return nil, errors.New("protected requests must not load password aggregates")
 }
 func (r *users) FindByEmail(_ context.Context, email string) (*domainuser.User, error) {
+	if r.lookupErr != nil {
+		return nil, r.lookupErr
+	}
 	if r.account == nil || r.account.Email != email {
 		return nil, domainuser.ErrUserNotFound
 	}
@@ -121,7 +124,7 @@ func (i *issuer) IssueAccessToken(_ context.Context, _ *domainuser.User) (string
 }
 func (i *issuer) GenerateRefreshToken() (string, error) { return strings.Repeat("a", 64), nil }
 func newApp(env config.Environment, r *users, i application.TokenIssuer, refresh *tokens) *fiber.App {
-	app := fiber.New(fiber.Config{ErrorHandler: middleware.ErrorHandler(nil)})
+	app := fiber.New(fiber.Config{ErrorHandler: middleware.ErrorHandler(nil, env)})
 	accountService := appauth.NewAccountResolver(r)
 	authService := appauth.NewService(r, refresh, security.NewBcryptHasher(4), i, security.SHA256RefreshHasher{}, nil, nil, time.Minute, time.Hour)
 	v := validator.New()
@@ -403,14 +406,22 @@ func TestLoginDoesNotRevealInactiveAccountBeforePassword(t *testing.T) {
 	r.account.IsActive = false
 	r.account.Password = hashed
 	app := newApp(config.Production, r, &issuer{}, &tokens{})
-	for password, want := range map[string]int{"wrong-local-password": 401, "correct-local-password": 403} {
+	for password, want := range map[string]int{"wrong-local-password": 401, "correct-local-password": 401} {
 		body := `{"email":"current@example.invalid","password":"` + password + `"}`
 		status, _, raw := request(t, app, "POST", "/api/v1/auth/login", body, "")
-		if status != want {
-			t.Fatal("credential/status ordering incorrect")
+		if status != want || strings.Contains(raw, "inactive") {
+			t.Fatal("login exposed account status")
 		}
 		if strings.Contains(raw, password) || strings.Contains(raw, hashed) {
 			t.Fatal("password leaked")
+		}
+	}
+	// Preserve the Phase 1B service ordering assertion independently of the now
+	// uniform HTTP failures: correct password reaches status denial; wrong does not.
+	svc := appauth.NewService(r, &tokens{}, security.NewBcryptHasher(4), &issuer{}, security.SHA256RefreshHasher{}, nil, nil, time.Minute, time.Hour)
+	for password, want := range map[string]error{"wrong-local-password": domainuser.ErrInvalidCredentials, "correct-local-password": domainuser.ErrUserInactive} {
+		if _, err := svc.Login(context.Background(), appauth.LoginRequest{Email: "current@example.invalid", Password: password}); !errors.Is(err, want) {
+			t.Fatal("credential/status ordering changed")
 		}
 	}
 }

@@ -63,7 +63,7 @@ func Error(c fiber.Ctx, err error) error {
 		errors.Is(err, domainuser.ErrPasswordTooShort),
 		errors.Is(err, domainshared.ErrValidation),
 		errors.Is(err, domainshared.ErrInvalidInput):
-		return Fail(c, http.StatusBadRequest, err.Error(), constants.CodeValidation)
+		return Fail(c, http.StatusBadRequest, "Invalid request.", constants.CodeValidation)
 	}
 
 	// Fallback: internal server error. The original error is logged upstream;

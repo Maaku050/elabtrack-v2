@@ -44,6 +44,17 @@ Earlier phase notes and finding tables preserve historical evidence. Current bro
 - **SEC-017 coverage expanded:** backend response cookies, exact safe JSON, environment/Origin/body-fallback behavior and frontend memory/bootstrap/single-flight/retry/logout tests pass. These are HTTP/unit/jsdom adapter tests; no real browser, PostgreSQL, Docker auth integration or CI is claimed.
 - **SEC-004/006/008/018 limits remain:** live transactional rotation, registration user/session atomicity, stronger revocation policy, migration bookkeeping/exclusivity and cleanup operational ownership are unchanged. Migration 000003 is unchanged and unrun. No Phase 1E or business feature work performed.
 
+## Phase 1E implementation status — 2026-10-06
+
+The finding tables and earlier phase sections are historical evidence. Current HTTP perimeter and all local gate results are documented in the Phase 1E report.
+
+- **SEC-012 source-level perimeter controls implemented:** explicit validated literal proxy IP/CIDR trust, shared effective-IP boundary, spoof/chain/alternate-header rejection, independent config-backed login/refresh/local-register/general fixed-window limits, safe 429/Retry-After and focused concurrency tests. Process-local/NAT/restart limits are explicit; no distributed enforcement. Real reverse-proxy client separation, bypass controls and rate behavior remain Phase 1G.
+- **SEC-013 full source-level CORS review implemented:** canonical configuration and exact request matching, frontend membership, explicit current methods/headers, credentialed preflight acceptance/denial with Vary and 300s cache, no wildcard reflection. Phase 1D POST/trusted-Origin/Lax policy remains. Actual browser/proxy enforcement remains Phase 1G.
+- **SEC-014 baseline implemented:** separate API headers and nginx SPA CSP/common headers, production API HSTS conditional on authoritative HTTPS, no HSTS on HTTP localhost template, nginx server version minimized. Inline UI styles remain allowed; scripts/API stay same-origin. Actual CSP/UI/static/error/header/TLS behavior and deployment edge ownership remain Phase 1G evidence; production serving topology remains unselected.
+- **SEC-015/016 minimum leakage safeguards implemented only:** outer recovery with safe type/source diagnostics; no raw panic/error/header/body credential logs; generic framework/wrapped-validation text; login account/status/lookup failures share a generic response; explicit parser/body/header/timeouts. Full structured logging, request/correlation IDs, logging completeness, envelope/health normalization and error catalog remain Phase 1F. Constant-time login/network enumeration resistance is not established.
+- **SEC-017 focused coverage expanded:** offline config, socket-context proxy, concurrent limiter, CORS/headers, auth budget/rotation, parser/redaction/health tests and targeted Go race checks. No PostgreSQL, real browser, Docker runtime, migration or CI verification claimed. All Phase 1C/D live requirements—including two-tab rotation—remain Phase 1G.
+- Product questions, SEC-004/006/008/018 limitations and migration 000003 status are unchanged. No Phase 1F/1G execution or business feature implemented.
+
 ## CRITICAL
 
 | ID | Finding / evidence | Required hardening and acceptance evidence | Owner |

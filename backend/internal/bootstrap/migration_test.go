@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
-	"time"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers"
@@ -17,7 +16,10 @@ import (
 
 // Exercise the real middleware chain and migrated bind/auth paths without a database.
 func TestFiberV3HTTPContracts(t *testing.T) {
-	cfg := &config.Config{App: config.AppConfig{BodyLimit: 1 << 20}, Security: config.SecurityConfig{AllowedOrigins: []string{"http://localhost:5173"}, RateLimitMax: 100, RateLimitWindow: time.Minute}}
+	cfg, cfgErr := config.Parse(map[string]string{"RATE_LIMIT_MAX": "100"})
+	if cfgErr != nil {
+		t.Fatal(cfgErr)
+	}
 	app := newServer(cfg, nil, nil)
 	health := handlers.NewHealthHandler(nil)
 	auth := handlers.NewAuthHandler(nil, validator.New(), config.Development, cfg.Security)

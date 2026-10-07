@@ -834,3 +834,242 @@ All existing institutional OPEN_DECISIONS retain their statuses, including signu
 ### D34. Phase 1D exit gate
 
 **SATISFIED / COMPLETE** for authorized Phase 1D source-level scope: cookie-only HttpOnly refresh transport, no frontend raw refresh, memory-only access, safe login/refresh JSON, controlled restoration, shared single-flight refresh, one bounded retry, immediate local logout plus idempotent backend revoke/clear, minimum explicit credentialed CORS/CSRF policy, focused backend/frontend tests and all required local gates. Prior Phase 1A/B/C evidence is preserved. Browser/PostgreSQL/deployment checks remain explicitly required Phase 1G; completion does not establish production readiness or cross-tab coordination. No Phase 1E/business feature, migration execution, commit, push or deployment occurred.
+
+## Phase 1E — HTTP & API Security
+
+Authorized 2026-10-06. Initial working tree was clean. No Phase 1F/1G execution, business feature, database/migration/maintenance action, commit, push or deployment is authorized here.
+
+### Pre-change HTTP perimeter audit
+
+| Order/source | Current purpose and trust assumptions | Risk / Phase 1E action |
+|---|---|---|
+| Fiber configuration, before middleware | Read 10s, write 15s; idle derived as their sum; global body 1MB; no Server banner; default proxy trust disabled. c.IP uses socket peer; forwarding scheme/host ignored by installed Fiber when proxy trust is off. | Proxied clients share a peer bucket; no deliberate operator proxy setting. Add narrow typed IP/CIDR configuration and one shared client-IP/HTTPS resolver; preserve socket-derived Fiber host/scheme. Explicit idle/header bounds. |
+| 1 RequestID | Preserves supplied X-Request-ID or generates one; response/context correlation. | Full correlation/structured logging design stays Phase 1F. |
+| 2 Helmet security headers | API nosniff/frame/referrer/permissions/CSP/cross-origin headers; HSTS depends on Fiber scheme. | Browser document is served separately; generic JSON/CORP/COEP policy can contradict cross-origin credentialed API access. Replace with explicit API baseline and production authoritative-HTTPS HSTS. |
+| 3 CORS | Validated explicit origins, credentials; GET/POST/PUT/PATCH/DELETE/OPTIONS; Origin/Content-Type/Accept/Authorization/X-Request-ID. | Fiber normalizes request origin case, auth handler compares exactly; methods include absent routes. Align exact canonical origin matching and required methods/headers/preflight denial. |
+| 4 Recovery | Recovers panic; stack handling disabled, custom callback therefore provides no intended diagnostic. | Preserve safe diagnostics without logging arbitrary panic/error values or leaking them to HTTP. Move outermost so perimeter middleware is covered. |
+| 5 Request logger | Time/method/path/status/latency/response request ID, stdout; no body/auth/cookie headers. | Add shared effective-IP signal without parsing headers here; retain logging format architecture for Phase 1F. |
+| 6 Global limiter | Fiber fixed window, process-local expiring memory, peer c.IP; 120/min across routes, health exempt; 429 standard envelope. | No focused credential-guessing or refresh budget; no distributed enforcement. Separate config-backed login/refresh/local-register/general limits using shared effective IP. |
+| 7 Compression | Compresses normal responses. | Preserve behavior; no transport redesign. |
+| Route auth/current account | Bearer JWT verification then current PostgreSQL principal; temporary admin predicate on read-only user list. | Preserve current-account authority; IP remains an abuse signal, never identity. |
+| Handler Origin / parsing | Login/local register/refresh/logout POST exact trusted Origin; HttpOnly refresh cookie; strict register/self PATCH JSON, generic binder on login; no auth-specific body ceiling. | Preserve cookie/CSRF model; strict login JSON and small auth-body bound before credential work. |
+| Health / missing route / errors | Health emits only status and API/database health; missing route uses Fiber error; generic infrastructure fallback, but Fiber message and wrapped validation err.Error can reach response. | Preserve health shape; safe framework/validation error text; no full envelope/catalog redesign. |
+| frontend/nginx.conf | HTTP port 80 SPA fallback; same-origin /api proxy appends client-provided XFF, overwrites XFP; no SPA headers/CSP or timeout/body declarations. | Overwrite forwarding IP at this boundary; separate SPA baseline/header responsibility; no HSTS on this HTTP template or invented production topology. |
+
+The installed Fiber v3.5.0 source, middleware internals, handlers, env examples, nginx/Docker/Compose and frontend entry/API source were inspected. Existing configuration validates production HTTPS origins but origin parsing needs canonical host/default-port and malformed-origin review. There are no password-reset routes, destructive admin CRUD or uploads to protect in this phase. No Obsidian MCP or removed planner/constitution is available; no private notes were read/persisted.
+
+### E1. Files changed
+
+33 unstaged files: 24 modified tracked files and nine new files, inventoried verbatim in E37. Changes cover typed HTTP configuration/examples, shared proxy/client-IP resolution, differentiated limiter, CORS/headers/recovery/parser safeguards, login/health HTTP adapters, focused backend tests, nginx/Docker serving snippets and Compose comments. Documentation updates root/backend READMEs, accepted technical decisions, backlog and this report. No dependencies, frontend application source, migrations, business schema or session storage/rotation mechanism changed.
+
+### E2. Previous middleware order
+
+Before routes: RequestID → Helmet security headers → CORS → Recovery → Logger → global peer-IP limiter → compression. Router then applied bearer verification/current-account lookup and temporary admin predicate, followed by handler Origin/DTO checks. Fiber parser/body limits precede this chain; the global error handler handled failures/not-found. The audit table above records purpose, assumptions and risks before implementation.
+
+### E3. Final middleware order
+
+Recovery → RequestID → ClientInfo → explicit API security headers → Logger → exact CORS → differentiated RateLimit → RequestSafety → compression → routes. Protected routes still verify bearer and current PostgreSQL principal before handlers/admin reads; cookie-changing handlers retain their trusted-Origin guard. Recovery is outermost to cover perimeter failures. ClientInfo precedes headers/logging/limiting so all use the same authority. CORS precedes rate/body rejection so allowed credentialed clients can read 429/413/415. Accepted preflight terminates without consuming an auth budget. The safe global error handler reapplies API headers, including parser/framework failures; no route side effect occurs on parser rejection.
+
+### E4. Trusted proxy model
+
+Default in every environment: no configured proxy trust, actual socket peer only. Operators may supply actual literal proxy IPs/CIDRs; there is no automatic Docker/private/loopback trust, DNS provider list or trust-all switch. Only an explicitly trusted immediate socket source permits XFF/XFP interpretation. Operators must sanitize/overwrite forwarding fields, choose narrow actual proxy sources and prevent bypass. A shared network containing untrusted clients is not a suitable blanket trusted range. No production provider or topology selected.
+
+### E5. Client-IP resolution
+
+ClientInfo is the sole forwarding parser; ClientIP supplies the canonical abuse key/log signal. It validates the complete XFF chain, including repeated field lines, at most 16 addresses/1024 characters. Ports/zones/empty/malformed/unspecified/multicast entries reject the chain. IPv4-mapped peers/addresses canonicalize to IPv4. Starting from a trusted peer, walk right-to-left through configured trusted hops and stop at the first untrusted address; never trust an attacker-controlled leftmost prefix beyond that hop. Missing/invalid/oversized/all-trusted chains fall back to the socket peer. X-Real-IP/Forwarded/forwarded host/alternate scheme fields are ignored. Fiber's own proxy parsing stays disabled, so Host/Scheme helpers remain socket/request-host based. IP is not account identity or authorization evidence.
+
+### E6. Proxy-related configuration
+
+| Setting | Default / validation |
+|---|---|
+| TRUSTED_PROXIES | Empty = direct peer; comma-separated literal IPs/CIDRs, masked canonical prefixes; invalid entries fail startup without echoing values. Reject wildcard/hostname/port/scoped/multicast/unspecified addresses, mapped CIDRs and /0 trust-all ranges. |
+| LOGIN_RATE_LIMIT_MAX | 10, positive bounded integer |
+| REFRESH_RATE_LIMIT_MAX | 60, positive bounded integer |
+| REGISTER_RATE_LIMIT_MAX | 5, positive bounded integer |
+| RATE_LIMIT_MAX | Retained 120 general budget |
+| RATE_LIMIT_WINDOW | Retained 1m; positive duration between 1s and 1h; Fiber fixed-window accounting uses whole seconds |
+| APP_IDLE_TIMEOUT | New explicit 60s, positive Go duration |
+
+Development/production examples document these values and deliberate proxy selection. Production's existing validated HTTPS origins/secrets/database transport remain. FRONTEND_URL and ALLOWED_ORIGINS now share canonical validation and frontend membership. No networking secret or arbitrary environment variable enables forwarding trust.
+
+### E7. Rate-limit architecture
+
+Retain installed Fiber's concurrency-safe fixed-window limiter and default process-local expiring memory store; independent login/refresh/local-register/general buckets. Entries carry expiration and are garbage-collected by the library's one-second sweep; no custom scheduler or Redis added. Keys are only the shared effective IP, never email, body, token, cookie or frontend role. All successful/failed attempts count. Whole-second window accounting and conservative Retry-After are explicit; fixed windows may permit boundary bursts. Tests use long bounded windows and controlled socket contexts, with no wall-clock sleeps. No hard distinct-IP capacity cap or distributed denial-of-service protection is claimed.
+
+### E8. Login rate limit
+
+POST login: default 10 attempts per effective client IP per minute, independent of other API traffic; changing body email or spoofing forwarding fields from an untrusted peer cannot create another budget. Case/trailing-slash aliases match the protected route policy; encoded/extra-slash aliases cannot bypass it. HTTP failures for missing account/wrong password/inactive/unknown-role/lookup failure share the same generic 401 envelope and no cookie. Application password-before-status ordering remains separately asserted. Network timing equalization and exhaustive enumeration resistance are not claimed; production ingress/workload tuning remains necessary.
+
+### E9. Refresh rate limit
+
+POST refresh: independent default 60/minute/IP, comfortably above ordinary single-flight bootstrap/retry/reload usage. Nine sequential real-service/real-JWT adapter rotations through HTTP doubles fit the default budget, and old replay still fails without revoking the replacement. The limiter never reads/relaxes the credential or Phase 1C transaction semantics. A 429 retains cookie material for later deliberate recovery; it does not itself rotate/revoke. Phase 1D client clears memory into recoverable error rather than automatically looping.
+
+### E10. Other rate limits
+
+Local-only POST register: 5/minute/IP; production route remains absent. General API—including logout, protected/current-account/admin reads, unknown routes and public health's existing database probe—uses 120/minute/IP. Health no longer bypasses the budget, preventing unbounded public dependency probes; ordinary manual status/probe usage fits defaults. OPTIONS is exempt and trusted preflight terminates before the limiter. There are no password-reset or destructive admin routes; no speculative limits/routes added. An additional account-ID budget was evaluated but not added: current retained privileged routes are reads, and pre-auth IP protection avoids expensive lookup before rejection. Shared/NAT clients share budgets and operational settings must reflect measured traffic.
+
+### E11. Rate-limit scaling limitation
+
+Each process owns its counters; restart resets them and multiple instances do not coordinate. Fixed-window bursts, distributed source addresses and shared egress/NAT remain limits. Deploying additional instances requires a separately reviewed enforcement model; no distributed claim, Redis or infrastructure expansion. A wrongly broad proxy allowlist could make attacker input authoritative; operator trust/bypass verification is a required runtime gate, not proven by unit tests.
+
+### E12. CORS policy
+
+Configured origins are canonical HTTP(S) scheme://host[:port], with lowercase/canonical host and redundant default ports removed. Configuration list whitespace is trimmed; paths/trailing slash, credentials, wildcard/suffix policy, query/fragment, malformed hosts/ports, noncanonical numeric host spellings and production HTTP are rejected. Frontend must be in the explicit list. Request Origin matches exactly, with no case/path/default-port/whitespace alias, null or wildcard reflection. Disallowed supplied Origin returns safe 403 with no allow-origin/credentials headers. Originless non-browser reads may proceed; cookie mutations separately reject missing Origin.
+
+Credentialed preflight permits GET/POST/PATCH/OPTIONS and Content-Type/Accept/Authorization/X-Request-ID only, checks requested method/header membership, sets exact ACAO plus credentials=true, Vary for Origin/method/headers and max-age=300. PUT/DELETE/TRACE/arbitrary headers are denied. Current read routes retain Fiber's automatic safe HEAD handling. Exposed response headers are X-Request-ID and Retry-After; no private-network opt-in. Credential rules follow the [Fetch standard](https://fetch.spec.whatwg.org/#cors-protocol); exact matching deliberately aligns CORS with the cookie guard.
+
+### E13. Trusted-Origin/CSRF relationship
+
+Phase 1D login/local register/refresh/logout remain POST-only, exact trusted-Origin guarded, host-only HttpOnly Lax-cookie endpoints, without JSON credential fallback. The guard and CORS use the same canonical configuration contract. Missing/null/untrusted Origin cannot mutate cookies; protected APIs still require bearer/current-account authority and cannot authenticate through refresh cookies. No new CSRF framework or relaxation of strict refresh single-use semantics.
+
+### E14. Security headers
+
+API: X-Content-Type-Options=nosniff; X-Frame-Options=DENY; Referrer-Policy=no-referrer; Permissions-Policy denying geolocation/microphone/camera. Production authoritative HTTPS adds HSTS max-age=31536000 without subdomain/preload commitments. API JSON no longer receives document CSP or blanket CORP/COEP/COOP policies that conflict with supported credentialed cross-origin API access. Headers apply to normal, denied and safe error responses. nginx document/static/error responses get the same common baseline via an included snippet; upstream common duplicates are hidden at the API proxy. Future kiosk/media permissions need explicit approval.
+
+### E15. CSP ownership/policy
+
+The SPA server owns document CSP; Go owns API responses. nginx baseline: default/script/font/connect self; style self plus unsafe-inline for existing React/Base UI/shadcn style attributes and chart style tags; images self/data; objects/base/frame-ancestors none; forms self. No inline/eval/external script allowance or external network dependency added. Production Vite modules/dynamic chunks and current CSS/assets use the same origin; /api/v1 proxy matches connect-src. Host Vite development does not receive this production-asset policy. External API build overrides require an explicitly reviewed matching connect-src policy; they are not silently admitted. Real UI/CSP enforcement remains Phase 1G. Inline-style allowance follows the actual retained primitives and [MDN style-src semantics](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/style-src).
+
+### E16. HTTPS/HSTS behavior
+
+Production browser traffic requires HTTPS; Secure refresh-cookie policy is unchanged. No TLS termination is implemented in Go and no provider is chosen. HSTS requires production plus actual socket TLS or a single exact XFP=https from an explicitly trusted immediate peer; untrusted/duplicated/ambiguous/alternate headers cannot assert it. Development/test never emits API HSTS, even with a trusted HTTPS signal. The supplied nginx listener is HTTP-only local Compose and emits no HSTS. Production's authoritative TLS edge must enforce HTTPS/HSTS and reviewed forwarding; a further ingress behind HTTP nginx requires explicit topology/real-IP review. No includeSubDomains/preload assumption. See [MDN HSTS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Strict-Transport-Security); actual TLS/proxy enforcement remains unrun.
+
+### E17. Request body limits
+
+Retain explicit APP_BODY_LIMIT, default 1 MiB global safety ceiling; add 16 KiB auth POST ceiling before binding/credential work. nginx mirrors 1m global/16k auth scope. JSON mutation routes login/local register/self PATCH reject inappropriate media types with 415; login now uses the existing strict JSON binder, rejecting unknown fields and multiple documents. Bodyless refresh/logout remain bodyless cookie operations and do not bind credential bodies. The global parser rejects oversized bodies before route execution; app.Test returns ErrBodyTooLarge rather than exposing its HTTP response, tested separately from auth's real 413. Future product uploads require separately reviewed limits; no uploads implemented.
+
+### E18. HTTP method review
+
+Login/local register/refresh/logout are POST; self profile change is PATCH; health/current-user/list reads are GET with Fiber's safe implicit HEAD behavior. GET auth mutations return 404/405 without session creation; production register remains unmounted. CORS is a browser permission layer, not route registration or authorization. No state-changing GET/new endpoint introduced.
+
+### E19. Server timeout configuration
+
+Read 10s, write 15s, explicit idle 60s; all typed positive durations. Explicit read buffer 8192 bytes bounds headers; installed Fiber/fasthttp read timeout covers the full request including headers/body, with no separate public ReadHeaderTimeout in this API. nginx connect/read/send proxy timeouts are 5/20/15s. Defaults allow current small JSON flows; future uploads/large reports need reviewed budgets. Socket slow-client/timeouts and actual proxy correspondence remain Phase 1G. Installed source governs behavior; [Fiber configuration documentation](https://docs.gofiber.io/api/fiber/) provides the corresponding public controls.
+
+### E20. Recovery/panic behavior
+
+Outermost recovery prevents a handler/perimeter panic escaping the request. Its custom diagnostic now runs, recording panic type and source stack with safe path/method/IP/request-ID context; arbitrary panic values are excluded. HTTP receives generic 500 without stack/SQL/paths/secrets. Unknown error diagnostics record type/context, not raw err.Error. Existing logging sinks and request-ID architecture remain; no complete Phase 1F observability model introduced. Tests verify useful diagnostics and no sensitive synthetic payload in client/log fields.
+
+### E21. Health endpoint exposure
+
+Existing /api/v1/health shape stays exactly status plus API/database health labels, no-store; no credentials/versions/paths/raw errors. It remains a lightweight aggregate dependency check rather than a newly split liveness/readiness design. The general rate budget now covers it. Frontend's existing legacy health adapter remains unchanged; envelope/health normalization belongs to Phase 1F.
+
+### E22. Server/framework identification
+
+Fiber ServerHeader stays empty. nginx server_tokens off minimizes version disclosure; generic nginx identity may remain in its built-in banner/error pages. Existing FIBER_ERROR response code remains pending Phase 1F taxonomy. No cosmetic error-page redesign or server-image/dependency upgrade was introduced.
+
+### E23. Error leakage changes
+
+Global framework errors preserve a safe 4xx/5xx status but use generic HTTP status text rather than custom Fiber messages; invalid codes become 500. Wrapped validation errors use generic Invalid request text instead of err.Error. Unknown infrastructure/JWT/session errors retain safe current envelopes. Inactive/unknown-role login HTTP denial maps to the existing invalid-credentials envelope, while service ordering and protected-account 403 rules remain unchanged. No API-wide catalog/health/envelope rewrite.
+
+### E24. Logging secret-safety review
+
+No HTTP middleware/handler logs Authorization/Cookie/body/password/access/refresh/hash/signing/database secret fields. Request logger retains method/path/status/latency/request ID and adds shared effective IP through a custom tag, with no independent header parsing. Recovery/global error diagnostics exclude arbitrary values/messages that could contain credentials; server-only stack contains source locations, not HTTP response detail. Synthetic header/body/panic/error sentinel tests verify this boundary. Full structured events, correlation trust/field conventions and logging completeness/status consistency remain Phase 1F; no complete observability claim.
+
+### E25. Proxy tests
+
+Actual Fiber handler contexts use an explicit socket peer, not a spoofable request RemoteAddr or external service. Cases cover direct/untrusted spoofing, trusted single/multi-hop, untrusted hop stopping left-prefix spoofing, malformed/empty/port/zone/multicast/unspecified/all-trusted/bounded chains, IPv6/mapped canonicalization, repeated XFF/XFP and ignored alternate IP/host/scheme fields. Pure TLS authority is covered; literal proxy config and invalid startup values are tested. No internet/network service dependency or real production reverse proxy exercised.
+
+### E26. Rate-limit tests
+
+Below/over login threshold, distinct socket/forwarded keys, untrusted forwarding spoof resistance, independent refresh/register/general/health budgets, safe 429/Retry-After/no bucket counts, route alias resistance and 32 concurrent callers with exactly ten allowed/22 denied. Defaults support repeated real-service/JWT cookie rotations against HTTP repository/transaction doubles and retain replay denial. No sleeps/distributed store; expiry/GC mechanism is source-inspected, not a claim of live runtime cleanup/load measurement.
+
+### E27. CORS tests
+
+Explicit local HTTP and configured production HTTPS origins; exact credentialed preflight/method/header/max-age/Vary; arbitrary/null/wildcard/suffix/path/case/default-port/downgrade denial; absent-Origin non-browser read; unsupported method/header denial; canonical config/frontend membership. Existing Phase 1D Origin/cookie-only authorization tests remain. Browser enforcement stays unrun.
+
+### E28. Header tests
+
+Normal/error responses verify API baseline, absent document/CORP policy and production HTTPS differences. Trusted/untrusted/ambiguous scheme tests enforce HSTS only under documented authority; development/test remain usable. nginx header/CSP responsibility was source-reviewed with include inheritance/always handling; no nginx -t or real browser header test claimed. nginx's documented add_header inheritance requires repeating the shared include where CSP is added; see [nginx headers module](https://nginx.org/en/docs/http/ngx_http_headers_module.html).
+
+### E29. HTTP safety tests
+
+Actual auth over/exact 16 KiB, case alias ceiling, global parser rejection before handler, wrong form/text/missing media, JSON charset, malformed/multiple/unknown-field login input, bodyless refresh, panic/unknown/framework/wrapped-validation redaction, safe diagnostics, minimal health and wired timeouts/header/global bounds/banner/proxy settings. Tests preserve Phase 1B password-order/current-account and Phase 1C/D token/hash/rotation/transport assertions. No unrelated integration suite manufactured.
+
+### E30. Frontend compatibility changes
+
+All 106 frontend source files—including memory store, central Axios single-flight/bounded retry, bootstrap, storage cleanup, health adapter, auth tests and 62 UI primitives—are unchanged. Existing credentials/Authorization/JSON/Origin behavior fits the new CORS and body policy. Only frontend Docker/nginx serving configuration changes; its Docker API default is now /api/v1, matching the existing full Compose profile and CSP. No UI/business route/token persistence change.
+
+### E31. Docker/nginx findings
+
+Existing local HTTP SPA/API proxy retained. nginx overwrites XFF with its socket peer and XFP with its actual scheme; strips X-Real-IP/Forwarded/forwarded host, with explicit body/proxy timeouts, common headers and SPA CSP. Shared snippets are copied into the image and avoid unsupported newer nginx inheritance directives. Common API headers are not duplicated; CSP is scoped to document/static location. Compose only gains a proxy-trust comment: no automatic shared-network allowlist, port/network/volume change or invented production provider. An additional TLS ingress/client-IP model must be reviewed deliberately. No host nginx binary is available; syntax/runtime image/startup verification remains Phase 1G. No Docker image/container/volume action performed.
+
+### E32. Backend fmt/vet/test results
+
+PASS: go fmt ./..., go vet ./..., go test ./... (JSON run). **76 top-level tests + 259 subtests = 335 passing nodes across 12 tested packages**, zero failures; 17 additional top-level tests and 77 subtests relative to Phase 1D. Go 1.27.1, backend working directory, GOCACHE=/tmp/elabtrack-phase1b-go-cache. Initial default-cache attempt could not write the read-only cache; successful gates used the existing writable cache. No toolchain/dependency/gate downgrade. PostgreSQL checks unrun.
+
+### E33. Targeted race results
+
+PASS: go test -race ./internal/config ./internal/interface/http/middleware ./internal/interface/http/routes ./internal/bootstrap. No detected race in the exercised resolver/limiter/HTTP code and doubles, including concurrent fixed-window enforcement. This does not prove PostgreSQL multi-connection rotation, external proxies or multi-instance limiter behavior.
+
+### E34. Frontend lint/test/build results
+
+PASS: npm run lint (zero errors, same 19 unchanged shadcn/hook warnings), npm run test:run (**54 tests / six files**), npm run build (strict TypeScript + Vite). Measured entry JS 477.83 kB / 150.77 kB gzip; transport chunk 54.42 kB / 19.98 kB gzip; CSS 179.94 kB / 27.63 kB gzip. No warning limit/type/test rule changed, no dependencies upgraded. Application source and tests are hash-identical to Phase 1D. This host build does not prove nginx's served CSP/cookies.
+
+### E35. Compose validation
+
+PASS: docker compose config --quiet; docker compose --profile full config --quiet. Both repository-supported configurations validate. No Docker build/run, API/database bootstrap, live browser/proxy, migration/seed/cleanup or deployment attempted. No production manifest/provider assumed.
+
+### E36. git diff --check and preservation review
+
+PASS. Previous Phase 1A–1D report is an exact preserved prefix. Baseline hashes preserve frontend source, all six migrations including unrun 000003, 16 V1 audit files, dependency manifests/locks, auth application and hash/JWT/database transaction/repository infrastructure, Phase 0 report and OPEN_DECISIONS. Typed HTTP configuration changes retain prior production secret/TLS safety. No product table/workflow or Phase 1F/1G implementation introduced.
+
+### E37. Exact git status
+
+All 33 changes are unstaged: 24 modified tracked files and nine new files. Exact git status --short at Phase 1E closure:
+
+```text
+ M README.md
+ M backend/.env.example
+ M backend/.env.production.example
+ M backend/README.md
+ M backend/internal/bootstrap/migration_test.go
+ M backend/internal/bootstrap/server.go
+ M backend/internal/config/config.go
+ M backend/internal/interface/http/handlers/auth_handler.go
+ M backend/internal/interface/http/handlers/health_handler.go
+ M backend/internal/interface/http/handlers/session_cookie.go
+ M backend/internal/interface/http/middleware/cors.go
+ M backend/internal/interface/http/middleware/logger.go
+ M backend/internal/interface/http/middleware/rate_limit.go
+ M backend/internal/interface/http/middleware/recovery.go
+ M backend/internal/interface/http/middleware/security.go
+ M backend/internal/interface/http/response/errors.go
+ M backend/internal/interface/http/routes/auth_boundary_test.go
+ M backend/internal/interface/http/routes/refresh_session_test.go
+ M docker-compose.yml
+ M docs/project/DECISIONS.md
+ M docs/project/PHASE1_FOUNDATION.md
+ M docs/project/PHASE1_SECURITY_BACKLOG.md
+ M frontend/Dockerfile
+ M frontend/nginx.conf
+?? backend/internal/bootstrap/http_security_test.go
+?? backend/internal/config/http.go
+?? backend/internal/config/http_test.go
+?? backend/internal/interface/http/middleware/client_ip.go
+?? backend/internal/interface/http/middleware/perimeter_test.go
+?? backend/internal/interface/http/middleware/request_safety.go
+?? backend/internal/interface/http/routes/http_perimeter_test.go
+?? frontend/nginx-api-proxy.conf
+?? frontend/nginx-security-headers.conf
+```
+
+No staging, commit, push, remote modification or deployment performed.
+
+### E38. Remaining Phase 1F work
+
+Complete API envelope/health normalization, comprehensive error taxonomy and consistent handler mapping, structured logging architecture/field/redaction conventions, request/correlation-ID trust and propagation, logging completeness/accurate final-error status, audit/log semantics and production observability guidance. Minimum leakage corrections here do not claim those deliverables. Phase 1F has not begun.
+
+### E39. Remaining Phase 1G live verification
+
+Carry all Phase 1C/D requirements: isolated PostgreSQL migration 000003 up/down/reapply/invalidation, hash constraints/persistence, actual transaction rollback/commit/lost acknowledgement, separate-connection concurrent refresh, account/logout/revoke-all races, cleanup/FK/index/cadence, migration bookkeeping/exclusivity and CI reproducibility. Migration 000003 is unchanged/unrun; no new migration.
+
+Required runtime checks: full Docker build/nginx -t/startup and SPA/API/database flow; actual HTTPS edge, source restrictions/bypass, XFF/XFP sanitization and effective-IP separation through chosen proxy chain; NAT/budget tuning and 429/preflight/retry behavior, parser/header/timeouts/health on real sockets; browser CSP/static/error headers/inline-style UI compatibility and external-origin policy; HttpOnly/Secure/Lax/path/expiry/clear cookies, login/reload/bootstrap/expiry/retry/logout/network failure and independent two-tab rotation/late cookie clearing. Unit/socket-context/jsdom tests do not prove these. No Phase 1G execution claimed.
+
+### E40. Product/security policies still unresolved
+
+OPEN_DECISIONS retain all statuses: provisioning/signup/eligibility, staff/admin/Super Administrator authority, verification/deactivation and ongoing-loan policy remain stakeholder work. Session families/replay-wide revocation, concurrent-session/device management, immediate access revocation, lost-response grace/cross-tab coordination remain unresolved. Local registration atomicity, migration-runner integrity, cleanup ownership and final deployment/TLS/proxy/budget tuning remain open. DEC-032–034 accept only technical perimeter contracts. No institutional IP/account lockout policy, hosting provider or private-note knowledge was invented/resolved.
+
+### E41. Phase 1E exit gate
+
+**SATISFIED / COMPLETE** for authorized source-level scope: explicit trusted-proxy/client-IP boundary, spoof resistance, focused auth/public/general rate controls with safe 429, exact credential-safe CORS and preserved Phase 1D CSRF/session architecture, separate API/SPA header/CSP baseline, coherent production/HTTP development HSTS responsibility, explicit body/header/timeouts and safe panic/error/log boundaries, focused tests, backend fmt/vet/tests/race, frontend lint/tests/build, all Compose configuration checks and diff check. Runtime reverse-proxy/browser/PostgreSQL/Docker evidence remains required Phase 1G as permitted by this request; this is not production-readiness proof. No Phase 1F/1G, business feature, migration execution, commit, push or deployment occurred.

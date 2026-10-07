@@ -77,7 +77,7 @@ func (a httpAccounts) LockAccountByID(ctx context.Context, id uuid.UUID) (*domai
 }
 
 func refreshHTTPApp(r *users, sessions *httpSessions) *fiber.App {
-	app := fiber.New(fiber.Config{ErrorHandler: middleware.ErrorHandler(nil)})
+	app := fiber.New(fiber.Config{ErrorHandler: middleware.ErrorHandler(nil, config.Development)})
 	i := &issuer{}
 	svc := appauth.NewService(r, sessions, security.NewBcryptHasher(4), i, security.SHA256RefreshHasher{}, httpTransaction{}, httpAccounts{r}, time.Minute, time.Hour)
 	v := validator.New()

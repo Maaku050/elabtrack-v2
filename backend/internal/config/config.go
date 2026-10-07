@@ -3,7 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
-	"net/url"
+	"net/netip"
 	"strconv"
 	"strings"
 	"time"
@@ -31,6 +31,7 @@ type AppConfig struct {
 	Env                       Environment
 	Name, Port                string
 	ReadTimeout, WriteTimeout time.Duration
+	IdleTimeout               time.Duration
 	BodyLimit                 int
 }
 type JWTConfig struct {
@@ -39,10 +40,12 @@ type JWTConfig struct {
 	Issuer                string
 }
 type SecurityConfig struct {
-	FrontendURL     string
-	AllowedOrigins  []string
-	RateLimitMax    int
-	RateLimitWindow time.Duration
+	FrontendURL                                                  string
+	AllowedOrigins                                               []string
+	RateLimitMax                                                 int
+	RateLimitWindow                                              time.Duration
+	LoginRateLimitMax, RefreshRateLimitMax, RegisterRateLimitMax int
+	TrustedProxies                                               []netip.Prefix
 }
 type LogConfig struct{ Level, Format string }
 
@@ -100,18 +103,28 @@ func Parse(values map[string]string) (*Config, error) {
 	if env == Production {
 		frontendDefault, originsDefault, logFormat = "", "", "json"
 	}
-	frontend := r.value("FRONTEND_URL", frontendDefault)
-	validateOrigin(&r, "FRONTEND_URL", frontend, env)
+	frontend := readOrigin(&r, "FRONTEND_URL", r.value("FRONTEND_URL", frontendDefault), env)
 	origins := strings.Split(r.value("ALLOWED_ORIGINS", originsDefault), ",")
 	for i := range origins {
-		origins[i] = strings.TrimSpace(origins[i])
-		validateOrigin(&r, "ALLOWED_ORIGINS", origins[i], env)
+		origins[i] = readOrigin(&r, "ALLOWED_ORIGINS", origins[i], env)
+	}
+	frontendAllowed := false
+	for _, origin := range origins {
+		if origin == frontend {
+			frontendAllowed = true
+		}
+	}
+	if !frontendAllowed {
+		r.fail("ALLOWED_ORIGINS", "must include FRONTEND_URL")
 	}
 	cfg := &Config{
-		App:      AppConfig{Env: env, Name: r.nonblank("APP_NAME", "eLabTrack V2"), Port: port, ReadTimeout: r.duration("APP_READ_TIMEOUT", 10*time.Second), WriteTimeout: r.duration("APP_WRITE_TIMEOUT", 15*time.Second), BodyLimit: int(n * multiplier)},
+		App:      AppConfig{Env: env, Name: r.nonblank("APP_NAME", "eLabTrack V2"), Port: port, ReadTimeout: r.duration("APP_READ_TIMEOUT", 10*time.Second), WriteTimeout: r.duration("APP_WRITE_TIMEOUT", 15*time.Second), IdleTimeout: r.duration("APP_IDLE_TIMEOUT", 60*time.Second), BodyLimit: int(n * multiplier)},
 		JWT:      JWTConfig{Secret: secret, AccessTTL: r.duration("JWT_ACCESS_TTL", 15*time.Minute), RefreshTTL: r.duration("JWT_REFRESH_TTL", 168*time.Hour), Issuer: r.nonblank("JWT_ISSUER", "elabtrack-v2")},
-		Security: SecurityConfig{FrontendURL: frontend, AllowedOrigins: origins, RateLimitMax: r.integer("RATE_LIMIT_MAX", 120, 1, 1<<31-1), RateLimitWindow: r.duration("RATE_LIMIT_WINDOW", time.Minute)},
+		Security: SecurityConfig{FrontendURL: frontend, AllowedOrigins: origins, RateLimitMax: r.integer("RATE_LIMIT_MAX", 120, 1, 1<<31-1), RateLimitWindow: r.duration("RATE_LIMIT_WINDOW", time.Minute), LoginRateLimitMax: r.integer("LOGIN_RATE_LIMIT_MAX", 10, 1, 1<<31-1), RefreshRateLimitMax: r.integer("REFRESH_RATE_LIMIT_MAX", 60, 1, 1<<31-1), RegisterRateLimitMax: r.integer("REGISTER_RATE_LIMIT_MAX", 5, 1, 1<<31-1), TrustedProxies: readTrustedProxies(&r)},
 		Log:      LogConfig{Level: r.value("LOG_LEVEL", "info"), Format: r.value("LOG_FORMAT", logFormat)},
+	}
+	if cfg.Security.RateLimitWindow < time.Second || cfg.Security.RateLimitWindow > time.Hour {
+		r.fail("RATE_LIMIT_WINDOW", "must be between one second and one hour")
 	}
 	if cfg.JWT.RefreshTTL <= cfg.JWT.AccessTTL {
 		r.fail("JWT_REFRESH_TTL", "must exceed JWT_ACCESS_TTL")
@@ -166,15 +179,16 @@ func strongSecret(s string) bool {
 	return len(distinct) >= 12
 }
 
-func validateOrigin(r *reader, key, s string, env Environment) {
-	u, err := url.Parse(s)
-	if err != nil || u.Hostname() == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" || u.Path != "" || (u.Scheme != "http" && u.Scheme != "https") || strings.Contains(u.Host, "*") {
+func readOrigin(r *reader, key, s string, env Environment) string {
+	origin, err := CanonicalOrigin(strings.TrimSpace(s))
+	if err != nil {
 		r.fail(key, "must be an exact HTTP(S) origin without credentials, path or wildcard")
-		return
+		return ""
 	}
-	if env == Production && u.Scheme != "https" {
+	if env == Production && !strings.HasPrefix(origin, "https://") {
 		r.fail(key, "production requires explicit HTTPS origins")
 	}
+	return origin
 }
 func validatePort(r *reader, key, value string) {
 	n, err := strconv.Atoi(value)

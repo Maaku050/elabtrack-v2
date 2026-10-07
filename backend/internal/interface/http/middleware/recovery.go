@@ -1,6 +1,12 @@
 package middleware
 
 import (
+	"errors"
+	"fmt"
+	"net/http"
+	"runtime/debug"
+
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
 	"github.com/gofiber/fiber/v3"
@@ -13,11 +19,13 @@ import (
 // request id; the client receives a generic 500 response.
 func Recovery(l *logger.Logger) fiber.Handler {
 	return fiberrecover.New(fiberrecover.Config{
-		EnableStackTrace: false,
+		EnableStackTrace: true,
 		StackTraceHandler: func(c fiber.Ctx, e interface{}) {
 			if l != nil {
 				l.Error("panic recovered",
-					zap.Any("error", e),
+					zap.String("panic_type", fmt.Sprintf("%T", e)),
+					zap.ByteString("stack", debug.Stack()),
+					zap.String("client_ip", ClientIP(c)),
 					zap.String("path", c.Path()),
 					zap.String("method", c.Method()),
 					zap.String("request_id", c.GetRespHeader("X-Request-ID")),
@@ -29,19 +37,25 @@ func Recovery(l *logger.Logger) fiber.Handler {
 
 // ErrorHandler is the centralized Fiber error handler. It maps errors
 // returned from handlers into the standard API response shape.
-func ErrorHandler(l *logger.Logger) fiber.ErrorHandler {
+func ErrorHandler(l *logger.Logger, env config.Environment) fiber.ErrorHandler {
 	return func(c fiber.Ctx, err error) error {
 		if err == nil {
 			return c.Next()
 		}
-		// fiber.Err* are sent with their intended status by Fiber; route them
-		// through our response shape for consistency.
-		if fiberErr, ok := err.(*fiber.Error); ok {
-			return response.Fail(c, fiberErr.Code, fiberErr.Message, "FIBER_ERROR")
+		SetSecurityHeaders(c, env)
+		var fiberErr *fiber.Error
+		if errors.As(err, &fiberErr) && fiberErr != nil {
+			status := fiberErr.Code
+			if status < 400 || status > 599 {
+				status = 500
+			}
+			// Custom framework messages may embed infrastructure/user material.
+			return response.Fail(c, status, http.StatusText(status), "FIBER_ERROR")
 		}
 		if l != nil {
 			l.Error("request error",
-				zap.Error(err),
+				zap.String("error_type", fmt.Sprintf("%T", err)),
+				zap.String("client_ip", ClientIP(c)),
 				zap.String("path", c.Path()),
 				zap.String("method", c.Method()),
 				zap.String("request_id", c.GetRespHeader("X-Request-ID")),

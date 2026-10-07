@@ -1,24 +1,24 @@
 package middleware
 
 import (
+	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/gofiber/fiber/v3"
-	"github.com/gofiber/fiber/v3/middleware/helmet"
 )
 
 // SecurityHeaders returns a Fiber middleware that sets common security
 // headers (X-Content-Type-Options, X-Frame-Options, Referrer-Policy, etc.).
-func SecurityHeaders() fiber.Handler {
-	return helmet.New(helmet.Config{
-		XSSProtection:             "1; mode=block",
-		ContentTypeNosniff:        "nosniff",
-		XFrameOptions:             "DENY",
-		HSTSMaxAge:                31536000,
-		HSTSExcludeSubdomains:     false,
-		ContentSecurityPolicy:     "default-src 'self'",
-		ReferrerPolicy:            "no-referrer",
-		PermissionPolicy:          "geolocation=(), microphone=(), camera=()",
-		CrossOriginEmbedderPolicy: "require-corp",
-		CrossOriginOpenerPolicy:   "same-origin",
-		CrossOriginResourcePolicy: "same-origin",
-	})
+func SecurityHeaders(env config.Environment) fiber.Handler {
+	return func(c fiber.Ctx) error { SetSecurityHeaders(c, env); return c.Next() }
+}
+
+// SetSecurityHeaders also runs in the error boundary for parser errors that
+// occur before middleware. Document CSP belongs to the SPA serving layer.
+func SetSecurityHeaders(c fiber.Ctx, env config.Environment) {
+	c.Set("X-Content-Type-Options", "nosniff")
+	c.Set("X-Frame-Options", "DENY")
+	c.Set("Referrer-Policy", "no-referrer")
+	c.Set("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
+	if env == config.Production && authoritativeHTTPS(c) {
+		c.Set("Strict-Transport-Security", "max-age=31536000")
+	}
 }

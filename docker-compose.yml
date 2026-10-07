@@ -35,6 +35,9 @@ services:
       # same credentials the container was initialized with.
       # This file is local development only; production uses external config.
       APP_PORT: "8080"
+      # TRUSTED_PROXIES remains empty by default. If proxy client separation is
+      # needed, deliberately configure actual nginx source IPs/CIDRs in backend
+      # env; do not implicitly trust the entire shared Docker/private network.
       DB_SSLMODE: disable
       DB_PORT: "5432"
       DB_HOST: postgres

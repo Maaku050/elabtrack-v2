@@ -19,6 +19,7 @@ func NewHealthHandler(db *database.HealthChecker) *HealthHandler {
 //
 // GET /api/v1/health
 func (h *HealthHandler) Health(c fiber.Ctx) error {
+	c.Set("Cache-Control", "no-store")
 	services := map[string]string{
 		"api": "healthy",
 	}

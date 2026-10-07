@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
@@ -26,8 +26,8 @@ func newBrowserSessionPolicy(env config.Environment, cfg config.SecurityConfig) 
 		p.enabled = false
 	}
 	for _, origin := range cfg.AllowedOrigins {
-		u, err := url.Parse(origin)
-		if err != nil || u.Host == "" || u.User != nil || u.Path != "" || u.RawQuery != "" || u.Fragment != "" || !(u.Scheme == "https" || u.Scheme == "http") || env == config.Production && u.Scheme != "https" {
+		canonical, err := config.CanonicalOrigin(origin)
+		if err != nil || canonical != origin || env == config.Production && !strings.HasPrefix(origin, "https://") {
 			p.enabled = false
 			continue
 		}
