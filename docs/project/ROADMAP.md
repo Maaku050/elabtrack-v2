@@ -1,6 +1,6 @@
 # Initial delivery roadmap
 
-Confirmed sequence from current stakeholder direction. **Phase 0 and 1A–1I are complete within their recorded source/disposable local scope. Phase 2 design documentation is delivered for review; Phase 2 is BLOCKED FOR IMPLEMENTATION by the explicit policy gate. The latest authorization covers Phase 2 design only.** CI, production deployment verification and product-policy decisions remain explicitly tracked. Later deliverables describe phase-level outcomes, not permission to execute them. Dependencies include accepted policy decisions, not merely a checked phase number.
+Confirmed sequence from current stakeholder direction. **Phase 0 and Phase 1A–1I are complete within recorded source/disposable-local scope. Phase 2 design was delivered with policy blockers; Phase 2.5 has now reconciled29 owner working decisions and satisfies its documentation exit gate. Phase 3A is READY FOR SEPARATE AUTHORIZATION, NOT STARTED.** Latest authorization covers Phase 2.5 Markdown/domain design only. Later outcomes are sequencing guidance, not permission to execute them. Production operations, delivery and migration gates remain specific to later work. See [current readiness](PHASE2_5_REPORT.md).
 
 ## Phase 0 — Rebaseline & Template Adaptation
 
@@ -54,21 +54,26 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 ## Phase 2 — Domain & Database Design
 
-- **Goal:** Agree domain boundaries, lifecycle vocabulary and integrity model before product tables.
-- **Primary deliverables:** Approved domain model, SQL schema/migration design, constraints/indexes, transaction/concurrency strategy, history/audit/retention design.
-- **Dependencies:** Phase 1; stakeholder decisions affecting roles, eligibility, stock and accountability.
-- **Explicit non-goals:** No speculative campus entities or implementation of later workflows before design approval.
-- **Current status (2026-10-08):** Eight [domain design documents](../domain/DOMAIN_MODEL.md) and [Phase 2 report](PHASE2_REPORT.md) delivered; 57 future invariant specifications and 15 conditional scenario traces. No business code, UI or migrations. This is a reviewable draft, not stakeholder-approved schema/policy.
-- **Policy gate:** [BUSINESS_RULES matrix](../domain/BUSINESS_RULES.md#policy-decision-matrix) and OPEN-001–027 distinguish blocking dependent implementation from later core questions. Approval/release (OPEN-021), reservation/limits/direct (020), due model (015), terms (016), valuation/posting (023/024) and settlement/payment (007) fundamentally affect contracts. Eligibility/actor/disposition rules also need confirmation before dependent commands.
-- **Exit gate:** Design artifacts and documentation validation are delivered; **unconditional Phase 2 COMPLETE is not claimed** while state/schema policy is unresolved. Confirm blocking choices, revise/approve model and invariants, and recheck scope/diff before business-domain migrations. Phase 3A/3B requires separate authorization; final promise-bearing/role/kiosk mockups require sufficient policy confirmation.
+- **Historical result:** Domain/design delivered with unresolved product-policy blockers; [Phase 2 report](PHASE2_REPORT.md) preserves that snapshot.
+- **Goal/deliverables:** FSMO domain contracts, relational candidates, stock/history/transaction invariants, evidence/source reconciliation and future API draft.
+- **Current gate:** Superseded by Phase 2.5 owner decisions and current domain baseline; no business tables or code implemented.
+- **Non-goals:** No feature implementation, migrations, mockups, boss writes or automatic next phase.
+
+## Phase 2.5 — Product Decision Integration & Domain Rebaseline
+
+- **Result:** COMPLETE — documentation reconciliation only, 2026-10-08; [report](PHASE2_5_REPORT.md).
+- **Deliverables:** All 29 working decisions integrated, four-count physical stock plus replacement obligations, six-state lifecycle, deterministic PHP 10/day fine, Admin full clear, revised role matrix,71 active invariants and18 design walkthroughs.
+- **Dependency/gate:** Core policy blockers resolved; specific NON-BLOCKING onboarding/disposal/retention/delivery/migration/operations details retained.
+- **Non-goals:** No code, SQL, UI, mockups, Phase 1 changes, boss changes, commit/push/deployment; Phase 3A not begun.
 
 ## Phase 3A — UX Architecture & Mockups
 
-- **Goal:** Approve experience architecture before feature UI implementation.
-- **Deliverables:** UX architecture, wireframes, high-fidelity mockups; borrower/customer mobile composition first and tablet/desktop adaptations, touch-first kiosk-specific layouts with large targets/privacy/session reset, staff/admin desktop/tablet layouts responsive where practical.
-- **Dependencies:** Phases 1–2 and sufficient confirmed product/role/navigation direction.
-- **Non-goals:** No implemented feature UI, guessed permissions or kiosk policy.
-- **Exit gate:** Approved mockups/responsive behavior/accessibility expectations for relevant audiences; unresolved product assumptions remain explicit.
+- **Status:** READY FOR SEPARATE AUTHORIZATION; NOT STARTED.
+- **Goal:** Review one coherent responsive UX before feature UI implementation.
+- **Deliverables:** Borrower mobile-first catalog/search/filter/quantity/cart/review/request, pending expiry/cancel/denial, status/history/terms/accountability; Staff/Admin desktop/tablet-first review/physical approval/direct issue/partial returns/replacements; Admin full fine clearing and role/navigation designs; accessible wireframes/high-fidelity mockups with responsive adaptations.
+- **Dependencies:** Current Phase 2.5 design/permission matrix. Mark engineering assumptions: full-request issue, damaged originals held nonusable, staff-certified equivalents, live full-clear checkpoint balance, draft terms/catalog copy.
+- **Non-goals:** No separate hardware kiosk shell/device auth/handoff, code/migrations or assumed deployment. Interactive Kiosk is the borrower catalog/cart flow.
+- **Exit gate:** Authorized owner review approves journeys, navigation/permissions, responsive/accessibility behavior and mockups; implementation follows only later approved scope.
 
 ## Phase 3B — shadcn Design System & Application Shell
 
@@ -80,43 +85,43 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 ## Phase 4 — Authentication & Authorization
 
-- **Goal:** Implement confirmed product account and permission policy on hardened infrastructure.
-- **Primary deliverables:** Approved role/operation matrix, access/recovery/onboarding flows, current-account authorization, verification/session behavior and tests.
-- **Dependencies:** Phases 1–3B; decisions on provisioning, staff/admin, Super Admin, suspension and verification.
-- **Explicit non-goals:** No guessed public signup, campus roles or borrower/equipment operations.
-- **Exit gate:** Server denies unauthorized/inactive access and stale privileges per approved policy; session/recovery and critical abuse tests pass.
+- **Goal:** Implement future BORROWER/STAFF/ADMIN policy on the preserved Phase 1 security/session foundation.
+- **Deliverables:** Current server permission/ownership checks, named Admin accounts, secure provisioned onboarding design, terms-version acceptance and inactive-account controls, role reconciliation through approved migrations.
+- **Dependencies:** Phase 2.5 matrix, approved Phase 3A/3B UX and secure activation/recovery design; no public registration or category-derived authority.
+- **Non-goals:** No Phase 1 wholesale rewrite, separate suspension subsystem, device kiosk auth or automatic fine eligibility gate.
+- **Exit gate:** Actor/target/role/status/replay/session boundaries pass relevant real database/HTTP/browser tests.
 
 ## Phase 5 — Users & Borrower Management
 
-- **Goal:** Manage approved borrower identities and account lifecycle.
-- **Primary deliverables:** Authorized provisioning/profile/eligibility flows, bounded lists, lifecycle history and tests.
-- **Dependencies:** Phase 4; borrower types and account/terms policy; Phase 2 data model.
-- **Explicit non-goals:** No stock, loan/return behavior or campus hierarchy.
-- **Exit gate:** Approved actor matrix and lifecycle scenarios pass; private data stays scoped and queries bounded.
+- **Goal:** Provision/manage generic Borrowers and named staff/admin accounts safely.
+- **Deliverables:** Staff/Admin narrow Borrower creation, Admin bulk Borrower import/deactivation/privileged accounts, category/program/contact only where justified, preserved historical identity.
+- **Dependencies:** Phase 4 secure onboarding and current role matrix; validated bulk template without required plaintext passwords.
+- **Non-goals:** No public signup, student-only eligibility, independent suspension table or campus hierarchy.
+- **Exit gate:** Normal/privilege-escalation/import/inactive-history tests pass; queries bounded and private data scoped.
 
 ## Phase 6 — Equipment & Inventory
 
-- **Goal:** Implement authorized aggregate inventory and discovery with historical integrity.
-- **Primary deliverables:** Inventory administration/discovery, approved categories/statuses, stock constraints, archival behavior and tests.
-- **Dependencies:** Phases 2–5; taxonomy, deletion/archival and inventory policy decisions.
-- **Explicit non-goals:** No loans/returns, serial tracking or RFID/barcode/QR scope.
-- **Exit gate:** Inventory invariants, authorization, bounded search and lifecycle/history tests pass; no unsafe direct client writes.
+- **Goal:** Implement catalog pools and four-count physical inventory with append-only evidence.
+- **Deliverables:** Bounded discovery, metadata/version, A/R/C/damaged_held constraints, stock ledger and guarded archive; categories/images as reviewed.
+- **Dependencies:** Phases2.5–5; catalog content/storage details and specific original-disposition/correction policy if those features are included.
+- **Non-goals:** No serialized tracking, mandatory repair workflow, lost-history physical bucket or inventory edits concealing custody.
+- **Exit gate:** Stock reconciliation, permissions, stale edits/archive races and history checks pass; unusable originals remain outside available.
 
 ## Phase 7 — Borrowing & Approval
 
-- **Goal:** Implement confirmed request, decision and checkout lifecycle.
-- **Primary deliverables:** Requests, approve/deny, direct checkout, active borrowing, stock reservation/release, cancellation/audit rules and tests.
-- **Dependencies:** Phases 4–6; limits/due dates/reservation/denial/cancellation decisions and Phase 2 concurrency model.
-- **Explicit non-goals:** No fine/payment or returns redesign beyond approved boundary contracts.
-- **Exit gate:** Concurrent/duplicate requests cannot corrupt stock; decisions/history and authorization follow approved policy.
+- **Goal:** Implement reserve-on-submit and approval WITH physical release.
+- **Deliverables:** PENDING holds,24h expiry/sweep/lazy check, owner pending cancel, required visible denial reason, atomic CHECKED_OUT issue/direct checkout, required due date+time/Asia-Manila/current terms, retained history and idempotency.
+- **Dependencies:** Phases4–6, current Phase 2.5 transaction contract; no unresolved reservation/approved-waiting/seven-day gate.
+- **Non-goals:** No separate approved-release stage, operating-hours TTL, quota, automatic old-fine prohibition or issued delete/cancel.
+- **Exit gate:** Last-stock/decision-expiry/account races and duplicate/replay/rollback tests prove exact holds/custody/history. Expiry release is part of borrowing acceptance, independent of email delivery.
 
 ## Phase 8 — Returns & Accountability
 
-- **Goal:** Handle partial/final returns and approved damage/loss/fine policy reliably.
-- **Primary deliverables:** Return transitions, quantity reconciliation, accountability/fine assessment and approved settlement evidence/history.
-- **Dependencies:** Phase 7; fine amount, payment/waiver, retention and history decisions.
-- **Explicit non-goals:** No speculative online payment gateway or reporting module.
-- **Exit gate:** Return/stock/fine/history changes are atomic or explicitly recoverable; duplicate/concurrency and calculation tests pass.
+- **Goal:** Implement partial returns, damage/loss replacements and full Admin fine clearance.
+- **Deliverables:** Immutable unique return/acceptance lines, obligations and acquisition vectors, physical0+replacement0 completion, original due clock, PHP 10 ceiling24h live/final fine and immutable full clear methods/history.
+- **Dependencies:** Phase 7, selected stock/fine design; original-disposition detail only gates an included disposal feature, not core replacements.
+- **Non-goals:** No automatic damage price charge, partial payment/allocation, online gateway, return-photo/evidence upload, transmission, storage, retention or attachments; no borrower evidence step. Any personally shown phone photo remains outside eLabTrack; Staff/Admin alone records returns. No mandatory repair workflow; independent catalog images remain in Phase 6.
+- **Exit gate:** All 18 domain traces proven by relevant unit/real-PG/HTTP tests, duplicate/cross-parent/concurrency/atomicity and Admin-only checks.
 
 ## Phase 9 — Notifications & Scheduled Work
 
@@ -130,17 +135,17 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 - **Goal:** Provide authorized, source-defined operational insight.
 - **Primary deliverables:** Approved metrics, bounded dashboard/report queries and required export/print formats.
-- **Dependencies:** Phases 5–9; precise status/fine assessment/collection definitions and access policy.
+- **Dependencies:** Phases 5–9; Phase 2.5 lifecycle/replacement/fine definitions and access matrix; final approved report formats.
 - **Explicit non-goals:** No generic analytics platform, unbounded global reads or guessed revenue.
 - **Exit gate:** Metrics reconcile with authoritative records; authorization, pagination/export limits and accuracy tests pass.
 
-## Phase 11 — Interactive Kiosk
+## Phase 11 — Interactive Equipment Catalog / Kiosk Experience
 
-- **Goal:** Provide approved walk-in access with shared-device safety.
-- **Primary deliverables:** Kiosk-oriented responsive flow, session/idle/reset behavior and operator guidance.
-- **Dependencies:** Phases 4/6/7/9; kiosk authentication/privacy and hardware/operating expectations agreed.
-- **Explicit non-goals:** No physical tracking integration, native app or assumed anonymous borrowing.
-- **Exit gate:** Walk-in journeys and device handoff preserve identity/privacy; usability and unattended-session checks pass.
+- **Goal:** Complete and validate the academic Interactive Kiosk requirement as normal responsive borrower browse/search/filter/quantity/cart/review/request UX.
+- **Deliverables:** End-to-end catalog/cart usability/accessibility, responsive refinements and operator guidance; reuse earlier implemented canonical catalog/request flows, no duplicate app.
+- **Dependencies:** Approved Phase 3A/3B flow and Phases4/6/7; Phase 9 notices where included. No device registration, shared-device identity, handoff or hardware policy dependency.
+- **Non-goals:** No dedicated touchscreen shell, device tokens/authentication infrastructure, physical tracking or native application.
+- **Exit gate:** Mobile-first cart/request and larger-screen adaptations preserve stock/ownership/terms semantics and pass accessibility/usability tests; functional kiosk intent documented.
 
 ## Phase 12 — V1 Data Migration
 

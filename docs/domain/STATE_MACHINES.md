@@ -1,153 +1,85 @@
-# Phase 2 state machines and scenario review
+# Phase 2.5 state machines and design walkthroughs
 
-Design review draft, 2026-10-08. All proposed states/edges below are **ENGINEERING RECOMMENDATION**, subject to the [policy gate](BUSINESS_RULES.md#policy-decision-matrix). V1/boss facts are separately recorded in [compatibility](V1_COMPATIBILITY.md) and [boss reference](BOSS_REBUILD_REFERENCE.md). `approved` and cancellation are conditional choices, not confirmed workflow requirements.
+2026-10-08. Working product decisions DEC-051–061 govern; exact transaction mechanics are selected engineering recommendations. These are **design traces, not executed tests**. [Rules](BUSINESS_RULES.md), [schema](DATA_MODEL.md) and [invariants](INVARIANTS.md) define later acceptance.
 
-## Borrowing
+## Borrowing lifecycle
 
 ```mermaid
 stateDiagram-v2
-    [*] --> pending: submit request
-    pending --> approved: approve separately, if adopted
-    approved --> checked_out: physical release
-    pending --> checked_out: combined approve and release, if adopted
-    [*] --> checked_out: approved staff direct checkout
-    pending --> denied: deny with retained history
-    pending --> cancelled: cancellation, if approved policy permits
-    approved --> cancelled: before issue, only if policy permits
-    checked_out --> checked_out: partial good/damaged/lost disposition
-    checked_out --> completed: every issued unit accounted
-    denied --> [*]
-    cancelled --> [*]
-    completed --> [*]
+    [*] --> PENDING: submit; reserve immediately
+    [*] --> CHECKED_OUT: staff direct physical issue
+    PENDING --> CHECKED_OUT: approve and hand over atomically
+    PENDING --> DENIED: staff reason; release hold
+    PENDING --> CANCELLED: owner cancel; release hold
+    PENDING --> EXPIRED: 24h deadline; release hold
+    CHECKED_OUT --> CHECKED_OUT: partial return / damage / loss / partial replacement
+    CHECKED_OUT --> COMPLETED: every physical and replacement outstanding = 0
 ```
 
-Terminal arrows end the lifecycle, not database retention. An unsent cart/draft exists only in client interaction state unless persistence is later required. It owns no reservation. Derived `partial` means some dispositions exist and some issued custody remains; `due_today` and `overdue` come from the one approved business calendar. They do not multiply stored lifecycle enums. Completed disposition may contain loss/damage and open charges. A lost declaration is not an overdue status.
+DENIED/CANCELLED/EXPIRED/COMPLETED are retained terminal rows, not deletes. There is no APPROVED state, separate release edge or partial/overdue status enum. `entry_path` REQUEST/DIRECT and timestamps preserve the route taken. Final return/acceptance performs completion internally, not a separate client transition.
 
-No pending/approved borrowing may contain issued custody. Recommended initial contract issues all requested quantities atomically; no partial approval/issue or active cancellation. Those would need another stakeholder requirement/design. `requested_qty`, `reserved_qty` and `issued_qty` remain distinct; issued snapshots are absent before actual checkout.
-
-## Formal borrowing transition contract
-
-Actor labels mean **future approved operation capability**, not currently accepted student/staff/admin grants. Every mutation uses current-account authorization and the [database transaction/lock protocol](DATA_MODEL.md#transactions-and-lock-order). Audit/outbox/receipt creation is part of the business transaction; notification entries are candidates whose precise triggers/content remain OPEN-017/025. Failure of any required persistence rolls back every effect.
-
-| From | Action → To | Actor | Preconditions | Inventory effect | Durable history | Proposed notification | Principal failure |
-|---|---|---|---|---|---|---|---|
-| Unsent intent | Submit → pending | Eligible borrower or explicitly approved attributed assistance | Unique positive lines; active catalog; current eligibility/terms/due; capacity if A | A: available→reserved; B: none; C deferred | Canonical header/items, request snapshots, acceptance ref, submission audit | Request confirmation keyed by borrowing ID | BORROWER_NOT_ELIGIBLE, EQUIPMENT_NOT_AVAILABLE, invalid due/terms/lines |
-| pending | Approve → approved (separate option) | Approval capability | Fresh state/borrower/equipment; current suitable due; all requested stock held or available; approved authority | A: keep hold; B: available→reserved | Decision actor/time, audit; keep request time/snapshots | Approval keyed by decision event | BORROWING_STATE_CONFLICT, BORROWER_NOT_ELIGIBLE, STOCK_CONFLICT |
-| pending | Approve and release → checked_out (combined option) | Approval + issue capabilities | Every issue precondition; same atomic command, no inference that approve UI proves custody | reserved→checked_out if held; otherwise available→checked_out | Decision and release actor/times; issued snapshots/quantities, movements, audit | Checkout/approval event with approved trigger distinction | State/eligibility/availability/due/terms conflict |
-| pending | Deny → denied | Denial capability | Pending; agreed reason rule; no custody | Restore only actual held reserved→available; B: none | Retained denied header/items + actor/time/reason/audit | Denial keyed by decision event | State conflict; reason validation |
-| pending | Cancel → cancelled (conditional) | Owner or cancellation capability as approved | Approved actor/stage policy; no issued custody | Restore actual held quantity only | Retained cancellation time/actor/reason/audit | Cancellation if approved | Permission/state conflict; policy disabled |
-| approved | Cancel → cancelled (conditional) | As approved for post-approval cancellation | No checkout; approved actor/stage policy | reserved→available | Retained approval + cancellation evidence/audit | Cancellation if approved | State conflict; policy disabled |
-| approved | Physical release → checked_out | Issue capability | Fresh borrower/account/catalog eligibility, policy/terms/due; coherent hold; all lines issued atomically | reserved→checked_out; no second availability decrement | Actual release actor/time, immutable issue snapshots, movements/audit | Checkout keyed by issue event | Ineligible borrower, inactive/archived equipment, stale state/due/hold |
-| New | Direct checkout → checked_out (conditional policy) | Direct-issue capability | Existing active eligible borrower; active catalog; capacity; approved due/direct exception/terms; authorized channel attribution | available→checked_out | Canonical transaction, requested=issued in this path, issue snapshots, movements/audit | Checkout | Target ineligible, unavailable, policy/terms/state conflict |
-| checked_out | Partial good return → checked_out | Return capability | Unique owned lines; each submitted disposition≤outstanding; event total>0 | checked_out→available by good quantity | Immutable event/lines; cumulative totals; movements/audit | Return keyed by ReturnEvent ID | DUPLICATE_RETURN_ITEM, RETURN_EXCEEDS_OUTSTANDING, ownership conflict |
-| checked_out | Damaged disposition → checked_out or completed | Return/disposition capability | Same return checks; required notes/evidence policy; approved assessment timing | checked_out→damaged | Event/lines, cumulative damaged, movement; assessment when due; audit | Return/accountability event | Over-return/notes/assessment-policy conflict |
-| checked_out | Lost disposition → checked_out or completed | Loss-recording capability | Same checks; loss reason/evidence/authorization; no claim of physical good return | checked_out→lost | Event/lines, cumulative lost, movement; assessment when due; audit | Return/accountability event | Over-return/notes/authority/assessment-policy conflict |
-| checked_out | Final mixed return → completed | Return/disposition capabilities | All line outstanding becomes 0; proposed totals reconcile; no payment prerequisite | Apply good/damaged/lost vector once per normalized line | Event/lines, completion time, movements, required charges/audit | Completion keyed by final ReturnEvent ID | Any per-line/persistence mismatch rolls back whole event |
-| checked_out | Clock passes deadline → same stored state | Projection/scheduler | Outstanding>0; one approved calendar/cutoff | None | No synthetic status-write history needed | Reminder event keyed by approved local-date/window and policy version | Unsupported time policy; duplicate event key is safely deduped |
-| denied/cancelled/completed | Any issue/return/decision → rejected | Any | Terminal canonical state | None | Original evidence retained | None | BORROWING_STATE_CONFLICT |
-
-Damage/loss are return-event dispositions under one command; they do not create separate parallel mutation endpoints. Approval rejection after checkout cannot “restore” stock as denial. Denial cannot delete a transaction. No arbitrary status PATCH is proposed.
-
-## Inventory lifecycle and movements
-
-```mermaid
-flowchart LR
-    AVAILABLE -->|reservation boundary| RESERVED
-    RESERVED -->|deny or permitted cancel| AVAILABLE
-    RESERVED -->|issue| CHECKED_OUT
-    AVAILABLE -->|direct issue| CHECKED_OUT
-    CHECKED_OUT -->|good return| AVAILABLE
-    CHECKED_OUT -->|damage disposition| DAMAGED
-    CHECKED_OUT -->|loss disposition| LOST
-    DAMAGED -->|approved repair| AVAILABLE
-    DAMAGED -->|approved retirement| RETIRED
-    AVAILABLE -->|approved retirement| RETIRED
-    LOST -->|approved recovery| AVAILABLE
-    RETIRED -->|approved physical removal| REMOVED[Outside accounted total]
-```
-
-These arrows describe integer movement vectors within a pool, not per-physical-unit states. Recovery may require condition inspection and damaged rather than available destination; exact repair/recovery/write-off rules OPEN-022. Movement rows retain the earlier loss even after recovery. Permitted stocktake correction never changes reserved/checked_out to mask custody inconsistency.
-
-| From / action | To | Guard | Quantity/history effect |
+| Command | Actor / starting state | Locked preconditions | Atomic result |
 |---|---|---|---|
-| New pool / initial stock | active or inactive per approved setup | Inventory authority; nonnegative counts, documented baseline | Initial movement explains starting counts; no invented legacy history |
-| active / inactivate | inactive | Catalog authority/version; reason | Counts unchanged; existing reservations/custody retained; new release blocked by recommendation |
-| inactive / reactivate | active | Catalog authority; agreed condition suitability | Counts unchanged; metadata audit |
-| active or inactive / archive | archived | Proposed guard reserved=checked_out=0 and matching cross-row sums | Counts/history remain; archive audit; no new stock issue |
-| archived / return attempted | unchanged | Archived/outstanding combination is inconsistent under proposed archive guard | Reject/flag inconsistency for reviewed repair; never delete evidence |
-| inactive / receive existing return | inactive | Valid outstanding custody and return authority | Counts move despite inactive catalog; never makes it borrowable until reactivated |
-| damaged / repair | available | Approved inspection/repair policy, actor/reason | -damaged/+available, total unchanged, append movement/audit |
-| available or damaged / retire | retired | Approved retirement policy; no custody manipulation | -source/+retired, total unchanged, append movement/audit |
-| retired or lost / approved removal/write-off | outside total | Confirmed disposition procedure, actor/reason | -source, -total with new movement; historical loss/charge unchanged |
+| Submit | Active Borrower / new | Current terms accepted; nonempty unique lines; sufficient available | PENDING; A−q/R+q; submission/expiry evidence, audit, outbox, receipt |
+| Approve and release | Staff/Admin / PENDING | Not expired; current active borrower; held quantities usable; due_at future; operational accountability reviewed | CHECKED_OUT; R−q/C+q; decision_at=checked_out_at at same edge; issue snapshots/fine basis/audit/outbox/receipt |
+| Deny | Staff/Admin / PENDING | Not expired; nonempty visible reason | DENIED; R−q/A+q; reason and history/audit/outbox/receipt |
+| Cancel own pending | Owner Borrower / PENDING | Not expired; owner and active account | CANCELLED; R−q/A+q; history/audit/receipt; optional cancellation notice |
+| Expire | System / PENDING | Locked now>=expires_at | EXPIRED; R−q/A+q; expired_at/history/audit/outbox; unique expiry source |
+| Direct checkout | Staff/Admin / new | Active existing borrower; current terms evidence; available stock; future due_at | CHECKED_OUT directly; A−q/C+q; issue/fine basis/audit/outbox/receipt |
+| Record return/disposition | Staff/Admin / CHECKED_OUT | Unique item IDs belonging to borrowing; good+damage+loss<=physical remaining | Exact stock/counter/event/incident/obligation effects; remain open or complete; audit/outbox/receipt |
+| Accept replacement | Staff/Admin / CHECKED_OUT | Unique obligation IDs; same borrowing; accepted<=locked unresolved; appropriate type/equivalence | New A+q/total+q and immutable acceptance; reduce liability; remain open or complete; audit/outbox/receipt |
+| Clear full fine | Admin / issued open or completed | Entire current positive outstanding; expected balance matches | Immutable clearance; no borrowing/stock/due/incident mutation |
 
-## Return-event lifecycle and reconciliation
+No issued borrowing returns to PENDING or cancels/deletes. Staff administrative pending cancellation is an optional future scoped recommendation, excluded from required edges until needed. Inactive targets cannot receive new issues, but Staff/Admin can resolve existing loans.
 
-```mermaid
-stateDiagram-v2
-    [*] --> ValidatedIntent: unique owned lines and quantities
-    ValidatedIntent --> CommittedEvent: atomic custody, stock, ledger, audit, outbox
-    ValidatedIntent --> Rejected: any check or write fails
-    CommittedEvent --> [*]: immutable retained evidence
-    Rejected --> [*]: no partial business writes
+## Associated projections
+
+**Return authority (D17 clarified):** The borrower attends a face-to-face return and may physically show a photo stored on their own phone. Staff/Admin may inspect the actual equipment if desired and alone records authoritative condition/quantities in eLabTrack. The software then updates borrowing and inventory. Photo viewing is entirely outside the system: no borrower return/evidence submission, returned toggle, photo upload/transmission/storage/retention, attachment or evidence step. The machine consumes only Staff/Admin-recorded dispositions; a personally shown photograph creates no software event.
+
+```text
+physical P_i = issued_i - good_i - damaged_i - lost_i
+replacement U_i = sum(required_i) - sum(accepted_i)
+partial_return = sum(good+damaged+lost)>0 AND sum(P+U)>0
+replacement_pending = sum(U)>0
+currently_overdue = CHECKED_OUT AND sum(P+U)>0 AND now>due_at
+completion = all P_i=0 AND all U_i=0
 ```
 
-Intent states are conceptual application steps, not a stored workflow/status table. Replaying an idempotency key returns the committed event identity; it cannot append another event. A changed payload with the same key conflicts. A second distinct key is still subject to outstanding checks under the borrowing lock.
+An obligation is derived UNRESOLVED if remaining>0, RESOLVED if0; no independently writable status. Replacement accepts do not increment original good return or erase original incident. Stock `C` reconciles only P, never U. A completed late loan retains final overdue days/amount and optional outstanding fine; “currently overdue” applies only to operationally open loans. Fine OUTSTANDING/CLEARED derives amount, not an editable flag.
 
-For each issued line `issued = good_returned + damaged + lost + outstanding`; all quantities are nonnegative integers. Submitted processed sum cannot exceed locked current outstanding. Cumulative totals equal sums of immutable event lines. Stock movement for each event line is `checked_out -= good+damaged+lost; available += good; damaged += damaged; lost += lost`. Completion occurs if and only if every issued line outstanding=0 and the command's equipment/custody/ledger deltas reconcile. A database CHECK on total stock alone cannot establish this.
+## Expiry, races and atomicity
 
-| Example (one pool/issued line unless noted) | Events | Result |
-|---|---|---|
-| Full good, issued=3 | E1 good=3 | outstanding=0; checked_out decreases3, available increases3; completed |
-| Partial good, issued=3 | E1 good=1; E2 good=2 | outstanding2 then0; two immutable events, two distinct notice keys |
-| Mixed good+damaged, issued=4 | E1 good=3 damaged=1 | outstanding0; available+3, damaged+1; completed, financial assessment separately governed |
-| Mixed damage+loss, issued=3 | E1 damaged=1 lost=2 | outstanding0; damaged+1, lost+2; completed; available unchanged |
-| Multiple events, issued=5 | E1 good=1; E2 damaged=1; E3 good=2 lost=1 | totals good3/damaged1/lost1/outstanding0; every event retained |
-| Duplicate payload item, issued=2 | Two lines for same item each good=1 | Reject entire event before writes; DB unique reinforces; outstanding remains2 and stock unchanged |
-| Concurrent returns, issued=2 | E1/E2 each good=2 with different keys | Borrowing lock serializes; one commits, second sees0/state conflict; stock restored exactly2 |
-| Failure after first of two equipment lines | Event/item/stock/ledger or required audit/outbox fails before commit | Roll back all lines/header/counters/movements/charges/receipt; no partial stock restoration |
+Expiration is 24 elapsed hours after submission in absolute time, unaffected by opening hours. Capture authoritative time after obtaining all relevant locks, immediately before the state/quantity decision (the command's linearization point); use that time for its effects. At equality expiry wins. Pending approval/denial/cancel checks lazily expire the row if overdue, commits the release/history, then responds with EXPIRED outcome. Do not raise a transactional exception that rolls back a successfully needed expiration. Competing expiry and checkout lock the same borrowing; only one legal edge consumes the hold.
 
-## Accountability lifecycle
+Future bounded expiration sweeps use an expiry index and the common lock order. A physically persisted hold may remain until a sweep/lazy expiry processes it; availability must not pretend that unprocessed hold was already released. Worker health/lag is observable. Expiry lifecycle is part of borrowing acceptance, not deferred until email provider implementation. No scheduler/provider is built in this task.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Estimated: active overdue projection, unposted
-    Estimated --> AssessedOpen: approved posting event
-    [*] --> AssessedOpen: approved damage or loss assessment
-    AssessedOpen --> AssessedOpen: append partial adjustment or settlement
-    AssessedOpen --> ZeroBalance: authorized reductions, waivers or settlements reach zero
-    ZeroBalance --> AssessedOpen: approved reversal or increase, if policy permits
-```
+Shared command protocol: normalize unique IDs; authenticate and reauthorize; lock participating user rows in sorted ID order, then singleton policy/terms publication boundary if needed, borrowing rows (sorted for bulk), obligation rows, equipment rows sorted by ID, fine row, then receipt/evidence writes. Published-version selectors must be serialized with submission/direct acceptance checks. Every writer of account status, stock, policy publication or borrowing state follows its participating order. Replacement and return commands take borrowing before equipment so last-return/last-replacement completion cannot race. Aggregate multiple obligations for the same equipment once for stock, while preserving each distinct source line in evidence.
 
-Estimated is a calculation, not a Charge row. Open/zero balance are derived from immutable assessment and signed adjustments, not mutable parallel statuses. Policy may restrict increasing/reversing a zeroed obligation; OPEN-007/024. An approved real Payment is a separate receipt/allocation branch, never an automatic transition from zero balance.
+Atomic transaction includes rows/counters, immutable return/replacement evidence, exact stock ledger, final fine freeze when closing, required business audit/outbox and successful command receipt. Any failure rolls back all. Delivery failure after commit affects notification attempts only. Same-key retry must reauthorize and return original committed identity; changed payload with same key conflicts. Different-key competing returns/acceptances recheck locked remaining; locks alone do not cure duplicate-line interpretation.
 
-| Action | Guard / actor | Persisted effect | Failure |
+## Eighteen required walkthroughs
+
+For stock vectors use `(A,R,C,D;T)` where D=damaged_held, T=total_tracked. Each row is an independent scenario starting with 5 usable units unless specified; P is physical outstanding, U unresolved replacements. Issue all 5 gives `(0,0,5,0;5)`. Fine basis is PHP 10 per ceiling 24h after original due. Every committed step retains canonical history, ledger, audit and applicable event/outbox/receipt; terminal transitions never erase records.
+
+| # | Scenario | Stock / quantities / lifecycle | Clock, history and expected protection |
 |---|---|---|---|
-| Assess | Approved source/window/basis/currency; assessment capability | Immutable Charge, unique source key, audit/outbox | Duplicate source, unavailable/unapproved policy, invalid amount |
-| Reduce / waive | Approved authority/reason; positive amount≤current balance | Append adjustment, base unchanged; recomputed outstanding | ACCOUNTABILITY_CONFLICT / negative balance |
-| Settle administratively | Approved settlement procedure/authority; positive amount≤balance | Append settlement evidence, no automatic cash claim | CHARGE_ALREADY_SETTLED / policy conflict |
-| Increase / reverse | Explicitly approved correction authority/basis; reversal bounded against original adjustment | Append referenced correction; historical amounts retained | Duplicate/over-reversal, authority/policy conflict |
-| Edit/delete assessment/adjustment | Not a normal command | None | Immutable evidence violation |
+| 1 | Normal full good return | Issue5; good5→`(5,0,0,0;5)`, P0/U0, COMPLETED | Before due final0; one immutable return and completion |
+| 2 | Partial good return before due | Good2→`(2,0,3,0;5)`, P3/U0, CHECKED_OUT | Original due unchanged; fine0 until crossed; event retained |
+| 3 | Partial then overdue | From #2, due+1min P3/U0 fine10; return3 at due+25h→`(5,0,0,0;5)` completed | Final20 frozen at final return; two events, no rewritten deadline |
+| 4 | Lost then replacement before due | Good2/loss3→`(2,0,0,0;2)`, P0/U3, open; accept3→`(5,0,0,0;5)`, P0/U0 completed | Final0; loss3 remains in incident history; no ghost C |
+| 5 | Lost then replacement after due | Same loss; due+1min P0/U3 fine10; accept3 at due+25h→`(5,0,0,0;5)` completed | Final20; fine accrues with C0 until acceptance; historical loss remains |
+| 6 | Damaged then replacement | Good3/damage2→`(3,0,0,2;5)`, P0/U2; accept2→`(5,0,0,2;7)` completed | Two originals held plus two new usable units; later discard2→T5, incident retained; clock ends at acceptance |
+| 7 | Mixed good + damaged + lost | Good2/damage1/loss1 leavesP1: `(2,0,1,1;4)`, U2; good1→`(3,0,0,1;4)`, P0/U2; accept2→`(5,0,0,1;6)` completed | Each step reconciles; no value charge; one damaged original retained; freeze only at last resolution |
+| 8 | Pending auto-expiry | Submit2→`(3,2,0,0;5)`; at24h expire→`(5,0,0,0;5)`, EXPIRED | Fine0; hold released once; expired timestamp/history; checkout race loses if expiry point reached |
+| 9 | Borrower cancels pending | Submit2; own preexpiry cancel→`(5,0,0,0;5)`, CANCELLED | Fine0; owner only; repeat/different-key cancellation cannot release twice |
+| 10 | Deny with visible reason | Submit2; Staff denial→A5/R0, DENIED | Fine0; reason required/preserved/borrower-visible; no destructive delete |
+| 11 | Direct checkout | Staff issue2→`(3,0,2,0;5)`, P2/U0, CHECKED_OUT | Active target/current terms/due required; no PENDING or hold artifact; good2 later closes |
+| 12 | Old fine, new request | Prior completed loan has fine20; new submit2→`(3,2,0,0;5)`, PENDING | Old fine unchanged; new hold allowed; no automatic fine gate |
+| 13 | Staff denies for outstanding fine | From #12 staff reviews and denies with visible reason→A5/R0 | Prior fine20 remains; decision is human action, not automatic submission block |
+| 14 | Admin full clear | Completed fine20; Admin PAID clear20→outstanding0/CLEARED | Final20/actor/time/method retained; Staff403; no stock change. Open fine10 clear10, later assessed20→new outstanding10; each clear is full at its time |
+| 15 | Terms version changes | Borrower acceptedv1; publishv2; new submit blocked until acceptv2 | No hold on failed submission; one acceptance per version; pendingv1 retains its binding, no per-loan consent |
+| 16 | Concurrent last-stock request | Initial `(1,0,0,0;1)`; two submit1 | Exactly one PENDING/`(0,1,0,0;1)`; loser insufficient stock409; no partial headers/evidence, no negative A |
+| 17 | Duplicate return submission | Issued2; payload repeats same item good1 twice | Entire request400 before mutation; C2 remains. Same valid-key replay restores once; different-key retry checks physical remaining. UNIQUE(event,item) protects DB; boss first-match defect excluded |
+| 18 | Concurrent replacement acceptance | Loss2, P0/U2, `(0,0,0,0;0)`; two commands each accept2 | Borrowing/obligation/equipment locks yield one accepted2, A2/T2/U0 and one completion/freeze; loser409, no second acquisition. Same-key retry replays; duplicate IDs400 |
 
-## Fifteen required walkthroughs
-
-These are **design traces, not executed tests**. Illustrative quantities are hypothetical integers, not institutional limits. Where policy is open, alternatives are traced rather than reported as accepted workflows. Invariant IDs map to [INVARIANTS](INVARIANTS.md).
-
-| Scenario | Trace and expected evidence/outcome | Policy / future test |
-|---|---|---|
-| S01 Normal request→approval/release→full good | Pool starts available3. Request2: A gives available1/reserved2; B unchanged3. Separate approve: A retains hold, B gives1/2. Release gives available1/reserved0/checked_out2. Good2→available3/checked_out0; retained completed borrowing, event/ledger/audit | OPEN-020/021/016/015; INV-01–07, BOR-01–05, RET-01–07; real PG/HTTP |
-| S02 Denied request | A hold2 restored; B has no stock movement. State denied retains ID/items/decision/audit and unique notice; no active record deletion | Reason OPEN-014; BOR-06, HIS-01; PG/HTTP |
-| S03 Cancelled request if supported | Owner/staff policy checked; pending or allowed approved hold released exactly once; retained cancelled state. If unsupported, command absent | OPEN-013/021; BOR-06, AUTH-01, CMD-01; PG/HTTP/browser later |
-| S04 Staff direct checkout | Current operator and target borrower checked; available2→checked_out2; request/issue evidence directly canonical; duplicate key replay creates no additional custody | OPEN-020/002/003/016; ELG-01–03, CMD-01; PG/HTTP |
-| S05 Partial good then final | Issue3, E1 good1 leaves2, E2 good2 leaves0. Two events/notice keys; availability increases1 then2, same borrowing completes | RET-02/03/06/07, NTF-01; PG |
-| S06 Good and damaged | Issue3, good2/damage1 gives0 outstanding and completed; available+2/damaged+1, immutable event. Approved assessment uses frozen basis once | OPEN-022/023/024; RET-04, ACC-01/04; PG/unit |
-| S07 Lost equipment | Issue1, loss1 gives lost+1/checked_out-1; accounted total unchanged; completed custody and independently outstanding accountability | OPEN-006/022; INV-02/08, RET-04/06, ACC-05; PG |
-| S08 Two requests for last available unit | A: sorted equipment lock yields one hold, second availability conflict. B: both pending allowed, but only one approval/reservation/issue can win; request UX cannot promise hold | OPEN-020; INV-03/09, BOR-02; PG concurrency |
-| S09 Two staff same approval/checkout | Both lock same borrowing; first moves legal edge, second state conflict; same command key instead replays original identity after current authorization | OPEN-021; BOR-03, CMD-01/02; PG concurrency/HTTP |
-| S10 Concurrent duplicate return | Same key/payload produces one event; different key over-return loses under lock. Duplicate item IDs in either request rejected regardless of key | RET-01/02, CMD-01; PG concurrency/HTTP |
-| S11 Borrower inactive after request | Inactivation writer and release share ordered user/profile locks. If inactivation commits first, release rejects; holds remain until authorized deny/cancel, not silently lost. If release commits first, preserve issued custody/returns | OPEN-008; ELG-02/03, AUTH-02; PG concurrency |
-| S12 Equipment archived after request | A hold or B approved hold blocks proposed archive. B unheld pending may coexist with archive; later approval/release rejects. Inactivate also blocks new release without discarding hold/history | OPEN-012/020; INV-10, ELG-03; PG concurrency |
-| S13 Charge adjusted | Example assessment1000 minor units; waiver200 and settlement300 yields outstanding500. Base1000 unchanged; all actors/reasons retained. Excess adjustment conflicts; do not report500 settlements as verified revenue | OPEN-007; ACC-01–06; PG/unit |
-| S14 Catalog value changed after old issue | Old issue valuation stays immutable; new catalog value affects new capture per approved policy. Old damaged-return liability uses old frozen basis; request-to-issue price change exposes OPEN-023, cannot be silently repriced | HIS-02/03, ACC-04; PG/HTTP |
-| S15 Notification provider fails after commit | Successful business transaction retains state/event/outbox/receipt. Worker appends failure and schedules bounded retry/dead-letter; delivery failure cannot undo custody; no same partial-return key suppression | OPEN-017/025; NTF-01–03, HIS-04; PG/worker/provider test later |
-
-All 15 scenarios are representable as conditional design traces. S01/S03/S04/S08/S09 depend on the approved state/reservation/actor/terms contract; S06/S07/S13/S14 require assessment/value/payment policy. S12 depends on archival policy. They are not implemented or institutionally accepted. The model is **BLOCKED FOR IMPLEMENTATION**, not “complete because every scenario has a table row.”
+All 18 are representable by the schema and legal edges. No remaining core state/schema contradiction was found in these design traces. Implementation must prove these with real PostgreSQL transactions/concurrency/fault tests and HTTP permission checks; this reconciliation executes none.

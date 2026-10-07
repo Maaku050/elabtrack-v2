@@ -1,116 +1,117 @@
-# Phase 2 business rules and policy gate
+# Phase 2.5 business rules and authorization draft
 
-Design review draft, 2026-10-08. Evidence-label meanings and module ownership are in [DOMAIN_MODEL](DOMAIN_MODEL.md). **No proposed institutional policy in this document is accepted.** Stable technical safeguards can be reviewed while dependent workflow/schema choices remain blocked. OPEN identifiers refer to [OPEN_DECISIONS](../project/OPEN_DECISIONS.md).
+2026-10-08. Owner decisions D1–D29 are **CONFIRMED V2 DECISIONS / authoritative working product policy**. Engineering choices are called out separately. They override conflicting capstone/V1/boss assumptions; none is implementation evidence. See [source policy](../project/SOURCE_OF_TRUTH.md), [accepted decisions](../project/DECISIONS.md), [remaining questions](../project/OPEN_DECISIONS.md).
 
-## Source-grounded rules
+## Decision integration matrix
 
-| ID | Label | Rule and evidence | Design consequence |
-|---|---|---|---|
-| BR-01 | CONFIRMED REQUIREMENT | Existing FSMO operation only; current Phase 2 direction and charter | No campus/tenant/global role entities |
-| BR-02 | CURRENT V2 DECISION | Backend owns validation, authorization, arithmetic and lifecycle; DEC-013/017 | Clients provide intent; transaction-time checks govern |
-| BR-03 | CAPSTONE INTENT | SOP P364: staff verify eligibility and release upon approval; scope P421/424 manual approved/verified access | Do not equate login/scope grant with eligibility; exact role/verification policy open |
-| BR-04 | ACTUAL V1 BEHAVIOR | Audit 07/09: request reserves immediately; approval creates Ongoing without stock recheck | Reservation and release relationship remain OPEN-020/021 |
-| BR-05 | ACTUAL V1 BEHAVIOR | Audit 07/09: borrower request today through seven days; direct path lacks same maximum | No seven-day constant accepted for V2; duration/direct exceptions OPEN-020 |
-| BR-06 | ACTUAL V1 BEHAVIOR | Audit 07/08: cumulative partial good/damaged/lost; only good returns increase availability | Preserve capability; explicit event/bucket accounting is recommendation |
-| BR-07 | ACTUAL V1 BEHAVIOR | Audit 07/09: PHP 10/day and item-price damage/loss multiplication | Amount/currency/grace/cap/value basis remain OPEN-006/015/023 |
-| BR-08 | CAPSTONE INTENT | P430/431 fines collection/payment-record/report intent; V1 audit 04/08 shows divergent clearing | Financial procedure must be confirmed; assessments never imply collections |
-| BR-09 | CURRENT V2 DECISION | Consequential history preserved; operational logs distinct from durable business evidence, DEC-017/037 | Retain denied/completed borrowing and append-only evidence |
-| BR-10 | CAPSTONE INTENT | P425 categories; P429/440 and Sprint 6 P639 kiosk without personal device | Category ownership and kiosk identity/assistance remain open |
-| BR-11 | CURRENT V2 DECISION | Production register absent, current-account lookup and memory/HttpOnly session; DEC-024–031/045–047 | Working foundation stays; final onboarding/role policy not inferred |
-| BR-12 | BOSS DESIGN REFERENCE | Boss audit §§6/8/14/16: duplicate returns, target eligibility bypass, assessment/adjustment and outbox strengths | Adapt mechanisms only; reject defects and defaults |
+D numbers refer to the owner's Phase 2.5 instruction, with permanent register IDs below.
 
-## Proposed command rules
-
-**ENGINEERING RECOMMENDATION:** submit requires one or more positive integer unique equipment lines, active/current eligible borrower, active catalog, approved due request, required acceptance and bounded request size. No server draft is required: an unsent cart is client intent and reserves nothing. At the approved reservation boundary, availability is rechecked under row locks. Pending demand is not a promise of stock under option B.
-
-Approve/deny require current operation authority and pending state. Retain decision actor/time and reason where approved. A reason field can be nullable until OPEN-014 resolves mandatory content; denial history itself is already required by this design. Approved state is only a proposed separate decision state. At physical release, recheck borrower/account, equipment, availability/reservation, terms, due suitability and policy. A request's earlier acceptance or reservation cannot authorize release to an inactive target or from an archived pool. No partial approval/partial issuance, renewal, waitlist, substitutions or extensions are added without a later requirement; recommendation is all requested lines issued atomically or conflict.
-
-Direct checkout uses the same issue validation as release, with authorized staff acting on a specified existing active eligible borrower. It writes canonical borrowing/items, actual issue snapshots, inventory ledger, audit, outbox and receipt atomically. It never bypasses eligibility due to staff authority. Whether staff may bypass an approval stage or apply a different maximum is OPEN-020, not an engineering default. Terms evidence must belong to the borrower; staff acknowledgment cannot impersonate borrower consent unless an assisted acceptance procedure is approved.
-
-Returns accept only issued borrowing lines belonging to the chosen borrowing. Reject repeated borrowing-item IDs before mutation, negative/noninteger quantities, zero-total events, over-return and missing damage/loss notes under the proposed evidence rule. Unique `(return_event_id, borrowing_item_id)` and composite ownership FKs reinforce this. One normalized input map drives custody, event lines, stock deltas and any charge basis; never independently iterate raw duplicates. Returns against inactive equipment/borrowers discharge old custody without authorizing new stock. Disposal and payment never substitute for recording a lost/damaged custody disposition.
-
-Stock adjustment requires current inventory authority, reason and fresh counts. Ordinary adjustment cannot edit reserved/checked_out, fabricate a return or silently change owned custody. Repair/recovery/retirement/removal require approved dispositions and append a movement; they do not erase earlier loss/damage or charges. Archive/inactivate is metadata lifecycle, not a count mutation. Corrections to immutable return or charge evidence require an explicitly designed compensating command later; no generic edit/delete endpoint is proposed.
-
-## Reservation options
-
-**ACTUAL V1 BEHAVIOR:** option A (audit 06/07). **CAPSTONE INTENT:** approval before release, without a reservation rule (P364/425). **BOSS DESIGN REFERENCE:** A with distinct reserved/checked_out; audit §5. All V2 choices below remain **UNRESOLVED PRODUCT POLICY / OPEN-020**.
-
-| Option | Oversubscription / expectation | Staff workload / utilization | Complexity / V1 compatibility |
-|---|---|---|---|
-| A — reserve on request | Atomic reservation prevents two holds for last stock; accepted request carries a stock hold, not guaranteed approval | Pending requests consume stock; stale holds can lower utilization and need an agreed expiry/cancellation practice | Simplest V1 continuity; explicit separate reserved bucket recommended |
-| B — reserve on approval | Pending demand may exceed stock; approval must fail if unavailable; request screen must explain lack of guarantee | Better available utilization before decisions, but staff handle competing requests/conflicts | Moderate; changes V1 expectation; zero reserved on pending lines |
-| C — hybrid / expiring request hold | Initial holds expire; availability and request expectations vary with expiry | May improve utilization, but adds expiry/fairness/renewal workload | Highest; introduces expiry transitions/columns/job and policy; no demonstrated V1 equivalent |
-
-**ENGINEERING RECOMMENDATION:** prefer A for the initial FSMO contract if staff confirm that pending requests should hold stock; select B if institution prefers availability until approval. Defer C unless operational evidence justifies its extra states and expiry procedure. This recommendation does not select A. `borrowing_items.reserved_qty` makes A or B representable without a separate generic reservation engine; C would require another reviewed state/schema design. OPEN-020 must be decided before migrations or promise-bearing mockups.
-
-## Approval and release
-
-**ENGINEERING RECOMMENDATION / OPEN-021:** explicitly distinguish permission from actual custody. Prefer `pending → approved → checked_out`, with `approved_at` and `checked_out_at` separate. If counter approval and release always occur together, an approved atomic combined command may record both in one transaction and skip the waiting state. Do not decrement available twice: a held line moves reserved → checked_out; an unheld issue moves available → checked_out. Whether to expose a pickup/wait interval, expiry, cancellation after approval or combined operation is stakeholder policy. No automatic terminal denial/cancellation of an already issued loan: returns/dispositions must discharge custody.
-
-## Snapshot and policy timing
-
-All timing recommendations are **ENGINEERING RECOMMENDATION**; binding value/effective policy OPEN-023 and acceptance OPEN-016 remain **UNRESOLVED PRODUCT POLICY**.
-
-| Boundary | Evidence frozen | Open institutional choice |
+| Owner decision | Current working rule | Register / principal design effect |
 |---|---|---|
-| Request | Submitted borrower display/ID; requested equipment name/category/value/currency; requested deadline; selected policy/terms references; accepted terms evidence if required; submitted time/channel | Is request valuation/policy binding or merely a quotation? |
-| Approval | Decision actor/time/reason; approval does not overwrite request evidence | Does approval lock value/deadline/terms or also release? |
-| Checkout | Actual issued quantities; issue equipment/borrower display snapshots; effective liability value/currency, policy/terms/acceptance references; authoritative due deadline and actual release actor/time | Recommendation is freeze liability at issue; if request policy/value is binding, issue references those immutable request values instead |
-| Return / assessment | Event quantities/notes/actor/time; assessment source, immutable basis/rate/day window/value/currency and policy ref | Immediate per-event damage/loss versus cumulative final-return assessment; incremental overdue posting versus final assessment |
+| D1 | Active registered BORROWER, including at least Student/Faculty categories; category is not role | DEC-051; user attributes, no StudentRole/FacultyRole |
+| D2 | Active account is borrowing gate; Admin deactivation blocks normal auth actions; no eligibility subsystem or fine block | DEC-051; reuse identity status, preserve existing obligations |
+| D3 | BORROWER/STAFF/ADMIN; named multiple Admins; Admin inherits staff operations | DEC-052; future server permission matrix |
+| D4 | No public signup; Staff/Admin provision Borrowers; Admin bulk import and privileged accounts | DEC-053; secure activation mechanics later, not plaintext spreadsheet contract |
+| D5 | Approval is physical handover, no approved-waiting state | DEC-054; one issue edge/transaction |
+| D6 | Reserve on submission, atomic under stock locks | DEC-054; available→reserved |
+| D7 | Pending expires 24h after submission, retained EXPIRED history | DEC-055; TTL policy snapshot and expiry index |
+| D8 | Borrower cancel own PENDING only | DEC-055; release hold, retained history |
+| D9 | Staff/Admin denial of PENDING; required borrower-visible reason | DEC-055; release and reason commit together |
+| D10 | Staff/Admin direct checkout, active existing borrower, availability/due/server checks | DEC-054; immediate CHECKED_OUT |
+| D11 | Required issued due date+time; no fixed seven-day maximum | DEC-056; due_at and nullable future maximum |
+| D12 | Asia/Manila local interpretation, absolute timestamptz persistence | DEC-056; shared calendar boundary |
+| D13 | First-use/current-version terms acceptance; new material version gates new request | DEC-057; user/version/time evidence, no per-loan acceptance |
+| D14 | Overdue means now>due_at and unresolved physical OR replacement obligation | DEC-058; not checked_out count alone |
+| D15 | PHP 10/day; adopt recommended 24h ceiling arithmetic as engineering detail | DEC-059; dynamic/frozen final amount |
+| D16 | Existing fines permit submission/reservation; human review may deny at handover | DEC-051/054; no auto-block |
+| D17 | Staff/Admin alone records return condition/quantities; personally stored photos may only be physically shown in person, entirely outside eLabTrack | DEC-058 clarified; no borrower return/evidence submission or return-photo feature |
+| D18 | Partial returns retain original deadline and leave loan open | DEC-058; fine continues |
+| D19 | Damage/loss requires replacement, not automatic peso price charge | DEC-058; immutable incident plus obligation |
+| D20 | Disposed damaged/lost units leave checked_out; liability tracked separately | DEC-058/062; no ghost custody |
+| D21 | Staff/Admin accepts appropriate type/equivalent, restocks and reduces liability | DEC-058/062; acquisition plus acceptance event |
+| D22 | Original damaged disposition later, NON-BLOCKING for borrowing UX | DEC-058/062; nonusable held default; no mandatory repair flow |
+| D23 | Item reconciliation and completion include both physical and replacement outstanding | DEC-058; exact normalized maps/duplicate protection |
+| D24 | Primary money liability overdue fine only | DEC-060; focused fine schema |
+| D25 | Full Admin clear with assessed history, actor/time/method/note; no online payment | DEC-060; fine_clearances |
+| D26 | Fine clearance ADMIN only | DEC-052/060; Staff denied by backend |
+| D27 | OUTSTANDING/CLEARED, no partial payment/allocation | DEC-060; full current-balance clear |
+| D28 | Kiosk is catalog/cart/request, no hardware/device/handoff infrastructure | DEC-061; remove device candidates |
+| D29 | One borrower mobile-first responsive flow; staff desktop/tablet responsive | DEC-061; supersede dedicated shell assumption |
 
-Request and issue snapshots need only the fields whose meaning can differ, not copies of entire catalog/profile rows. Data model proposes immutable request and issue snapshot columns; approval-time binding, if chosen, needs a design amendment rather than silently treating request as checkout. Policy and terms content/version/hash remain immutable once published/referenced; selecting an effective version is governed by an approved explicit publication procedure. No CMS, expression language or arbitrary key/value policy engine is proposed.
+## Account, terms and issue rules
 
-TermsAcceptance stores user/version/time/interaction attribution. A Borrowing references the actual acceptance used; optional borrowing linkage in acceptance supports per-borrowing evidence. Account/version reuse versus explicit acceptance for each request/issue is OPEN-016. It cannot be guessed from V1's boolean. Terms text, expiry/reacceptance, assisted acceptance and evidentiary retention need the institutional custodian.
+Active registered Borrower is sufficient to request; no email-verification, student-only, course, suspension, fine balance or active-loan-count restriction is silently added. Borrower category does not grant staff authority. Staff's account grant is Borrower provisioning only; Admin controls deactivation, bulk imports and Staff/Admin administration. No shared admin credential. Accounts with loans are deactivated rather than deleted; staff processes their remaining obligations. Activation/password delivery and optional email ownership verification are later design questions, not new eligibility policy.
 
-## Due date, timezone and fines
+Terms acceptance is unique per user/version and immutable. Current material version must be accepted before a new submission. Recommended direct checkout requires the borrower to have accepted current terms; Staff cannot synthesize that acceptance. Submission binds its accepted version; publishing new terms does not force reacceptance for an already pending request. Final approved text and secure onboarding must be reviewed before production use, without blocking navigation mockups.
 
-**ACTUAL V1 BEHAVIOR:** seven-day borrower bound; midnight Asia/Manila scheduler; PHP 10 per overdue calendar day; mismatched direct/UI/server paths (audits 07–09). **CAPSTONE INTENT:** reminders/accountability, no definitive maximum/grace/rate/cutoff (P427/430/441). **BOSS DESIGN REFERENCE:** versioned fee/grace, but DTO/report/scheduler inconsistencies and final-only assessment (audit §§14/16/17).
+Request input is a nonempty, bounded unique equipment/positive integer quantity map. Recommended requested due date/time conveys intent; staff confirms/edits and audits actual future `due_at` at issue. Initial fulfillment is all-or-nothing; changing quantities requires a new request rather than silent partial issue. No hard duration maximum. Issue rechecks active actor/target, role, pool usability, held quantities, captured policy and due time under locks. Staff sees fine/replacement accountability, may approve or deny based on face-to-face review; no automatic prohibition or forced payment UI.
 
-**ENGINEERING RECOMMENDATION:** persist real instants as `timestamptz`, use UTC interchange and explicit single FSMO IANA business timezone; retain selected timezone and due-policy version for history. Client machine timezone and the developer's Asia/Shanghai timezone never define FSMO policy. Recommend Asia/Manila for stakeholder review based on V1, not automatic adoption. Calendar-day due date versus exact timestamp, operating-day cutoff, today acceptance, maximum, grace/holidays/cap/rounding and policy change applicability are OPEN-015/020/006/023.
+Borrower can cancel only own PENDING request, and only before its expiry linearization time. Staff/Admin may retain reasoned administrative pending cancellation as an **engineering recommendation**, not a required new permission: future feature plan must explicitly decide whether it is needed. No issued-loan cancellation/deletion/restoration route.
 
-If date-only is selected, persist business `due_date` plus version/timezone and the resolved exclusive cutoff instant; if timestamp is selected, persist `due_at`. Use one approved model consistently, not both writable due truths. Candidate schema chooses timestamp + optional derived date as a proposal; date-only selection requires tightening that schema before migrations. `overdue` means outstanding past deadline; `chargeable_overdue_days` additionally applies approved grace/cap rules. Grace need not hide late custody. Calendar arithmetic uses local dates, not elapsed hours divided by 24. Date-range reports resolve inclusive local dates to `[start_of_day, next_day_start)` instants. Boundary tests cover midnight, exact cutoff, grace, leap days and any offset changes supported by the chosen zone.
+## Future permission matrix
 
-**ENGINEERING RECOMMENDATION:** show a clearly labeled unposted estimate for active overdue custody; record an immutable charge when the approved posting event occurs. One persisted assessment per source/window/disposition prevents repeat assessment. Do not turn estimates into revenue, overwrite assessed amount during settlement, or double-charge a cumulative damaged quantity on successive returns. Posting time, partial-return day basis, maximum/cap and damage/loss value basis remain OPEN-006/023/024. No V2 rate or currency default is invented.
+All cells are future server-authoritative capabilities, unchanged Phase 1 auth code. Active identity and resource ownership are checked for every command/read/replay. BORROWER row means provisioned borrower capability; staff roles do not automatically become borrower accounts or obtain other users' borrower impersonation rights.
 
-## Accountability and payment
+| Operation | BORROWER | STAFF | ADMIN | Server boundary |
+|---|---|---|---|---|
+| Browse/search/filter equipment | Yes | Yes | Yes | Bounded catalog; no private account data |
+| Build own cart, submit own request | Yes | No automatic borrower grant | No automatic borrower grant | Current terms, active borrower, stock lock; old fine allowed |
+| Cancel own pending request | Yes | No impersonation | No impersonation | Owner + PENDING + before expiry |
+| View own history/status/accountability | Yes | Own borrower flow only if separately authorized | Same | Owner-scoped reads |
+| View borrowers' operational history/accountability | No | Yes | Yes | Operational purpose and bounded query |
+| Review/approve and physically issue | No | Yes | Yes | One atomic PENDING→CHECKED_OUT |
+| Deny pending request | No | Yes | Yes | Required visible reason; release hold |
+| Direct checkout | No | Yes | Yes | Active existing borrower; no bypass |
+| Process good partial/final return | No | Yes | Yes | Locked physical outstanding |
+| Record damage/loss | No | Yes | Yes | Immutable incident + exact replacement obligation |
+| Accept replacement | No | Yes | Yes | Locked remaining; acquisition + history |
+| Equipment metadata CRUD / ordinary stock operations | No | Yes, normal operations | Yes | Create/read/update/archive; guard active holds/custody/liability; ledger every movement |
+| Exceptional stock correction | No | No | Yes | Explicit reason/audit; cannot hide active custody or fabricate return |
+| Provision individual Borrower | No | Yes, narrow D4 grant | Yes | Cannot assign STAFF/ADMIN or clear fines |
+| Deactivate/reactivate Borrower | No | No | Yes | Existing history/obligations preserved; reactivation engineering lifecycle counterpart |
+| Bulk Borrower import | No | No | Yes | Future validated secure importer; preview/reconciliation |
+| Create/manage STAFF/ADMIN | No | No | Yes | Named actors, anti-escalation/last-admin recovery design later |
+| Clear fine (PAID/WAIVED/OTHER_RESOLUTION) | No | No | Yes | Entire current balance only; actor/time/basis retained |
+| Manage policy/terms/settings | No | No | Yes | Immutable published versions; audit |
+| View administrative audit/reports | No | No | Yes | Bounded purpose-specific access; operational summaries for Staff do not imply admin exports |
+| Administrative pending cancellation | No | Not yet selected | Not yet selected | Optional recommendation, needs future scope decision |
+| Automatic pending expiry | No client command | No client command | No client command | System use case, deadline and stock locks, explicit system audit actor |
 
-**ENGINEERING RECOMMENDATION:** Charge is the sole persisted base assessment; ChargeAdjustment is append-only. `outstanding = assessed + increases - reductions - waivers - settlements + approved reversals`. Use positive minor-unit amounts with explicit adjustment kind/sign rules and one approved currency per obligation. Reject adjustment producing negative balance under a charge-row lock. Zero balance is derived closed accountability, regardless of whether it arose from waiver, reduction or settlement; distinguish the reason in projections. If later increasing/reversing a zeroed charge is allowed, it requires approved authority; no opaque stored `paid=true` overrides arithmetic.
+Normal inventory means metadata maintenance, supported usable stock acquisition/removal and archive under guards; detailed damage repair/disposal/correction procedures remain later inventory policy. Hard deletion of consequential history is not inventory CRUD. React guards are UX only. Permission changes and deactivation writers must participate in the transaction-time account-lock protocol; existing session behavior is not modified here.
 
-Overdue, damage and loss are proposed assessment sources; manual charge creation is deferred unless required. An immutable assessment records source event/item/window, calculation basis and actor/time. In the initial candidate, a positive reversal restores a previously reduced/waived/settled amount; it cannot reverse an increase with the same sign. Correction of an erroneous increase would require an approved reduction. Every reversal references the original same-charge discharge and cannot exceed its unreversed amount. A mistaken assessment is offset by a reasoned adjustment rather than rewritten or removed. Original assessment, adjustment totals, waiver totals, settlement totals and outstanding remain separately reportable.
+## Pending and return rules
 
-**UNRESOLVED PRODUCT POLICY / OPEN-007:** administrative settlement versus real cash collection/receipt procedure is not established. Recommend administrative-discharge evidence only until policy confirms whether cash is collected through this system. No online payment processor is required. Conditional Payment/PaymentAllocation entities are evaluated, not part of the core proposed schema; if cash tracking is approved, payment receipt evidence links allocations to settlement adjustments and has its own correction/refund policy. A settlement without receipt evidence cannot be labeled payment/revenue.
+**D17 authoritative interaction:** Borrower approaches Staff/Admin in person → may physically show a personally stored phone photo → Staff/Admin may inspect the actual equipment if desired → Staff/Admin alone records condition/quantities in eLabTrack → eLabTrack updates borrowing and inventory. The photo stays on the borrower's phone; this is an informal real-world convenience, not software evidence. The borrower cannot mark returned or submit return evidence. No return-photo acceptance, upload, transmission, storage, retention, attachment, file model or interface/workflow step is in scope. Equipment catalog images remain independently supported.
 
-## Policy decision matrix
+Submission captures server `submitted_at` and `expires_at=submitted_at+24h`; TTL is future configurable versioned policy candidate. No operating-hours-aware rule. At `now>=expires_at`, pending expiration wins over a newly attempted decision/cancellation and releases all holds exactly once. Background bounded expiry use case plus lazy locked checks at pending commands is the future engineering plan; no new scheduler code now.
 
-Every row is **UNRESOLVED PRODUCT POLICY** unless marked deferred by current scope. “Proceed?” means **can the final dependent state/schema/feature contract be implemented without the answer?** Phase 2 documentation can proceed for every row. NO is an implementation gate; it does not require stopping independent design. “Not established” preserves the absence of evidence rather than guessing. V1 references are the numbered audits; capstone P locators are corrected for the current local file.
+Return lines distinguish good, damaged received and lost confirmed. Nonnegative integer components sum to positive processed quantity, at most physical outstanding. Repeated borrowing-item IDs reject the whole request even if totals fit. A single normalized map drives counters, ledger, incident, liability, audit and outbox. Damage/loss rationale is an engineering-required operational note recorded by Staff/Admin; return photographs are entirely outside eLabTrack. Partial/final returns cannot alter original due time. Replacement acceptance rejects duplicate obligation IDs, quantities beyond remaining and unrelated-borrowing obligations; each accepted unit adds new usable stock once. Historical incidents are never rewritten to “good”.
 
-| Gate / OPEN | Why decision matters | ACTUAL V1 BEHAVIOR | CAPSTONE INTENT | BOSS DESIGN REFERENCE | ENGINEERING RECOMMENDATION | Database/domain impact | Proceed? |
-|---|---|---|---|---|---|---|---|
-| G01 / 001 | Creation/verification authority | 01/05: staff provision; no public signup | P421 manual approved access vs P912 registration conclusion, P827 admin form | Admin/reset/import provisioning; not verified eligibility | Confirm onboarding; keep production containment meanwhile | Approved profile states/verification evidence/provisioning commands | NO |
-| G02 / 002 | Eligible categories and institutional ID | 03: student-oriented, no faculty role | P401/402/613 faculty and students; P436 authorized borrower | Borrower scope grants | Separate category from role; only approved categories/fields | Profile validation/ID uniqueness and eligibility rules | NO |
-| G03 / 003, 004, 005 | Who can approve/issue/return/adjust/waive/provision | 03/15: broad staff/admin equality; no Super Admin | P364 staff; P421 admin; P922 expansion recommendation | Scoped/global roles, unused permission catalogs | Confirm FSMO operation matrix; defer extra role and exclude hierarchy | Later roles/permission model, actors on every command | NO for matrix; extra Super Admin NON-BLOCKING/deferred |
-| G04 / 008, 009 | Inactive, suspended, institutional/email verification | 05/09: login active only, no ownership verification | P421/424 manual verification; P428 reachable email | Fresh actor, but target checkout bypass | Recheck actor/borrower at issue; preserve existing returns | Profile status/gates/audit, later session policy separate | NO for eligibility gates; email proof mechanism can be later if not an eligibility gate |
-| G05 / 021 | Approval vs physical release | 07: Request → Ongoing, borrowedDate reset | P364/425 release after approval; interval unspecified | Merges decision and checkout | Prefer separate decision/issue timestamps/state | States, commands, timestamps and stock transition | NO |
-| G06 / 020 | When stock is promised/held | 06/07: reserve on submit | P425 staff approval; no hold rule | A; explicit reserved bucket | Prefer A if staff accept hold semantics; B alternative; defer C | Reserved quantities; C needs expiry state/schema/job | NO |
-| G07 / 020 | Direct checkout and limit exceptions | 07: starts Ongoing; missing seven-day max | P364 staff verified release; no exceptions | Immediate issue; target bypass | Shared issue checks; explicit approved exceptions only | Direct command/policy fields/acceptance source | NO |
-| G08 / 020, 015 | Due format, duration, time boundaries, borrowing limits | 07/09: today–7 request; local-date conflicts; no concurrent limit found | P427 reminders; no exact cutoff/limit | UTC/local/grace disagreements | One calendar/time contract, bounded quantities; no fabricated numerical loan limits | Due columns/version fields, assessment/reminder queries | NO |
-| G09 / 013 | Cancellation actors/stages/expiry | 07: borrower cancel absent; staff destructive delete | P364 no cancellation rule | Stored allow-cancel choice | Pending/approved cancellation only if agreed; no active erasure | Allowed edges/reasons/reservation release; no default config flag | NO for cancellation; omit dependent command until agreed |
-| G10 / 014 | Denial reason content/visibility | 07/08: deletes denial; no reason | P851 denial notification, no structured reason rule | Retains reason/history | Retain history; confirm mandatory reason/audience | Nullable reason can accommodate either; content validation | YES; NON-BLOCKING schema, confirm before denial UX |
-| G11 / 016 | Terms acceptance/version/binding | 04/09: boolean/time | SOP accountability, not version procedure | Once per user/version; placeholder content | Immutable terms + explicit evidence; no invented text | Acceptance uniqueness/linking and release checks | NO for accepted workflow/constraint selection |
-| G12 / 011 | Categories and ownership | 06: absent | P425/613 filter intent | Category table/CRUD | Optional normalized category after confirmation | Nullable FK/core permits omission; taxonomy approval later | YES; NON-BLOCKING core schema |
-| G13 / 010, 012 | Images and archive conditions | 05/06: images/hard delete; aggregate condition | P423/443 condition updates, no retention schedule | Generic files/archive | Narrow equipment images; block archive with holds/custody | Image table conditional; archive/status refs; retained IDs | YES for core; archive rule owner confirmation before workflow |
-| G14 / 006, 023, 024 | Rates/currency/grace/cap/posting/value basis | 07/09: PHP10/day, snapshot price, conflicting timing | P430/441 fines, no approved formula | Defaults, final-only assessment, currency gap | Freeze explicit basis; estimates separate; no defaults | Policy fields, snapshot timing, charge uniqueness/window | NO |
-| G15 / 007 | Waiver/adjustment/settlement vs payment authority | 04/08: clearing not a receipt ledger | P430/431 payment/collection reports | Administrative adjustments only | Immutable base; approved reasons; add receipts only if required | Core adjustment kinds; payment/allocation branch | NO |
-| G16 / 022 | Damage/loss notes, repair, retirement, recovery, write-off | 06/07: notes; no explicit condition buckets/write-off | P424/443 manual inspection | Buckets/manual reclassification, notes optional | Require notes; explicit compensated movements; keep accounted total until disposition | Bucket semantics/allowed movement kinds and financial treatment | NO for disposition/stock implementation |
-| G17 / 017, 025 | Email trigger/cadence/recipient/provider/ops | 08: queue, one-time reminder flags; no consumer | P427/428/628–636 delivery/reminders | SMTP outbox but key/worker failures | Transactional unique events, bounded leases/attempts; confirm cadence | Outbox structure independent; event schedule/text later | YES; NON-BLOCKING core, BLOCKING Phase 9 |
-| G18 / 010 | Kiosk identity/assistance/privacy | 01/13: shared UI, no hardened identity boundary | P429/440/639 walk-in self-service, no personal device | Device + assisted handoff | Additional client; narrow catalog; do not select device/auth protocol | Optional device/handoff tables only after policy | YES for core; BLOCKING kiosk design/Phase 11 |
-| G19 / 012, 018, 026 | Retention, anonymization, migration scope | 04/14: retained snapshots, missing/deleted history; live state unknown | P422/431 history; no approved retention period | Provenance ideas; unsafe importer | Preserve evidence, explicit mapping/quarantine; owner retention review | Noncascade refs/core survive; later controlled privacy/import schema | YES for core; BLOCKING migration/retention operations |
-| G20 / 019 | Legacy stack conflict | 01/04/12: Expo/Firebase | Sprint 1 P606 says PHP/MySQL | Go/PG | Use actual audited shapes, accepted V2 stack | No new architecture question | YES; NON-BLOCKING/deferred investigation |
+Completion occurs iff every item has physical0 and replacement0. It occurs atomically at final disposition/acceptance; no separate user-driven complete button is needed. It freezes the overdue fine and emits completion once. Accounts/equipment becoming inactive do not obstruct authorized resolution of old obligations. Archived equipment must not receive a new loan; recommendation: prevent archive while any hold/custody/replacement remains so the original pool remains a valid replacement destination.
 
-Required decision-makers remain the responsible FSMO operations, inventory, policy, finance/accountability, IT/security and document/data custodians recorded in OPEN entries; no named approver or legal period is invented. NO gates G01–G09/G11/G14–G16 mean this package is **not an approved migration specification**. Fundamentally state/schema-sensitive G05/G06/G08/G11/G14/G15 require a revised approved contract before implementation. Other stakeholder confirmations can be handled before their dependent phases, without blocking core relational discussion.
+## Overdue fines and full clearance
 
-## Privacy, reports and retention
+Authoritative engineering formula is shared across domain, HTTP projections, reminders and reports:
 
-**ENGINEERING RECOMMENDATION:** classify identity credentials/profile and institutional ID as private, transactions as borrower-scoped/staff-authorized, financial records as restricted accountability data, audit as restricted evidence, notification addresses/payloads as private delivery data. Equipment catalog images alone may have an approved public/narrow catalog projection; never make borrower photos/reports public by analogy. Mask/minimize API projections and audit context; retention/anonymization OPEN-026 must preserve custody, sums, source evidence and actors' stable references while restricting identifying snapshots through an approved procedure. No legal retention duration is asserted.
+```text
+unresolved = lifecycle CHECKED_OUT and (physical_outstanding>0 or replacement_outstanding>0)
+currently_overdue = unresolved and server_now>due_at
+effective_end = server_now if unresolved else completed_at for an issued completed borrowing
+days = 0 if effective_end<=due_at else ceil((effective_end-due_at)/86,400 seconds)
+assessed_minor = days*1,000 PHP centavos
+outstanding_minor = assessed_minor - sum(immutable full-clear amounts)
+```
 
-Reports read the authoritative rows with one due/charge calculation contract: stock buckets and availability, active/overdue custody, unique borrowers, history, return dispositions, damage/loss, issued usage, assessed/adjusted/waived/settled/outstanding amounts. Distinguish requested from issued usage and lost from overdue. No materialized/report table without measured justification. Current profile names and historical snapshots must be labeled separately. Authorization applies before filters/pagination and any export download; no global collections in borrower clients and no unrestricted generic file route.
+Only issued borrowings have a fine basis. PENDING/DENIED/CANCELLED/EXPIRED assess zero. Completed late borrowing uses immutable final amount; it can be complete with OUTSTANDING money. At exact deadline0, one minute10PHP, exactly24h10PHP, 24h+one minute20PHP. No daily mutation, grace, cap, damage/loss valuation or partial-payment workflow. Original final assessment cannot be overwritten by a clear.
+
+**Live-clear engineering recommendation:** Admin clears the entire positive outstanding at one locked server time; store the cumulative assessed amount at that time and the actual whole balance cleared, method, actor and optional note. If unresolved fine later increases, only that new delta becomes outstanding. E.g due+1h assessed10, Admin PAID clears10; due+25h assessed20, outstanding10; completion at25h freezes20; subsequent WAIVED clears remaining10. Recorded payment10 and waived10 remain distinct. Every clear is full at its own time, not partial against a chosen amount. Clearing never extends due or resolves replacement.
+
+The command accepts no caller-selected payment amount. Recommended expected-balance token/amount prevents unknowingly clearing a changed balance; stale expectation conflicts. Serialize with borrowing/fine locks; same-key retry replays one event, a different-key attempt against a zero balance creates no second clear. If a 24h boundary created a new delta, a fresh explicit full-clear is legitimate. Queries return assessment, cleared total, outstanding, as-of time and live/final marker. Nonnegative bounds and integer overflow are authoritative errors; never fabricate negative balance or float money.
+
+Fine clearance is **Admin only**, even when Staff can inspect it. PAID records FSMO's asserted offline payment; WAIVED and OTHER_RESOLUTION do not imply cash. No receipt/payment allocation schema or gateway. Formal financial receipt procedures and fine reversal/reopening are outside confirmed scope and cannot be inferred from the boss repository.
+
+## Remaining policy questions and readiness
+
+Core request, review, return, replacement, fine and role/navigation policy gates are resolved. [OPEN_DECISIONS](../project/OPEN_DECISIONS.md) retains precise NON-BLOCKING details: damaged-original disposition/equivalence guidance; taxonomy/content; secure activation/email ownership mechanics; retention/cutover authorization; provider/cadence and deployment operations. Disposal feature, production delivery and real migration remain dependent on their own approvals/details. These do not justify reopening reserve-on-submit, merged approval, PHP 10/day, replacement liability, full-clear or kiosk meaning.
+
+Phase 3A is ready to begin **only after separate authorization**. Future mockups may assume held damaged originals, staff-certified equivalence, full request issue, current-version acceptance and live full-clear checkpoints, visibly marking draft terms/catalog copy. No UI, schema, business code or product tests have been implemented here.

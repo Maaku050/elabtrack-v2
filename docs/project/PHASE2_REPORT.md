@@ -1,5 +1,7 @@
 # Phase 2 — Domain & Database Design report
 
+> **Historical Phase2 handoff snapshot, superseded by Phase2.5 (2026-10-08).** The BLOCKED status,57 invariants,15 traces,28 table entries and policy alternatives below describe the original delivery, not the current baseline. Current owner decisions and readiness are in [PHASE2_5_REPORT](PHASE2_5_REPORT.md); current domain documents contain71 active invariants plus1 retired ID,18 walkthroughs and26 table entries. Core UX policy blockers are resolved; Phase3A is ready for separate authorization and remains unstarted. Original phase evidence is retained, not rewritten as if answers existed earlier.
+
 Date: **2026-10-08, Asia/Shanghai**. **Design documentation delivered for review; Phase 2 BLOCKED FOR IMPLEMENTATION.** No institutional policy was silently selected. State/schema-sensitive decisions remain open, so the unconditional COMPLETE/exit gate is not claimed. Phase 0 and Phase 1A–1I remain complete; their source and evidence are preserved.
 
 The package defines the FSMO domain contract, candidate PostgreSQL structure, reconciliation/concurrency rules, seven evidence labels, **57 future invariant specifications** and **15 conditional scenario traces**. They are design specifications, not executed business tests or implemented tables. No business source, configuration, migration, mockup, UI, boss repository, V1 Firebase, commit, push or deployment was changed. No Phase 3A began.
@@ -133,7 +135,7 @@ Additional touch-first/privacy-aware client of same borrowing domain. Narrow cat
 
 ## 28. File/attachment model
 
-Prefer conditional narrow EquipmentImage metadata/association, verified image content/size/type, safe replacement and bounded orphan cleanup. No unrestricted generic bucket shared with private reports/borrower/evidence documents. Other file purposes remain deferred; public catalog access never grants private export permission. No storage implementation now.
+Prefer conditional narrow EquipmentImage metadata/association, verified image content/size/type, safe replacement and bounded orphan cleanup. No unrestricted generic bucket shared with private reports/borrower/evidence documents. Other independently authorized file purposes remain deferred; public catalog access never grants private export permission. **Current D17 correction:** return photographs are wholly outside eLabTrack, only personally shown on the borrower's phone in person. Staff/Admin alone records authoritative condition/quantities. No return-photo/evidence submission, upload, transmission, storage, retention, attachments or evidence-upload workflow is a software requirement; catalog images are unaffected. No storage implementation now.
 
 ## 29. Idempotency strategy
 
@@ -256,3 +258,13 @@ The full 13-file inventory is section1; no other tracked/untracked file change e
 **Design deliverables and documentation validation delivered; unconditional Phase 2 exit gate NOT SATISFIED. Status: BLOCKED FOR IMPLEMENTATION.** Scope/modules/vocabulary/buckets/cross-invariants/returns/duplicate protection/one financial truth/distinct history-audit-ledger/candidate relational constraints-indexes/concurrency/V1 compatibility/boss map/test specifications and no implementation/diff boundaries are fulfilled. The additional policy-sensitive gate remains: state/schema choices are unresolved, so none can be claimed harmless to dependent implementation or final workflow mockups. Confirm the exact decisions in §42, revise the affected contract and obtain design approval before claiming COMPLETE or starting separately authorized work.
 
 No foundation/toolchain/runtime failure is the blocker. The blocker is explicit institutional policy identified with evidence; documenting it completes the authorized independent design work without guessing the decision.
+
+## Phase 2.5 supersession addendum
+
+All29 authoritative working owner decisions are now integrated into the eight domain documents and DEC-051–061 (stock recommendation DEC-062). Borrower is generic with Student/Faculty categories; active provisioned account gate, three named roles and narrow Staff provisioning replace earlier open identity assumptions. Reserve on submit,24h EXPIRED, own pending cancel, visible denial and combined physical approval/release replace alternatives. Direct issue is immediate, date+time due uses Asia/Manila with no seven-day maximum; terms acceptance is once per current version.
+
+Damage/loss is replacement liability separate from physical inventory. Current hybrid arithmetic A/R/C/damaged_held excludes lost/retired physical buckets; replacement acceptance is a new acquisition, not ghost custody or erased incident. Complete requires both physical and replacement zero. PHP10/day selected ceiling elapsed24h continues until completion and freezes. Admin full-clear PAID/WAIVED/OTHER_RESOLUTION retains assessed history; generalized finance/device-kiosk candidates are removed. Interactive Kiosk means one borrower mobile-first catalog/cart flow; Staff/Admin desktop/tablet responsive.
+
+The original report's unresolved core-policy gates and separate-approved/device proposals are historical, superseded by current [OPEN_DECISIONS](OPEN_DECISIONS.md) and [Phase2.5 report](PHASE2_5_REPORT.md). Remaining disposal/equivalence/retention/provider/onboarding/migration/operations details are NON-BLOCKING for core UX but gate their affected later activities. Phase3A can begin after separate authorization; neither it nor any business implementation begins in Phase2.5. Updated design includes26 table entries (3 existing/18 new core/2 conditional catalog/3 deferred legacy),71 active invariants+1 retired ID and18 reconciled design walkthroughs, not executed business tests.
+
+Phase2.5 validation is Markdown scope/hash/link/count review, `git diff --check` and exact status; original runtime validation references above remain historical. Phase1 source, migrations, frontend, mockups and boss files are unchanged. No commit/push/deploy.

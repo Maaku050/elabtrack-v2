@@ -1,70 +1,78 @@
-# Phase 2 API resource draft
+# Phase 2.5 future REST resource draft
 
-**ENGINEERING RECOMMENDATION**, design-only, 2026-10-08. No routes, handlers, DTO packages or OpenAPI artifact are implemented. Final actor permissions and policy-dependent commands require the [decision gate](BUSINESS_RULES.md#policy-decision-matrix). Existing [Phase 1 API envelope](../API_CONTRACTS.md) and security/session architecture remain unchanged.
+2026-10-08. **ENGINEERING RECOMMENDATION**, unimplemented: `/api/v1`, existing consistent envelope `{success,message,data,meta,error}`, safe server-generated request ID and Phase 1 HTTP/session protections. Product capabilities follow [permission matrix](BUSINESS_RULES.md#future-permission-matrix), not route guards. No handler/source or auth role has changed. Resource naming/casing are future implementation contracts, not permission to start a phase.
 
-## Resource and command shape
+## Proposed resources and commands
 
-All paths below are beneath `/api/v1`. “Capability” means approved future server authority, not a role implicitly granted by a menu/JWT/body field. Existing auth/user endpoints remain as implemented; they are not replaced by this draft.
+All private resources authenticate current account, validate actor capability and scope to borrower/operational purpose before paging/detail/replay. Actor/role/state/fee totals are server-derived. Commands marked key require Idempotency-Key and canonical normalized payload; authorization is repeated on replay.
 
-| Resource / command | Intended contract and authority | Gate / integrity |
+| Draft route | Actor / purpose | Required boundary |
 |---|---|---|
-| GET /equipment; GET /equipment/{id} | Bounded approved catalog projection/search/filter/detail; never borrower directory/private loan data | Active catalog/availability visibility, optional categories/images; server paging |
-| POST /equipment; PATCH /equipment/{id} | Inventory metadata creation/narrow edit with expected metadata version; fields exclude reserved/issued counters | Approved inventory capability; stale version conflict; new initial stock via one audited command |
-| POST /equipment/{id}/stock-adjustments | Typed authorized add/remove/repair/retire/correction; positive quantities, reason, expected/current guard | OPEN-022; current lock/ledger/audit; no generic set-all-counts |
-| POST /equipment/{id}/archive; optional reactivate/inactivate commands | Approved catalog lifecycle operation; retain history | OPEN-012; no archive with holds/outstanding under recommendation |
-| GET /equipment-categories | Conditional approved taxonomy for catalog filter | OPEN-011; optional admin category commands require policy |
-| GET /equipment/{id}/image; conditional POST image attachment | Narrow image purpose, bounded verified upload, catalog access permission | No GET /files/{id} granting private reports by image permission |
-| GET /borrowers; GET /borrowers/{id} | Approved staff borrower management projection; no public directory | OPEN-001/002/003/008/009; eligibility/provisioning commands belong later approved identity phase |
-| GET /me/borrowing-eligibility | Own minimal current eligibility/guidance, not arbitrary policy impersonation | Distinct from /auth/me; exact disclosure policy after confirmation |
-| GET /borrowing-policy; GET /terms/current | Approved effective policy/terms text/version and governing timezone/deadline inputs | OPEN-006/015/016/023; no fabricated terms/rate |
-| POST /terms/acceptances | Attributable acceptance if selected account-level flow; per-borrowing acceptance may be inside submit instead | OPEN-016; immutable version/content evidence and authenticated borrower |
-| POST /borrowings | Submit own request: unique equipment/positive quantity lines, requested due input, agreed terms evidence/version; channel bound by server | Idempotency-Key recommended; OPEN-020 reservation; server chooses owner/state/value/rate |
-| GET /borrowings; GET /borrowings/{id} | Own borrowings unless current approved staff capability; includes requested/reserved/issued/disposition/outstanding, separate calendar/financial summaries | Query ownership applied before paging; no client-only UID filter |
-| POST /borrowings/{id}/approve | Authoritative legal decision, expected version/reason if required | OPEN-021: separate approve or confirmed combined release; not a guessed endpoint meaning |
-| POST /borrowings/{id}/deny | Retained denial decision/reason and actual hold release | OPEN-014; lock pending state; no DELETE |
-| POST /borrowings/{id}/cancel | Conditional approved owner/staff preissue command; omitted if not allowed | OPEN-013; no active custody erase |
-| POST /borrowings/{id}/checkout | Actual release only if separate release adopted; current actor/target/catalog/terms/due checks | OPEN-020/021/023; issue snapshots/fresh locks; state-safe retry |
-| POST /borrowings/direct-checkout | Conditional staff direct issue specifying target existing borrower and item intent | OPEN-020; shared issue rules; Idempotency-Key; no inactive target bypass |
-| POST /borrowings/{id}/returns | One immutable event: unique borrowingItemId lines, good/damaged/lost quantities and notes; return operator permission | Idempotency-Key; DB ownership/uniqueness and locked outstanding; duplicate IDs fail whole request |
-| GET /borrowings/{id}/returns | Authorized chronological immutable events and disposition evidence | Same parent authorization; no writable returned checkbox or arbitrary event edit |
-| GET /charges; GET /charges/{id} | Own liability or approved staff financial projection: original assessment, adjustment components and derived balance separately | No assessed total labeled cash/revenue; approved source/currency rules |
-| POST /charges/{id}/adjustments | Typed reasoned approved waiver/reduction/increase/administrative settlement/reversal | OPEN-007/024; charge lock/nonnegative balance/source key; no base amount PATCH |
-| GET /charges/{id}/adjustments | Authorized immutable charge history | Resource ownership/current capability |
-| GET /reports/inventory, /reports/borrowings, /reports/returns, /reports/accountability, /reports/usage | Approved staff bounded read metrics/filters and as-of calendar semantics | OPEN-003/006/007/015; no default public/global export; formats deferred |
-| GET /audit-events | Conditional restricted staff audit review, bounded entity/action/date filters | Approved audit access/retention; no credential/provider raw data |
-| /kiosk/catalog, /kiosk/handoffs, /kiosk/claims (conditional concepts only) | Narrow shared-device catalog/attributed intent and approved handoff, if selected | OPEN-010; no device auth protocol accepted; normal canonical borrowing use cases; no private session hydration by default |
+| GET /equipment; GET /equipment/{id} | Borrower/Staff/Admin catalog/search/filter | Bounded visible pool metadata/image/availability; no borrower/private evidence |
+| POST /equipment; PATCH /equipment/{id} | Staff/Admin ordinary metadata | Narrow allowed fields, expected metadata version; no raw stock fields |
+| POST /equipment/{id}/archive | Staff/Admin | No hold/physical/replacement outstanding; history retained; no ordinary hard delete |
+| GET /equipment/{id}/movements | Staff/Admin operational ledger | Bounded filters; actor/source quantities; no secrets |
+| POST /equipment/{id}/stock-movements | Staff/Admin ordinary acquisition/removal | Key; typed vectors/reason; cannot alter hold/custody. Exceptional correction Admin only; disposal/repair commands await later inventory policy |
+| GET /users/me | Existing authenticated self | Current Phase 1 contract unchanged; future role/category projection only under approved feature |
+| GET /borrowers; GET /borrowers/{id} | Staff/Admin operational selection/history | Active selection for new issue; old inactive obligations still resolvable; bounded minimal profile |
+| POST /borrowers | Staff/Admin Borrower provisioning | Key; role forced BORROWER, secure onboarding later; no public signup |
+| POST /borrowers/{id}/deactivate; POST /borrowers/{id}/reactivate | Admin | Key; retained obligations/audit; no identity delete |
+| POST /borrowers/import | Admin bulk provision | Future validated secure batch/preview/reconciliation contract; no plaintext-password mandate |
+| POST /staff-accounts; PATCH /staff-accounts/{id} | Admin Staff/Admin management | Key for irreversible changes; current actor authority, named users and privilege recovery design; no shared admin |
+| GET /borrowing-policy; GET /terms/current | Registered account policy/content | Current published version/zone/TTL/fine basis; no generic tenant settings |
+| POST /terms/{versionId}/accept | Borrower own acceptance | Key; current published terms, unique user/version; no staff accepting on behalf |
+| POST /borrowing-policy/versions; POST /terms/versions | Admin | Immutable published typed versions/content; audited effective boundary |
+| POST /borrowings | Borrower own cart submission | Key; unique equipment/positive quantity, requested due intent, existing current terms; reserve atomically; old fine allowed |
+| GET /borrowings; GET /borrowings/{id} | Own Borrower; Staff/Admin operational view | Stable scoped history, physical/replacement/fine projections; lifecycle/active/due filters validated |
+| POST /borrowings/{id}/approve | Staff/Admin approval WHILE handover | Key; PENDING/unexpired, active target, confirmed due_at, held stock; one CHECKED_OUT edge, no separate checkout route |
+| POST /borrowings/{id}/deny | Staff/Admin | Key; PENDING/unexpired, required borrower-visible reason; release/history |
+| POST /borrowings/{id}/cancel | Borrower owner only | Key; PENDING/unexpired; release/history; administrative cancellation optional unselected |
+| POST /borrowings/direct-checkout | Staff/Admin immediate issue | Key; active existing borrower/current terms, unique quantities, future due_at, current availability |
+| POST /borrowings/{id}/returns | Staff/Admin authoritative good/damage/loss | Key; unique item IDs, integer quantities<=physical remaining; immutable evidence/obligations/stock; closure if both0 |
+| GET /borrowings/{id}/returns | Owner Borrower; Staff/Admin | Immutable chronological events; no writable borrower returned checkbox |
+| GET /borrowings/{id}/replacement-obligations | Owner Borrower; Staff/Admin | Required/accepted/remaining by kind/source/equipment, historical incident retained |
+| POST /borrowings/{id}/replacements | Staff/Admin acceptance | Key; unique obligation IDs, integer accepted<=remaining, appropriate type/equivalence evidence; new stock acquisition, possible completion |
+| GET /borrowings/{id}/replacements | Owner Borrower; Staff/Admin | Immutable acceptance history, no edit/delete |
+| GET /fines; GET /fines/{id} | Own Borrower; Staff/Admin operational review | Live/final assessed, original basis, clear history, outstanding, as_of; no automatic issue block |
+| POST /fines/{id}/clear | ADMIN ONLY | Key; method PAID/WAIVED/OTHER_RESOLUTION, optional note, expected outstanding; server calculates entire current balance; no amount chosen by caller |
+| GET /fines/{id}/clearances | Owner Borrower; Staff/Admin operational context | Preserved basis/amount/time/Admin/method; no inferred bank/gateway evidence |
+| GET /reports/inventory, /reports/borrowings, /reports/replacements, /reports/fines, /reports/usage | Admin administrative reports | Bounded approved measures; assessed/PAID/waived/other distinct; Staff ordinary summaries require narrow future operation grant |
+| GET /audit-events | Admin restricted audit | Bounded entity/action/date/actor; safe minimal context, no credentials/provider raw payload |
 
-No standalone fine truth, `/records` copy, arbitrary borrowing status PATCH, ordinary transactional DELETE, anonymous checkout, tenant/lab routes, serialized units, online payment gateway or generic public/private file endpoint is introduced. Optional cash/payment routes require OPEN-007 confirmation and reviewed Payment/Allocation/refund contracts; they are deliberately not defined as existing scope.
+Expiry is an internal system command/sweep, not borrower-controlled endpoint; it releases holds at locked expiry and writes history/outbox. Due/overdue reminders are internal future scheduled uses of the same formula. No `/charges`, adjustment/payment-allocation/device/handoff routes, separate approved-release route, mutable `/records` copy, arbitrary state PATCH or consequential DELETE. Return photographs are entirely outside eLabTrack. No borrower return-evidence submission, return-photo upload/transmission/storage/retention, attachment API or evidence-upload step exists in this draft; Staff/Admin return input has only structured condition/quantity/operational-note fields and rejects return-photo/media fields. Kiosk uses ordinary /equipment and /borrowings resources, no special auth namespace.
 
-## Mobile-first contract check
+## Mobile-first request and response projection
 
-| Borrower need | Server response/interaction |
+| Borrower interaction | Draft response semantics |
 |---|---|
-| Browse/search/filter | Paginated concise catalog cards, optional confirmed categories/availability; detail only on demand; server-authoritative current availability |
-| Equipment details | One requested pool and allowed image/description/status; no global collection download or private borrower names |
-| Request submission | Bounded unique item intent; explicit selected due/terms; definitive receipt/entity ID after commit; availability conflict returns safe authorized item details |
-| Request status | One canonical borrowing with submitted/decision/issue evidence, derived due/custody and explicit hold semantics; not multiple copied status documents |
-| Active/due borrowings | Owner-scoped paginated `/borrowings?view=active` plus approved due filters; one calendar contract; no client-generated fine authority |
-| History/accountability | Owner-scoped stable paging, immutable issue snapshots/return events/charge components; estimates visibly unposted, no private staff audit by default |
+| Browse/search/filter/cart | Concise bounded catalog; client cart is local intent, not a hold until submission commits |
+| Submit | Canonical ID/ref, PENDING, reserved quantities, submitted_at/expires_at and bound terms/policy; no claim of checkout |
+| Status/history | Stored lifecycle plus derived partial/overdue/replacement conditions; timestamped denial reason visible |
+| Active issued borrowing | issued/good/damaged/lost/physical outstanding plus replacement required/accepted/remaining per item; immutable due_at |
+| Accountability | Physical/replacement obligations separate from live/final PHP fine and clearance history; show as_of and fine-final marker |
+| Completion | Server final event/time, physical0/replacement0, frozen final fine; money may remain outstanding |
 
-Recommendation for list contract is reuse current numeric `page`/`per_page` envelope conventions where suitable: default 20 / maximum 100 for ordinary lists, validated server bounds, stable `(createdAt,id)` or `(name,id)` ordering, total metadata only when justified. These are **engineering transport bounds**, not institutional borrowing limits. Cursor paging may replace offsets for growing chronological lists if measured need warrants it; no new generic pagination subsystem now. Query text length and allowed filters/sorts are bounded/validated, SQL parameters bound and sort columns allowlisted. Invalid dates/enums are errors, not silently ignored. Owner filters precede count and page. Sensitive authenticated Query data must use Phase 1I private-cache classification/fences in later frontend code.
+Staff approval view shows outstanding accountability for human review; server does not auto-deny old fine. At the face-to-face return the borrower may physically show a personally stored phone photo; Staff/Admin may inspect actual equipment if desired and alone records authoritative condition/quantities in eLabTrack. The photo never enters the software, request payload, attachment, storage or notification. Borrowers cannot mark returned or submit return evidence through eLabTrack. At fine clear, API returns original cumulative assessment, full cleared amount, remaining0 at captured time, method/event/time/Admin, live/final marker and warning copy that an unresolved loan can accrue later (product wording, not implementation internals).
 
-Proposed submission returns canonical ID/reference, current state, quantities, immutable accepted versions, explicit reservation effect and agreed/requested due evidence. Proposed return result identifies ReturnEvent, new outstanding/completion and any posted charge IDs. HTTP success occurs only after commit. A same-key replay identifies the original result, with fresh current correlation ID and current access check; a stock estimate never constitutes confirmed issuance. Client-supplied actors/prices/state/fee totals are ignored/rejected as authoritative inputs.
+## Validation, pagination and errors
 
-## Future domain error catalog
+Recommend current `page`/`per_page` conventions default20/max100, stable `(created_at,id)` or `(name,id)`, explicit owner filters before count/page; cursor later only if measured need. These are engineering bounds, not borrowing quantity/time quotas. Bound search/body/item counts, validate enums/date offsets/Asia-Manila interpretation, allowlist sort columns and parameterize SQL. Scoped counts must not leak others' private records. Authenticated TanStack Query data must use existing Phase 1I cache classification/generation fences in later frontend implementation.
 
-Draft codes are intentionally small and unimplemented. Use existing `{success,message,data,meta,error}`/safe requestId boundary; foundation validation remains 400, authentication401, authorization403, absent authorized resource404, integrity conflict409. Error details must not disclose another borrower's profile or catalog/charge evidence outside current authority. Body/parser/rate/server statuses remain Phase 1 behavior.
+HTTP success follows commit. A late pending command can **commit expiry** and then return409 BORROWING_EXPIRED with the authorized new state; handler must not accidentally roll back the release. Same-key valid receipt replays committed result identity with new current request ID after reauthorization. Different key/state command fails safely; no automatic retry of every 409.
 
 | Proposed code | HTTP | Meaning |
 |---|---|---|
-| EQUIPMENT_NOT_AVAILABLE | 409 | Requested pool has insufficient eligible available/held stock at approved boundary |
-| BORROWER_NOT_ELIGIBLE | 403 | Caller/selected target fails approved borrowing gate; disclose only authorized guidance |
-| BORROWING_STATE_CONFLICT | 409 | Command is incompatible with current legal state/expected version |
-| RETURN_EXCEEDS_OUTSTANDING | 409 | Submitted disposition exceeds locked remaining custody |
-| DUPLICATE_RETURN_ITEM | 400 | Input repeats a borrowing item ID; reject entire event |
-| STOCK_CONFLICT | 409 | Stock/count/archive/version condition changed or fails reviewed integrity rule |
-| CHARGE_ALREADY_SETTLED | 409 | No positive balance for requested discharge; waiver/reduction can also create zero balance |
-| ACCOUNTABILITY_CONFLICT | 409 | Adjustment would over-discharge/reverse or source already assessed |
-| IDEMPOTENCY_CONFLICT | 409 | Same scoped command key with different normalized payload |
+| VALIDATION_ERROR | 400 | Invalid quantities/dates/required denial reason/type/clear method |
+| DUPLICATE_RETURN_ITEM / DUPLICATE_REPLACEMENT_OBLIGATION | 400 | Duplicate line ID; whole command rejected before effects |
+| ACCOUNT_INACTIVE / BORROWER_NOT_ACTIVE | 403 | Current caller/authorized selected borrower inactive; no invented general eligibility state |
+| TERMS_ACCEPTANCE_REQUIRED | 409 | Current version must be accepted before new submission/direct first-use |
+| EQUIPMENT_NOT_AVAILABLE | 409 | Locked available/held quantity or usable status cannot fulfill intent |
+| BORROWING_STATE_CONFLICT | 409 | Legal lifecycle/ownership/version precondition changed |
+| BORROWING_EXPIRED | 409 | Expiry reached; committed release/state reported safely |
+| RETURN_EXCEEDS_OUTSTANDING | 409 | Disposition exceeds locked physical remaining |
+| REPLACEMENT_EXCEEDS_OUTSTANDING | 409 | Acceptance exceeds locked unresolved replacement |
+| STOCK_CONFLICT | 409 | Archive/count/metadata version/integrity conflict |
+| FINE_ALREADY_CLEARED / STALE_FINE_BALANCE | 409 | No current positive outstanding / expected full balance changed |
+| IDEMPOTENCY_CONFLICT | 409 | Existing scoped key with different normalized payload |
 
-Invalid quantity/notes/due/terms/version fields use existing VALIDATION_ERROR with safe field details; ownership mismatches may return404 to avoid disclosure. No handler mapping, automatic retry on every409 or guessed business policy is added now. [INVARIANTS](INVARIANTS.md) ties the later HTTP contract to domain/real-database tests.
+Authentication401, forbidden operation403, unauthorized resource404 where appropriate, existing parser/body/rate/server responses retain Phase 1 contracts. Do not disclose private borrower history/amounts to unauthorized callers. No business HTTP implementation/tests run in this task.

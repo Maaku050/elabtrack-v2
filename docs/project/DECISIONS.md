@@ -267,14 +267,14 @@ Recorded initially 2026-10-05; subsequent entries cite their own phase/date/auth
 ## ELAB-V2-DEC-038 — Audience-specific responsive UX foundation
 
 - Status: Accepted (confirmed future design direction)
-- Decision: React + TypeScript + Vite, Tailwind CSS v4, shadcn/ui and Lucide remain the eLabTrack V2 UI foundation. Borrower/customer experience is mobile-first: mobile composition first, tablet/desktop progressively enhanced. Kiosk is touch-first with large targets, privacy/session-reset awareness and a dedicated shell. Staff/admin is desktop/tablet-first, responsive on smaller screens where practical; complex administration need not be forced into tiny mobile layouts.
+- Decision: React + TypeScript + Vite, Tailwind CSS v4, shadcn/ui and Lucide remain the eLabTrack V2 UI foundation. Borrower/customer experience is mobile-first: mobile composition first, tablet/desktop progressively enhanced. The original dedicated touch-first kiosk-shell assumption is **superseded by DEC-061 (2026-10-08)**: Interactive Kiosk is the normal borrower catalog/cart/request experience, mobile-first and responsive; no device-authenticated hardware shell. Staff/admin is desktop/tablet-first, responsive on smaller screens where practical; complex administration need not be forced into tiny mobile layouts.
 - Authority/date: explicit stakeholder Phase 1F UX direction, 2026-10-07.
 - Impact: These are accepted design principles, not approved product screens/permissions/kiosk workflows. Existing 62 primitives and components.json remain unchanged. No mockups or feature UI created.
 
 ## ELAB-V2-DEC-039 — Mockups before feature UI completion
 
 - Status: Accepted (future delivery process)
-- Decision: Phase 3A owns UX architecture, wireframes and high-fidelity mockups: borrower mobile views first, tablet/desktop adaptations, dedicated kiosk layouts and staff/admin layouts. Phase 3B implements the approved mockups through the shadcn-based eLabTrack design system, application shell and reusable domain UI components. Later feature UI is complete only after comparison against approved mockups and responsive behavior.
+- Decision: Phase 3A owns UX architecture, wireframes and high-fidelity mockups: borrower mobile views first, tablet/desktop adaptations and staff/admin layouts. The earlier dedicated kiosk layouts are **superseded by DEC-061**: one coherent borrower catalog/cart flow satisfies Interactive Kiosk. Phase 3B implements the approved mockups through the shadcn-based eLabTrack design system, application shell and reusable domain UI components. Later feature UI is complete only after comparison against approved mockups and responsive behavior.
 - Authority/date: explicit stakeholder Phase 1F direction, 2026-10-07.
 - Impact: ROADMAP records the split; Phase 3A/3B have not begun. Product decisions still gate dependent designs.
 
@@ -341,18 +341,129 @@ Recorded initially 2026-10-05; subsequent entries cite their own phase/date/auth
 - Status: **Accepted — scope and evidence contract**, 2026-10-08.
 - Decision: Authorize FSMO domain/database documentation and read-only boss reference inspection. Authority is current stakeholder/Dean direction, current V2 decisions, capstone intent, audited V1 behavior, boss design reference, then engineering recommendation. Use the seven explicit Phase 2 evidence labels; current source establishes implementation facts, not institutional policy.
 - Authority: Explicit current stakeholder Phase 2 request; expands source-policy detail without changing Phase 1 implementation.
-- Impact: No business migrations/services/UI, Phase 3A/mockups, boss writes, commit/push/deployment. Phase 1A–1I is complete. Policy-dependent state/schema remains blocked pending confirmation; [Phase 2 report](PHASE2_REPORT.md) records actual delivery/readiness.
+- Impact: No business migrations/services/UI, Phase 3A/mockups, boss writes, commit/push/deployment. Phase 1A–1I is complete. At the original Phase2 handoff, policy-dependent state/schema was blocked pending confirmation. DEC-051–062 and [Phase2.5 report](PHASE2_5_REPORT.md) now supersede that gate; the Phase2 report remains historical evidence.
 
 ## ELAB-V2-DEC-049 — Retained canonical business history and distinct evidence
 
 - Status: **Accepted — required design boundary**, 2026-10-08.
-- Decision: Preserve canonical borrowing transactions through denial/cancellation/completion; distinguish borrowing history, immutable return evidence, inventory movement ledger, financial assessment/adjustment history and durable business audit. Operational logs do not replace evidence. Do not replicate V1's terminal copy/delete or independent conflicting fine truths.
+- Decision: Preserve canonical borrowing transactions through denial/cancellation/completion; distinguish borrowing history, immutable return evidence (Staff/Admin-recorded condition/quantity events, excluding photographs or return attachments), inventory movement ledger, financial assessment/adjustment history and durable business audit. Operational logs do not replace evidence. Do not replicate V1's terminal copy/delete or independent conflicting fine truths.
 - Authority: Explicit Phase 2 Parts 18/21/22 and existing DEC-017/037. This accepts the required integrity boundary, not a fine amount, payment procedure, retention duration or role matrix.
-- Impact: [Domain designs](../domain/DOMAIN_MODEL.md) recommend exact tables/immutability/concurrency for later review; none implemented. Assessment, administrative settlement and actual payment/revenue remain distinct; OPEN-007/024/026 unresolved.
+- Impact: [Domain designs](../domain/DOMAIN_MODEL.md) recommend exact tables/immutability/concurrency for later review; none implemented. Assessment, administrative settlement and actual payment/revenue remain distinct; OPEN-007/024 were subsequently resolved by DEC-059/060; retention OPEN-026 remains nonblocking for core UX but gates destructive cleanup.
 
 ## ELAB-V2-DEC-050 — FSMO aggregate-stock design constraint
 
 - Status: **Accepted — required scope constraint**, 2026-10-08.
 - Decision: Phase 2 designs catalog stock pools and aggregate quantities, without per-physical-unit/serialized tracking unless a later requirement changes. Do not adopt boss organization/unit/lab/global-role scope, generic file authorization or unsafe importer/migrations wholesale.
 - Authority: Explicit Phase 2 scope/Parts 4/26/41; charter/AGENTS; V1 audit 04/06 evidence.
-- Impact: Six inventory buckets, exact movement/locking design and valuation timing remain labeled engineering recommendations and policy-dependent OPEN-020/022/023. This entry does not accept boss's stock/role/financial defaults.
+- Impact: The original six-bucket/valuation design was provisional. Phase2.5 selects a four-count physical hybrid plus replacement obligations (DEC-058/062); OPEN-020/023 are resolved and OPEN-022 retains only nonblocking original-disposition/equivalence details. This entry does not accept boss's stock/role/financial defaults.
+
+## Phase 2.5 authoritative working product decisions
+
+Authority for DEC-051–061: project owner's explicit **“PHASE 2.5 — PRODUCT DECISION INTEGRATION & DOMAIN REBASELINE”** direction, 2026-10-08; owner implemented V1 and knows the former FSMO manual workflow. These are accepted working V2 decisions, not assertions of deployment or independent institutional approval. D numbers trace all29 owner statements in [BUSINESS_RULES](../domain/BUSINESS_RULES.md#decision-integration-matrix). Exact schema/locks and identified engineering details remain design selections for later review. Phase2.5 authorizes documentation only; no Phase3A, migrations, business code, boss changes or Git writes.
+
+## ELAB-V2-DEC-051 — Borrower population, account gate and fine review
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D1, D2, D16.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: Active registered BORROWER may request; expected categories include Student and Faculty and do not grant roles. Admin can deactivate; inactive accounts cannot log in or perform normal authenticated borrower actions. No independent eligibility/suspension subsystem or automatic outstanding-fine submission block. Existing obligations/history survive; staff resolves them. Old fine is reviewed face-to-face and can inform a reasoned human denial.
+- Supersession / impact: Resolves OPEN-002/008 and eligibility portion of OPEN-009/020; audited student UI/status behavior remains historical.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-052 — Three product roles and named administrative authority
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D3, D26.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: BORROWER, STAFF, ADMIN are future product-facing roles. Admin inherits Staff operations; fine clearing, deactivation, bulk imports, Staff/Admin management, exceptional stock corrections, policy/terms and administrative audit/reports belong to Admin. Multiple named Admins, never one shared credential. Staff operational history/returns/replacements do not imply Admin fine authority. Current generic user/admin source remains unchanged until an approved implementation.
+- Supersession / impact: Resolves OPEN-003; excludes Super Admin expansion OPEN-004/005. Future permission matrix in BUSINESS_RULES is authoritative design intent.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-053 — Provisioned accounts and secure bulk onboarding
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D4.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: No public self-registration in current intended workflow. Authorized Staff/Admin provision Borrower accounts; Staff cannot provision privileged roles. Admin bulk Borrower creation/import is required. Preserve conceptual identity/category/program/contact fields where purposeful; do not preserve insecure plaintext spreadsheet passwords as a requirement. Activation/initial-password delivery remains implementation security design.
+- Supersession / impact: Resolves OPEN-001 and registration conflicts; Phase1 development/test-only signup containment remains source fact, not public product capability.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-054 — Reservation requests and atomic physical issue
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D5, D6, D10, D16.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: Borrower submission immediately reserves quantities transactionally. Staff/Admin reviews request/accountability in person and approves WHILE handing over: one PENDING→CHECKED_OUT edge, no approved-waiting state. Staff/Admin direct checkout immediately issues against available stock for active existing Borrower with date/time due and current server validation. Old fine does not prohibit submission; staff may deny during human review.
+- Supersession / impact: Resolves OPEN-020/021 and supersedes separate-approval engineering preference; no borrowing code is implemented.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-055 — 24-hour expiry and retained pending terminal outcomes
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D7, D8, D9.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: Working pending TTL is24 hours after submission, candidate configurable policy later; no operating-hours awareness. Expiry becomes EXPIRED and releases holds/history. Borrower cancels only own PENDING; cancellation releases/retains. Staff/Admin denies PENDING with required borrower-visible reason and releases/retains. Administrative pending cancellation is optional scoped engineering recommendation only; no issued-loan cancellation/delete.
+- Supersession / impact: Resolves OPEN-013/014; history boundary DEC-049 includes EXPIRED. Atomic expiry versus approval is required.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-056 — Due date and time without fixed duration maximum
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D11, D12.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: Every checked-out borrowing has required due_at containing date and time. Interpret local values in Asia/Manila and persist absolute timestamptz. Remove the V1 seven-day maximum; no new maximum, grace or quota. Nullable configurable future maximum may be added only under later approved policy. Partial return/replacement retains original issued deadline.
+- Supersession / impact: Resolves duration/time portions of OPEN-015/020; no organizational timezone hierarchy.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-057 — First-use terms and material version changes
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D13.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: Borrower accepts current terms once at activation/first use; immutable user/version/accepted_at evidence applies to subsequent requests while current. Material new active version requires acceptance before another request. No per-loan checkbox. Existing pending request retains its submission acceptance. Engineering recommendation: direct issue also requires current borrower acceptance, never staff impersonation.
+- Supersession / impact: Resolves OPEN-016 and terms-binding OPEN-023; final approved text/secure onboarding mechanics later.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-058 — Replacement obligations and operational completion
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D14, D17, D18, D19, D20, D21, D22, D23.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: Staff/Admin alone records authoritative return condition/quantities. **D17 clarified by explicit owner correction, 2026-10-08:** a borrower may physically show a photo personally stored on their own phone during the face-to-face return; Staff/Admin may inspect actual equipment if desired. The photo is entirely outside eLabTrack. Borrowers cannot mark returned or submit return evidence; no photo acceptance, upload, transmission, storage, retention, attachment, return-evidence file model or interface/workflow step. Equipment catalog images remain separate. Partial returns keep loan/deadline open. Damage/loss creates replacement quantities rather than automatic equipment-price monetary liability; those disposed quantities leave physical checked_out. Appropriate type/accepted equivalent replacement reduces liability/restores usable stock without erasing incident. Complete iff ALL physical outstanding0 AND replacement outstanding0. Overdue depends on unresolved borrowing, including replacement-only open loan. Damaged-original disposition/equivalence details are nonblocking for borrowing UX; no mandatory repair workflow.
+- Supersession / impact: Resolves core OPEN-022/023 and premature completion; detailed original disposition/equivalence remain OPEN-022.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-059 — PHP10 overdue fine and selected deterministic day arithmetic
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D15.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: Confirmed working rate PHP10 per overdue day; continues through partial return/replacement until completed_at, then freezes. Selected ENGINEERING DETAIL is ceil(max(0,effective_end-due_at)/24h), effective_end=now while unresolved or completed_at when complete. At exact due0,1 minute10PHP, exactly24h10PHP,24h+1minute20PHP. Use bounded integer centavos/duration and one shared formula, no daily fine mutation. Pending/denied/cancelled/expired never accrue.
+- Supersession / impact: Resolves OPEN-006/015/024. Ceiling interpretation is adopted for this baseline; no evidenced calendar-day conflict requiring a fresh gate. Legacy historical calculations retain provenance rather than silent recalculation.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-060 — Focused fine history and full Admin clearance
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D24, D25, D26, D27.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: Confirmed primary money liability is overdue fine; damage/loss remains replacement-based. Admin alone clears entire current outstanding via PAID, WAIVED or OTHER_RESOLUTION, preserving original/final assessed amount, cleared amount/time/actor/method and optional note. No partial payments, online gateway or allocation architecture. Selected ENGINEERING RECOMMENDATION: overdue_fines plus immutable fine_clearances; live clearance covers full outstanding at its time, continued unresolved accrual can produce a later delta for another full clear. Fine clearance does not close/extend borrowing; assessment, recorded PAID and waiver/other are distinct reports.
+- Supersession / impact: Resolves OPEN-007/024 and supersedes generic charge/adjustment/payment candidates; live checkpoint arithmetic is design detail, not a partial-payment product feature.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-061 — Interactive Kiosk is the responsive borrower catalog/cart
+
+- Status: **Accepted — authoritative working product decision**.
+- Owner statements: D28, D29.
+- Authority/date: explicit Phase2.5 owner direction, 2026-10-08.
+- Decision: Interactive Kiosk is browse/search/filter/select quantities/cart/review/create request in normal borrower web/mobile flow. No dedicated hardware, terminal shell, shared-device identity, device registration/tokens, handoff codes or special authentication. Borrower mobile-first, Staff/Admin desktop/tablet-first responsive. Preserve academic name with functional meaning.
+- Supersession / impact: Resolves OPEN-010. Supersedes kiosk-shell portions of DEC-038/039 and old Phase11 hardware assumption. Boss device/handoff candidates are rejected for current scope.
+- Affected documents: [domain baseline](../domain/DOMAIN_MODEL.md), related rules/state/schema/invariants/API, OPEN_DECISIONS, SOURCE_OF_TRUTH, ROADMAP and [Phase2.5 report](PHASE2_5_REPORT.md).
+
+## ELAB-V2-DEC-062 — Selected physical stock and replacement design
+
+- Status: **Proposed — selected engineering baseline**, distinct from confirmed product policy.
+- Authority/date: Phase2.5 explicitly authorizes re-evaluating the inventory model and schema; engineering recommendation, 2026-10-08.
+- Decision: Choose hybrid `total_tracked=available+reserved+checked_out+damaged_held`; loss removes physical total, replacement acquisition adds available/total. Damage originals remain nonusable held until later approved disposition. Replacement liability derives required minus immutable acceptances and never inflates physical stock; completion requires physical0 and replacement0. Four physical counts plus obligation/events replace six accounted buckets.
+- Rationale: Pure usable counts hide holds/custody/originals; six physical/history buckets conflate lost history with present stock. Acquisition of a replacement while damaged original retained legitimately adds a second physical unit. Ledger/counters/acceptance/reconciliation use one normalized map with sorted locks.
+- Impact: [DOMAIN_MODEL arithmetic](../domain/DOMAIN_MODEL.md#selected-inventory-model-and-alternatives), DATA_MODEL, STATE_MACHINES, INVARIANTS, API_RESOURCE_DRAFT and boss salvage map; no repair/disposal policy guessed, no code/schema implemented. Engineering mechanics do not reopen confirmed core product flows.
