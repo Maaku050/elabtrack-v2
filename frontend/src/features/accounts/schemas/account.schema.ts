@@ -1,0 +1,3 @@
+import { z } from 'zod'
+export const accountFormSchema = z.object({ name: z.string().trim().min(1, 'Enter a full name.').max(100), email: z.email('Enter a valid email address.').max(254), borrower_type: z.enum(['STUDENT', 'FACULTY']), student_id: z.string().max(64), course: z.string().max(128), contact_number: z.string().max(32) }).superRefine((value, ctx) => { if (value.borrower_type === 'STUDENT' && !value.student_id.trim()) ctx.addIssue({ code: 'custom', path: ['student_id'], message: 'Enter the Student ID printed on the official identification.' }) })
+export type Values = z.infer<typeof accountFormSchema>

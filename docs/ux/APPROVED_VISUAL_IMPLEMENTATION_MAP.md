@@ -1,12 +1,12 @@
 # Approved visual implementation map
 
-**Current provisioning policy overlay, 2026-10-08:** [DEC-070 / approved rules and remaining gates](../project/ACCOUNT_PROVISIONING_POLICY.md) governs future behavior: only Admin creates accounts; Student requires unique textual official Student ID/approved SKSU email; Faculty is individual-only with valid unique accessible email and no required Student ID. Standard bulk creation/deactivation is Student-only. Both use borrower-owned separate passwords and current officially published Phase4B terms. This documentation overlay changes no implementation or approved mockup asset; original phase checkpoints remain historical.
+**Current provisioning policy overlay, 2026-10-08:** [DEC-070 / approved rules and remaining gates](../project/ACCOUNT_PROVISIONING_POLICY.md) governs implemented account behavior: only Admin creates accounts; Student requires unique textual official Student ID/approved SKSU email; Faculty is individual-only with valid unique accessible email and no required Student ID. Standard bulk creation/deactivation is Student-only. Both use borrower-owned separate passwords and current officially published Phase4B terms. Batch1 now implements account behavior under these rules without changing approved mockup assets; original phase checkpoints remain historical.
 
 2026-10-08. Every manifest PNG was opened and inspected; hashes/dimensions are verified. [Approved README](approved/README.md), [manifest](approved/MANIFEST.json), [fidelity contract](VISUAL_FIDELITY_CONTRACT.md), [Phase3B report](../project/PHASE3B_REPORT.md).
 
 **36 files =35 screen PNGs +1 brand PNG. S01 contains two baseline screens, so36 screen targets =4 baselines +32 future screens.** Role below is the confirmed capability boundary, not the manifest's device label. Named components refer to current shared compositions or clearly deferred retained primitives, not evidence that a full screen exists.
 
-Expected phase is sequencing/dependency guidance, never authorization. **Phase 4A update:** B06-02 sign-in/session recovery is implemented and runtime-reviewed; B04-02 has a limited safe read-only account surface. The other30 targets remain NOT IMPLEMENTED, including S06-01 whose shared feedback components do not implement its complete feature states. Visual inspection of a reference is not runtime review of a future feature. Existing59 Phase3A.1 behavior surfaces still apply where PNGs combine variants.
+Expected phase is sequencing/dependency guidance, never authorization. **Phase 4A update:** B06-02 sign-in/session recovery is implemented and runtime-reviewed; B04-02 has a limited safe read-only account surface. Historical Phase4A status is superseded for the specific Batch1 account/catalog/inventory surfaces documented below; other future targets, including S06-01 complete feature states, remain unimplemented. Visual inspection of a reference is not runtime review of a future feature. Existing59 Phase3A.1 behavior surfaces still apply where PNGs combine variants.
 
 ## Four baseline previews
 
@@ -18,7 +18,7 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 - **Unique components/content:** Synthetic activity and local deferred-feature disclosures.
 - **Expected responsive behavior:** 320/390 single column;768/1280 wider metrics/activity, same four destinations.
 - **Expected implementation phase:**3B representative presentation; production Home/Dashboard metrics10, Catalog6/7/11, Pending7.
-- **Current implementation status:** Development preview implemented; no functional production feature or business API.
+- **Current implementation status:** Batch1 Phase6 implements real protected catalog/details with backend data, bounded search/categories/sort/availability and catalog images. Phase3B preview remains isolated; request cart/submission stays Phase7.
 - **Visual review status:** Chromium viewport/theme comparison completed. Owner reviewed real implementation screenshots and accepted both themes, responsiveness and disclosed minor adaptations, 2026-10-08 (DEC-064). This approves the baseline preview, not future production functionality.
 
 ### B02 — Equipment Catalog
@@ -29,7 +29,7 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 - **Unique components/content:** Local query/category/availability/sort, unique selection, read-only summary.
 - **Expected responsive behavior:** 320 controls below facts,390 side control;768 two columns;1280 three; no page scroll horizontally.
 - **Expected implementation phase:**3B representative presentation; production Home/Dashboard metrics10, Catalog6/7/11, Pending7.
-- **Current implementation status:** Development preview implemented; no functional production feature or business API.
+- **Current implementation status:** Batch1 Phase6 implements real protected catalog/details with backend data, bounded search/categories/sort/availability and catalog images. Phase3B preview remains isolated; request cart/submission stays Phase7.
 - **Visual review status:** Chromium viewport/theme comparison completed. Owner reviewed real implementation screenshots and accepted both themes, responsiveness and disclosed minor adaptations, 2026-10-08 (DEC-064). This approves the baseline preview, not future production functionality.
 
 ### S01-upper — Staff Dashboard
@@ -40,7 +40,7 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 - **Unique components/content:** Static chart dataset, accessible text table and physical-stock legend.
 - **Expected responsive behavior:** 1440 three panels;1024 two plus spanning activity; below1024 nav Sheet and stacked panels.
 - **Expected implementation phase:**3B representative presentation; production Home/Dashboard metrics10, Catalog6/7/11, Pending7.
-- **Current implementation status:** Development preview implemented; no functional production feature or business API.
+- **Current implementation status:** Batch1 Phase6 implements real protected catalog/details with backend data, bounded search/categories/sort/availability and catalog images. Phase3B preview remains isolated; request cart/submission stays Phase7.
 - **Visual review status:** Chromium viewport/theme comparison completed. Owner reviewed real implementation screenshots and accepted both themes, responsiveness and disclosed minor adaptations, 2026-10-08 (DEC-064). This approves the baseline preview, not future production functionality.
 
 ### S01-lower — Pending Requests
@@ -51,7 +51,7 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 - **Unique components/content:** Eight synthetic rows, local checkboxes/search/fine filter; read-only Review.
 - **Expected responsive behavior:** 1440 full row actions;1024 named horizontal table scrolling; smaller shell Sheet.
 - **Expected implementation phase:**3B representative presentation; production Home/Dashboard metrics10, Catalog6/7/11, Pending7.
-- **Current implementation status:** Development preview implemented; no functional production feature or business API.
+- **Current implementation status:** Batch1 Phase6 implements real protected catalog/details with backend data, bounded search/categories/sort/availability and catalog images. Phase3B preview remains isolated; request cart/submission stays Phase7.
 - **Visual review status:** Chromium viewport/theme comparison completed. Owner reviewed real implementation screenshots and accepted both themes, responsiveness and disclosed minor adaptations, 2026-10-08 (DEC-064). This approves the baseline preview, not future production functionality.
 
 ## 32 future approved targets
@@ -262,8 +262,8 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 - **Unique components/content:** A/R/C/damaged-held reconciled stock, catalog lifecycle distinct from availability.
 - **Expected responsive behavior:** Dense desktop counts/table; tablet essential columns; mobile pool cards and count disclosure.
 - **Expected implementation phase:** Phase 6.
-- **Current implementation status:** NOT IMPLEMENTED. Shared shell/component availability is not screen completion.
-- **Visual review status:** Actual PNG inspected; future runtime fidelity is NOT VERIFIED. Individual content/dependency findings are in the fidelity contract's32-reference ledger.
+- **Current implementation status:** IMPLEMENTED in Batch1 Phase6 within catalog/inventory scope. Actual protected routes, real data, image/history/adjustment and Admin reconciliation contracts are in API_CONTRACTS.md.
+- **Visual review status:** Actual PNG inspected; runtime light/dark/responsive screenshots are compared in PHASE6_REPORT.md, without new owner approval. Individual content/dependency findings are in the fidelity contract's32-reference ledger.
 
 ### S05-02 — Staff - Equipment Detail and Movements
 
@@ -273,8 +273,8 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 - **Unique components/content:** T=A+R+C+D, immutable movements, metadata vs typed stock operations.
 - **Expected responsive behavior:** Count groups wrap, ledger named scroll; edit form stacks and does not hide custody.
 - **Expected implementation phase:** Phase 6.
-- **Current implementation status:** NOT IMPLEMENTED. Shared shell/component availability is not screen completion.
-- **Visual review status:** Actual PNG inspected; future runtime fidelity is NOT VERIFIED. Individual content/dependency findings are in the fidelity contract's32-reference ledger.
+- **Current implementation status:** IMPLEMENTED in Batch1 Phase6 within catalog/inventory scope. Actual protected routes, real data, image/history/adjustment and Admin reconciliation contracts are in API_CONTRACTS.md.
+- **Visual review status:** Actual PNG inspected; runtime light/dark/responsive screenshots are compared in PHASE6_REPORT.md, without new owner approval. Individual content/dependency findings are in the fidelity contract's32-reference ledger.
 
 ### S05-03 — Admin - Full Fine Clearance
 
@@ -393,9 +393,9 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 - **Shared components:** StaffShell, SurfaceCard, Input, Textarea, AlertDialog; any workflow-specific composition is deferred.
 - **Unique components/content:** Typed direction/quantity/reason and immutable audit; procedure still requires approved contract.
 - **Expected responsive behavior:** Split wide, stack narrow; review never hides holds/custody or original evidence.
-- **Expected implementation phase:** Phase 6 only after correction policy resolved.
-- **Current implementation status:** NOT IMPLEMENTED. Shared shell/component availability is not screen completion.
-- **Visual review status:** Actual PNG inspected; future runtime fidelity is NOT VERIFIED. Individual content/dependency findings are in the fidelity contract's32-reference ledger.
+- **Expected implementation phase:** Phase6 reviewed available-count reconciliation under approved Admin authority; custody/damaged correction remains later scope.
+- **Current implementation status:** IMPLEMENTED in Batch1 Phase6 within catalog/inventory scope. Actual protected routes, real data, image/history/adjustment and Admin reconciliation contracts are in API_CONTRACTS.md.
+- **Visual review status:** Actual PNG inspected; runtime light/dark/responsive screenshots are compared in PHASE6_REPORT.md, without new owner approval. Individual content/dependency findings are in the fidelity contract's32-reference ledger.
 
 ### B06-02 — Shared - Sign in and Session Recovery
 
@@ -411,3 +411,13 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 ## Separate brand manifest record
 
 **BRAND — FSMO seal; all audiences.** [Reference](approved/brand/FSMO-seal-reference.png); standalone circular image used by AppBrand, compact borrower header and Staff identity. No screen or workflow of its own. Responsive sizes44px Borrower /56px Staff,44px collapsed rail. Phase3B asset integrated with replaceable `sealSrc`. Supplied AI reconstruction visually inspected; **not authenticated official master**. [Provenance](../../frontend/src/assets/brand/README.md). This is the36th manifest file and is not counted as an additional screen.
+
+## Phase 5 implementation mapping
+
+S04-01 → `/staff/borrowers` (Staff/Admin read; Admin-only Add/Bulk), S04-02 → `/staff/borrowers/:id` (identity/accountability cards, preserved future-history unavailable state, Admin profile/status/activation and bounded audit), S04-03 → `/admin/borrowers/bulk` (four stages, Student-only template/upload and full validation preview/selected confirmation), S04-04 → `/admin/administration/accounts` and protected creation/detail routes, S05-05 → `/admin/administration` (three administrative cards and actual Staff/Admin directory). The borrower form switches required fields for Student/Faculty; it never offers an administrator-supplied password. `/activate` uses the retained login typography/card/tokens for borrower-owned password establishment, with no published-token UI or storage. Staff creation has fixed STAFF authority and existing Admin is read-only.
+
+Unavailable transaction/accountability/last-sign-in data is not replaced with artwork sample values. Submission status replaces invented delivery claims. Existing Phase3B shell/tokens/primitives are reused; creation/editing have dedicated protected routes rather than artwork sample forms populated beside fictitious users. Light/dark, narrow scroll regions, confirmation focus and screenshots are checked against approved references; actual evidence is under `docs/ux/verification/phase5/`. Approved PNGs and MANIFEST remain immutable.
+
+### Phase6 catalog/inventory scope adaptation
+
+B02 catalog preserves mobile list/thumbnails/availability/search/category/sort and bottom navigation with real backend records. View Details replaces Phase7 request/cart actions; no active cart/submission is presented. S05-01 inventory keeps filter toolbar/four-count metrics/table; S05-02 retains metadata/current physical stock and immutable movement history. S05-07 Admin reconciliation shows stock basis, reason, observed available count and explicit review/confirmation, preserving R/C/D. Category/equipment creation/edit forms use the approved system; no approved PNG is modified. Real current liability remains unavailable, without invented incidents/replacements/history. Image fixtures are synthetic validation data, not production catalog photographs.

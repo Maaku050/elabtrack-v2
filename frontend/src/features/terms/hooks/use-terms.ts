@@ -23,3 +23,9 @@ export function useAcceptTerms() {
   },
  })
 }
+
+// Read-only current publication for authorized administrative information.
+export function useCurrentTerms() {
+ const actor = useAuthStore(s => s.user)
+ return useQuery({ queryKey: ['terms', actor?.id, 'current-publication'], queryFn: ({ signal }) => termsApi.current(signal), meta: { authenticated: true }, enabled: actor?.role === 'ADMIN', retry: false })
+}

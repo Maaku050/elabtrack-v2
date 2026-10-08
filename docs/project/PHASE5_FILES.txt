@@ -1,0 +1,128 @@
+ M README.md
+ M backend/.env.example
+ M backend/.env.production.example
+ M backend/go.mod
+ M backend/go.sum
+ M backend/internal/bootstrap/dependencies.go
+ M backend/internal/config/config.go
+ M backend/internal/config/config_test.go
+ M backend/internal/domain/user/permissions.go
+ M backend/internal/infrastructure/database/migrator_integration_test.go
+ M backend/internal/interface/http/middleware/cors.go
+ M backend/internal/interface/http/middleware/rate_limit.go
+ M backend/internal/interface/http/response/errors.go
+ M backend/internal/interface/http/routes/routes.go
+ M backend/tests/integration/foundation_test.go
+ M backend/tests/integration/terms_http_test.go
+ M backend/tests/integration/terms_test.go
+ M docs/API_CONTRACTS.md
+ M docs/domain/API_RESOURCE_DRAFT.md
+ M docs/domain/BUSINESS_RULES.md
+ M docs/domain/DATA_MODEL.md
+ M docs/domain/INVARIANTS.md
+ M docs/domain/STATE_MACHINES.md
+ M docs/project/ACCOUNT_PROVISIONING_POLICY.md
+ M docs/project/DECISIONS.md
+ M docs/project/OPEN_DECISIONS.md
+ M docs/project/ROADMAP.md
+ M docs/project/SOURCE_OF_TRUTH.md
+ M docs/ux/APPROVED_VISUAL_IMPLEMENTATION_MAP.md
+ M frontend/src/app/router.tsx
+ M frontend/src/features/auth/navigation.ts
+ M frontend/src/features/terms/hooks/use-terms.ts
+ M frontend/src/lib/api-client.ts
+ M frontend/src/lib/api-error.ts
+ M frontend/src/styles/application.css
+ M frontend/src/styles/index.css
+?? backend/internal/application/accounts/service.go
+?? backend/internal/bootstrap/batch1_integration_test.go
+?? backend/internal/config/accounts.go
+?? backend/internal/domain/accounts/accounts.go
+?? backend/internal/domain/accounts/accounts_test.go
+?? backend/internal/infrastructure/email/brevo.go
+?? backend/internal/infrastructure/email/brevo_test.go
+?? backend/internal/infrastructure/persistence/postgres/accounts_repository.go
+?? backend/internal/infrastructure/spreadsheet/student.go
+?? backend/internal/infrastructure/spreadsheet/student_test.go
+?? backend/internal/interface/http/handlers/accounts_handler.go
+?? backend/internal/interface/http/routes/accounts_routes.go
+?? backend/migrations/000006_account_management.down.sql
+?? backend/migrations/000006_account_management.up.sql
+?? backend/tests/integration/accounts_test.go
+?? docs/project/BATCH1_IMPLEMENTATION_PLAN.md
+?? docs/project/PHASE5_FILES.txt
+?? docs/project/PHASE5_REPORT.md
+?? docs/ux/verification/phase5/acceptance.json
+?? docs/ux/verification/phase5/activated-first-use-terms.png
+?? docs/ux/verification/phase5/activation-complete.png
+?? docs/ux/verification/phase5/activation-missing-link.png
+?? docs/ux/verification/phase5/administration-1440-dark.png
+?? docs/ux/verification/phase5/administration-1440-light.png
+?? docs/ux/verification/phase5/administration-390-light.png
+?? docs/ux/verification/phase5/bulk-create-confirmation.png
+?? docs/ux/verification/phase5/bulk-create-results.png
+?? docs/ux/verification/phase5/bulk-deactivation-confirmation.png
+?? docs/ux/verification/phase5/bulk-preview-1440-dark.png
+?? docs/ux/verification/phase5/bulk-preview-1440-light.png
+?? docs/ux/verification/phase5/bulk-preview-390-light.png
+?? docs/ux/verification/phase5/detail-1440-dark.png
+?? docs/ux/verification/phase5/detail-1440-light.png
+?? docs/ux/verification/phase5/detail-390-light.png
+?? docs/ux/verification/phase5/detail-768-light.png
+?? docs/ux/verification/phase5/directory-1024-light.png
+?? docs/ux/verification/phase5/directory-1440-dark.png
+?? docs/ux/verification/phase5/directory-1440-light.png
+?? docs/ux/verification/phase5/directory-390-light.png
+?? docs/ux/verification/phase5/directory-empty-filter.png
+?? docs/ux/verification/phase5/faculty-create-light.png
+?? docs/ux/verification/phase5/individual-status-confirmation.png
+?? docs/ux/verification/phase5/keyboard-focus.png
+?? docs/ux/verification/phase5/preview-regression/B01-1280-dark.png
+?? docs/ux/verification/phase5/preview-regression/B01-1280-light.png
+?? docs/ux/verification/phase5/preview-regression/B01-320-dark.png
+?? docs/ux/verification/phase5/preview-regression/B01-320-light.png
+?? docs/ux/verification/phase5/preview-regression/B01-390-dark.png
+?? docs/ux/verification/phase5/preview-regression/B01-390-light-full.png
+?? docs/ux/verification/phase5/preview-regression/B01-390-light.png
+?? docs/ux/verification/phase5/preview-regression/B01-768-dark.png
+?? docs/ux/verification/phase5/preview-regression/B01-768-light.png
+?? docs/ux/verification/phase5/preview-regression/B02-1280-dark.png
+?? docs/ux/verification/phase5/preview-regression/B02-1280-light.png
+?? docs/ux/verification/phase5/preview-regression/B02-320-dark.png
+?? docs/ux/verification/phase5/preview-regression/B02-320-light.png
+?? docs/ux/verification/phase5/preview-regression/B02-390-dark.png
+?? docs/ux/verification/phase5/preview-regression/B02-390-light-full.png
+?? docs/ux/verification/phase5/preview-regression/B02-390-light.png
+?? docs/ux/verification/phase5/preview-regression/B02-768-dark.png
+?? docs/ux/verification/phase5/preview-regression/B02-768-light.png
+?? docs/ux/verification/phase5/preview-regression/B02-selection-dialog.png
+?? docs/ux/verification/phase5/preview-regression/RESULTS.json
+?? docs/ux/verification/phase5/preview-regression/S01-dashboard-1024-dark.png
+?? docs/ux/verification/phase5/preview-regression/S01-dashboard-1024-light.png
+?? docs/ux/verification/phase5/preview-regression/S01-dashboard-1440-dark.png
+?? docs/ux/verification/phase5/preview-regression/S01-dashboard-1440-light.png
+?? docs/ux/verification/phase5/preview-regression/S01-navigation-sheet.png
+?? docs/ux/verification/phase5/preview-regression/S01-pending-1024-dark.png
+?? docs/ux/verification/phase5/preview-regression/S01-pending-1024-light.png
+?? docs/ux/verification/phase5/preview-regression/S01-pending-1440-dark.png
+?? docs/ux/verification/phase5/preview-regression/S01-pending-1440-light.png
+?? docs/ux/verification/phase5/staff-create-light.png
+?? docs/ux/verification/phase5/staff-directory-no-create.png
+?? docs/ux/verification/phase5/student-domain-error.png
+?? frontend/scripts/phase5-browser-qa.mjs
+?? frontend/src/components/application/operational-shell.tsx
+?? frontend/src/features/accounts/api/accounts.api.ts
+?? frontend/src/features/accounts/hooks/use-accounts.ts
+?? frontend/src/features/accounts/pages/account-create.tsx
+?? frontend/src/features/accounts/pages/account-detail.tsx
+?? frontend/src/features/accounts/pages/account-directory.tsx
+?? frontend/src/features/accounts/pages/activation-page.tsx
+?? frontend/src/features/accounts/pages/administration-page.tsx
+?? frontend/src/features/accounts/pages/student-bulk.tsx
+?? frontend/src/features/accounts/schemas/account.schema.test.ts
+?? frontend/src/features/accounts/schemas/account.schema.ts
+?? frontend/src/features/accounts/types.ts
+?? frontend/src/styles/management.css
+?? integration/BATCH1.md
+?? integration/batch1-env-run.py
+?? integration/compose.batch1.yml

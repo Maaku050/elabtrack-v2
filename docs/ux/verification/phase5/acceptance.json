@@ -1,0 +1,526 @@
+{
+  "date": "2026-10-08T17:20:07.358Z",
+  "checks": [
+    {
+      "name": "anonymous protected directory",
+      "result": "PASS"
+    },
+    {
+      "name": "missing activation link",
+      "result": "PASS"
+    },
+    {
+      "name": "real directory light dark tablet mobile",
+      "result": "PASS"
+    },
+    {
+      "name": "search empty state",
+      "result": "PASS"
+    },
+    {
+      "name": "Student domain validation",
+      "result": "PASS"
+    },
+    {
+      "name": "Student text identity and captured activation",
+      "result": "PASS"
+    },
+    {
+      "name": "profile update through real API",
+      "result": "PASS"
+    },
+    {
+      "name": "activation resend cooldown visible in real UI",
+      "result": "PASS"
+    },
+    {
+      "name": "Faculty external email no Student ID or assigned password",
+      "result": "PASS"
+    },
+    {
+      "name": "individual warned status change and reactivation",
+      "result": "PASS"
+    },
+    {
+      "name": "xlsx complete preview selected confirmation",
+      "result": "PASS"
+    },
+    {
+      "name": "Student-only bulk deactivation",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin-only Staff creation",
+      "result": "PASS"
+    },
+    {
+      "name": "administrative shell navigation",
+      "result": "PASS"
+    },
+    {
+      "name": "single-use activation and URL token removal",
+      "result": "PASS"
+    },
+    {
+      "name": "existing first-use terms compatibility",
+      "result": "PASS"
+    },
+    {
+      "name": "durable terms acceptance after activation",
+      "result": "PASS"
+    },
+    {
+      "name": "inactive account enforced on protected resolution",
+      "result": "PASS"
+    },
+    {
+      "name": "Staff read and restricted creation deep link",
+      "result": "PASS"
+    },
+    {
+      "name": "keyboard focus",
+      "result": "PASS"
+    }
+  ],
+  "screens": [
+    "activation-missing-link.png",
+    "directory-1440-light.png",
+    "directory-1440-dark.png",
+    "directory-390-light.png",
+    "directory-1024-light.png",
+    "directory-empty-filter.png",
+    "student-domain-error.png",
+    "detail-1440-light.png",
+    "detail-1440-dark.png",
+    "detail-768-light.png",
+    "detail-390-light.png",
+    "faculty-create-light.png",
+    "individual-status-confirmation.png",
+    "bulk-preview-1440-light.png",
+    "bulk-preview-1440-dark.png",
+    "bulk-preview-390-light.png",
+    "bulk-create-confirmation.png",
+    "bulk-create-results.png",
+    "bulk-deactivation-confirmation.png",
+    "staff-create-light.png",
+    "administration-1440-light.png",
+    "administration-1440-dark.png",
+    "administration-390-light.png",
+    "activation-complete.png",
+    "activated-first-use-terms.png",
+    "staff-directory-no-create.png",
+    "keyboard-focus.png"
+  ],
+  "errors": [],
+  "responses": [
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/policy",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/policy",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 400
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 201
+    },
+    {
+      "path": "/api/v1/borrowers/policy",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/c8742391-b8d9-481d-8a91-603be8266d1f",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/c8742391-b8d9-481d-8a91-603be8266d1f/audit",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/c8742391-b8d9-481d-8a91-603be8266d1f",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/c8742391-b8d9-481d-8a91-603be8266d1f/audit",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/c8742391-b8d9-481d-8a91-603be8266d1f",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/c8742391-b8d9-481d-8a91-603be8266d1f",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/c8742391-b8d9-481d-8a91-603be8266d1f/audit",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/c8742391-b8d9-481d-8a91-603be8266d1f/activation",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/c8742391-b8d9-481d-8a91-603be8266d1f/activation",
+      "status": 429
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/policy",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 201
+    },
+    {
+      "path": "/api/v1/borrowers/policy",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05/audit",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05/audit",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05/status",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05/audit",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/79051efc-0f87-4473-bff4-be49a9138f05/audit",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/rosters",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/rosters",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/rosters/e5b39308-9e8a-45e6-8c11-3d38164c39eb/confirm",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/rosters/e5b39308-9e8a-45e6-8c11-3d38164c39eb/confirm",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/rosters",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/rosters/8a4facfd-69a8-4287-997f-0ffe5ae1ff83/confirm",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/borrowers/rosters/8a4facfd-69a8-4287-997f-0ffe5ae1ff83/confirm",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers/policy",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/staff-accounts",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/staff-accounts",
+      "status": 201
+    },
+    {
+      "path": "/api/v1/borrowers/policy",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/staff-accounts/7fa02f32-5582-441a-a84f-6bf770f53171",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/staff-accounts/7fa02f32-5582-441a-a84f-6bf770f53171/audit",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/staff-accounts/7fa02f32-5582-441a-a84f-6bf770f53171",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/staff-accounts/7fa02f32-5582-441a-a84f-6bf770f53171/audit",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/staff-accounts",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/terms/current",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/staff-accounts",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/current",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/activate",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/activate",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/b486b119-a6aa-4ce7-a584-f1791f96cdcc/accept",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/terms/b486b119-a6aa-4ce7-a584-f1791f96cdcc/accept",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 200
+    }
+  ],
+  "scope": "Isolated synthetic accounts / fake mail; no official terms or live Brevo"
+}

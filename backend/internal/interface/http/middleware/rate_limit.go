@@ -43,7 +43,7 @@ func RateLimit(cfg config.SecurityConfig) fiber.Handler {
 		}
 		if c.Method() == fiber.MethodPost {
 			switch path {
-			case "/api/v1/auth/login":
+			case "/api/v1/auth/login", "/api/v1/auth/activate":
 				return login(c)
 			case "/api/v1/auth/refresh":
 				return refresh(c)

@@ -2,12 +2,17 @@ package bootstrap
 
 import (
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
+	appaccounts "github.com/Maaku050/elabtrack-v2/backend/internal/application/accounts"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
+	appinventory "github.com/Maaku050/elabtrack-v2/backend/internal/application/inventory"
 	appterms "github.com/Maaku050/elabtrack-v2/backend/internal/application/terms"
 	appuser "github.com/Maaku050/elabtrack-v2/backend/internal/application/user"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/catalogimage"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/email"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/persistence/postgres"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/security"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/spreadsheet"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/routes"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
@@ -17,15 +22,19 @@ import (
 // It is constructed once during bootstrap and passed to the router.
 type Container struct {
 	// Application services
-	AuthSvc  *auth.Service
-	UserSvc  *appuser.Service
-	TermsSvc *appterms.Service
+	AuthSvc              *auth.Service
+	UserSvc              *appuser.Service
+	TermsSvc             *appterms.Service
+	AccountManagementSvc *appaccounts.Service
+	InventorySvc         *appinventory.Service
 
 	// HTTP handlers
-	Health *handlers.HealthHandler
-	Auth   *handlers.AuthHandler
-	User   *handlers.UserHandler
-	Terms  *handlers.TermsHandler
+	Health            *handlers.HealthHandler
+	Auth              *handlers.AuthHandler
+	User              *handlers.UserHandler
+	Terms             *handlers.TermsHandler
+	AccountManagement *handlers.AccountsHandler
+	Inventory         *handlers.InventoryHandler
 
 	// Outbound ports needed by route registration (auth middleware).
 	TokenIssuer application.TokenIssuer
@@ -44,31 +53,39 @@ func buildContainer(infra *Infrastructure) *Container {
 	userSvc := appuser.NewService(userRepo)
 	termsSvc := appterms.NewService(postgres.NewTermsRepository(infra.DB.Pool), userRepo, infra.Tx)
 
+	accountsSvc := appaccounts.NewService(postgres.NewAccountsRepository(infra.DB.Pool), infra.Tx, hasher, email.NewBrevo(infra.Config.Accounts.BrevoKey, infra.Config.Accounts.SenderEmail, infra.Config.Accounts.SenderName), infra.Config.Accounts.Policy)
+	inventorySvc := appinventory.NewService(postgres.NewInventoryRepository(infra.DB.Pool), postgres.NewAccountsRepository(infra.DB.Pool), infra.Tx, catalogimage.Validator{})
 	v := validator.New()
 
 	return &Container{
-		AuthSvc:     authSvc,
-		UserSvc:     userSvc,
-		TermsSvc:    termsSvc,
-		Health:      handlers.NewHealthHandler(infra.Health),
-		Auth:        handlers.NewAuthHandler(authSvc, v, infra.Config.App.Env, infra.Config.Security),
-		User:        handlers.NewUserHandler(userSvc, v),
-		Terms:       handlers.NewTermsHandler(termsSvc, infra.Config.App.Env, infra.Config.Security),
-		TokenIssuer: issuer,
-		Accounts:    auth.NewAccountResolver(userRepo),
-		Environment: infra.Config.App.Env,
+		AuthSvc:              authSvc,
+		InventorySvc:         inventorySvc,
+		Inventory:            handlers.NewInventoryHandler(inventorySvc, infra.Config.App.Env, infra.Config.Security),
+		AccountManagementSvc: accountsSvc,
+		AccountManagement:    handlers.NewAccountsHandler(accountsSvc, spreadsheet.StudentRoster{}, infra.Config.App.Env, infra.Config.Security),
+		UserSvc:              userSvc,
+		TermsSvc:             termsSvc,
+		Health:               handlers.NewHealthHandler(infra.Health),
+		Auth:                 handlers.NewAuthHandler(authSvc, v, infra.Config.App.Env, infra.Config.Security),
+		User:                 handlers.NewUserHandler(userSvc, v),
+		Terms:                handlers.NewTermsHandler(termsSvc, infra.Config.App.Env, infra.Config.Security),
+		TokenIssuer:          issuer,
+		Accounts:             auth.NewAccountResolver(userRepo),
+		Environment:          infra.Config.App.Env,
 	}
 }
 
 // routeDeps converts the container into the bundle expected by routes.Register.
 func (c *Container) routeDeps() *routes.Deps {
 	return &routes.Deps{
-		Health:      c.Health,
-		Auth:        c.Auth,
-		User:        c.User,
-		Terms:       c.Terms,
-		TokenIssuer: c.TokenIssuer,
-		Accounts:    c.Accounts,
-		Environment: c.Environment,
+		Health:            c.Health,
+		Auth:              c.Auth,
+		User:              c.User,
+		Terms:             c.Terms,
+		AccountManagement: c.AccountManagement,
+		Inventory:         c.Inventory,
+		TokenIssuer:       c.TokenIssuer,
+		Accounts:          c.Accounts,
+		Environment:       c.Environment,
 	}
 }

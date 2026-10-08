@@ -57,6 +57,11 @@ export class ApiClient {
   put<T>(url: string, body?: unknown, opts: RequestOptions = {}): Promise<T> { return this.request<T>('PUT', url, body, opts) }
   delete<T>(url: string, opts: RequestOptions = {}): Promise<T> { return this.request<T>('DELETE', url, undefined, opts) }
 
+  async download(url: string, signal?: AbortSignal): Promise<Blob> {
+    try { const response = await this.axios.get<Blob>(url, { responseType: 'blob', signal }); return response.data }
+    catch (error) { throw this.normalize(error) }
+  }
+
   private async request<T>(method: string, url: string, body: unknown, opts: RequestOptions): Promise<T> {
     try {
       const response = await this.axios.request<ApiResponse<T>>({ ...opts, method, url, data: body })

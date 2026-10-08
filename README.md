@@ -67,7 +67,7 @@ Inspect the dedicated development database before applying anything:
 make migrate-status
 ```
 
-The preserved local database now has all four migrations with verified checksums, including 000004 product roles. Runtime grants remain restricted to named application-table DML. No migration command is needed to start this verified database. For a fresh database or an explicitly reviewed pending suffix, use the existing runner:
+The normal local development database was backed up and verified through migration **000007_inventory** at the pre-Phase7 checkpoint on 2026-10-09. All seven migration checksums pass; runtime privileges remain restricted to application tables and named columns. Run `make migrate-status` to inspect your actual database; a fresh database or a separately reviewed pending suffix needs the existing explicit runner:
 
 ```bash
 make migrate-up
@@ -77,7 +77,7 @@ make migrate-status
 
 Preserve initialized history; investigate checksum/history errors instead of rewriting SQL, adopting history automatically or resetting the database. The runner retains atomic bookkeeping, paired checksums and advisory exclusion. No seed is required for startup or anonymous previews.
 
-There are no equipment/borrowing/fine/report/notification domain tables. `make seed` now contains no accounts or passwords. No default product login is published; use existing authorized provisioned accounts. Safe test accounts are generated only inside the disposable verification database.
+Account-management and equipment/inventory tables are implemented through migrations 000006–000007. Borrowing, fines, reports and notifications remain later scope. `make seed` contains no accounts or passwords. The normal database currently has no accounts, so authenticated owner review needs an authorized initial Admin account or the separate disposable verification fixtures; no default product login is published. See the [pre-Phase7 acceptance checklist](docs/project/PRE_PHASE7_ACCEPTANCE_CHECKLIST.md).
 
 Migration 000003 explicitly invalidates existing refresh sessions when applied or rolled back; users must log in again. Coordinate schema and application versions. Historical migrations are preserved. `make sessions-cleanup` explicitly deletes at most 1000 expired/revoked records terminal for over seven days; operators must run enough batches regularly. It never runs at API startup. Phase 1G verified migrations, refresh concurrency/rollback and cleanup against disposable PostgreSQL. See the [integration run instructions](integration/README.md) and [Phase 1 foundation report](docs/project/PHASE1_FOUNDATION.md).
 
@@ -161,3 +161,7 @@ Current terms/authentication verification uses the [Phase 4B isolated reproducti
 ## Reference hygiene
 
 The capstone is local at `.project-reference/ELABTRACK-SEMIFINAL.docx`, ignored by Git and excluded from any engineering deliverable. Source-controlled engineering evidence is in [the V1 audit](docs/reference/v1-audit/README.md), including an undeployed emergency hardening supplement. Product intent and implementation evidence may disagree; record conflicts rather than silently choosing a policy. Personal biographies and sample borrower/contact data must not be copied into project documentation.
+
+Batch 1 account-management implementation adds Admin-only Student/Faculty provisioning, Student Excel preview/confirmation, secure activation infrastructure and fixed-STAFF administration. See [the implementation plan](docs/project/BATCH1_IMPLEMENTATION_PLAN.md) and [account API contracts](docs/API_CONTRACTS.md#phase-5-implemented-account-management-contracts). Approved Student domains and backend Brevo settings are deliberately blank in example configuration; missing domains block Student onboarding, and no live email delivery or official terms approval is inferred. Disposable tests use [the isolated Batch 1 setup](integration/compose.batch1.yml); normal `.env` files are not overwritten.
+
+Batch1 Phase6 implements the protected Borrower catalog/details and Staff/Admin catalog/category/inventory/history/available-adjustment UI, with Admin reviewed available-count reconciliation and bounded authenticated PNG catalog images. New paired000007 enforces physical conservation and immutable evidence. Use the existing explicit local migration/runtime-grant workflow for another database. Normal local storage was migrated and verified separately at the pre-Phase7 checkpoint; the original isolated Batch1 evidence remains historical. [Phase5 report](docs/project/PHASE5_REPORT.md), [Phase6 report](docs/project/PHASE6_REPORT.md) and [isolated verification](integration/BATCH1.md) distinguish core verification from live Brevo/approved-domain/official-term dependencies. Phase7 borrowing is not implemented or automatically authorized.

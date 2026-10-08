@@ -3,6 +3,7 @@ package response
 import (
 	"errors"
 
+	domainaccounts "github.com/Maaku050/elabtrack-v2/backend/internal/domain/accounts"
 	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	domainterms "github.com/Maaku050/elabtrack-v2/backend/internal/domain/terms"
@@ -33,6 +34,16 @@ func Map(err error) Mapping {
 		return Mapping{400, constants.CodeValidation, "Validation failed.", fe}
 	}
 	switch {
+	case errors.Is(err, domainaccounts.ErrDomainsMissing):
+		return result(503, "STUDENT_DOMAINS_NOT_CONFIGURED", "Approved Student email domains are not configured.")
+	case errors.Is(err, domainaccounts.ErrStudentDomain):
+		return Mapping{400, constants.CodeValidation, "Validation failed.", map[string]string{"email": "must use a configured institutional domain"}}
+	case errors.Is(err, domainaccounts.ErrStudentIDExists):
+		return result(409, "STUDENT_ID_EXISTS", "This Student ID is already assigned.")
+	case errors.Is(err, domainaccounts.ErrActivationInvalid):
+		return result(400, "ACTIVATION_INVALID", "Activation link is invalid or expired. Request another from an administrator.")
+	case errors.Is(err, domainaccounts.ErrCooldown):
+		return result(429, "ACTIVATION_COOLDOWN", "Wait before sending another activation link.")
 	case errors.Is(err, domainterms.ErrNotPublished):
 		return result(503, "TERMS_NOT_PUBLISHED", "FSMO has not published borrowing terms yet.")
 	case errors.Is(err, domainterms.ErrVersionNotFound):

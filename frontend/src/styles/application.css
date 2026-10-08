@@ -201,7 +201,7 @@
 .request-status-filters .app-button span { background: var(--card); color: var(--foreground); border-radius: 999px; padding: 0 5px; font-size: 11px; line-height: 18px; }
 .filter-summary { color: var(--muted-foreground); font-size: 13px; line-height: 20px; margin-bottom: 10px; }
 .data-table-shell { overflow: hidden; }
-.table-scroll { max-width: 100%; overflow-x: auto; }
+.table-scroll { position: relative; max-width: 100%; overflow-x: auto; }
 .table-scroll [data-slot="table-container"] { overflow: visible; }
 .pending-table { min-width: 1100px; font-size: 13px; line-height: 19px; }
 .pending-table th { height: 44px; color: var(--muted-foreground); background: var(--muted); padding: 10px 9px; font-size: 12px; font-weight: 600; }

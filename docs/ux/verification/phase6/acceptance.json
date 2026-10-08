@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-08T17:57:48.470Z",
+  "checks": [
+    {
+      "name": "anonymous inventory redirect",
+      "result": "PASS"
+    },
+    {
+      "name": "real empty catalog and existing terms gate",
+      "result": "PASS"
+    },
+    {
+      "name": "Staff category creation",
+      "result": "PASS"
+    },
+    {
+      "name": "real equipment creation and opening movement",
+      "result": "PASS"
+    },
+    {
+      "name": "validated catalog raster upload and authenticated display",
+      "result": "PASS"
+    },
+    {
+      "name": "metadata update preserves real stock",
+      "result": "PASS"
+    },
+    {
+      "name": "reviewed stock addition and immutable history",
+      "result": "PASS"
+    },
+    {
+      "name": "reviewed usable removal",
+      "result": "PASS"
+    },
+    {
+      "name": "Staff reconciliation route and direct HTTP denial",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin reviewed available-count reconciliation",
+      "result": "PASS"
+    },
+    {
+      "name": "bounded inventory search and responsive themes",
+      "result": "PASS"
+    },
+    {
+      "name": "confirmed status and Borrower visibility",
+      "result": "PASS"
+    },
+    {
+      "name": "actual mobile catalog image availability and details",
+      "result": "PASS"
+    },
+    {
+      "name": "Borrower direct API management and history denial",
+      "result": "PASS"
+    },
+    {
+      "name": "catalog keyboard focus",
+      "result": "PASS"
+    },
+    {
+      "name": "safe archive preserves history and hides catalog",
+      "result": "PASS"
+    }
+  ],
+  "screens": [
+    "catalog-empty-390-light.png",
+    "categories-1440-light.png",
+    "equipment-create-1440-light.png",
+    "detail-1440-light.png",
+    "detail-1440-dark.png",
+    "detail-768-light.png",
+    "detail-390-light.png",
+    "stock-review-1440-light.png",
+    "reconciliation-1440-light.png",
+    "reconciliation-1440-dark.png",
+    "reconciliation-390-light.png",
+    "inventory-1440-light.png",
+    "inventory-1440-dark.png",
+    "inventory-1024-light.png",
+    "inventory-390-light.png",
+    "inventory-no-match.png",
+    "status-confirmation.png",
+    "catalog-390-light.png",
+    "catalog-390-dark.png",
+    "catalog-768-light.png",
+    "catalog-1280-light.png",
+    "catalog-320-light.png",
+    "borrower-detail-390-light.png",
+    "catalog-keyboard-focus.png",
+    "archived-detail-1440-light.png"
+  ],
+  "errors": [],
+  "scope": "Real isolated HTTP/PostgreSQL catalog and inventory; synthetic accounts/equipment only"
+}

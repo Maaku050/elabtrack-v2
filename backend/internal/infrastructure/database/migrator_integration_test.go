@@ -16,9 +16,10 @@ import (
 // Explicit opt-in; only the named disposable integration database is accepted.
 // Run before API/auth tests. All fault DDL lives in fixtures, never migrations/.
 func TestRealMigrator(t *testing.T) {
+	batch1 := os.Getenv("ELABTRACK_BATCH1") == "1"
 	phase4b := os.Getenv("ELABTRACK_PHASE4B") == "1"
 	phase4a := os.Getenv("ELABTRACK_PHASE4A") == "1"
-	if os.Getenv("ELABTRACK_MIGRATION_INTEGRATION") != "1" && !phase4a && !phase4b {
+	if os.Getenv("ELABTRACK_MIGRATION_INTEGRATION") != "1" && !phase4a && !phase4b && !batch1 {
 		t.Skip("requires Phase 1H disposable PostgreSQL")
 	}
 	port, dbName := "15432", "elabtrack_v2_integration"
@@ -27,6 +28,9 @@ func TestRealMigrator(t *testing.T) {
 	}
 	if phase4b {
 		port, dbName = "35432", "elabtrack_v2_phase4b_test"
+	}
+	if batch1 {
+		port, dbName = "54832", "elabtrack_v2_batch1_test"
 	}
 	cfg, err := config.Parse(map[string]string{"APP_ENV": "test", "JWT_SECRET": "migration-tests-only", "DB_HOST": "127.0.0.1", "DB_PORT": port, "DB_NAME": dbName, "DB_USER": "elabtrack_runtime", "DB_PASSWORD": os.Getenv("DB_PASSWORD"), "MIGRATION_DATABASE_URL": os.Getenv("MIGRATION_DATABASE_URL")})
 	must(t, err == nil, "config")
@@ -43,7 +47,7 @@ func TestRealMigrator(t *testing.T) {
 	err = owner.Pool.QueryRow(ctx, `SELECT current_database()=$1 AND current_user='elabtrack_migrator' AND NOT rolsuper AND NOT rolcreaterole AND NOT rolcreatedb FROM pg_roles WHERE rolname=current_user`, dbName).Scan(&identity)
 	must(t, err == nil && identity, "non-superuser migrator")
 	base, err := NewMigrator(nil, "../../../migrations").discover()
-	must(t, err == nil && len(base) == 5, "immutable foundation, product-role and approved terms pairs")
+	must(t, err == nil && len(base) == 7, "immutable foundation, product-role and approved terms and account-management pairs")
 	exec := func(sql string, args ...any) {
 		_, err := owner.Pool.Exec(ctx, sql, args...)
 		must(t, err == nil, "fixture SQL")
@@ -190,6 +194,9 @@ func TestRealMigrator(t *testing.T) {
 		tx, err := conn.Begin(ctx)
 		must(t, err == nil, "runtime DML tx")
 		_, err = tx.Exec(ctx, `INSERT INTO users(id,email,name,password)VALUES('ffffffff-ffff-4fff-8fff-ffffffffffff','phase1h-dml@example.invalid','Synthetic','not-a-login'); UPDATE users SET name='Updated' WHERE id='ffffffff-ffff-4fff-8fff-ffffffffffff'; SELECT id FROM users WHERE id='ffffffff-ffff-4fff-8fff-ffffffffffff'; DELETE FROM users WHERE id='ffffffff-ffff-4fff-8fff-ffffffffffff'`)
+		if err != nil {
+			t.Logf("synthetic runtime DML error: %v", err)
+		}
 		must(t, err == nil, "runtime full application DML")
 		must(t, tx.Rollback(ctx) == nil, "DML fixture rollback")
 		for _, sql := range []string{`CREATE TABLE phase1h_runtime_forbidden(id int)`, `ALTER TABLE phase1h_probe ADD COLUMN phase1h_forbidden int`, `CREATE ROLE phase1h_forbidden`, `SELECT version FROM schema_migrations`, `UPDATE schema_migrations SET checksum=checksum`} {

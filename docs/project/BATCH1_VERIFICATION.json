@@ -1,0 +1,100 @@
+{
+  "generated_at": "2026-10-08T18:01:43.483589+00:00",
+  "head": "dc04db7fec3cf57fe991bca3092df58ef9faddc5",
+  "phase5": "PARTIALLY COMPLETE \u2014 EXTERNAL GATES",
+  "phase6": "COMPLETE within reviewed Batch1 catalog/inventory scope",
+  "frontend": {
+    "tests": 208,
+    "files": 14,
+    "lint": "PASS",
+    "inherited_warnings": 19,
+    "new_warnings": 0,
+    "build": "PASS"
+  },
+  "go": {
+    "fmt": "PASS",
+    "vet": "PASS",
+    "full_tests": "PASS",
+    "targeted_race": "PASS"
+  },
+  "real_checks": {
+    "migrator": {
+      "result": "PASS",
+      "passing_subtests": 15
+    },
+    "terms": {
+      "result": "PASS",
+      "passing_subtests": 12
+    },
+    "accounts": {
+      "result": "PASS",
+      "passing_subtests": 10
+    },
+    "inventory": {
+      "result": "PASS",
+      "passing_subtests": 8
+    },
+    "contention": {
+      "result": "PASS",
+      "passing_subtests": 3
+    },
+    "delivery-race": {
+      "result": "PASS",
+      "passing_subtests": 0
+    },
+    "http": {
+      "result": "PASS",
+      "passing_subtests": 1
+    },
+    "regressions": {
+      "result": "PASS",
+      "passing_subtests": 12
+    },
+    "browser": {
+      "checks": 16,
+      "screens": 25,
+      "result": "PASS"
+    },
+    "account-browser": {
+      "checks": 20,
+      "screens": 27,
+      "result": "PASS"
+    },
+    "preview": {
+      "result": "PASS",
+      "cases": 24,
+      "checks": 10,
+      "production_fixture_exclusion": true
+    }
+  },
+  "migration_tip_test": "000007_inventory",
+  "normal_read_only": {
+    "users": 0,
+    "terms_versions": 0,
+    "terms_acceptances": 0,
+    "migration_tip": "000005_terms_acceptance"
+  },
+  "external_unverified": [
+    "Live Brevo delivery",
+    "Approved SKSU Student-domain configuration",
+    "Official FSMO terms/publication",
+    "Production deployment/TLS"
+  ],
+  "phase7_started": false,
+  "staged_paths": [],
+  "cleanup": {
+    "owned_api_vite_preview_listeners": "STOPPED",
+    "private_fixtures_and_generated_environment": "REMOVED",
+    "owned_disposable_pg_container_network_volume": "REMOVED",
+    "normal_pg": "HEALTHY / unchanged"
+  },
+  "preserved_hash_counts": {
+    "backend/migrations/": 10,
+    "frontend/src/components/ui/": 62,
+    "docs/ux/approved/": 47
+  },
+  "final_git_path_counts": {
+    " M": 38,
+    "??": 203
+  }
+}

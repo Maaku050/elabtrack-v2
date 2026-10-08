@@ -28,9 +28,10 @@ import (
 // Explicit opt-in; the supplied Compose stack must already be migrated/running.
 // This test never starts Docker, migrates, or reads an ambient DATABASE_URL.
 func TestRealFoundation(t *testing.T) {
+	batch1 := os.Getenv("ELABTRACK_BATCH1") == "1"
 	phase4b := os.Getenv("ELABTRACK_PHASE4B") == "1"
 	phase4a := os.Getenv("ELABTRACK_PHASE4A") == "1"
-	if os.Getenv("ELABTRACK_INTEGRATION") != "1" && !phase4a && !phase4b {
+	if os.Getenv("ELABTRACK_INTEGRATION") != "1" && !phase4a && !phase4b && !batch1 {
 		t.Skip("requires isolated integration Compose stack")
 	}
 	port, dbName, baseURL, origin := "15432", "elabtrack_v2_integration", "http://localhost:18080/api/v1", "http://localhost:15173"
@@ -39,6 +40,9 @@ func TestRealFoundation(t *testing.T) {
 	}
 	if phase4b {
 		port, dbName, baseURL, origin = "35432", "elabtrack_v2_phase4b_test", "http://localhost:18084/api/v1", "http://localhost:15174"
+	}
+	if batch1 {
+		port, dbName, baseURL, origin = "54832", "elabtrack_v2_batch1_test", "http://localhost:18085/api/v1", "http://localhost:15175"
 	}
 	ctx := context.Background()
 	cfg, err := config.Parse(map[string]string{

@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"io"
 	"net/http"
+	"os"
 	"testing"
 )
 
@@ -24,9 +25,15 @@ func TestRealTermsHTTP(t *testing.T) {
 		return raw
 	}
 	bt, at, st := token(borrower), token(admin), token(staff)
+	baseURL := "http://localhost:18084/api/v1"
+	originURL := "http://localhost:15174"
+	if os.Getenv("ELABTRACK_BATCH1") == "1" {
+		baseURL = "http://localhost:18085/api/v1"
+		originURL = "http://localhost:15175"
+	}
 	request := func(method, path, body, access, origin string) (int, map[string]any) {
 		t.Helper()
-		req, e := http.NewRequest(method, "http://localhost:18084/api/v1"+path, bytes.NewBufferString(body))
+		req, e := http.NewRequest(method, baseURL+path, bytes.NewBufferString(body))
 		require(t, e == nil, "request construction")
 		req.Header.Set("Content-Type", "application/json")
 		if access != "" {
@@ -42,7 +49,7 @@ func TestRealTermsHTTP(t *testing.T) {
 		require(t, e == nil, "response read")
 		var envelope map[string]any
 		require(t, json.Unmarshal(raw, &envelope) == nil, "safe envelope")
-		if origin == "" || origin == "http://localhost:15174" {
+		if origin == "" || origin == originURL {
 			require(t, res.Header.Get("Cache-Control") == "no-store", "private terms/consent responses never cache")
 		}
 		require(t, len(res.Cookies()) == 0, "terms never changes session cookies")
@@ -64,17 +71,17 @@ func TestRealTermsHTTP(t *testing.T) {
 			require(t, status == 401, "anonymous denial")
 		}
 		for _, access := range []string{st, at} {
-			status, _ := request("POST", acceptPath, "{}", access, "http://localhost:15174")
+			status, _ := request("POST", acceptPath, "{}", access, originURL)
 			require(t, status == 403, "staff/admin cannot accept borrower terms")
 		}
 		for _, access := range []string{bt, st} {
-			status, _ := request("POST", "/terms/versions", `{"version":"TEST-denied","title":"SYNTHETIC","body":"TEST ONLY","expected_current_version_id":null}`, access, "http://localhost:15174")
+			status, _ := request("POST", "/terms/versions", `{"version":"TEST-denied","title":"SYNTHETIC","body":"TEST ONLY","expected_current_version_id":null}`, access, originURL)
 			require(t, status == 403, "publication Admin-only")
 		}
 	})
 	t.Run("strict_identity_and_origin_boundary", func(t *testing.T) {
 		for _, payload := range []string{"null", "[]", `{"user_id":"` + admin.ID.String() + `"}`, `{"accepted_at":"2000-01-01T00:00:00Z"}`, `{"accepted":true}`, `{} {}`} {
-			status, _ := request("POST", acceptPath, payload, bt, "http://localhost:15174")
+			status, _ := request("POST", acceptPath, payload, bt, originURL)
 			require(t, status == 400, "cannot choose account/time or bypass binder")
 		}
 		for _, origin := range []string{"", "null", "https://untrusted.example.invalid"} {
@@ -83,32 +90,32 @@ func TestRealTermsHTTP(t *testing.T) {
 		}
 		var count int
 		require(t, runtime.Pool.QueryRow(ctx, `SELECT count(*) FROM terms_acceptances WHERE user_id=$1`, borrower.ID).Scan(&count) == nil && count == 0, "rejected bodies produced no consent")
-		status, _ := request("POST", "/terms/"+uuid.NewString()+"/accept", "{}", bt, "http://localhost:15174")
+		status, _ := request("POST", "/terms/"+uuid.NewString()+"/accept", "{}", bt, originURL)
 		require(t, status == 404, "unknown version safe failure")
 	})
 	t.Run("current_acceptance_repeat_and_version_conflict", func(t *testing.T) {
-		first, body := request("POST", acceptPath, "{}", bt, "http://localhost:15174")
+		first, body := request("POST", acceptPath, "{}", bt, originURL)
 		require(t, first == 200, "authenticated acceptance")
 		old := body["data"].(map[string]any)
-		second, body := request("POST", acceptPath, "{}", bt, "http://localhost:15174")
+		second, body := request("POST", acceptPath, "{}", bt, originURL)
 		now := body["data"].(map[string]any)
 		require(t, second == 200 && old["id"] == now["id"] && old["accepted_at"] == now["accepted_at"], "repeat original receipt")
 		status, body := request("GET", "/terms/status", "", bt, "")
 		require(t, status == 200 && body["data"].(map[string]any)["state"] == "accepted", "server current acceptance")
 		payload, _ := json.Marshal(map[string]any{"version": "TEST-HTTP-" + uuid.NewString(), "title": "SYNTHETIC TEST TERMS — NOT OFFICIAL", "body": "TEST ONLY. Isolated HTTP publication.", "expected_current_version_id": current})
-		status, body = request("POST", "/terms/versions", string(payload), at, "http://localhost:15174")
+		status, body = request("POST", "/terms/versions", string(payload), at, originURL)
 		require(t, status == 201, "Admin HTTP publication")
-		status, body = request("POST", acceptPath, "{}", bt, "http://localhost:15174")
+		status, body = request("POST", acceptPath, "{}", bt, originURL)
 		require(t, status == 409 && body["error"].(map[string]any)["code"] == "TERMS_VERSION_CHANGED", "old reviewed version conflicts")
 		status, body = request("GET", "/terms/status", "", bt, "")
 		require(t, status == 200 && body["data"].(map[string]any)["state"] == "updated", "outdated acceptance remains evidence")
-		status, _ = request("POST", "/terms/versions", string(payload), at, "http://localhost:15174")
+		status, _ = request("POST", "/terms/versions", string(payload), at, originURL)
 		require(t, status == 409, "optimistic publication conflict")
 	})
 	t.Run("current_database_role_and_inactive_after_issuance", func(t *testing.T) {
 		_, err := runtime.Pool.Exec(ctx, `UPDATE users SET role='STAFF' WHERE id=$1`, admin.ID)
 		require(t, err == nil, "owned demotion")
-		status, _ := request("POST", "/terms/versions", `{"version":"TEST-stale","title":"SYNTHETIC","body":"TEST ONLY","expected_current_version_id":null}`, at, "http://localhost:15174")
+		status, _ := request("POST", "/terms/versions", `{"version":"TEST-stale","title":"SYNTHETIC","body":"TEST ONLY","expected_current_version_id":null}`, at, originURL)
 		require(t, status == 403, "stale Admin JWT cannot publish")
 		_, err = runtime.Pool.Exec(ctx, `UPDATE users SET is_active=false WHERE id=$1`, borrower.ID)
 		require(t, err == nil, "owned disable")
@@ -116,7 +123,7 @@ func TestRealTermsHTTP(t *testing.T) {
 			status, _ := request("GET", p, "", bt, "")
 			require(t, status == 403, "disabled account token denied")
 		}
-		status, _ = request("POST", acceptPath, "{}", bt, "http://localhost:15174")
+		status, _ = request("POST", acceptPath, "{}", bt, originURL)
 		require(t, status == 403, "disabled account cannot accept")
 	})
 }

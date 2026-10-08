@@ -3,6 +3,8 @@
 @import "./application.css";
 @import "./authentication.css";
 @import "./terms.css";
+@import "./management.css";
+@import "./inventory.css";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -22,6 +22,12 @@ func Register(app *fiber.App, deps *Deps) {
 	protected := middleware.Auth(deps.TokenIssuer, deps.Accounts)
 	RegisterAuth(v1, deps.Auth, protected, deps.Environment)
 	RegisterUser(v1, deps.User, protected)
+	if deps.AccountManagement != nil {
+		RegisterAccounts(v1, deps.AccountManagement, protected)
+	}
+	if deps.Inventory != nil {
+		RegisterInventory(v1, deps.Inventory, protected)
+	}
 	if deps.Terms != nil {
 		RegisterTerms(v1, deps.Terms, protected)
 	}
@@ -30,11 +36,13 @@ func Register(app *fiber.App, deps *Deps) {
 // Deps bundles the handlers + token issuer needed to register routes.
 // Keeping this in one place makes adding new contexts trivial.
 type Deps struct {
-	Health      *handlers.HealthHandler
-	Auth        *handlers.AuthHandler
-	User        *handlers.UserHandler
-	Terms       *handlers.TermsHandler
-	TokenIssuer application.TokenIssuer
-	Accounts    appauth.AccountResolver
-	Environment config.Environment
+	Health            *handlers.HealthHandler
+	Auth              *handlers.AuthHandler
+	User              *handlers.UserHandler
+	Terms             *handlers.TermsHandler
+	AccountManagement *handlers.AccountsHandler
+	Inventory         *handlers.InventoryHandler
+	TokenIssuer       application.TokenIssuer
+	Accounts          appauth.AccountResolver
+	Environment       config.Environment
 }

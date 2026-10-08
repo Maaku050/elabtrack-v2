@@ -21,7 +21,7 @@ func CORS(cfg config.SecurityConfig) fiber.Handler {
 		allowed[origin] = true
 	}
 	methods := map[string]bool{"GET": true, "POST": true, "PATCH": true, "OPTIONS": true}
-	headers := map[string]bool{"content-type": true, "accept": true, "authorization": true, "x-request-id": true}
+	headers := map[string]bool{"content-type": true, "accept": true, "authorization": true, "x-request-id": true, "idempotency-key": true}
 	return func(c fiber.Ctx) error {
 		c.Vary("Origin")
 		origin := c.Get("Origin")
@@ -46,7 +46,7 @@ func CORS(cfg config.SecurityConfig) fiber.Handler {
 			c.Set("Access-Control-Allow-Origin", origin)
 			c.Set("Access-Control-Allow-Credentials", "true")
 			c.Set("Access-Control-Allow-Methods", "GET, POST, PATCH, OPTIONS")
-			c.Set("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, X-Request-ID")
+			c.Set("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, X-Request-ID, Idempotency-Key")
 			c.Set("Access-Control-Max-Age", "300")
 			return c.SendStatus(204)
 		}

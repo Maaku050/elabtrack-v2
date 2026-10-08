@@ -1,0 +1,32 @@
+.inventory-metrics { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:20px 0; }
+.inventory-checkbox { display:flex!important;align-items:center;gap:8px!important; }
+.inventory-checkbox input { width:18px;height:18px; }
+.inventory-catalog { display:grid;gap:12px; }
+.inventory-catalog-card .equipment-copy { min-width:0; }
+.inventory-catalog-card h2 { overflow-wrap:anywhere; }
+.inventory-description { overflow-wrap:anywhere;font-size:13px;color:var(--muted-foreground);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden; }
+.inventory-pagination { justify-content:flex-end;margin:22px 0; }
+.inventory-pagination p { margin-right:auto;color:var(--muted-foreground);font-size:13px; }
+.management-card textarea { width:100%;min-height:110px;border:1px solid var(--input);border-radius:8px;background:var(--card);color:var(--foreground);padding:12px; }
+.management-card textarea:focus-visible { outline:2px solid var(--ring);outline-offset:3px; }
+.inventory-image-edit { display:grid;gap:12px;margin-top:20px; }
+.inventory-image-edit input { max-width:100%;font-size:13px; }
+.inventory-reconcile-basis { display:grid;gap:10px; }
+.inventory-detail-image .equipment-thumbnail { width:100%;max-width:200px;height:170px;margin-bottom:18px; }
+.inventory-catalog-card .equipment-controls { flex-shrink:0; }
+@media(max-width:1050px) { .inventory-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:500px) { .inventory-metrics { gap:10px; } .inventory-catalog-card { grid-template-columns:64px minmax(0,1fr);padding:14px;gap:12px; } .inventory-catalog-card .equipment-thumbnail { width:64px;height:70px; } .inventory-catalog-card .equipment-controls { grid-column:1 / -1;display:flex;justify-content:space-between;align-items:center; } .inventory-catalog-card .equipment-copy h2 { font-size:17px; } .inventory-catalog-card .equipment-controls .app-button { min-height:44px; } }
+.inventory-reconcile-row { display:contents; }
+.inventory-available { color:var(--success);font-size:18px; }
+.inventory-available strong { font-size:32px; }
+.management-detail-grid .management-table { min-width:0; }
+.inventory-image-edit .management-note { margin:0; }
+.inventory-toolbar { flex-wrap:wrap; }
+.inventory-toolbar .search-field { min-width:220px;flex:1 1 260px;position:relative; }
+.inventory-toolbar label:not(.search-field) { min-width:0;flex:0 1 160px; }
+.inventory-toolbar label:has(select[aria-label="Category"]) { flex-basis:220px; }
+.inventory-toolbar select { width:100%;max-width:100%;min-width:0; }
+.inventory-toolbar .inventory-checkbox { flex-basis:auto!important; }
+.inventory-metrics .metric-copy { min-width:0; }
+.inventory-metrics .metric-copy strong { font-size:clamp(17px,2vw,28px);overflow-wrap:anywhere; }
+@media(max-width:500px) { .inventory-toolbar .search-field { min-width:0;flex-basis:100%; } .inventory-toolbar label:not(.search-field) { flex:1 1 135px; } .inventory-metrics .metric-card { padding:14px;gap:8px; } .inventory-metrics .metric-copy strong { font-size:20px; } }

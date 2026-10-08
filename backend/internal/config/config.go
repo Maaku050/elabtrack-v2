@@ -27,6 +27,7 @@ type Config struct {
 	JWT         JWTConfig
 	Security    SecurityConfig
 	Log         LogConfig
+	Accounts    AccountsConfig
 }
 type AppConfig struct {
 	Env                       Environment
@@ -140,6 +141,7 @@ func Parse(values map[string]string) (*Config, error) {
 	default:
 		r.fail("LOG_FORMAT", "must be console or json")
 	}
+	cfg.Accounts = parseAccounts(&r, env, frontend)
 	cfg.DB = parseDatabase(&r, env)
 	cfg.MigrationDB = parseMigrationDatabase(&r, env, cfg.DB)
 	if len(r.errs) > 0 {

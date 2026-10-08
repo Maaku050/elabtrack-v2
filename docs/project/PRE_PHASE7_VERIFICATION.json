@@ -1,0 +1,211 @@
+{
+  "date_local": "2026-10-09",
+  "initial_head": "dc04db7fec3cf57fe991bca3092df58ef9faddc5",
+  "branch": "main",
+  "scope": "Pre-Phase7 technical checkpoint; no Phase7 or product feature changes",
+  "git_preflight": {
+    "modified": 38,
+    "untracked": 203,
+    "staged": 0,
+    "batch_manifest_match": true,
+    "unrelated_changes": false
+  },
+  "database": {
+    "name": "elabtrack_v2",
+    "host": "127.0.0.1",
+    "port": 5434,
+    "postgres": "18.6",
+    "pre_version": "000005_terms_acceptance",
+    "post_version": "000007_inventory",
+    "applied": [
+      "000006_account_management",
+      "000007_inventory"
+    ],
+    "all_seven_checksums": "verified",
+    "backup": {
+      "path": "/home/marvin/projects/eLabTrack_V2/backend/tmp/pre-phase7-backups/elabtrack_v2-pre-000006-20261008T181715Z.dump",
+      "bytes": 20209,
+      "sha256": "d5342d31199dcf7b506eab56344788dfba2b47795428b13caf1b3444558086bf",
+      "toc_entries": 64,
+      "validation": "custom archive signature, table of contents and full SQL decode PASS; no restore to normal data"
+    },
+    "users": 0,
+    "refresh_tokens": 0,
+    "terms_versions": 0,
+    "terms_acceptances": 0,
+    "terms_publication_pointer": null,
+    "runtime_read_smoke": "PASS",
+    "runtime_ddl_history_membership": "DENIED",
+    "runtime_equipment_reserved_checked_out_damaged_updates": "DENIED"
+  },
+  "quality": {
+    "go_fmt": "PASS",
+    "go_vet": "PASS",
+    "go_test_uncached": "PASS",
+    "tested_packages": 23,
+    "packages_without_tests": 12,
+    "targeted_race_uncached": "PASS / 8 packages",
+    "frontend_test_files": 14,
+    "frontend_tests": 208,
+    "frontend_lint": "PASS / 19 inherited warnings / 0 new",
+    "frontend_build": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "http_smoke": [
+    {
+      "method": "GET",
+      "path": "/health",
+      "status": 200,
+      "expected": 200,
+      "result": "PASS"
+    },
+    {
+      "method": "GET",
+      "path": "/ready",
+      "status": 200,
+      "expected": 200,
+      "result": "PASS"
+    },
+    {
+      "method": "POST",
+      "path": "/auth/login",
+      "status": 400,
+      "expected": 400,
+      "result": "PASS"
+    },
+    {
+      "method": "POST",
+      "path": "/auth/refresh",
+      "status": 401,
+      "expected": 401,
+      "result": "PASS"
+    },
+    {
+      "method": "POST",
+      "path": "/auth/activate",
+      "status": 400,
+      "expected": 400,
+      "result": "PASS"
+    },
+    {
+      "method": "GET",
+      "path": "/borrowers",
+      "status": 401,
+      "expected": 401,
+      "result": "PASS"
+    },
+    {
+      "method": "GET",
+      "path": "/borrowers/policy",
+      "status": 401,
+      "expected": 401,
+      "result": "PASS"
+    },
+    {
+      "method": "GET",
+      "path": "/borrowers/student-template",
+      "status": 401,
+      "expected": 401,
+      "result": "PASS"
+    },
+    {
+      "method": "GET",
+      "path": "/staff-accounts",
+      "status": 401,
+      "expected": 401,
+      "result": "PASS"
+    },
+    {
+      "method": "GET",
+      "path": "/equipment",
+      "status": 401,
+      "expected": 401,
+      "result": "PASS"
+    },
+    {
+      "method": "GET",
+      "path": "/equipment-categories",
+      "status": 401,
+      "expected": 401,
+      "result": "PASS"
+    },
+    {
+      "method": "GET",
+      "path": "/terms/current",
+      "status": 401,
+      "expected": 401,
+      "result": "PASS"
+    }
+  ],
+  "browser_smoke": {
+    "result": "PASS",
+    "checks": [
+      "Normal login renders and real API refresh returns expected anonymous 401",
+      "Normal frontend transport communicates with API through configured cross-origin connection",
+      "Anonymous deep link guarded: /staff/borrowers",
+      "Anonymous deep link guarded: /staff/borrowers/new",
+      "Anonymous deep link guarded: /admin/borrowers/bulk",
+      "Anonymous deep link guarded: /staff/inventory",
+      "Anonymous deep link guarded: /admin/inventory/00000000-0000-0000-0000-000000000001/reconcile",
+      "Login no horizontal overflow at 390",
+      "Login no horizontal overflow at 1440",
+      "Login dark appearance control works"
+    ],
+    "responses": [
+      {
+        "path": "/api/v1/auth/refresh",
+        "status": 401
+      },
+      {
+        "path": "/api/v1/auth/refresh",
+        "status": 401
+      },
+      {
+        "path": "/api/v1/health",
+        "status": 200
+      },
+      {
+        "path": "/api/v1/auth/refresh",
+        "status": 401
+      },
+      {
+        "path": "/api/v1/auth/refresh",
+        "status": 401
+      },
+      {
+        "path": "/api/v1/auth/refresh",
+        "status": 401
+      },
+      {
+        "path": "/api/v1/auth/refresh",
+        "status": 401
+      },
+      {
+        "path": "/api/v1/auth/refresh",
+        "status": 401
+      }
+    ],
+    "errors": [],
+    "scope": "Real normal local frontend/API; anonymous only; no records, terms or emails created"
+  },
+  "shutdown": {
+    "api": "server.shutdown_completed; runtime pool closed",
+    "ports_8080_5173": "released",
+    "postgres": "healthy, preserved",
+    "supervisor": "Ctrl+C interruption returned nonzero; nested make emitted No child processes, but children exited without forced kill"
+  },
+  "human_acceptance": "PENDING",
+  "phase7_started": false,
+  "external_dependencies": [
+    "Authorized initial Admin provisioning for normal authenticated review",
+    "Approved SKSU Student domains/roster inputs",
+    "Brevo API key, verified sender and separately authorized successful live delivery testing",
+    "Official FSMO terms approval/publication after presentation",
+    "Operational activation/recovery responsibility"
+  ],
+  "not_rerun": [
+    "Mutating disposable-PostgreSQL suites and full authenticated Chromium Batch1 scenarios; prior evidence retained, normal checks here are read-only/anonymous",
+    "Production/Docker full-profile build/TLS/deployment",
+    "Live email delivery"
+  ]
+}

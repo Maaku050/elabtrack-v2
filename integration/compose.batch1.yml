@@ -1,0 +1,9 @@
+# Disposable Batch 1 PostgreSQL only; combine with docker-compose.yml.
+services:
+  postgres:
+    container_name: elabtrack_v2_batch1_postgres
+    ports: !override
+      - "127.0.0.1:54832:5432"
+volumes:
+  elabtrack_v2_pgdata:
+    name: elabtrack_v2_batch1_pgdata

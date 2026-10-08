@@ -268,3 +268,16 @@ func TestDotenvPrecedenceAndIsolation(t *testing.T) {
 		t.Fatal("blank must not fall back")
 	}
 }
+
+func TestAccountConfigurationGuards(t *testing.T) {
+	for _, pair := range [][2]string{{"STUDENT_EMAIL_DOMAINS", "*.example.invalid"}, {"ACTIVATION_URL", "https://other.example.invalid/activate"}, {"ACTIVATION_URL", "http://localhost:5173/activate?token=bad"}, {"ACTIVATION_TTL", "1m"}, {"ACTIVATION_RESEND_COOLDOWN", "1s"}, {"BREVO_SENDER_EMAIL", "Display <sender@example.invalid>"}} {
+		_, err := Parse(map[string]string{pair[0]: pair[1]})
+		if err == nil {
+			t.Fatal("unsafe account configuration accepted", pair[0])
+		}
+	}
+	cfg, err := Parse(map[string]string{})
+	if err != nil || len(cfg.Accounts.Policy.StudentDomains) != 0 || cfg.Accounts.BrevoKey != "" {
+		t.Fatal("missing external dependencies must not stop independent startup")
+	}
+}

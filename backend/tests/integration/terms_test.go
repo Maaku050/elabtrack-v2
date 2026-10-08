@@ -23,10 +23,15 @@ import (
 
 func termsDatabase(t *testing.T) (context.Context, *database.Postgres, *database.Postgres, *config.Config) {
 	t.Helper()
-	if os.Getenv("ELABTRACK_PHASE4B") != "1" {
+	batch1 := os.Getenv("ELABTRACK_BATCH1") == "1"
+	if os.Getenv("ELABTRACK_PHASE4B") != "1" && !batch1 {
 		t.Skip("requires explicitly isolated Phase 4B database")
 	}
 	cfg, err := config.Parse(map[string]string{"APP_ENV": "test", "JWT_SECRET": os.Getenv("JWT_SECRET"), "DB_HOST": "127.0.0.1", "DB_PORT": "35432", "DB_NAME": "elabtrack_v2_phase4b_test", "DB_USER": "elabtrack_runtime", "DB_PASSWORD": os.Getenv("DB_PASSWORD"), "MIGRATION_DATABASE_URL": os.Getenv("MIGRATION_DATABASE_URL")})
+	if batch1 {
+		cfg, err = config.Load()
+		require(t, err == nil && cfg.DB.Name == "elabtrack_v2_batch1_test" && cfg.DB.Port == "54832", "isolated batch terms guard")
+	}
 	require(t, err == nil, "isolated terms config")
 	ctx := context.Background()
 	runtime, err := database.New(ctx, cfg.DB)
@@ -42,7 +47,7 @@ func termsDatabase(t *testing.T) (context.Context, *database.Postgres, *database
 		role string
 	}{{runtime, "elabtrack_runtime"}, {owner, "elabtrack_migrator"}} {
 		var safe bool
-		err = pair.db.Pool.QueryRow(ctx, `SELECT current_database()='elabtrack_v2_phase4b_test' AND current_user=$1 AND NOT rolsuper AND NOT rolcreaterole AND NOT rolcreatedb FROM pg_roles WHERE rolname=current_user`, pair.role).Scan(&safe)
+		err = pair.db.Pool.QueryRow(ctx, `SELECT current_database()=$2 AND current_user=$1 AND NOT rolsuper AND NOT rolcreaterole AND NOT rolcreatedb FROM pg_roles WHERE rolname=current_user`, pair.role, cfg.DB.Name).Scan(&safe)
 		require(t, err == nil && safe, "strict isolated identity")
 	}
 	return ctx, runtime, owner, cfg
@@ -125,6 +130,8 @@ func TestRealTerms(t *testing.T) {
 		}
 		before := snapshot()
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty inventory rollback before account and terms pairs")
+		require(t, m.Down(ctx) == nil, "empty account migration rollback before terms")
 		require(t, m.Down(ctx) == nil, "empty terms rollback")
 		require(t, m.Up(ctx) == nil, "terms reapplication")
 		require(t, snapshot() == before, "exact unchanged accounts/sessions")
@@ -354,7 +361,10 @@ func TestRealTerms(t *testing.T) {
 	})
 	t.Run("history_safe_rollback_and_policy_transaction_boundary", func(t *testing.T) {
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty inventory rollback before account and terms pairs")
+		require(t, m.Down(ctx) == nil, "empty account migration rollback before terms history gate")
 		require(t, m.Down(ctx) != nil, "history-bearing rollback refused")
+		require(t, m.Up(ctx) == nil, "restore empty account schema without touching terms history")
 		var intact bool
 		err := owner.Pool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM schema_migrations WHERE version='000005_terms_acceptance') AND EXISTS(SELECT 1 FROM terms_acceptances WHERE id=$1)`, first.ID).Scan(&intact)
 		require(t, err == nil && intact, "history/checksum bookkeeping retained")
