@@ -1,6 +1,6 @@
 # Foundation API contracts and operational observability
 
-Phase 1F technical contracts with Phase 4A authentication updates, 2026-10-08 (Asia/Shanghai). Current source and tests govern implementation; this document does not authorize later phases. Product roles are BORROWER, STAFF and ADMIN; feature provisioning, terms and business resources remain deferred.
+Phase 1F technical contracts with Phase 4A authentication and Phase 4B terms updates, 2026-10-08 (Asia/Shanghai). Current source and tests govern implementation; this document does not authorize later phases. Product roles are BORROWER, STAFF and ADMIN; terms infrastructure is implemented; feature provisioning and borrowing resources remain deferred.
 
 ## Routes and success convention
 
@@ -124,4 +124,38 @@ Login invalid/missing/inactive accounts share INVALID_CREDENTIALS/401. Deactivat
 
 Migration 000004 maps `user`→`BORROWER`, `admin`→`ADMIN`, adds `STAFF` to the role constraint and changes only the role default/values/constraint. Identity, password hashes, status, timestamps and refresh records are preserved. Down reverses representable roles and refuses while any Staff exists; migrate application and schema together. Historical 000001–000003 SQL/checksums are unchanged.
 
-Phase 4B will introduce versioned terms/acceptance evidence at the reviewed domain ports and future request/direct-issue gate. Those candidate routes/tables in docs/domain/API_RESOURCE_DRAFT.md are not implemented endpoints. Phase 5 owns secure provisioning/import/status/privileged account controls. Authentication does not imply accepted terms or an activated onboarding process.
+Phase 4B implements versioned terms and acceptance at the contracts below. The borrowing request/direct-issue enforcement point remains a future transactional integration requirement; no borrowing endpoint exists. Phase 5 owns secure provisioning/import/status/privileged account controls. Authentication does not imply accepted terms or an activated onboarding process.
+
+## Phase 4B implemented terms contracts
+
+All routes use `/api/v1`, the existing envelope/request ID/current-account middleware and `Cache-Control: no-store`. GET requires bearer authentication and current active BORROWER/STAFF/ADMIN. Borrower-specific status/acceptance requires current BORROWER; publication requires current ADMIN. Staff/Admin never accepts on a Borrower's behalf. POST also requires an exact trusted Origin and JSON; ordinary API rate/security rules remain. No cookies are issued by terms endpoints.
+
+| Method/path | Success | Data / input |
+|---|---|---|
+| GET `/terms/current` | 200 | Current immutable document; 503 `TERMS_NOT_PUBLISHED` if none |
+| GET `/terms/status` | 200 | Own status: `unpublished`, `required`, `updated`, or `accepted`; never lists other accounts |
+| POST `/terms/{versionID}/accept` | 200 | Exact reviewed UUID in path, body `{}` only; returns original receipt on repeat acceptance of still-current version |
+| POST `/terms/versions` | 201 | Admin-only immediate mandatory publication: `version`, `title`, `body`, required `expected_current_version_id` (null for initial publication, otherwise last-read UUID) |
+
+Document fields: `id`, `version`, `title`, `body`, `content_hash` (SHA-256 over the exact UTF-8 plain-text body), `published_at`. Publisher identity and creation time are retained in storage but not included in the content DTO. Version identifiers are 1–64 ASCII alphanumeric/dot/underscore/hyphen characters, beginning alphanumeric; title is nonblank and at most 200 UTF-8 bytes with no line breaks; body is nonblank plain text, at most 65,536 UTF-8 bytes. Body is preserved exactly and rendered as text, never executed HTML. No drafts, scheduled effective dates, withdrawal endpoint or generic CMS. Every new publication requires new acceptance before future new borrowing commands.
+
+Status fields: `state`, `current_terms` (document or null), `acceptance` (current receipt or null), `has_previous_acceptance`, `acceptance_required`, `can_initiate_borrowing`. Unpublished means no current document, `acceptance_required:false` (there is no published version to accept), `can_initiate_borrowing:false`; the distinct unpublished state never implies consent. Historical acceptance makes a missing current receipt `updated`; no historical receipt makes it `required`. Only an actual matching current receipt makes the status `accepted`. These flags describe policy eligibility, not an implemented borrowing capability.
+
+Receipt fields: `id`, `terms_version_id`, `accepted_at` (PostgreSQL server timestamp). Identity comes exclusively from the authenticated principal; arbitrary user IDs/times/consent flags and unknown payload fields are rejected. Unique `(user_id,terms_version_id)` makes duplicates/parallel submissions return the same original receipt/time. No separate Idempotency-Key is required for this intrinsically idempotent operation. Checking a superseded version occurs before receipt replay, so old acceptance cannot silently approve new content. Acceptance JSON maximum is 16 KiB; publication JSON maximum is 96 KiB under the global parser bound.
+
+| Error code | HTTP | Meaning |
+|---|---|---|
+| TERMS_NOT_PUBLISHED | 503 | No applicable document; acceptance/new-command policy fails closed |
+| TERMS_VERSION_NOT_FOUND | 404 | Submitted UUID has no version |
+| TERMS_VERSION_CHANGED | 409 | Reviewed version is superseded; fetch/review the new document with unchecked consent |
+| TERMS_ACCEPTANCE_REQUIRED | 409 | Reusable future-command policy lacks a matching current receipt |
+| TERMS_VERSION_EXISTS | 409 | Immutable version identifier already exists |
+| TERMS_PUBLICATION_CHANGED | 409 | Expected pointer no longer matches; publication cannot overwrite a concurrent change |
+
+Invalid UUID/payload/content is 400; JSON media 415; body bound 413; missing/invalid session 401; wrong current role/inactive account/untrusted Origin 403; database failures 500 with safe reference only. Unknown/malformed client error payloads retain the existing safe fallback. No success is inferred from network failure.
+
+Publication/acceptance lock the active account before the singleton publication row, using one transaction. Publication takes the pointer exclusively; status/acceptance/policy take it shared. An acceptance that commits first retains its reviewed version; a publication that commits first makes the old review conflict. No operation substitutes another version for the submitted UUID.
+
+**Future Phase 7 requirement:** inside the borrowing command's existing transaction, after current actor/target authorization and sorted participating-account locks, call `terms.Service.RequireCurrentAcceptance(ctx, borrowerID)`. Retain its shared publication lock through stock/borrowing/history/receipt writes and commit. Persist returned receipt ID and borrower ID with a composite FK to `(terms_acceptances.id,user_id)`, and bind the reviewed terms version. Direct checkout separately authorizes Staff/Admin, then checks the target Borrower's own evidence; the actor cannot create acceptance. Pending submissions retain their original bound terms during later issue. Calling this policy in a separate transaction would leave a race and is unsupported. No live request/direct-checkout endpoint or end-to-end borrowing enforcement is claimed.
+
+**Content/activation gates:** No official V2 FSMO document is approved; normal storage has no synthetic publication/acceptance, and isolated tests alone use TEST terms. Both Student/Faculty Borrowers require current officially published terms via Phase4B. DEC-070 is the current future provisioning contract: only Admin creates accounts; Student requires unique textual official Student ID and approved SKSU email; Faculty is individual-only with any valid unique accessible email and no required Student ID. Bulk creation/deactivation is Admin-only and Student-only, with current role/category checks, complete preview before confirmation and retained history. Both use separate borrower-chosen passwords via secure activation; links to the respective mailbox remain recommended. Exact SKSU configuration/roster formatting/matching (OPEN-028), activation/ownership/recovery (OPEN-001/009), Brevo backend integration/API key/verified sender/successful live delivery testing for activation and future recovery (DEC-071/OPEN-017) remain technical/deployment dependencies. DEC-073 resolves OPEN-029: individual/Student bulk deactivation allows outstanding fines/active or overdue loans/unreturned equipment/replacements with warnings/confirmation; it cannot resolve those obligations, change overdue calculations or delete history. Fine clearance remains separately Admin-only/auditable. DEC-072 defers official terms until after FSMO presentation (OPEN-016), gating official publication/live borrowing with documented acceptance, without blocking independent account-management/inventory development. No product provisioning, activation, domain enforcement, bulk deactivation, password-change/recovery or invitation endpoint exists. The [domain routes](domain/API_RESOURCE_DRAFT.md) are future proposals requiring separate Phase5 authorization; current Phase4A authentication is unchanged. See [policy](project/ACCOUNT_PROVISIONING_POLICY.md), [historical Phase4B report](project/PHASE4B_REPORT.md) and [reproduction guide](../integration/PHASE4B.md).

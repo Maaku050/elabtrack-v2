@@ -19,6 +19,7 @@ func RequestSafety() fiber.Handler {
 			return response.Fail(c, 413, "Request body is too large.", "PAYLOAD_TOO_LARGE")
 		}
 		jsonBody := c.Method() == fiber.MethodPost && (path == "/api/v1/auth/login" || path == "/api/v1/auth/register") || c.Method() == fiber.MethodPatch && path == "/api/v1/users/me"
+		jsonBody = jsonBody || c.Method() == fiber.MethodPost && strings.HasPrefix(path, "/api/v1/terms/")
 		if jsonBody {
 			media, _, err := mime.ParseMediaType(c.Get("Content-Type"))
 			if err != nil || media != "application/json" {

@@ -14,7 +14,7 @@ func TestProductPermissionMatrix(t *testing.T) {
 			for _, p := range []struct {
 				permission Permission
 				allowed    bool
-			}{{BorrowerWorkspace, c.borrower}, {StaffWorkspace, c.staff}, {Administration, c.admin}, {ReadAccountDirectory, c.admin}, {"unknown", false}} {
+			}{{BorrowerWorkspace, c.borrower}, {AcceptBorrowerTerms, c.borrower}, {PublishTerms, c.admin}, {StaffWorkspace, c.staff}, {Administration, c.admin}, {ReadAccountDirectory, c.admin}, {"unknown", false}} {
 				if c.role.Allows(p.permission) != p.allowed {
 					t.Fatalf("incorrect permission %s", p.permission)
 				}

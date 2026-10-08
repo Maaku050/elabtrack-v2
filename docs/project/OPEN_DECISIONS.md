@@ -1,15 +1,20 @@
 # Open decisions and resolved source conflicts
 
+**Current account-policy gates, 2026-10-08:** DEC-070 confirms Admin-only creation, required unique textual Student IDs and approved SKSU Student email, Faculty individual creation with any valid unique accessible email and no required Student ID, and Student-only bulk creation/deactivation. Both categories use separate borrower-chosen eLabTrack passwords and Phase4B official terms; no SSO/mailbox passwords. OPEN-001/009 retain activation/ownership/recovery implementation, DEC-071 selects Brevo; OPEN-017 retains API-key/sender/configuration and tested delivery, OPEN-028 retains exact Student domain/roster formatting and technical matching. DEC-073 resolves OPEN-029: warned/confirmed Student deactivation is allowed regardless of outstanding obligations, which remain unchanged. DEC-072 retains OPEN-016 official terms approval after presenting the application to FSMO, gating official publication/live borrowing but not independent account-management or inventory development. These dependencies do not reopen the approved product rules. Phase4B remains a verified foundation; Phase5 is unstarted and requires separate authorization. See [current policy](ACCOUNT_PROVISIONING_POLICY.md) and [historical Phase4B report](PHASE4B_REPORT.md).
+
+
 Reconciled **2026-10-08, Phase 2.5**. All 29 owner working decisions are recorded in DEC-051–061; selected stock engineering baseline DEC-062. **No remaining policy materially blocks core borrower/review/return/replacement/fine/role-navigation UX.** NON-BLOCKING means core design/Phase 3A planning can proceed when separately authorized, not authorization to send mail, migrate, destroy records or deploy. Original 27 IDs and source evidence are retained; resolved questions no longer carry the historical Phase 2 BLOCKED gate. No Phase 1 architecture is changed.
 
 ## Current residual details
 
 | Detail | IDs | Responsible review / dependent gate |
 |---|---|---|
-| Activation/initial password, email ownership/recovery | OPEN-001/009 | FSMO/IT; secure onboarding implementation design, no public signup or new eligibility block |
+| Activation lifecycle, expiry/reissue, mailbox verification/recovery and existing-account treatment | OPEN-001/009 | FSMO/IT; login/borrower-owned password and Student/Faculty requirements resolved in DEC-068/070; safe implementation details remain |
+| Approved SKSU Student domain configuration, official Student-ID format inputs and optional roster field/matching details | OPEN-028 | Institutional inputs plus technical contract; Student ID is already required/unique/textual, Faculty has no institutional-domain or required Student-ID gate |
+| Official terms approval after application presentation | OPEN-016 | Owner/FSMO; gates official publication/consent and live borrowing, not independent account-management/inventory development (DEC-072) |
 | Taxonomy/content, ordinary inventory action details | OPEN-011/012 | FSMO catalog/inventory owner; seed/content and specialized inventory actions |
 | Damaged-original disposition / equivalent acceptance guidance | OPEN-022 | FSMO inventory owner; disposal/repair feature. Core flow uses nonusable held originals and staff discretion |
-| Notification provider/sender/cadence | OPEN-017/025 | FSMO/IT; production delivery and scheduled message feature |
+| Selected Brevo integration/API key/verified sender/live delivery; later notification cadence | OPEN-017/025 | Provider selection resolved DEC-071; configuration/tested activation and future recovery delivery remain; later scheduled business messages stay separate |
 | Legacy discovery/cutover and evidence gaps | OPEN-018/019 | Authorized V1 custodian/FSMO; real import/reconciliation |
 | Institutional retention/privacy | OPEN-026 | Institutional/legal custodian; destructive cleanup and retention operations |
 | Institutional session policy / final operations | OPEN-027 and Phase 14 roadmap | FSMO/IT; optional future session policy and deployment readiness, existing foundation preserved |
@@ -30,8 +35,8 @@ Historical evidence labels below retain factual V1 versus intended legacy/capsto
 - **Evidence from V1 (FACTUAL V1 BEHAVIOR):** Audit 01/05/13: no public signup; staff/admin create active accounts. Audit 15 adds undeployed server authorization around provisioning.
 - **Evidence from latest documentation (INTENDED LEGACY REQUIREMENT):** Scope/account management P421 requires approved/manual verification; conclusion P912 says borrowers can register; Add User description P827 describes admin registration. This is an internal documentation conflict as well as a V1 conflict.
 - **Current status:** **RESOLVED**, 2026-10-08.
-- **Resolution / authority:** Provisioned Borrowers; no public signup. Staff narrow creation; Admin bulk and privileged account management. Project owner Phase 2.5; DEC-053 in [DECISIONS](DECISIONS.md).
-- **Remaining detail / scope:** Secure activation/initial-password and recovery mechanics are later implementation design, NON-BLOCKING for UX; review before onboarding production.
+- **Resolution / authority:** Provisioned Borrowers; no public signup. Only Admin creates any account; Staff assists operationally. Student-only bulk workflows; Faculty individual creation. Final owner update DEC-070 supersedes the Staff grant in DEC-053 in [DECISIONS](DECISIONS.md).
+- **Remaining detail / scope:** DEC-070 confirms email/separate borrower-chosen password for both categories; Student uses approved institutional email, Faculty any valid unique accessible email. Single-use links to the respective email are recommended. Provider delivery (OPEN-017), SKSU Student domain/roster inputs (OPEN-028), activation lifecycle/expiry/reissue/existing-account treatment and general recovery remain dependent implementation details; no plaintext password import or public signup.
 - **Gate:** NON-BLOCKING for core UX/domain planning; only stated later dependent work requires its review/authorization.
 
 ## ELAB-V2-OPEN-002
@@ -50,7 +55,7 @@ Historical evidence labels below retain factual V1 versus intended legacy/capsto
 - **Evidence from V1 (FACTUAL V1 BEHAVIOR):** Audit 03 and 15: shared operational UI and broad equivalent privileges, including creating/deleting privileged users and clearing fines; containment patch retains that equality.
 - **Evidence from latest documentation (INTENDED LEGACY REQUIREMENT):** Scope P421 names administrators; SOP P364 and browsing P425 name staff approval; distinct borrower/admin access described P605. No complete operation matrix is established.
 - **Current status:** **RESOLVED**, 2026-10-08.
-- **Resolution / authority:** Staff operational approval/direct/returns/replacements/history and Borrower provisioning; Admin deactivation/bulk/privileged accounts/fine clear/policy/audit. Project owner Phase 2.5; DEC-052/053/060 in [DECISIONS](DECISIONS.md).
+- **Resolution / authority:** Staff operational approval/direct/returns/replacements/history and user assistance, without account creation; Admin creates all accounts and controls deactivation/Student bulk/privileged accounts/fine clear/policy/audit. Final owner DEC-070 supersedes DEC-053 creation authority; DEC-052/060 in [DECISIONS](DECISIONS.md).
 - **Remaining detail / scope:** Detailed ordinary inventory action definitions later; no ambiguity over Admin-only clear.
 - **Gate:** NON-BLOCKING for core UX/domain planning; only stated later dependent work requires its review/authorization.
 
@@ -105,7 +110,7 @@ Historical evidence labels below retain factual V1 versus intended legacy/capsto
 - **Evidence from latest documentation (INTENDED LEGACY REQUIREMENT):** Scope P421 requires approved users; Sprint 1 P605/719 describes deactivation, without session revocation/active-loan policy.
 - **Current status:** **RESOLVED**, 2026-10-08.
 - **Resolution / authority:** Admin deactivation blocks normal authentication/request actions; no suspension subsystem. Preserve old obligations, Staff/Admin resolves them. Project owner Phase 2.5; DEC-051/058 in [DECISIONS](DECISIONS.md).
-- **Remaining detail / scope:** Institutional cross-device/session family details separately retained in OPEN-027, not a borrowing policy blocker.
+- **Remaining detail / scope:** Institutional cross-device/session family details remain OPEN-027. DEC-073 resolves Student individual/bulk deactivation with obligations: Admin warns and confirms, but outstanding fines/active or overdue loans/unreturned equipment/replacements do not block. Preserve all obligations/history/due/overdue calculations and separate authoritative resolution; OPEN-029 is resolved, not a dependent execution gate.
 - **Gate:** NON-BLOCKING for core UX/domain planning; only stated later dependent work requires its review/authorization.
 
 ## ELAB-V2-OPEN-009
@@ -117,10 +122,10 @@ Historical evidence labels below retain factual V1 versus intended legacy/capsto
 - **Original question:** Is email verification required, and at what point?
 - **Evidence from V1 (FACTUAL V1 BEHAVIOR):** Audit 05: accounts created emailVerified=false; no send/check verification flow. Administrative verification is not verified email ownership.
 - **Evidence from latest documentation (INTENDED LEGACY REQUIREMENT):** Scope P424 describes manual credentials verification; P427–428 emphasize accurate reachable email. No explicit email-ownership verification gate is established.
-- **Current status:** **NON-BLOCKING**, 2026-10-08.
-- **Resolution / authority:** Active registered borrower is current eligibility; no email-ownership gate added. Project owner Phase 2.5; DEC-051/053 in [DECISIONS](DECISIONS.md).
-- **Remaining detail / scope:** Activation/recovery and email ownership verification mechanism: IT/security and FSMO review before implementing affected onboarding/recovery. Administrative verification is not verified email ownership.
-- **Gate:** NON-BLOCKING for core UX/domain planning; only stated later dependent work requires its review/authorization.
+- **Current status:** **PARTIALLY RESOLVED**, 2026-10-08; residual implementation review remains.
+- **Resolution / authority:** DEC-070 confirms both categories use email and separate borrower-chosen passwords during secure activation. Students require approved SKSU email; Faculty may use any valid unique accessible email and require no Student ID. Single-use activation links to the respective mailbox remain recommended, not configured delivery. Syntax/domain/roster presence alone is not mailbox ownership. Product authority and category requirements are resolved; technical ownership evidence remains to be implemented.
+- **Remaining detail / scope:** FSMO/IT must finalize activation lifecycle, link origin, token expiry/reissue limits, failed/lost delivery, mailbox verification evidence, existing-account treatment, email changes and password change/recovery/revocation rules. Provider is OPEN-017; exact approved SKSU Student configuration/roster formatting and technical matching are OPEN-028. No actual activation/recovery code or delivery is claimed.
+- **Gate:** Planning and independently verifiable infrastructure may proceed within authorized scope; dependent activation/recovery and real delivery require the stated reviews. No Phase5 implementation authorization from this update.
 
 ## ELAB-V2-OPEN-010
 
@@ -189,18 +194,18 @@ Historical evidence labels below retain factual V1 versus intended legacy/capsto
 - **Evidence from latest documentation (INTENDED LEGACY REQUIREMENT):** SOP and borrowing intent require accountability, but engineering passages reviewed do not define versioned acceptance or policy-change handling.
 - **Current status:** **RESOLVED**, 2026-10-08.
 - **Resolution / authority:** Once/current material version user/version/time, first activation/use; changed version gates next request, not per-loan. Project owner Phase 2.5; DEC-057 in [DECISIONS](DECISIONS.md).
-- **Remaining detail / scope:** Approved final terms text is production content review; current placeholder/version assumption is NON-BLOCKING for mockups.
-- **Gate:** NON-BLOCKING for core UX/domain planning; only stated later dependent work requires its review/authorization.
+- **Remaining detail / scope:** DEC-072 confirms official FSMO wording will be finalized after presenting the application to FSMO. Preserve implemented Phase4B infrastructure and isolated TEST fixtures; never invent/publish/automatically accept institutional text. Actual approved document/version/publication responsibility remains external; live borrowing must enforce official publication and documented acceptance. Pending wording does not block independent account-management or inventory development when separately authorized.
+- **Gate:** NON-BLOCKING for independent account-management/inventory development under separate authorization; required before official publication/consent and live borrowing.
 
 ## ELAB-V2-OPEN-017
 
 - **Original question:** Which email delivery provider/consumer and retry/receipt mechanism are approved?
 - **Evidence from V1 (FACTUAL V1 BEHAVIOR):** Audit 08/12/13: two notification shapes; queue producers present, consumer/extension absent; deployed delivery cannot be inferred.
 - **Evidence from latest documentation (INTENDED LEGACY REQUIREMENT):** Scope P427–428 and Sprint 4 P628–631 intend confirmations, reminders, delivery logs and failure handling; screenshots imply received mail but do not identify the operational consumer/provider.
-- **Current status:** **NON-BLOCKING**, 2026-10-08.
-- **Resolution / authority:** Transactional outbox concept retained; delivery separately observable. Project owner Phase 2.5; DEC-049 in [DECISIONS](DECISIONS.md).
-- **Remaining detail / scope:** FSMO/IT chooses provider, sender/domain, delivery responsibility and failure handling before production sending; no provider implemented.
-- **Gate:** NON-BLOCKING for core UX/domain planning; only stated later dependent work requires its review/authorization.
+- **Current status:** **PROVIDER SELECTION RESOLVED; deployment/technical delivery dependencies remain**, 2026-10-08.
+- **Resolution / authority:** Brevo selected for account activation and future password recovery by the owner in DEC-071; vendor choice is no longer open. Transactional outbox concept/delivery observability retains its separately planned scope under DEC-049 in [DECISIONS](DECISIONS.md).
+- **Remaining detail / scope:** Secure backend-only Brevo integration during authorized account-management development, configured backend API key, verified sender, trusted link origin and successful actual delivery/failure testing before live activation/recovery claims. No credentials in browser/commits/logs. Activation/recovery lifecycle/ownership/operations remain OPEN-001/009; later borrowing notification cadence remains OPEN-025, not vendor-selection work. No provider adapter is implemented by this policy update.
+- **Gate:** NON-BLOCKING for independent authorized development/test-adapter verification; required before real activation/recovery delivery and dependent notification sending. A selected provider, mock or send intent is not verified delivery.
 
 ## ELAB-V2-OPEN-018
 
@@ -302,6 +307,22 @@ Historical evidence labels below retain factual V1 versus intended legacy/capsto
 - **Remaining detail / scope:** FSMO/IT may later decide concurrent sessions, family/global logout or stronger immediate cross-device access revocation. No Phase 1 reopening and no new borrowing suspension policy.
 - **Gate:** NON-BLOCKING for core UX/domain planning; only stated later dependent work requires its review/authorization.
 
+## ELAB-V2-OPEN-028 — SKSU Student domain configuration and roster technical contract
+
+- **Status:** Remaining institutional inputs and technical dependencies; core Student/Faculty requirements RESOLVED by DEC-070.
+- **APPROVED PRODUCT RULES:** Admin-only creation; Students require unique textual Student ID matching official identification and approved SKSU institutional email. Faculty is individual-only, uses any valid unique accessible email and does not require Student ID. Standard bulk workflows are Student-only; no Faculty allowlist, optional Student-ID or Faculty-bulk eligibility decision remains.
+- **REMAINING INSTITUTIONAL APPROVALS/INPUTS:** FSMO/registrar/IT supplies exact approved SKSU Student domains and official ID/roster format examples without copying personal records. Confirm actual course/contact availability and requiredness for the recommended studentId/name/email/course/contactNumber template; do not reopen required Student ID/name/email identity inputs.
+- **REMAINING TECHNICAL DEPENDENCIES:** Reviewed ID normalization and spreadsheet string/leading-zero preservation, domain matching, changed-email reconciliation and stable-ID matching to internal UUID. Reject missing required Student ID and ambiguous/conflicting identities; no silent missing-ID fallback, numeric coercion or Faculty relabeling. Field/category persistence and enforcement remain unimplemented.
+- **Gate:** Finalize actual configuration/format/matching contract before dependent implementation, within separately authorized Phase5. Do not invent a domain or ID regex. String representation and uniqueness are approved requirements, not proposals.
+
+## ELAB-V2-OPEN-029 — Student deactivation with outstanding obligations (RESOLVED)
+
+- **Status:** **RESOLVED**, 2026-10-08; removed from active open/deployment gates. Retained ID records supersession, not an outstanding question.
+- **Authority:** Owner additional policy decisions; DEC-073. Previous obligation-based exclusion/override alternatives are superseded.
+- **Resolution:** Admin may deactivate a Student individually or through the Student-only bulk workflow regardless of fines, active/overdue borrowing, unreturned equipment or replacement obligations, for graduation/withdrawal/transfer/other authorized deactivation. Display appropriate warnings and require confirmation; obligations must not block deactivation.
+- **Preserved boundaries:** Current Admin authority and Student-only bulk identity/role/category checks, preview/confirmation/audit/idempotency/history remain required. No automatic fine clearance/waiver/payment, return, replacement resolution, borrowing closure, overdue change or history deletion. FSMO resolves separately; fine clearance remains Admin-only and auditable.
+- **Remaining technical work:** Implement honest obligation projections/warnings, confirmation and status/audit commands under separately authorized Phase5; missing projections cannot claim zero. This is implementation work, not an unresolved policy or terms-content dependency.
+
 ## Proposal handling
 
-Record any later changed stakeholder instruction with authority/date and affected decision IDs; preserve factual V1 history. Engineering design choices (hybrid inventory, live-clear checkpoints, lock order, endpoints) are explicitly recommendations, not invented institutional rules. No separate stakeholder packet is needed: the owner provided working answers directly. No implementation or Phase 3A has begun.
+Record any later changed stakeholder instruction with authority/date and affected decision IDs; preserve factual V1 history. Engineering design choices (hybrid inventory, live-clear checkpoints, lock order, endpoints) are explicitly recommendations, not invented institutional rules. No separate stakeholder packet is needed: the owner provided working answers directly. The current policy update changes documentation only. Existing Phase1/4A/4B foundations retain their recorded implementation status; Phase5/6/later work is not automatically authorized.

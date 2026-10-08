@@ -15,7 +15,11 @@ export const routes: RouteObject[] = [{ errorElement: <RouteFailure />, hydrateF
   ...previewRoutes,
   { path: '/', element: <EntryRoute /> },
   { path: '/login', lazy: async () => ({ Component: (await import('@/features/auth/pages/login-page')).LoginPage }) },
-  { element: <ProtectedRoute roles={['BORROWER']} />, children: borrowerPaths.map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) })) },
+  { element: <ProtectedRoute roles={['BORROWER']} />, children: [
+    { path: '/borrower/terms', lazy: async () => ({ Component: (await import('@/features/terms/pages/terms-page')).TermsPage }) },
+    { lazy: async () => ({ Component: (await import('@/features/terms/components/terms-gate')).TermsGate }), children: borrowerPaths.filter(path => path === '/borrower/home' || path === '/borrower/equipment').map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) })) },
+    ...borrowerPaths.filter(path => path !== '/borrower/home' && path !== '/borrower/equipment').map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) })),
+  ] },
   { element: <ProtectedRoute roles={['STAFF', 'ADMIN']} />, children: staffPaths.map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) })) },
   { element: <ProtectedRoute roles={['ADMIN']} />, children: adminPaths.map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) })) },
   { path: '/status', element: <StatusPage /> },

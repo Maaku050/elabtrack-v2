@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "./application.css";
 @import "./authentication.css";
+@import "./terms.css";
 
 @custom-variant dark (&:is(.dark *));
 

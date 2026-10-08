@@ -1,5 +1,7 @@
 # Future UX implementation acceptance checklist
 
+**Current provisioning policy overlay, 2026-10-08:** [DEC-070 / approved rules and remaining gates](../project/ACCOUNT_PROVISIONING_POLICY.md) governs future behavior: only Admin creates accounts; Student requires unique textual official Student ID/approved SKSU email; Faculty is individual-only with valid unique accessible email and no required Student ID. Standard bulk creation/deactivation is Student-only. Both use borrower-owned separate passwords and current officially published Phase4B terms. This documentation overlay changes no implementation or approved mockup asset; original phase checkpoints remain historical.
+
 Phase 3A.1, 2026-10-08. **Specification only; every checkbox below is pending.** No screen/component/UI/browser/accessibility/theme implementation was tested. Apply later against approved Phase 3A.2 mockups and actual role-authorized implementation; current text wireframes are hierarchy/behavior drafts. [Inventory](UX_ARCHITECTURE.md), [wireframes](WIREFRAMES.md), [responsive contract](RESPONSIVE_RULES.md), [status system](STATUS_SYSTEM.md) govern.
 
 ## Per-screen review record
@@ -64,11 +66,16 @@ No placeholder checklist tick proves compliance. Do not weaken backend invariant
 - [ ] Damage/loss decreases physical custody, creates replacement quantity, retains history, no automatic price assessment.
 - [ ] Replacement acceptance adds actual new usable stock/total once, leaves damaged original held/history; partial acceptance remains open.
 - [ ] Completion only allP0/allU0, final overdue freeze atomic; no generic completion or custody-hiding correction control.
-- [ ] Staff can view fine and provision Borrower only; cannot clear/deactivate/bulk/assign Admin or see administrative audit/export.
+- [ ] Staff can view fine and assist Borrowers operationally; cannot create any account, clear/deactivate/bulk/assign Admin or see administrative audit/export. Future backend denies direct Staff creation/preview/confirmation/replay requests.
 - [ ] Admin full-clear method/actor/time/history and whole locked balance; no amount input/partial payments; stale balance forces review.
 - [ ] Active fine cleared now can later accrue delta; completed final amount cannot change; payment distinct from waiver/other.
 - [ ] Admin account lifecycle confirms impact and preserves history; privileged accounts named; last-admin/recovery behavior separately approved.
-- [ ] Bulk template/validation/preview/explicit subset/result handle duplicates and unknown batch outcome; no password spreadsheet/delivery assumptions.
+- [ ] Admin-only Student Excel uses studentId/name/email/course/contactNumber, no password/role/Faculty/category assignment; BORROWER/STUDENT fixed, required unique textual ID/SKSU email. Complete validation preview handles duplicates/conflicts before confirmation; durable results cover unknown batch outcomes without assumed delivery.
+- [ ] Admin individual form offers STUDENT/FACULTY; Student requires unique official ID as string/SKSU email, Faculty valid unique accessible email/no required Student ID. Privileged creation is separate; borrower owns password through secure activation.
+- [ ] Admin Student-only roster deactivation previews unmatched/conflicts/already-inactive/obligations, rechecks current BORROWER/STUDENT, never targets Faculty/Staff/Admin or hard-deletes history. DEC-073 resolves OPEN-029: both individual and bulk Student deactivation permit fines/active or overdue borrowing/unreturned equipment/replacements with warnings/confirmation, never an obligation veto or automatic resolution/overdue/history change; fine clearance stays Admin-only/auditable.
+- [ ] Both Student/Faculty accept current officially published Phase4B terms; missing/unapproved content cannot yield official consent.
+- [ ] Brevo activation/future recovery integration is backend-only; no browser/committed/logged API key. Real delivery claims require configured API key, verified sender and successful live testing (DEC-071).
+- [ ] Official FSMO terms await finalization after presentation; no invented publication/automatic acceptance. This dependency does not block independent account-management/inventory development; live borrowing still requires official publication/documented acceptance (DEC-072).
 - [ ] Inventory current A/R/C/D/T reconcile, liability/incidents separate; metadata cannot overwrite held/custody; archive guard enforced.
 - [ ] Terms published as new approved version; policy defaults read-only until configurable rules approved; no generic engine/provider UI.
 - [ ] Admin reports/audit scoped/bounded; appropriate filters/ranges/status/method totals; exports only after approved format and access.

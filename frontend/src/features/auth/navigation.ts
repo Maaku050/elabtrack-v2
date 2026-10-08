@@ -5,7 +5,7 @@ export const staffPaths = ['/staff/dashboard', '/staff/requests', '/staff/invent
 export const adminPaths = ['/admin/reports', '/admin/administration'] as const
 
 export function canVisit(role: UserRole, pathname: string): boolean {
-  return (role === 'BORROWER' && borrowerPaths.some(p => p === pathname)) ||
+  return (role === 'BORROWER' && (pathname === '/borrower/terms' || borrowerPaths.some(p => p === pathname))) ||
     ((role === 'STAFF' || role === 'ADMIN') && staffPaths.some(p => p === pathname)) ||
     (role === 'ADMIN' && adminPaths.some(p => p === pathname))
 }

@@ -28,7 +28,7 @@ export const queryClient = new QueryClient({
 /** Retained private roots plus explicit opt-in for future approved features.
  * Unclassified new server queries must use meta.authenticated=true if private. */
 export function isAuthenticatedQuery(query: Query): boolean {
-  return query.meta?.authenticated === true || ['auth', 'users'].includes(String(query.queryKey[0]))
+  return query.meta?.authenticated === true || ['auth', 'users', 'terms'].includes(String(query.queryKey[0]))
 }
 
 export function clearAuthenticatedQueries(preserveCurrentAccount = false): void {

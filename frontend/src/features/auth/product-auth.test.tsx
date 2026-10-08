@@ -8,6 +8,7 @@ import { useAuthStore } from '@/stores/auth-store'
 import { useSessionActionStore } from '@/stores/session-action-store'
 import { useUIStore } from '@/stores/ui-store'
 import { ApiRequestError } from '@/lib/api-error'
+import { termsApi } from '@/features/terms/api/terms.api'
 import { authApi } from './api/auth.api'
 import { loginDestination } from './navigation'
 import type { AuthUser, UserRole } from '@/types/common'
@@ -34,6 +35,7 @@ beforeEach(() => {
   useAuthStore.getState().clear()
   useSessionActionStore.setState({ signingIn: false, logout: 'idle', message: undefined })
   useUIStore.getState().setTheme('light')
+  vi.spyOn(termsApi, 'status').mockResolvedValue({ state: 'accepted', current_terms: { id: 'terms-unit-v1', version: 'TEST-1', title: 'SYNTHETIC UNIT TEST TERMS', body: 'TEST ONLY', content_hash: '0'.repeat(64), published_at: '2026-01-01T00:00:00Z' }, acceptance: { id: 'unit-receipt', terms_version_id: 'terms-unit-v1', accepted_at: '2026-01-01T00:00:00Z' }, has_previous_acceptance: true, acceptance_required: false, can_initiate_borrowing: true })
   vi.spyOn(authApi, 'login')
   vi.spyOn(authApi, 'me').mockImplementation(async () => useAuthStore.getState().user ?? account('BORROWER'))
   vi.spyOn(authApi, 'logout').mockResolvedValue(undefined)

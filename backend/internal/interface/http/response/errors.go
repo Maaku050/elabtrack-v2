@@ -5,6 +5,7 @@ import (
 
 	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
+	domainterms "github.com/Maaku050/elabtrack-v2/backend/internal/domain/terms"
 	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/constants"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
@@ -32,6 +33,18 @@ func Map(err error) Mapping {
 		return Mapping{400, constants.CodeValidation, "Validation failed.", fe}
 	}
 	switch {
+	case errors.Is(err, domainterms.ErrNotPublished):
+		return result(503, "TERMS_NOT_PUBLISHED", "FSMO has not published borrowing terms yet.")
+	case errors.Is(err, domainterms.ErrVersionNotFound):
+		return result(404, "TERMS_VERSION_NOT_FOUND", "Terms version was not found.")
+	case errors.Is(err, domainterms.ErrVersionChanged):
+		return result(409, "TERMS_VERSION_CHANGED", "Terms have changed. Review the current version before accepting.")
+	case errors.Is(err, domainterms.ErrAcceptanceRequired):
+		return result(409, "TERMS_ACCEPTANCE_REQUIRED", "Accept the current borrowing terms before initiating a new borrowing.")
+	case errors.Is(err, domainterms.ErrVersionExists):
+		return result(409, "TERMS_VERSION_EXISTS", "This terms version identifier has already been published.")
+	case errors.Is(err, domainterms.ErrPublicationChanged):
+		return result(409, "TERMS_PUBLICATION_CHANGED", "The current terms version changed. Review it before publishing.")
 	case errors.Is(err, domainuser.ErrUserNotFound), errors.Is(err, shared.ErrNotFound):
 		return result(404, constants.CodeNotFound, "Resource not found.")
 	case errors.Is(err, domainuser.ErrEmailAlreadyExists), errors.Is(err, shared.ErrConflict):

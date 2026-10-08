@@ -30,13 +30,29 @@ func TestRealProductRoleMigration(t *testing.T) {
 	full := NewMigrator(owner.Pool, "../../../migrations")
 	full.output = io.Discard
 	files, err := full.discover()
-	must(t, err == nil && len(files) == 4, "four paired migrations")
+	must(t, err == nil && len(files) >= 4 && files[3].version == "000004_product_roles", "historical product-role migration prefix")
+	// Exercise exactly the historical four pairs as new migrations are added.
+	productDir := t.TempDir()
+	for _, f := range files[:4] {
+		fixturePair(t, productDir, f.version, string(f.up), string(f.down))
+	}
+	full = NewMigrator(owner.Pool, productDir)
+	full.output = io.Discard
 	legacyDir := t.TempDir()
 	for _, f := range files[:3] {
 		fixturePair(t, legacyDir, f.version, string(f.up), string(f.down))
 	}
 	legacy := NewMigrator(owner.Pool, legacyDir)
 	legacy.output = io.Discard
+	// Refuse a historical replay if later migrations are already tracked.
+	var trackingExists bool
+	err = owner.Pool.QueryRow(ctx, `SELECT to_regclass('schema_migrations') IS NOT NULL`).Scan(&trackingExists)
+	must(t, err == nil, "tracking availability")
+	if trackingExists {
+		var newer int
+		err = owner.Pool.QueryRow(ctx, `SELECT count(*) FROM schema_migrations WHERE version > '000004_product_roles'`).Scan(&newer)
+		must(t, err == nil && newer == 0, "historical replay requires isolated migration prefix")
+	}
 	// Re-runs are allowed only on an empty disposable schema at version 4.
 	var exists bool
 	err = owner.Pool.QueryRow(ctx, `SELECT to_regclass('users') IS NOT NULL`).Scan(&exists)

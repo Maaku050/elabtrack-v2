@@ -1,5 +1,7 @@
 # UX architecture — Phase 3A.1
 
+**Current provisioning policy overlay, 2026-10-08:** [DEC-070 / approved rules and remaining gates](../project/ACCOUNT_PROVISIONING_POLICY.md) governs future behavior: only Admin creates accounts; Student requires unique textual official Student ID/approved SKSU email; Faculty is individual-only with valid unique accessible email and no required Student ID. Standard bulk creation/deactivation is Student-only. Both use borrower-owned separate passwords and current officially published Phase4B terms. This documentation overlay changes no implementation or approved mockup asset; original phase checkpoints remain historical.
+
 **Low-fidelity design draft delivered, 2026-10-08.** Current authorized phase: Phase 3A.1 only. These are UX proposals for review, not implemented routes/components, approved visual styling or changes to working policy. Phase 3A.2 high-fidelity design and Phase 3B implementation remain unstarted. [Phase report](../project/PHASE3A1_REPORT.md) records the gate.
 
 ## Authority and scope
@@ -9,10 +11,10 @@
 | Role | Primary task | Navigation / authority |
 |---|---|---|
 | BORROWER | Find equipment, request reservation, visit FSMO, follow own obligations/history | Mobile first; own records; no authoritative return/acceptance/clear controls |
-| STAFF | Operate face-to-face issue/returns/replacements, catalog stock and individual Borrower provisioning | Desktop/tablet first; operational history/fine viewing; cannot clear fine, deactivate/import or create privileged accounts |
-| ADMIN | All Staff operations plus privileged administration | Named individual accounts, deactivation/bulk/Staff-Admin management, fine clearing, exceptional corrections, terms/policy/audit/reports |
+| STAFF | Operate face-to-face issue/returns/replacements, catalog stock and borrower assistance | Desktop/tablet first; operational history/fine viewing; cannot create any account, clear fine, deactivate/import or manage privileged accounts |
+| ADMIN | All Staff operations plus individual Student/Faculty creation and privileged administration | Named accounts; all account creation, Student-only bulk creation/deactivation, Staff-Admin management, fine clearing, exceptional corrections, terms/policy/audit/reports |
 
-Student/Faculty are Borrower categories, not separate UX/roles. Current source still has generic user/admin auth; later approved role implementation will follow the product matrix while retaining Phase 1 session/security. Client navigation is permission-aware presentation; server authorization remains decisive.
+Student/Faculty share Borrower navigation and are categories, not roles; individual Admin creation has conditional Student-ID/email fields. Phase4A implements BORROWER/STAFF/ADMIN; provisioning/category storage remains unimplemented. Future server permissions follow DEC-070 while retaining Phase1/4A session/security. Client navigation is permission-aware presentation; server authorization remains decisive.
 
 ## Navigation architecture
 
@@ -20,7 +22,7 @@ Borrower mobile: compact app bar (title/back, Notifications with accessible name
 
 At tablet keep bottom navigation and expand content. At desktop replace it with persistent compact side navigation carrying the same four labels and Notifications secondary link; catalog/request can show a side summary. This is one workflow with more space, no second borrower product. Deep links keep active destination and parent/back behavior; browser back restores filters/scroll and unsent local form where safe, without resurrecting another user's data.
 
-Staff/Admin: one-level sidebar **Dashboard, Requests & Borrowings, Inventory, Borrowers**. Requests & Borrowings contains horizontal tabs Pending / Active / Overdue / Replacements / History, not five sidebar nests. Admin adds **Reports, Administration**; Administration has Accounts / Terms & Policy / Audit. Admin Clear Fine appears contextually on borrower/borrowing fine panels, bulk import on Borrowers, not hidden in generic settings. Operational Notifications and signed-in identity/theme/sign-out in app bar/account menu. Staff gets operational filtered views, not administrative exports/reports/audit. Admin uses the same operational shell, no mode switch that changes authority.
+Staff/Admin: one-level sidebar **Dashboard, Requests & Borrowings, Inventory, Borrowers**. Requests & Borrowings contains horizontal tabs Pending / Active / Overdue / Replacements / History, not five sidebar nests. Admin adds **Reports, Administration**; Administration has Accounts / Terms & Policy / Audit. Admin Clear Fine appears contextually on borrower/borrowing fine panels, Student-only bulk import/deactivation and Admin-only individual creation on Borrowers, not hidden in generic settings. Operational Notifications and signed-in identity/theme/sign-out in app bar/account menu. Staff gets operational filtered views, not administrative exports/reports/audit. Admin uses the same operational shell, no mode switch that changes authority.
 
 ```mermaid
 flowchart TD
@@ -55,18 +57,18 @@ flowchart TD
     Loan --> Replacements[Record replacement]
     Dash --> Inventory[Inventory]
     Dash --> Borrowers[Borrowers]
-    Borrowers --> Provision[Provision Borrower]
+    Admin --> Provision[Create Student or Faculty Borrower]
     Dash --> Notices[Operational activity]
     Dash --> Admin{Current Admin?}
     Admin --> Reports[Reports]
     Admin --> Manage[Accounts / Terms and Policy / Audit]
-    Admin --> Bulk[Bulk Borrower import]
+    Admin --> Bulk[Student bulk import or deactivation]
     Admin --> Clear[Contextual Clear Fine]
 ```
 
 ## Screen inventory and counting rule
 
-**59 reviewable UX surfaces = 2 shared + 22 Borrower + 23 Staff/Admin operational + 12 Admin-only.** This includes pages, steps, sheets/dialogs, detail variants and sections; it is not 59 separate routes. Lifecycle variants share one canonical borrowing detail. Admin inherits the 23 operational surfaces; do not count them twice. All 59 map to38 numbered [wireframe groups](WIREFRAMES.md), with shared/variant layouts explicitly noted. Page locations/labels are design navigation concepts, not changes to the current router.
+**59 reviewable UX surfaces = 2 shared + 22 Borrower + 22 Staff/Admin operational + 13 Admin-only.** This includes pages, steps, sheets/dialogs, detail variants and sections; it is not 59 separate routes. Lifecycle variants share one canonical borrowing detail. Admin inherits the 22 operational surfaces; O-17 retains its ID but is now Admin-only under DEC-070; do not count them twice. All 59 map to38 numbered [wireframe groups](WIREFRAMES.md), with shared/variant layouts explicitly noted. Page locations/labels are design navigation concepts, not changes to the current router.
 
 ### Shared access — 2
 
@@ -102,7 +104,7 @@ flowchart TD
 | B-21 | Notifications / activity | Page | WF-14 | Own relevant event display; delivery/read state not invented |
 | B-22 | Profile / account | Page | WF-13 | Identity/category/read-only status, theme, terms, sign out |
 
-### Operational inventory — 23
+### Operational inventory — 22 plus original O-17 now Admin-only
 
 | ID | Surface | Representation | Wireframe group | Purpose / permission |
 |---|---|---|---|---|
@@ -122,7 +124,7 @@ flowchart TD
 | O-14 | Replacement review / result | State | WF-22 | Acquisition and remaining/complete; no overacceptance |
 | O-15 | Borrower list | Page | WF-23 | Search/category/status; generic Borrower |
 | O-16 | Borrower detail | Page | WF-24 | Operational account/history/fine/current obligations |
-| O-17 | Provision Borrower | Page | WF-25 | Role forced Borrower; onboarding mechanism dependency |
+| O-17 | Admin individual Student/Faculty creation | Page | WF-25 | ADMIN-only even within this original operational grouping; BORROWER fixed; Student required string ID/SKSU email, Faculty accessible email/no required ID; borrower-owned activation |
 | O-18 | Inventory list | Page | WF-26 | A/R/C/damaged_held/total plus separate liability |
 | O-19 | Inventory detail / movements | Page | WF-27 | Physical counts separate from incidents, readable ledger |
 | O-20 | Equipment create / edit | Page | WF-28 | Metadata/version/catalog image; no raw stock override |
@@ -130,14 +132,14 @@ flowchart TD
 | O-22 | Inactive / archive confirmation | Dialog | WF-29 | No holds/physical/replacement for archive; keep history |
 | O-23 | Operational notifications | Page | WF-14 | Scoped activity/status; no provider settings or inbox administration |
 
-### Admin-only inventory — 12
+### Admin-only inventory — 12 original surfaces plus O-17
 
 | ID | Surface | Representation | Wireframe group | Purpose / permission |
 |---|---|---|---|---|
 | A-01 | Clear Fine | Dialog | WF-30 | Full outstanding only, method/note/confirmation |
 | A-02 | Fine clearance history | Section | WF-30 | Original/live/final and PAID/WAIVED/OTHER distinct |
-| A-03 | Bulk import template / file | Step | WF-31 | Approved file template; no plaintext password column mandate |
-| A-04 | Bulk validate / preview | Step | WF-31 | Valid/invalid/duplicate rows; explicit import subset choice |
+| A-03 | Student Excel template / file | Step | WF-31 | Admin-only; studentId/name/email/course/contactNumber; no password or role/category assignment |
+| A-04 | Student bulk validate / complete preview | Step | WF-31 | Student ID/SKSU email required; valid/invalid/duplicate/conflicting identities; explicit confirmed subset, Faculty/privileged conflicts reject |
 | A-05 | Bulk import result | State | WF-31 | Created/rejected/unknown outcomes; no blind resend |
 | A-06 | Deactivate / reactivate Borrower | Dialog | WF-32 | Impact/history confirmation, no loan erase |
 | A-07 | Staff/Admin accounts | Page | WF-33 | Named privileged users; Admin-only access |
@@ -187,7 +189,7 @@ TanStack Query will own server data through feature hooks/API/central transport;
 | No history | No historical transactions yet; Browse equipment / clear filters | Borrower / Staff/Admin permitted history |
 | No overdue borrowings | No overdue borrowings in this view; View active borrowings / Clear filters | Staff/Admin; Borrower has no overdue warning when false |
 | No replacement obligation | No replacements required; view borrowing or remaining physical units | Owner Borrower / Staff/Admin |
-| No Borrowers | No Borrower accounts match or exist; Clear filters / Provision Borrower | Staff/Admin; bulk import Admin only |
+| No Borrowers | No Borrower accounts match or exist; Clear filters; Admin may Create Student/Faculty | Staff/Admin operational view; any creation and Student bulk operations Admin-only |
 | No report results | No results for selected range/filters; adjust range / Clear filters | Admin |
 | No notification/activity updates | No updates for this view; view relevant borrowings | Owner Borrower / Staff/Admin operational view |
 
@@ -211,12 +213,12 @@ Use available Button/Card/Badge/Input/Field/Select/Combobox/Tabs/Table/Sheet/Dra
 |---|---|---|
 | UX-01 | Four bottom destinations; Notifications secondary, label “Selected equipment” for cart | Owner/users review terminology and task discoverability in Phase 3A.2 |
 | UX-02 | Full-request handover, current-terms direct issue, live full-clear checkpoints from selected domain engineering baseline | Confirm review comprehension; no locked policy reopened |
-| UX-03 | Notifications is read-only relevant activity projection; no unread/read-marking state invented | Future feature/API design needs approved owner-scoped event projection; provider still open, no claim of actual email delivery |
+| UX-03 | Notifications is read-only relevant activity projection; no unread/read-marking state invented | Future feature/API design needs approved owner-scoped event projection; Brevo selected for transactional activation/future recovery (DEC-071); backend integration/configured API key/verified sender/successful delivery testing remain, with later notification cadence separate and no actual delivery claim |
 | UX-04 | Required requested date+time in borrower UI, staff confirms final due at handover | New UX choice explicitly requested in this phase; no seven-day limit or automatic extension |
-| UX-05 | Bulk file/template, validate/preview/import chosen valid subset, durable result/check status | Final format, duplicate reconciliation, batch atomicity and secure activation delivery are implementation design dependencies; never infer partial success from timeout |
-| UX-06 | Terms text/category names/image placeholders; policy rate/TTL read-only in initial settings | Final copy/taxonomy and future configurable policy controls need review; defaults unchanged |
+| UX-05 | Student-only Excel template/complete validation preview/explicit subset/confirmation/results; separate Student roster deactivation with unmatched/conflicts/already-inactive/obligation warnings | Admin-only; role/category checked server-side; batch atomicity/activation delivery technical dependencies; DEC-073 resolves OPEN-029: Student deactivation permits all obligations with warnings/confirmation and no obligation veto or automatic resolution/overdue/history change |
+| UX-06 | Terms text/category names/image placeholders; policy rate/TTL read-only in initial settings | Official terms finalized after FSMO presentation (DEC-072), without blocking independent account-management/inventory development; live borrowing still requires official publication/acceptance. Taxonomy/configurable policy controls retain their review; defaults unchanged |
 | UX-07 | Admin report filter/export entry and account recovery/last-admin safeguards | Formats/export permissions and recovery plan before delivery; wireframes do not promise a gateway/job/provider |
 
-None materially blocks low-fidelity core request/return/replacement/fine/navigation design or separately authorized Phase 3A.2 styling. Legal retention, original damaged disposition/equivalence guidance, provider/cadence, deployment and real migration remain precise later gates in OPEN_DECISIONS. No separate repair pipeline or notification inbox schema is invented.
+None materially blocks low-fidelity core request/return/replacement/fine/navigation design or separately authorized Phase 3A.2 styling. Legal retention, original damaged disposition/equivalence guidance, selected Brevo deployment/verified delivery and later notification cadence, deployment and real migration remain precise later gates in OPEN_DECISIONS. No separate repair pipeline or notification inbox schema is invented.
 
 See [Borrower flows](BORROWER_FLOWS.md), [operational flows](STAFF_ADMIN_FLOWS.md), [responsive rules](RESPONSIVE_RULES.md), [status system](STATUS_SYSTEM.md), [wireframes](WIREFRAMES.md) and [future checklist](UX_ACCEPTANCE_CHECKLIST.md). Only the roadmap and new UX/report documents change in Phase 3A.1.

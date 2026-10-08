@@ -5,6 +5,7 @@
  * Always import from here so keys are consistent and refactor-safe.
  */
 export const queryKeys = {
+	terms: { all: ['terms'] as const, status: (userId?: string) => ['terms', 'status', userId] as const },
   auth: {
     all: ['auth'] as const,
     me: () => [...queryKeys.auth.all, 'me'] as const,

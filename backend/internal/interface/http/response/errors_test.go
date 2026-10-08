@@ -8,6 +8,7 @@ import (
 
 	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
+	domainterms "github.com/Maaku050/elabtrack-v2/backend/internal/domain/terms"
 	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator"
 	"github.com/gofiber/fiber/v3"
@@ -20,6 +21,12 @@ func TestFoundationErrorMapping(t *testing.T) {
 		status int
 		code   string
 	}{
+		{domainterms.ErrNotPublished, 503, "TERMS_NOT_PUBLISHED"},
+		{domainterms.ErrVersionNotFound, 404, "TERMS_VERSION_NOT_FOUND"},
+		{domainterms.ErrVersionChanged, 409, "TERMS_VERSION_CHANGED"},
+		{domainterms.ErrAcceptanceRequired, 409, "TERMS_ACCEPTANCE_REQUIRED"},
+		{domainterms.ErrVersionExists, 409, "TERMS_VERSION_EXISTS"},
+		{domainterms.ErrPublicationChanged, 409, "TERMS_PUBLICATION_CHANGED"},
 		{domainuser.ErrUserNotFound, 404, "NOT_FOUND"}, {shared.ErrNotFound, 404, "NOT_FOUND"},
 		{domainuser.ErrEmailAlreadyExists, 409, "CONFLICT"}, {shared.ErrConflict, 409, "CONFLICT"},
 		{domainuser.ErrInvalidCredentials, 401, "INVALID_CREDENTIALS"}, {shared.ErrUnauthorized, 401, "UNAUTHORIZED"},

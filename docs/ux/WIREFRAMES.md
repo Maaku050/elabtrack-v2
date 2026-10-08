@@ -1,5 +1,7 @@
 # Low-fidelity wireframes — Phase 3A.1
 
+**Current provisioning policy overlay, 2026-10-08:** [DEC-070 / approved rules and remaining gates](../project/ACCOUNT_PROVISIONING_POLICY.md) governs future behavior: only Admin creates accounts; Student requires unique textual official Student ID/approved SKSU email; Faculty is individual-only with valid unique accessible email and no required Student ID. Standard bulk creation/deactivation is Student-only. Both use borrower-owned separate passwords and current officially published Phase4B terms. This documentation overlay changes no implementation or approved mockup asset; original phase checkpoints remain historical.
+
 **Text layouts only, 2026-10-08;38 numbered wireframe groups covering all 59 inventoried UX surfaces.** Multi-step/variant groups share layouts and are not38 production routes. Mobile borrower base and desktop/tablet operations are shown schematically; widths of plain text drawings are not CSS measurements. This package contains no high-fidelity colors, branded imagery, fonts, polished screens, React/HTML components or runnable prototype.
 
 [Inventory/navigation](UX_ARCHITECTURE.md), [Borrower journeys](BORROWER_FLOWS.md), [operational journeys](STAFF_ADMIN_FLOWS.md), [responsive matrix](RESPONSIVE_RULES.md), [status system](STATUS_SYSTEM.md) and [future checklist](UX_ACCEPTANCE_CHECKLIST.md) define behavior beyond each drawing. Generic references/counts are synthetic examples; no real borrower identity/contact data. Square brackets represent controls/status/placeholder text, never photographs for returns. Catalog image placeholders are independently in scope.
@@ -38,13 +40,13 @@ Every group inherits Skeleton for region loading, truthful Empty with next actio
 | WF-22 | Replacement selection, acceptance and result | O-13, O-14 | Operations desktop/tablet |
 | WF-23 | Borrower list | O-15 | Operations desktop/tablet |
 | WF-24 | Borrower detail | O-16 | Operations desktop/tablet |
-| WF-25 | Provision individual Borrower | O-17 | Operations desktop/tablet |
+| WF-25 | Admin individual Student/Faculty creation | O-17 | Admin-only desktop/tablet |
 | WF-26 | Inventory list — physical counts | O-18 | Operations desktop/tablet |
 | WF-27 | Inventory detail and movement history | O-19 | Operations desktop/tablet |
 | WF-28 | Equipment create/edit — catalog metadata | O-20 | Operations desktop/tablet |
 | WF-29 | Stock movement and inactive/archive impact | O-21, O-22 | Operations desktop/tablet |
 | WF-30 | Admin full fine clearance and history | A-01, A-02 | Operations desktop/tablet |
-| WF-31 | Admin bulk import — template, preview and result | A-03, A-04, A-05 | Operations desktop/tablet |
+| WF-31 | Admin Student bulk import — template, preview and result | A-03, A-04, A-05 | Operations desktop/tablet |
 | WF-32 | Admin account deactivation/reactivation | A-06 | Operations desktop/tablet |
 | WF-33 | Admin named Staff/Admin accounts | A-07, A-08 | Operations desktop/tablet |
 | WF-34 | Admin current policy and versioned terms | A-09, A-10 | Operations desktop/tablet |
@@ -596,17 +598,17 @@ Surfaces: O-15. Likely future shadcn primitives: **Input, Select, Table/Card, Ba
 
 ```text
 +------------------------------------------------------------+
-| Borrowers    [Provision Borrower] [Admin:Bulk import]        |
+| Borrowers    [Admin:Create] [Admin:Student bulk]        |
 | Search [____] Category [All v] Account status [All v]        |
 | Borrower | Category | Program | Account | Current obligations|
 | [name]   | Faculty  | [if set]| Active  | P3/U0/Fine20      |
 | [Open borrower]                                             |
 | Pagination                                                 |
-| Empty: No Borrowers [Provision Borrower]                     |
+| Empty: No Borrowers [Admin:Create Borrower]                     |
 +------------------------------------------------------------+
 ```
 
-Generic population, no Student-only picker. Staff has individual provisioning, Admin bulk/status/privileged grants. Duplicate/status/error states distinguish empty collection. Private identity fields minimal; no sample contact/biography.
+Operational directory includes Student/Faculty; only the bulk workflow is Student-only. Staff assists without account creation; Admin has all creation/status/privileged grants. Duplicate/status/error states distinguish empty collection. Private identity fields minimal; no sample contact/biography.
 
 ## WF-24 — Borrower detail
 
@@ -629,23 +631,23 @@ Inactive account retains history/operations; no issue to inactive target. Admin 
 
 ## WF-25 — Provision individual Borrower
 
-Surfaces: O-17. Likely future shadcn primitives: **Card, Field, Input, Select, Button, Alert**.
+Surfaces: O-17, ADMIN only under DEC-070. Likely future shadcn primitives: **Card, Field, Input, Select, Button, Alert**.
 
 ```text
 +------------------------------------------------------------+
 | Provision Borrower                                         |
 | Name [________________] Email [________________]           |
-| Category [Student / Faculty / approved types]               |
+| Borrower type [STUDENT / FACULTY]               |
 | Program [if applicable________] Contact [if needed________] |
-| Role: Borrower (fixed; Staff cannot select privileged role) |
-| Account access instructions [design placeholder].       |
-| Role and identity reviewed before account creation.   |
+| Role: BORROWER (fixed; privileged accounts separate) |
+| Secure activation: Borrower chooses own password.       |
+| Student ID [required for STUDENT; string, keep zeroes]  |
 | [Cancel draft] [Review and create Borrower]                 |
 | Result / validation / duplicate / uncertain-create region   |
 +------------------------------------------------------------+
 ```
 
-Exact activation/initial-password instructions depend on approved security design; no fake sent invitation or display of passwords. Actor Staff/Admin, never public signup. Mobile single-column fields despite wide schematic drawing.
+Exact activation/initial-password instructions depend on approved security design; no fake sent invitation or display of passwords. Actor Admin only, never Staff or public signup. Student requires unique textual official Student ID and approved SKSU email; Faculty may use any valid unique accessible email and does not require Student ID. No Admin-chosen borrower password; privileged STAFF/ADMIN creation stays separate. Mobile single-column fields despite wide schematic drawing.
 
 ## WF-26 — Inventory list — physical counts
 
@@ -753,27 +755,29 @@ Staff/Borrower variant: read-only basis/balance/history; no Clear button.
 
 No partial/editable amount or payment gateway. Clear full locked current balance; stale expected balance reloads/requires confirmation. Successful balance0 does not erase assessed20. PAID distinct from waived/other; private note not automatically borrower-visible.
 
-## WF-31 — Admin bulk import — template, preview and result
+## WF-31 — Admin Student bulk import — template, preview and result
 
 Surfaces: A-03, A-04, A-05. Likely future shadcn primitives: **Card, Field, Input(file), Table/Card, Badge, Progress, Button, AlertDialog, Alert**.
 
 ```text
 +------------------------------------------------------------------+
-| Bulk Borrower import   1 File >2 Validate/preview >3 Result        |
+| Student Excel import   1 File >2 Validate/preview >3 Result        |
 | STEP1 [Download approved template]                               |
-| [Choose account-data file] [Validate rows]                        |
-| Account access instructions [design placeholder].         |
+| [Choose Student roster] [Validate complete file]                        |
+| Columns: studentId/name/email/course/contactNumber        |
 | STEP2 Valid18 / Invalid2 / Duplicate-email conflicts [details]    |
-| Row | Name | Email | Category | Status / actionable error         |
+| Row | Student ID | Name | Email | Status / conflict error         |
 | [Correct file and revalidate]                                    |
 | [Import valid18 only] (explicit subset; others not created)       |
-| Confirmation:18 Borrower accounts, no privileged roles           |
+| Confirmation:18 STUDENT BORROWER accounts; no other roles           |
 | STEP3 Created18 / Not created2 / Unresolved outcomes [Check]      |
 | [View Borrowers] [Correct failed rows]                            |
 +------------------------------------------------------------------+
 ```
 
-Illustrative counts, no actual data import. Password column not mandated; no fake activation delivery claim. Final file format/batch transaction/duplicate resolution still implementation design. Unknown batch result checks original identity; no blind upload/import again. This file input is account data, never return evidence.
+Illustrative counts, no actual data import. Admin-only Student creation fixes BORROWER/STUDENT; require unique textual Student ID/SKSU email and preserve leading zeroes. Exclude password/admin/staff/faculty roles and category assignment; reject conflicting Faculty/privileged identities. Complete validation preview precedes confirmation. No fake activation delivery claim. Final file format/batch transaction/duplicate resolution still implementation design. Unknown batch result checks original identity; no blind upload/import again. This file input is account data, never return evidence.
+
+Separate Admin-only **Bulk Deactivate Students** reuses the roster: match stable Student ID/email → preview unmatched/conflicting/already-inactive/obligation warnings → explicitly confirm selected Students → audited results. Recheck current BORROWER/STUDENT under locks; never target Faculty/Staff/Admin, hard-delete history or affect roster-absent accounts. DEC-073 resolves OPEN-029: outstanding fines/active or overdue loans/unreturned equipment/replacements cannot veto Student deactivation; warnings/confirmation preserve every obligation, borrowing state, due/overdue calculation and history record without payment/clearance/return/replacement/closure writes; no new surface count or approved mockup is introduced.
 
 ## WF-32 — Admin account deactivation/reactivation
 
@@ -792,7 +796,7 @@ Reactivation variant: restore normal account access, keep history
 and existing obligations. [Keep inactive] [Confirm reactivation]
 ```
 
-Admin only; no account hard delete or independent eligibility suspension. Actual current account state checked at command. On failure remain unchanged; preserve role/status history. No client workaround for inactive login.
+Admin only; DEC-073 permits Student individual/bulk deactivation for graduation/withdrawal/transfer/other authorized reasons despite all obligations. Show warnings and require confirmation; positive obligations never disable that action. No automatic fine/payment/return/replacement/closure/overdue/history changes; FSMO resolution remains separate and fine clearance Admin-only/auditable. No account hard delete or independent eligibility suspension. Actual current account state checked at command. On failure remain unchanged; preserve role/status history. No client workaround for inactive login.
 
 ## WF-33 — Admin named Staff/Admin accounts
 

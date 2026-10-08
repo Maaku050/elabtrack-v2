@@ -7,7 +7,7 @@
 | Capability | Audited factual V1 behavior | Current V2 disposition / evidence |
 |---|---|---|
 | Borrower population | Audit03/07/13 student-oriented UI/role; no distinct faculty role | Owner D1/2: generic active Borrower; Student/Faculty category, not roles; supersedes student-only assumption |
-| Provisioning / bulk creation | Audit05: Staff/Admin accounts, bulk spreadsheet including password, no signup | Preserve provisioning/bulk capability D4; Admin bulk/privileged accounts, Staff narrow Borrower grant; secure initial-password mechanism later |
+| Provisioning / bulk creation | Audit05: Staff/Admin accounts, bulk spreadsheet including password, no signup | DEC-070 supersedes D4 Staff grant: Admin alone creates accounts; Student requires unique textual official ID/SKSU email, Faculty individual-only valid accessible email/no required ID; standard Excel creation/deactivation Student-only with complete preview, no passwords/role assignment; secure borrower-owned activation remains unimplemented |
 | Staff/Admin distinction | Audit03/15 broad shared operations including privileged user management/fines | Supersede with three roles D3/26; named multiple Admins; Admin-only fine clearing/deactivation/privileged administration |
 | Active account | Audit05/09 client status check; current-session weaknesses | D2: active registered account gate, no independent suspension/eligibility subsystem. Current Phase 1 server freshness remains; old custody retained |
 | Request reservation | Audit07/09 available decreases/borrowed increases on submit; race-prone writes | Preserve intent D6: explicit reserved pool, server transaction/locks, available not locally authoritative |

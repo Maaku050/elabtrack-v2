@@ -1,5 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Bell, House, Package, ListChecks, UserRound, LogOut } from 'lucide-react'
+import { Bell, LogOut } from 'lucide-react'
+import { borrowerDestinations } from '@/components/application/borrower-navigation'
+import { AccountTerms } from '@/features/terms/components/account-terms'
 import { BorrowerShell, StaffShell } from '@/components/application/shells'
 import { AppButton, PageHeading, SurfaceCard, ThemeControl } from '@/components/application/visual'
 import { EmptyState } from '@/components/feedback/states'
@@ -13,10 +15,6 @@ const labels: Record<string, string> = {
   '/staff/borrowers': 'Borrowers', '/staff/account': 'Account', '/staff/notifications': 'Notifications',
   '/admin/reports': 'Reports', '/admin/administration': 'Administration',
 }
-const borrowerDestinations = [
-  { label: 'Home', href: '/borrower/home', icon: House }, { label: 'Equipment', href: '/borrower/equipment', icon: Package },
-  { label: 'My Borrowings', href: '/borrower/borrowings', icon: ListChecks }, { label: 'Account', href: '/borrower/account', icon: UserRound },
-]
 const operationalDestinations = { Dashboard: '/staff/dashboard', 'Requests & Borrowings': '/staff/requests', Inventory: '/staff/inventory', Borrowers: '/staff/borrowers', Reports: '/admin/reports', Administration: '/admin/administration', Account: '/staff/account', Notifications: '/staff/notifications' }
 
 export function WorkspacePage() {
@@ -33,6 +31,7 @@ export function WorkspacePage() {
     <PageHeading title={title} description={account ? 'Your FSMO account.' : `Welcome, ${user.name}.`} action={borrower ? <div className="workspace-actions"><ThemeControl />{signOut}</div> : undefined} />
     {account ? <SurfaceCard className="workspace-placeholder workspace-account"><h2>Account details</h2><dl><dt>Name</dt><dd>{user.name}</dd><dt>Email</dt><dd>{user.email}</dd><dt>Role</dt><dd>{user.role === 'BORROWER' ? 'Borrower' : user.role === 'STAFF' ? 'Staff' : 'Admin'}</dd></dl></SurfaceCard>
       : <SurfaceCard className="workspace-placeholder"><EmptyState title="This feature is not available yet" description="Your account is connected. Contact FSMO for assistance while this workspace is being prepared." /></SurfaceCard>}
+    {account && borrower && <AccountTerms />}
   </>
   return borrower ? <BorrowerShell active={title === 'Equipment Catalog' ? 'Equipment' : title} destinations={borrowerDestinations}
     action={<AppButton variant="ghost" aria-label="Notifications" onClick={() => navigate('/borrower/notifications')}><Bell size={20} aria-hidden="true" /></AppButton>}>{body}</BorrowerShell>

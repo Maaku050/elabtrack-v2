@@ -1,0 +1,1268 @@
+{
+  "productionUrl": "http://localhost:14174",
+  "productionBundles": [
+    "api-client-ZI5wrMun.js",
+    "auth-store-C8vepooe.js",
+    "borrower-navigation-BnL3JRfV.js",
+    "index-BICNq57-.js",
+    "input-Bkm_V_Ub.js",
+    "login-page-bhUjNJBl.js",
+    "terms-frame-D8f5H3yA.js",
+    "terms-gate-DxVNai3S.js",
+    "terms-page-CgCPQrNX.js",
+    "workspace-page-C-wzbQn5.js"
+  ],
+  "generatedAt": "2026-10-08T14:02:23.053Z",
+  "browser": "Chrome/140.0.7339.16",
+  "url": "http://localhost:15174",
+  "anonymousRefreshFixture": true,
+  "cases": [
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 390,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 362,
+          "height": 56
+        },
+        ".metric-card": {
+          "x": 14,
+          "y": 158,
+          "width": 176,
+          "height": 87
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Good morning, Alex!",
+      "viewport": 390,
+      "clientWidth": 390,
+      "pageWidth": 390,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": null,
+      "id": "B01",
+      "width": 390,
+      "file": "B01-390-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 390,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 362,
+          "height": 56
+        },
+        ".metric-card": {
+          "x": 14,
+          "y": 158,
+          "width": 176,
+          "height": 87
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Good morning, Alex!",
+      "viewport": 390,
+      "clientWidth": 390,
+      "pageWidth": 390,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": null,
+      "id": "B01",
+      "width": 390,
+      "file": "B01-390-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 320,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 292,
+          "height": 77
+        },
+        ".metric-card": {
+          "x": 14,
+          "y": 179,
+          "width": 141,
+          "height": 83
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Good morning, Alex!",
+      "viewport": 320,
+      "clientWidth": 320,
+      "pageWidth": 320,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": null,
+      "id": "B01",
+      "width": 320,
+      "file": "B01-320-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 320,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 292,
+          "height": 77
+        },
+        ".metric-card": {
+          "x": 14,
+          "y": 179,
+          "width": 141,
+          "height": 83
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Good morning, Alex!",
+      "viewport": 320,
+      "clientWidth": 320,
+      "pageWidth": 320,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": null,
+      "id": "B01",
+      "width": 320,
+      "file": "B01-320-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 768,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 24,
+          "y": 88,
+          "width": 720,
+          "height": 56
+        },
+        ".metric-card": {
+          "x": 24,
+          "y": 162,
+          "width": 169.5,
+          "height": 87
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Good morning, Alex!",
+      "viewport": 768,
+      "clientWidth": 768,
+      "pageWidth": 768,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": null,
+      "id": "B01",
+      "width": 768,
+      "file": "B01-768-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 768,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 24,
+          "y": 88,
+          "width": 720,
+          "height": 56
+        },
+        ".metric-card": {
+          "x": 24,
+          "y": 162,
+          "width": 169.5,
+          "height": 87
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Good morning, Alex!",
+      "viewport": 768,
+      "clientWidth": 768,
+      "pageWidth": 768,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": null,
+      "id": "B01",
+      "width": 768,
+      "file": "B01-768-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 1280,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 90,
+          "y": 88,
+          "width": 1100,
+          "height": 56
+        },
+        ".metric-card": {
+          "x": 90,
+          "y": 162,
+          "width": 264.5,
+          "height": 70
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Good morning, Alex!",
+      "viewport": 1280,
+      "clientWidth": 1280,
+      "pageWidth": 1280,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": null,
+      "id": "B01",
+      "width": 1280,
+      "file": "B01-1280-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 1280,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 90,
+          "y": 88,
+          "width": 1100,
+          "height": 56
+        },
+        ".metric-card": {
+          "x": 90,
+          "y": 162,
+          "width": 264.5,
+          "height": 70
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Good morning, Alex!",
+      "viewport": 1280,
+      "clientWidth": 1280,
+      "pageWidth": 1280,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": null,
+      "id": "B01",
+      "width": 1280,
+      "file": "B01-1280-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 390,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 362,
+          "height": 56
+        },
+        ".metric-card": null,
+        ".equipment-card": {
+          "x": 14,
+          "y": 322,
+          "width": 362,
+          "height": 113
+        },
+        ".pending-table": null
+      },
+      "title": "Equipment Catalog",
+      "viewport": 390,
+      "clientWidth": 390,
+      "pageWidth": 390,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": {
+        "bottom": 667,
+        "navigationTop": 827
+      },
+      "id": "B02",
+      "width": 390,
+      "file": "B02-390-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 390,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 362,
+          "height": 56
+        },
+        ".metric-card": null,
+        ".equipment-card": {
+          "x": 14,
+          "y": 322,
+          "width": 362,
+          "height": 113
+        },
+        ".pending-table": null
+      },
+      "title": "Equipment Catalog",
+      "viewport": 390,
+      "clientWidth": 390,
+      "pageWidth": 390,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": {
+        "bottom": 667,
+        "navigationTop": 827
+      },
+      "id": "B02",
+      "width": 390,
+      "file": "B02-390-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 320,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 292,
+          "height": 77
+        },
+        ".metric-card": null,
+        ".equipment-card": {
+          "x": 14,
+          "y": 343,
+          "width": 292,
+          "height": 174
+        },
+        ".pending-table": null
+      },
+      "title": "Equipment Catalog",
+      "viewport": 320,
+      "clientWidth": 320,
+      "pageWidth": 320,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": {
+        "bottom": 667,
+        "navigationTop": 827
+      },
+      "id": "B02",
+      "width": 320,
+      "file": "B02-320-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 320,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 292,
+          "height": 77
+        },
+        ".metric-card": null,
+        ".equipment-card": {
+          "x": 14,
+          "y": 343,
+          "width": 292,
+          "height": 174
+        },
+        ".pending-table": null
+      },
+      "title": "Equipment Catalog",
+      "viewport": 320,
+      "clientWidth": 320,
+      "pageWidth": 320,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": {
+        "bottom": 667,
+        "navigationTop": 827
+      },
+      "id": "B02",
+      "width": 320,
+      "file": "B02-320-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 768,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 24,
+          "y": 88,
+          "width": 720,
+          "height": 56
+        },
+        ".metric-card": null,
+        ".equipment-card": {
+          "x": 24,
+          "y": 276,
+          "width": 353,
+          "height": 160
+        },
+        ".pending-table": null
+      },
+      "title": "Equipment Catalog",
+      "viewport": 768,
+      "clientWidth": 768,
+      "pageWidth": 768,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": {
+        "bottom": 685,
+        "navigationTop": 827
+      },
+      "id": "B02",
+      "width": 768,
+      "file": "B02-768-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 768,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 768,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 24,
+          "y": 88,
+          "width": 720,
+          "height": 56
+        },
+        ".metric-card": null,
+        ".equipment-card": {
+          "x": 24,
+          "y": 276,
+          "width": 353,
+          "height": 160
+        },
+        ".pending-table": null
+      },
+      "title": "Equipment Catalog",
+      "viewport": 768,
+      "clientWidth": 768,
+      "pageWidth": 768,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": {
+        "bottom": 685,
+        "navigationTop": 827
+      },
+      "id": "B02",
+      "width": 768,
+      "file": "B02-768-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 1280,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 90,
+          "y": 88,
+          "width": 1100,
+          "height": 56
+        },
+        ".metric-card": null,
+        ".equipment-card": {
+          "x": 90,
+          "y": 276,
+          "width": 357.328125,
+          "height": 160
+        },
+        ".pending-table": null
+      },
+      "title": "Equipment Catalog",
+      "viewport": 1280,
+      "clientWidth": 1280,
+      "pageWidth": 1280,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 771
+      },
+      "dock": {
+        "bottom": 696,
+        "navigationTop": 827
+      },
+      "id": "B02",
+      "width": 1280,
+      "file": "B02-1280-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 1280,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 90,
+          "y": 88,
+          "width": 1100,
+          "height": 56
+        },
+        ".metric-card": null,
+        ".equipment-card": {
+          "x": 90,
+          "y": 276,
+          "width": 357.328125,
+          "height": 160
+        },
+        ".pending-table": null
+      },
+      "title": "Equipment Catalog",
+      "viewport": 1280,
+      "clientWidth": 1280,
+      "pageWidth": 1280,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 771
+      },
+      "dock": {
+        "bottom": 696,
+        "navigationTop": 827
+      },
+      "id": "B02",
+      "width": 1280,
+      "file": "B02-1280-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 210,
+          "y": 0,
+          "width": 814,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 230,
+          "y": 84,
+          "width": 774,
+          "height": 59.75
+        },
+        ".metric-card": {
+          "x": 230,
+          "y": 163.75,
+          "width": 186,
+          "height": 109
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Dashboard",
+      "viewport": 1024,
+      "clientWidth": 1024,
+      "pageWidth": 1024,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": null,
+      "dock": null,
+      "id": "S01-dashboard",
+      "width": 1024,
+      "file": "S01-dashboard-1024-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 210,
+          "y": 0,
+          "width": 814,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 230,
+          "y": 84,
+          "width": 774,
+          "height": 59.75
+        },
+        ".metric-card": {
+          "x": 230,
+          "y": 163.75,
+          "width": 186,
+          "height": 109
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Dashboard",
+      "viewport": 1024,
+      "clientWidth": 1024,
+      "pageWidth": 1024,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": null,
+      "dock": null,
+      "id": "S01-dashboard",
+      "width": 1024,
+      "file": "S01-dashboard-1024-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 238,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 238,
+          "y": 0,
+          "width": 1202,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 262,
+          "y": 88,
+          "width": 1154,
+          "height": 59.75
+        },
+        ".metric-card": {
+          "x": 262,
+          "y": 167.75,
+          "width": 276.5,
+          "height": 111
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Dashboard",
+      "viewport": 1440,
+      "clientWidth": 1440,
+      "pageWidth": 1440,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": null,
+      "dock": null,
+      "id": "S01-dashboard",
+      "width": 1440,
+      "file": "S01-dashboard-1440-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 238,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 238,
+          "y": 0,
+          "width": 1202,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 262,
+          "y": 88,
+          "width": 1154,
+          "height": 59.75
+        },
+        ".metric-card": {
+          "x": 262,
+          "y": 167.75,
+          "width": 276.5,
+          "height": 111
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Dashboard",
+      "viewport": 1440,
+      "clientWidth": 1440,
+      "pageWidth": 1440,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": null,
+      "footer": null,
+      "dock": null,
+      "id": "S01-dashboard",
+      "width": 1440,
+      "file": "S01-dashboard-1440-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 210,
+          "y": 0,
+          "width": 814,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 230,
+          "y": 84,
+          "width": 774,
+          "height": 119.75
+        },
+        ".metric-card": null,
+        ".equipment-card": null,
+        ".pending-table": {
+          "x": 231,
+          "y": 338.75,
+          "width": 1136.703125,
+          "height": 433.5
+        }
+      },
+      "title": "Pending Requests",
+      "viewport": 1024,
+      "clientWidth": 1024,
+      "pageWidth": 1024,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": {
+        "width": 772,
+        "contentWidth": 1137,
+        "tabIndex": 0,
+        "label": "Pending requests table; scroll horizontally for additional columns"
+      },
+      "footer": null,
+      "dock": null,
+      "id": "S01-pending",
+      "width": 1024,
+      "file": "S01-pending-1024-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 210,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 210,
+          "y": 0,
+          "width": 814,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 230,
+          "y": 84,
+          "width": 774,
+          "height": 119.75
+        },
+        ".metric-card": null,
+        ".equipment-card": null,
+        ".pending-table": {
+          "x": 231,
+          "y": 338.75,
+          "width": 1136.703125,
+          "height": 433.5
+        }
+      },
+      "title": "Pending Requests",
+      "viewport": 1024,
+      "clientWidth": 1024,
+      "pageWidth": 1024,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": {
+        "width": 772,
+        "contentWidth": 1137,
+        "tabIndex": 0,
+        "label": "Pending requests table; scroll horizontally for additional columns"
+      },
+      "footer": null,
+      "dock": null,
+      "id": "S01-pending",
+      "width": 1024,
+      "file": "S01-pending-1024-dark.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 238,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 238,
+          "y": 0,
+          "width": 1202,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 262,
+          "y": 88,
+          "width": 1154,
+          "height": 59.75
+        },
+        ".metric-card": null,
+        ".equipment-card": null,
+        ".pending-table": {
+          "x": 263,
+          "y": 230.75,
+          "width": 1152,
+          "height": 433.5
+        }
+      },
+      "title": "Pending Requests",
+      "viewport": 1440,
+      "clientWidth": 1440,
+      "pageWidth": 1440,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": {
+        "width": 1152,
+        "contentWidth": 1152,
+        "tabIndex": 0,
+        "label": "Pending requests table; scroll horizontally for additional columns"
+      },
+      "footer": null,
+      "dock": null,
+      "id": "S01-pending",
+      "width": 1440,
+      "file": "S01-pending-1440-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 238,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 238,
+          "y": 0,
+          "width": 1202,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 262,
+          "y": 88,
+          "width": 1154,
+          "height": 59.75
+        },
+        ".metric-card": null,
+        ".equipment-card": null,
+        ".pending-table": {
+          "x": 263,
+          "y": 230.75,
+          "width": 1152,
+          "height": 433.5
+        }
+      },
+      "title": "Pending Requests",
+      "viewport": 1440,
+      "clientWidth": 1440,
+      "pageWidth": 1440,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "dark",
+      "table": {
+        "width": 1152,
+        "contentWidth": 1152,
+        "tabIndex": 0,
+        "label": "Pending requests table; scroll horizontally for additional columns"
+      },
+      "footer": null,
+      "dock": null,
+      "id": "S01-pending",
+      "width": 1440,
+      "file": "S01-pending-1440-dark.png",
+      "pass": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "Filter Sheet Escape closes and restores focus",
+      "pass": true
+    },
+    {
+      "name": "Selection dialog traps keyboard focus; contains no business action",
+      "pass": true
+    },
+    {
+      "name": "Staff smaller-width navigation Sheet is accessible",
+      "pass": true
+    },
+    {
+      "name": "Admin shell includes labeled Admin additions without authenticating",
+      "pass": true
+    },
+    {
+      "name": "Tablet table scroll is keyboard reachable and bounded",
+      "pass": true
+    },
+    {
+      "name": "Desktop sidebar collapse preserves workspace and named navigation",
+      "pass": true
+    },
+    {
+      "name": "Reduced motion removes spinning animations",
+      "pass": true
+    },
+    {
+      "name": "Production JS excludes development routes and synthetic fixtures",
+      "pass": true
+    },
+    {
+      "name": "Production preview URL resolves to existing404",
+      "pass": true
+    },
+    {
+      "name": "Production root resolves to product login",
+      "pass": true
+    }
+  ],
+  "applicationErrors": [],
+  "applicationWarnings": [],
+  "expectedAnonymous401Count": 31,
+  "businessRequests": [],
+  "requests": [
+    "http://localhost:18084/api/v1/auth/refresh",
+    "http://localhost:8080/api/v1/auth/refresh"
+  ],
+  "pass": true
+}

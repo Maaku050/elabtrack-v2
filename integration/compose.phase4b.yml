@@ -1,0 +1,9 @@
+# Disposable Phase 4B PostgreSQL only; combine with docker-compose.yml.
+services:
+  postgres:
+    container_name: elabtrack_v2_phase4b_postgres
+    ports: !override
+      - "127.0.0.1:35432:5432"
+volumes:
+  elabtrack_v2_pgdata:
+    name: elabtrack_v2_phase4b_pgdata

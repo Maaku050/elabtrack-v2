@@ -1,5 +1,7 @@
 # Approved visual implementation map
 
+**Current provisioning policy overlay, 2026-10-08:** [DEC-070 / approved rules and remaining gates](../project/ACCOUNT_PROVISIONING_POLICY.md) governs future behavior: only Admin creates accounts; Student requires unique textual official Student ID/approved SKSU email; Faculty is individual-only with valid unique accessible email and no required Student ID. Standard bulk creation/deactivation is Student-only. Both use borrower-owned separate passwords and current officially published Phase4B terms. This documentation overlay changes no implementation or approved mockup asset; original phase checkpoints remain historical.
+
 2026-10-08. Every manifest PNG was opened and inspected; hashes/dimensions are verified. [Approved README](approved/README.md), [manifest](approved/MANIFEST.json), [fidelity contract](VISUAL_FIDELITY_CONTRACT.md), [Phase3B report](../project/PHASE3B_REPORT.md).
 
 **36 files =35 screen PNGs +1 brand PNG. S01 contains two baseline screens, so36 screen targets =4 baselines +32 future screens.** Role below is the confirmed capability boundary, not the manifest's device label. Named components refer to current shared compositions or clearly deferred retained primitives, not evidence that a full screen exists.
@@ -222,9 +224,9 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 ### S04-01 — Staff - Borrower Directory
 
 - **Role:** Staff/Admin; privileged actions Admin only. **Reference file:** [remaining/S04-01.png](approved/remaining/S04-01.png).
-- **Layout structure:** Borrower directory toolbar, Add/Bulk actions, identity/accountability table.
+- **Layout structure:** Borrower directory toolbar and identity/accountability table; Add/Bulk actions only for Admin, with Student-only bulk workflows.
 - **Shared components:** StaffShell, SearchField, DataTableShell, Badge, PaginationControls; any workflow-specific composition is deferred.
-- **Unique components/content:** Borrower-category/status search, Staff single provision; Admin-only bulk/status actions.
+- **Unique components/content:** Borrower-category/status search; Staff operational assistance without creation; Admin-only individual STUDENT/FACULTY creation with conditional Student ID/SKSU email versus Faculty accessible email/no required ID. Separate restricted privileged workflow; no Admin-chosen borrower passwords.
 - **Expected responsive behavior:** Essential columns at tablet; mobile cards; privileged actions retain explicit scope.
 - **Expected implementation phase:** Phase 5.
 - **Current implementation status:** NOT IMPLEMENTED. Shared shell/component availability is not screen completion.
@@ -246,7 +248,7 @@ Expected phase is sequencing/dependency guidance, never authorization. **Phase 4
 - **Role:** Admin only. **Reference file:** [remaining/S04-03.png](approved/remaining/S04-03.png).
 - **Layout structure:** Four-stage bulk-import path; template/file left, validation summary/table right.
 - **Shared components:** StaffShell, SurfaceCard, Input, Table, AlertDialog; any workflow-specific composition is deferred.
-- **Unique components/content:** Row validity/duplicates, explicit valid subset, durable import result; no password spreadsheet.
+- **Unique components/content:** Student-only Excel studentId/name/email/course/contactNumber; required unique string ID/SKSU email, complete validity/duplicate/conflict preview, explicit confirmed subset and durable results; BORROWER/STUDENT fixed, no passwords or role/category assignment. Separate Admin Student roster deactivation excludes Faculty/Staff/Admin and previews unmatched/conflicts/already-inactive/obligations; DEC-073 resolves OPEN-029: warnings/confirmation are required but obligations never veto Student deactivation; no fine/payment/return/replacement/loan closure/overdue/history changes.
 - **Expected responsive behavior:** Step-by-step mobile; compact tablet preview and named full-row scroll; desktop split.
 - **Expected implementation phase:** Phase 5.
 - **Current implementation status:** NOT IMPLEMENTED. Shared shell/component availability is not screen completion.

@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-10-08",
+  "baselineTrackedFiles": 609,
+  "preservation": {
+    "historical_migrations": {
+      "files": 8,
+      "changed": [],
+      "pass": true
+    },
+    "approved_visual_assets": {
+      "files": 47,
+      "changed": [],
+      "pass": true
+    },
+    "ui_primitives": {
+      "files": 62,
+      "changed": [],
+      "pass": true
+    },
+    "manifests_locks": {
+      "files": 5,
+      "changed": [],
+      "pass": true
+    },
+    "historical_reports_evidence": {
+      "files": 85,
+      "changed": [],
+      "pass": true
+    }
+  },
+  "secretScan": {
+    "secretValuesChecked": 16,
+    "filesChecked": 117,
+    "matchingFiles": [],
+    "pass": true
+  },
+  "quality": {
+    "goFmt": "PASS",
+    "goVet": "PASS",
+    "goTest": "PASS; external suites opt in",
+    "targetedRace": "PASS",
+    "frontendLint": {
+      "errors": 0,
+      "existingWarnings": 19,
+      "newWarnings": 0
+    },
+    "frontendTests": {
+      "files": 11,
+      "tests": 199,
+      "existingTestsPreserved": 172
+    },
+    "frontendBuild": "PASS; strict TypeScript; no chunk warning",
+    "composeBase": "PASS",
+    "composeIsolated": "PASS",
+    "realMigratorSubtests": 15,
+    "realTermsSubtests": 12,
+    "realFoundationSubtests": 8,
+    "realTermsHTTPSubtests": 4,
+    "gitDiffCheck": "PASS"
+  },
+  "normalDatabaseBefore": {
+    "users": 0,
+    "database": "elabtrack_v2",
+    "migrations": [
+      "000001_create_users",
+      "000002_create_refresh_tokens",
+      "000003_refresh_session_security",
+      "000004_product_roles"
+    ],
+    "terms_schema": false,
+    "refresh_sessions": 0
+  },
+  "normalDatabaseAfter": {
+    "users": 0,
+    "database": "elabtrack_v2",
+    "migrations": [
+      "000001_create_users",
+      "000002_create_refresh_tokens",
+      "000003_refresh_session_security",
+      "000004_product_roles",
+      "000005_terms_acceptance"
+    ],
+    "current_terms": null,
+    "terms_versions": 0,
+    "refresh_sessions": 0,
+    "terms_acceptances": 0
+  },
+  "pass": true,
+  "structuredLogAudit": {
+    "jsonRecords": 62,
+    "forbiddenKeysFound": false,
+    "scope": "final isolated API startup and real HTTP regression records",
+    "generatedSecretMatches": 0
+  },
+  "cleanup": {
+    "isolatedComposeProject": "elabtrack_v2_phase4b",
+    "containerAndVolumeOwnershipVerified": true,
+    "syntheticDatabaseDiscarded": true,
+    "normalDatabasePreserved": true,
+    "normalTermsVersions": 0,
+    "normalTermsAcceptances": 0,
+    "ownedAPIAndVitePortsStopped": true,
+    "privateCredentialFilesRemoved": 2,
+    "finalPortState": {
+      "18084": "stopped",
+      "15174": "stopped",
+      "14174": "stopped",
+      "8080": "not listening",
+      "5173": "not listening"
+    },
+    "normalPostgres": "healthy"
+  }
+}

@@ -1,0 +1,676 @@
+{
+  "generatedAt": "2026-10-08T13:59:46.734Z",
+  "browser": "Chrome/140.0.7339.16",
+  "database": "elabtrack_v2_phase4b_test",
+  "syntheticTestTermsOnly": true,
+  "realAuthentication": true,
+  "cookiePolicies": [
+    {
+      "name": "elabtrack_v2_refresh",
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax",
+      "path": "/api/v1/auth"
+    }
+  ],
+  "sessionEvents": [
+    {
+      "version": 1,
+      "tabId": "c0f6fe3c-5c9e-4be6-84d8-91054a348d7e",
+      "attemptId": "f36412fc-2b13-45dc-b44d-46cc43437642",
+      "epoch": 1791467968288800,
+      "timestamp": 1791467968288.9,
+      "type": "logout"
+    },
+    {
+      "version": 1,
+      "tabId": "c0f6fe3c-5c9e-4be6-84d8-91054a348d7e",
+      "attemptId": "8b732125-5d32-438a-b31b-6adcece42005",
+      "epoch": 1791467968320300,
+      "timestamp": 1791467968320.4,
+      "type": "logout"
+    }
+  ],
+  "screens": [
+    {
+      "file": "terms-unpublished-320-light.png",
+      "width": 320,
+      "pageWidth": 320,
+      "clientWidth": 320,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-unpublished-320-dark.png",
+      "width": 320,
+      "pageWidth": 320,
+      "clientWidth": 320,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-unpublished-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-unpublished-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-required-320-light.png",
+      "width": 320,
+      "pageWidth": 320,
+      "clientWidth": 320,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Review borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-required-320-dark.png",
+      "width": 320,
+      "pageWidth": 320,
+      "clientWidth": 320,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Review borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-required-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Review borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-required-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Review borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-required-768-light.png",
+      "width": 768,
+      "pageWidth": 768,
+      "clientWidth": 768,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Review borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-required-768-dark.png",
+      "width": 768,
+      "pageWidth": 768,
+      "clientWidth": 768,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Review borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-required-1280-light.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Review borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-required-1280-dark.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Review borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-reading-end-390-light.png",
+      "width": 390,
+      "theme": "light",
+      "pass": true
+    },
+    {
+      "file": "terms-reading-end-390-dark.png",
+      "width": 390,
+      "theme": "dark",
+      "pass": true
+    },
+    {
+      "file": "terms-accepted-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-accepted-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "terms-updated-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Updated terms",
+      "pass": true
+    },
+    {
+      "file": "terms-updated-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Updated terms",
+      "pass": true
+    },
+    {
+      "file": "terms-stale-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Updated terms",
+      "pass": true
+    },
+    {
+      "file": "terms-stale-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Updated terms",
+      "pass": true
+    },
+    {
+      "file": "terms-accept-network-error-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Updated terms",
+      "pass": true
+    },
+    {
+      "file": "terms-read-network-error-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Borrowing terms",
+      "pass": true
+    },
+    {
+      "file": "staff-1280-light.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    },
+    {
+      "file": "staff-1280-dark.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    },
+    {
+      "file": "admin-1280-light.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    },
+    {
+      "file": "admin-1280-dark.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "Anonymous cannot enter terms or borrower workspace",
+      "pass": true
+    },
+    {
+      "name": "Missing official terms never imply consent",
+      "pass": true
+    },
+    {
+      "name": "Account and existing obligations remain accessible without consent",
+      "pass": true
+    },
+    {
+      "name": "First-use checkbox starts unchecked; viewing is not acceptance",
+      "pass": true
+    },
+    {
+      "name": "Full long text uses page scrolling and remains plain text",
+      "pass": true
+    },
+    {
+      "name": "Keyboard Space selects the explicit consent checkbox",
+      "pass": true
+    },
+    {
+      "name": "Pending acceptance disables repeat submission",
+      "pass": true
+    },
+    {
+      "name": "Two tabs accepting the same version preserve one exact original receipt",
+      "pass": true
+    },
+    {
+      "name": "Reload and third tab restore accepted current version",
+      "pass": true
+    },
+    {
+      "name": "A newer mandatory version requires another explicit acceptance",
+      "pass": true
+    },
+    {
+      "name": "Publication during review returns conflict and resets consent for new text",
+      "pass": true
+    },
+    {
+      "name": "Acceptance network failure never unlocks borrower request routes",
+      "pass": true
+    },
+    {
+      "name": "Cross-tab logout clears tokens, account and terms cache",
+      "pass": true
+    },
+    {
+      "name": "Coordination messages contain only the existing non-secret lifecycle fields",
+      "pass": true
+    },
+    {
+      "name": "Logout and subsequent real login preserve the accepted current version",
+      "pass": true
+    },
+    {
+      "name": "Read failure remains a bounded manual retry with logout",
+      "pass": true
+    },
+    {
+      "name": "Disabling a previously authenticated borrower removes protected access",
+      "pass": true
+    },
+    {
+      "name": "Inactive login remains generic and clears the password",
+      "pass": true
+    },
+    {
+      "name": "STAFF operational navigation remains unaffected by borrower consent",
+      "pass": true
+    },
+    {
+      "name": "ADMIN operational navigation remains unaffected by borrower consent",
+      "pass": true
+    },
+    {
+      "name": "Access token remains memory only and refresh cookie is HttpOnly",
+      "pass": true
+    }
+  ],
+  "responses": [
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/fa831c8c-b821-4e21-8fa6-994e794c5104/accept",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/terms/fa831c8c-b821-4e21-8fa6-994e794c5104/accept",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/01e5ba84-6244-4c48-a00e-66a3ec42fd05/accept",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/terms/01e5ba84-6244-4c48-a00e-66a3ec42fd05/accept",
+      "status": 409
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/b305f119-7628-461a-92bf-6595a59a1f6c/accept",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/terms/b305f119-7628-461a-92bf-6595a59a1f6c/accept",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204
+    }
+  ],
+  "applicationErrors": [],
+  "applicationWarnings": [],
+  "networkFailureMethod": "Chromium URL blocking, no fabricated API success",
+  "pass": true
+}

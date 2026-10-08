@@ -16,13 +16,17 @@ import (
 // Explicit opt-in; only the named disposable integration database is accepted.
 // Run before API/auth tests. All fault DDL lives in fixtures, never migrations/.
 func TestRealMigrator(t *testing.T) {
+	phase4b := os.Getenv("ELABTRACK_PHASE4B") == "1"
 	phase4a := os.Getenv("ELABTRACK_PHASE4A") == "1"
-	if os.Getenv("ELABTRACK_MIGRATION_INTEGRATION") != "1" && !phase4a {
+	if os.Getenv("ELABTRACK_MIGRATION_INTEGRATION") != "1" && !phase4a && !phase4b {
 		t.Skip("requires Phase 1H disposable PostgreSQL")
 	}
 	port, dbName := "15432", "elabtrack_v2_integration"
 	if phase4a {
 		port, dbName = "25432", "elabtrack_v2_phase4a_test"
+	}
+	if phase4b {
+		port, dbName = "35432", "elabtrack_v2_phase4b_test"
 	}
 	cfg, err := config.Parse(map[string]string{"APP_ENV": "test", "JWT_SECRET": "migration-tests-only", "DB_HOST": "127.0.0.1", "DB_PORT": port, "DB_NAME": dbName, "DB_USER": "elabtrack_runtime", "DB_PASSWORD": os.Getenv("DB_PASSWORD"), "MIGRATION_DATABASE_URL": os.Getenv("MIGRATION_DATABASE_URL")})
 	must(t, err == nil, "config")
@@ -39,7 +43,7 @@ func TestRealMigrator(t *testing.T) {
 	err = owner.Pool.QueryRow(ctx, `SELECT current_database()=$1 AND current_user='elabtrack_migrator' AND NOT rolsuper AND NOT rolcreaterole AND NOT rolcreatedb FROM pg_roles WHERE rolname=current_user`, dbName).Scan(&identity)
 	must(t, err == nil && identity, "non-superuser migrator")
 	base, err := NewMigrator(nil, "../../../migrations").discover()
-	must(t, err == nil && len(base) == 4, "immutable foundation plus approved product-role files")
+	must(t, err == nil && len(base) == 5, "immutable foundation, product-role and approved terms pairs")
 	exec := func(sql string, args ...any) {
 		_, err := owner.Pool.Exec(ctx, sql, args...)
 		must(t, err == nil, "fixture SQL")
