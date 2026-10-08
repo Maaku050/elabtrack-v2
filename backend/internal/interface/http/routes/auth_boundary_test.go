@@ -43,7 +43,7 @@ type users struct {
 }
 
 func fixtureUser() *domainuser.User {
-	return &domainuser.User{ID: selfID, Email: "current@example.invalid", Name: "Current User", Password: "private-hash-sentinel", Role: domainuser.RoleUser, IsActive: true, CreatedAt: time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)}
+	return &domainuser.User{ID: selfID, Email: "current@example.invalid", Name: "Current User", Password: "private-hash-sentinel", Role: domainuser.RoleBorrower, IsActive: true, CreatedAt: time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC)}
 }
 func snapshot(u *domainuser.User) *domainuser.Account {
 	if u == nil {
@@ -184,13 +184,14 @@ func TestCurrentAccountAndAuthorizationMatrix(t *testing.T) {
 		tokenRole          string
 		wantSelf, wantList int
 	}{
-		{"active user", domainuser.RoleUser, true, false, "user", 200, 403},
+		{"active user", domainuser.RoleBorrower, true, false, "user", 200, 403},
+		{"active staff", domainuser.RoleStaff, true, false, "ADMIN", 200, 403},
 		{"active admin", domainuser.RoleAdmin, true, false, "admin", 200, 200},
-		{"demoted with stale admin token", domainuser.RoleUser, true, false, "admin", 200, 403},
+		{"demoted with stale admin token", domainuser.RoleBorrower, true, false, "admin", 200, 403},
 		{"promoted with old user token", domainuser.RoleAdmin, true, false, "user", 200, 200},
 		{"inactive admin", domainuser.RoleAdmin, false, false, "admin", 403, 403},
 		{"unknown role", domainuser.Role("super_admin"), true, false, "admin", 403, 403},
-		{"missing account", domainuser.RoleUser, true, true, "admin", 401, 401},
+		{"missing account", domainuser.RoleBorrower, true, true, "admin", 401, 401},
 	} {
 		for _, path := range []string{"/api/v1/auth/me", "/api/v1/users/me", "/api/v1/users/"} {
 			t.Run(tt.name+path, func(t *testing.T) {
@@ -235,7 +236,7 @@ func TestPrincipalContextAndSafeMeResponse(t *testing.T) {
 	app.Get("/probe", middleware.Auth(i, appauth.NewAccountResolver(r)), func(c fiber.Ctx) error {
 		principal, ok := middleware.PrincipalFromContext(c)
 		identity, identityOK := middleware.IdentityFromContext(c)
-		if !ok || !identityOK || principal.ID != selfID || identity.UserID != selfID || principal.Role != domainuser.RoleUser {
+		if !ok || !identityOK || principal.ID != selfID || identity.UserID != selfID || principal.Role != domainuser.RoleBorrower {
 			return fmt.Errorf("typed context invalid")
 		}
 		return c.JSON(principal.UserDTO())
@@ -292,7 +293,7 @@ func TestSelfUpdateRejectsPrivilegedFieldsAndArbitraryUsers(t *testing.T) {
 			i := &issuer{claims: application.Claims{UserID: selfID}}
 			body := `{"name":"Renamed","` + field + `":"injected-security-sentinel"}`
 			status, _, raw := request(t, newApp(config.Production, r, i, &tokens{}), "PATCH", "/api/v1/users/me", body, "Bearer verified")
-			if status != 400 || r.updates != 0 || r.account.Role != domainuser.RoleUser || !r.account.IsActive || strings.Contains(raw, "sentinel") {
+			if status != 400 || r.updates != 0 || r.account.Role != domainuser.RoleBorrower || !r.account.IsActive || strings.Contains(raw, "sentinel") {
 				t.Fatal("mass assignment not contained")
 			}
 		})
@@ -310,7 +311,7 @@ func TestSelfUpdateRejectsPrivilegedFieldsAndArbitraryUsers(t *testing.T) {
 	if status != 200 || r.updates != 1 || payload["data"].(map[string]any)["id"] != selfID.String() {
 		t.Fatal("self name update failed", raw)
 	}
-	if r.account.Password != "private-hash-sentinel" || r.account.Email != "current@example.invalid" || r.account.Role != domainuser.RoleUser || !r.account.IsActive {
+	if r.account.Password != "private-hash-sentinel" || r.account.Email != "current@example.invalid" || r.account.Role != domainuser.RoleBorrower || !r.account.IsActive {
 		t.Fatal("self update modified security fields")
 	}
 }
@@ -325,37 +326,12 @@ func TestSelfUpdateDeniesConcurrentDeactivation(t *testing.T) {
 }
 func TestRegistrationEnvironmentContainment(t *testing.T) {
 	for _, env := range []config.Environment{config.Production, config.Development, config.Test, "unknown", ""} {
-		t.Run(string(env), func(t *testing.T) {
-			r := &users{}
-			i := &issuer{}
-			refresh := &tokens{}
-			status, _, raw := request(t, newApp(env, r, i, refresh), "POST", "/api/v1/auth/register", `{"email":"synthetic@example.invalid","name":"Local User","password":"test-local-password"}`, "")
-			expected := 404
-			if env == config.Development || env == config.Test {
-				expected = 201
+		for _, payload := range []string{`{"email":"synthetic@example.invalid","name":"Local User","password":"test-local-password"}`, `{"role":"ADMIN"}`} {
+			r, refresh := &users{}, &tokens{}
+			status, _, _ := request(t, newApp(env, r, &issuer{}, refresh), "POST", "/api/v1/auth/register", payload, "")
+			if status != 404 || r.creates != 0 || len(refresh.created) != 0 {
+				t.Fatal("public registration must be absent in every environment")
 			}
-			if status != expected {
-				t.Fatalf("status %d expected %d: %s", status, expected, raw)
-			}
-			if expected == 404 {
-				if r.creates != 0 || len(refresh.created) != 0 {
-					t.Fatal("contained registration reached account creation")
-				}
-				return
-			}
-			if r.creates != 1 || r.account.Role != domainuser.RoleUser || r.account.Password == "test-local-password" || !strings.HasPrefix(r.account.Password, "$2") {
-				t.Fatal("local account creation must hash passwords and assign only generic user")
-			}
-			if strings.Contains(raw, "test-local-password") || strings.Contains(raw, r.account.Password) {
-				t.Fatal("password leaked in registration response")
-			}
-		})
-	}
-	for _, env := range []config.Environment{config.Development, config.Test} {
-		r := &users{}
-		status, _, _ := request(t, newApp(env, r, &issuer{}, &tokens{}), "POST", "/api/v1/auth/register", `{"email":"synthetic@example.invalid","name":"Local User","password":"test-local-password","role":"admin"}`, "")
-		if status != 400 || r.creates != 0 {
-			t.Fatal("registration must not bind a privileged role")
 		}
 	}
 }

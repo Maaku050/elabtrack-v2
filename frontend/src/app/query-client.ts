@@ -31,10 +31,10 @@ export function isAuthenticatedQuery(query: Query): boolean {
   return query.meta?.authenticated === true || ['auth', 'users'].includes(String(query.queryKey[0]))
 }
 
-export function clearAuthenticatedQueries(): void {
+export function clearAuthenticatedQueries(preserveCurrentAccount = false): void {
   // removeQueries cancels active work synchronously (including AbortSignal)
   // before destroying the cache. Public health/status data survives logout.
-  queryClient.removeQueries({ predicate: isAuthenticatedQuery })
+  queryClient.removeQueries({ predicate: query => isAuthenticatedQuery(query) && !(preserveCurrentAccount && query.queryKey[0] === 'auth' && query.queryKey[1] === 'me') })
   // Mutations may contain credentials or private inputs. Removal cannot undo
   // an HTTP mutation; application callbacks still fence by session generation.
   queryClient.getMutationCache().clear()

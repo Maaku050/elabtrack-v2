@@ -48,7 +48,7 @@ func Auth(issuer application.TokenIssuer, accounts appauth.AccountResolver) fibe
 	}
 }
 
-// RequireRole uses current database state and only temporary known roles.
+// RequireRole uses current database state and only known product roles.
 // Install after Auth. Unknown configured/current roles cannot authorize access.
 func RequireRole(roles ...domainuser.Role) fiber.Handler {
 	allowed := map[domainuser.Role]bool{}
@@ -76,4 +76,18 @@ func PrincipalFromContext(c fiber.Ctx) (appauth.Principal, bool) {
 func IdentityFromContext(c fiber.Ctx) (appauth.Identity, bool) {
 	identity, ok := c.Locals(identityKey{}).(appauth.Identity)
 	return identity, ok && identity.UserID != uuid.Nil
+}
+
+// RequirePermission consumes the already resolved current database principal.
+func RequirePermission(permission domainuser.Permission) fiber.Handler {
+	return func(c fiber.Ctx) error {
+		principal, ok := PrincipalFromContext(c)
+		if !ok {
+			return response.Unauthorized(c, "Authentication required.")
+		}
+		if !principal.IsActive || !principal.Role.Allows(permission) {
+			return response.Forbidden(c, "You do not have access to this resource.")
+		}
+		return c.Next()
+	}
 }

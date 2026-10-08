@@ -8,13 +8,13 @@ import (
 	"github.com/google/uuid"
 )
 
-// Role represents an authorization role. The system is role/permission-ready;
-// roles are stored as a simple string to keep the template lightweight.
+// Role is the current FSMO product capability, independent of borrower category.
 type Role string
 
 const (
-	RoleUser  Role = "user"
-	RoleAdmin Role = "admin"
+	RoleBorrower Role = "BORROWER"
+	RoleStaff    Role = "STAFF"
+	RoleAdmin    Role = "ADMIN"
 )
 
 // User is the aggregate root for the user domain.
@@ -38,7 +38,7 @@ func NewUser(email, name, hashedPassword string) *User {
 		Email:     email,
 		Name:      name,
 		Password:  hashedPassword,
-		Role:      RoleUser,
+		Role:      RoleBorrower,
 		IsActive:  true,
 		CreatedAt: now,
 		UpdatedAt: now,

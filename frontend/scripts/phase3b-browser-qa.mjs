@@ -158,8 +158,8 @@ try {
     await until(`document.querySelector('h1')?.textContent.includes('Page not found')`)
     checks.push({ name: 'Production preview URL resolves to existing404', pass: await b.evaluate(`!document.body.innerText.includes('Synthetic data')`) })
     await b.command('Page.navigate', { url: production + '/' })
-    await until(`document.querySelector('h1')?.textContent==='eLabTrack V2'`)
-    checks.push({ name: 'Production foundation root remains available', pass: true })
+    await until(`document.querySelector('h1')?.textContent==='Welcome back'`)
+    checks.push({ name: 'Production root resolves to product login', pass: true })
   }
   const report = { productionUrl: production || null, productionBundles: bundles, generatedAt: new Date().toISOString(), browser: (await b.command('Browser.getVersion')).product, url: base, anonymousRefreshFixture: true, cases, checks, applicationErrors: errors, applicationWarnings: warnings, expectedAnonymous401Count: expectedAuthResponses.length, businessRequests: requests.filter(url => url.includes('/api/v1/') && !url.endsWith('/auth/refresh')), requests: [...new Set(requests)].filter(url => url.includes('/api/v1/')), pass: cases.every(c => c.pass) && checks.every(c => c.pass) && errors.length === 0 && warnings.length === 0 }
   await fs.writeFile(path.join(output, 'RESULTS.json'), JSON.stringify(report, null, 2) + '\n')

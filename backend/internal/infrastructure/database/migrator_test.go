@@ -87,10 +87,17 @@ func TestMigrationPairChecksum(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	verified := 0
 	for _, f := range files {
-		if legacyFoundationChecksums[f.version] != f.checksum {
-			t.Fatal("legacy baseline changed")
+		if baseline, legacy := legacyFoundationChecksums[f.version]; legacy {
+			if baseline != f.checksum {
+				t.Fatal("legacy baseline changed")
+			}
+			verified++
 		}
+	}
+	if verified != len(legacyFoundationChecksums) {
+		t.Fatal("legacy migration missing")
 	}
 }
 func TestMigrationGeneration(t *testing.T) {

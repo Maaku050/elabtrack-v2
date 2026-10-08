@@ -1,6 +1,6 @@
 # Phase 2.5 future REST resource draft
 
-2026-10-08. **ENGINEERING RECOMMENDATION**, unimplemented: `/api/v1`, existing consistent envelope `{success,message,data,meta,error}`, safe server-generated request ID and Phase 1 HTTP/session protections. Product capabilities follow [permission matrix](BUSINESS_RULES.md#future-permission-matrix), not route guards. No handler/source or auth role has changed. Resource naming/casing are future implementation contracts, not permission to start a phase.
+2026-10-08. **ENGINEERING RECOMMENDATION**, unimplemented: `/api/v1`, existing consistent envelope `{success,message,data,meta,error}`, safe server-generated request ID and Phase 1 HTTP/session protections. Product capabilities follow [permission matrix](BUSINESS_RULES.md#future-permission-matrix), not route guards. Phase 4A implements only existing auth/current-account/privileged-directory boundaries with BORROWER/STAFF/ADMIN. The business resources in this draft remain unimplemented. Resource naming/casing are future implementation contracts, not permission to start a phase.
 
 ## Proposed resources and commands
 
@@ -13,7 +13,7 @@ All private resources authenticate current account, validate actor capability an
 | POST /equipment/{id}/archive | Staff/Admin | No hold/physical/replacement outstanding; history retained; no ordinary hard delete |
 | GET /equipment/{id}/movements | Staff/Admin operational ledger | Bounded filters; actor/source quantities; no secrets |
 | POST /equipment/{id}/stock-movements | Staff/Admin ordinary acquisition/removal | Key; typed vectors/reason; cannot alter hold/custody. Exceptional correction Admin only; disposal/repair commands await later inventory policy |
-| GET /users/me | Existing authenticated self | Current Phase 1 contract unchanged; future role/category projection only under approved feature |
+| GET /users/me | Existing authenticated self | Current Phase 1 contract unchanged; product role projection implemented in Phase 4A; category projection remains deferred |
 | GET /borrowers; GET /borrowers/{id} | Staff/Admin operational selection/history | Active selection for new issue; old inactive obligations still resolvable; bounded minimal profile |
 | POST /borrowers | Staff/Admin Borrower provisioning | Key; role forced BORROWER, secure onboarding later; no public signup |
 | POST /borrowers/{id}/deactivate; POST /borrowers/{id}/reactivate | Admin | Key; retained obligations/audit; no identity delete |

@@ -1,0 +1,124 @@
+{
+  "verifiedAt": "2026-10-08T13:01:10.032333+00:00",
+  "scope": "Phase 4A local isolated PostgreSQL/HTTP/Chromium and normal development workflow",
+  "toolchain": {
+    "backendSelectedGo": "1.27.1",
+    "globalGoLauncher": "1.26.5",
+    "node": "24.19.0",
+    "npm": "11.17.0",
+    "chromium": "140.0.7339.16",
+    "postgres": "18.6"
+  },
+  "gates": {
+    "goFmt": "PASS",
+    "goVet": "PASS",
+    "goTestAll": "PASS",
+    "targetedRacePackages": 9,
+    "targetedRace": "PASS",
+    "realProductRoleMigration": "PASS",
+    "realMigratorRace": {
+      "pass": true,
+      "subtests": 15
+    },
+    "realFoundationRace": {
+      "pass": true,
+      "subtests": 8,
+      "concurrentRefreshWinners": 1,
+      "concurrentRefreshDenials": 11
+    },
+    "frontendLint": {
+      "errors": 0,
+      "baselineWarnings": 19,
+      "newWarnings": 0
+    },
+    "frontendTests": {
+      "pass": true,
+      "files": 10,
+      "tests": 172
+    },
+    "frontendProductionBuild": "PASS",
+    "composeDefaultDevProductionAndIsolated": "PASS",
+    "realBrowser": {
+      "pass": true,
+      "screenshots": 24,
+      "checks": 29,
+      "applicationErrors": 0,
+      "applicationWarnings": 0
+    },
+    "originalPreviewRegression": {
+      "pass": true,
+      "cases": 24,
+      "checks": 8
+    },
+    "productionRegression": {
+      "pass": true,
+      "cases": 4,
+      "checks": 10
+    },
+    "gitDiffCheck": "PASS"
+  },
+  "migration": {
+    "current": "000004_product_roles",
+    "legacyMapping": {
+      "user": "BORROWER",
+      "admin": "ADMIN"
+    },
+    "staffRollback": "atomic refusal if any STAFF exists",
+    "historicalPairsUnchanged": 3,
+    "mainAppliedThroughExistingRunner": true
+  },
+  "finalDatabases": [
+    {
+      "database": "elabtrack_v2",
+      "users": 0,
+      "refreshTokens": 0,
+      "verifiedMigrations": 4,
+      "runtimeSuperuser": false,
+      "runtimeSchemaCreate": false,
+      "runtimeMigrationHistorySelect": false
+    },
+    {
+      "database": "elabtrack_v2_phase4a_test",
+      "users": 0,
+      "refreshTokens": 0,
+      "verifiedMigrations": 4,
+      "runtimeSuperuser": false,
+      "runtimeSchemaCreate": false,
+      "runtimeMigrationHistorySelect": false
+    }
+  ],
+  "cleanup": {
+    "privateBrowserFixtureFileRemoved": true,
+    "isolatedPostgres": "stopped; volume retained",
+    "normalPostgres": "healthy; volume preserved",
+    "ports8080_5173_4173": "not listening",
+    "normalMakeDev": {
+      "started": true,
+      "health": 200,
+      "ready": 200,
+      "anonymousRefresh": 401,
+      "publicRegistration": 404,
+      "frontend": 200,
+      "ctrlCStopsBoth": true,
+      "apiPoolClosed": true
+    }
+  },
+  "preservation": {
+    "initialTrackedFiles": 561,
+    "modifiedTrackedFiles": 46,
+    "protectedBaselineFilesVerifiedUnchanged": 171,
+    "credentialsFoundInChangedArtifacts": 0,
+    "ignoredEnvironmentFileMode": "0600",
+    "stagedChanges": 0,
+    "commits": 0,
+    "pushes": 0,
+    "deployments": 0
+  },
+  "notPerformed": [
+    "production HTTPS/deployment",
+    "fresh Docker image builds in Phase 4A",
+    "full cross-browser/WCAG audit",
+    "new owner visual approval",
+    "Phase 4B or Phase 5 implementation"
+  ]
+}

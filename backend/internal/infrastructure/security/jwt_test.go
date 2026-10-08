@@ -27,7 +27,7 @@ func TestAccessJWTValidation(t *testing.T) {
 		t.Fatal(err)
 	}
 	got, err := j.VerifyAccessToken(context.Background(), raw)
-	if err != nil || got.UserID != u.ID || got.Role != "admin" {
+	if err != nil || got.UserID != u.ID || got.Role != string(domainuser.RoleAdmin) {
 		t.Fatal("valid issuance rejected")
 	}
 	base := accessClaims{UserID: u.ID, Email: u.Email, Role: "admin", Purpose: accessPurpose, RegisteredClaims: jwt.RegisteredClaims{

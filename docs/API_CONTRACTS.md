@@ -1,6 +1,6 @@
 # Foundation API contracts and operational observability
 
-Accepted Phase 1F technical contracts, 2026-10-07 (Asia/Shanghai). Current source and tests govern implementation; this document does not authorize later phases. Retained auth/users are engineering infrastructure, not final product account or permission policy.
+Phase 1F technical contracts with Phase 4A authentication updates, 2026-10-08 (Asia/Shanghai). Current source and tests govern implementation; this document does not authorize later phases. Product roles are BORROWER, STAFF and ADMIN; feature provisioning, terms and business resources remain deferred.
 
 ## Routes and success convention
 
@@ -8,21 +8,21 @@ All API routes use `/api/v1`. JSON successes retain `{success:true,message,data,
 
 | Route | Success / visibility | Important failures |
 |---|---|---|
-| POST /auth/register | 201, safe browser session; development/test only | 400 malformed/validation, 403 Origin, 409 duplicate email, 500 unexpected. Absent production route: 404. |
+| POST /auth/register | Unavailable in every environment | 404 after the existing perimeter; no account/session/cookie creation. |
 | POST /auth/login | 200, safe browser session | 400 input, 401 generic invalid credentials, 403 Origin, 500 issuance/persistence failure |
 | POST /auth/refresh | 200, rotated safe browser session; cookie only | 401 same invalid-session response for missing/malformed/unknown/expired/revoked/replayed/disallowed account; 403 Origin; 500 infrastructure |
 | POST /auth/logout | 204, idempotent cookie revoke/clear | 403 Origin, 500 persistence failure; cookie still cleared |
 | GET /auth/me | 200, safe current account | 401 missing/invalid bearer/account; 403 inactive/unknown role; 500 lookup failure |
 | GET /users/me | 200, safe profile | Same current-account boundary |
 | PATCH /users/me | 200, display name only | Same boundary; 400 strict input/fields; 403 repository access predicate; 500 storage |
-| GET /users/ | 200, existing bounded list + existing meta | Same boundary plus temporary current-admin requirement; 400 invalid supplied query values; 500 storage |
+| GET /users/ | 200, existing bounded list + existing meta | Same boundary plus current ADMIN permission accounts.read (BORROWER/STAFF denied); 400 invalid supplied query values; 500 storage |
 | GET /health | 200, process liveness | General perimeter/errors; does not query DB |
 | GET /ready | 200 when DB checker succeeds | 503 dependency absent/failing, safe standard error |
 | Unknown route / wrong method | No successful API fallback | Standard 404 / Fiber's practical 405, no raw framework message |
 
-Fiber retains automatic HEAD for GET. Cookie mutations remain POST-only and exact trusted-Origin guarded. Perimeter 403/413/415/429/431 may precede routing, including an absent production registration route; this does not expose registration. Unknown API routes are distinct from frontend SPA 404. nginx errors generated before the API remain ingress responses, not an API-generated envelope; the frontend handles them generically. Phase 1G verifies the local nginx serving path; production edge behavior requires its own verification.
+Fiber retains automatic HEAD for GET. Cookie mutations remain POST-only and exact trusted-Origin guarded. Perimeter 403/413/415/429/431 may precede routing, including an absent registration route; this does not expose registration. Unknown API routes are distinct from frontend SPA 404. nginx errors generated before the API remain ingress responses, not an API-generated envelope; the frontend handles them generically. Phase 1G verifies the local nginx serving path; production edge behavior requires its own verification.
 
-Browser session data contains `access_token,expires_at,token_type,user`, with user `id,email,name,role,is_active`. Raw refresh travels only via HttpOnly cookie. No new credential transport, retry, family-revocation or cross-tab policy is implied.
+Safe role values are exactly `BORROWER`, `STAFF`, `ADMIN`; Student/Faculty are future category attributes, not authorities. Old JWT role hints do not override current PostgreSQL state. Browser session data contains `access_token,expires_at,token_type,user`, with user `id,email,name,role,is_active`. Raw refresh travels only via HttpOnly cookie. No new credential transport, retry, family-revocation or cross-tab policy is implied.
 
 ## Failure envelope and mapping
 
@@ -53,7 +53,7 @@ The top-level message mirrors error.message for retained envelope compatibility.
 | 401 | INVALID_CREDENTIALS | Generic login rejection, no account existence/status detail |
 | 401 | TOKEN_INVALID | Generic invalid/expired refresh session, no reason differentiation |
 | 403 | FORBIDDEN | Current-account authorization, role, Origin/CORS denial |
-| 404 | NOT_FOUND | Unknown resource/route or contained production registration |
+| 404 | NOT_FOUND | Unknown resource/route or absent registration |
 | 405 | METHOD_NOT_ALLOWED | Fiber rejects a method for a retained route |
 | 409 | CONFLICT | Real duplicate/current-state conflict; currently local duplicate email |
 | 413 | PAYLOAD_TOO_LARGE | Existing global/auth body bounds |
@@ -115,3 +115,13 @@ Current hooks consume normalized errors. Query does not retry any 4xx; server/ne
 Operational logs are disposable operations/debug/security/performance records, subject to later chosen retention/access/rotation. They are not durable business evidence. Later business audit events capture who changed what/when under the approved domain model, transaction/history/ledger policy and retention. The stakeholder's boss-rebuild audit emphasizes durable evidence; logs here do not implement that schema or establish its policy.
 
 Zap's core/output and standard request context are future vendor-neutral extension points. No Sentry, telemetry SDK, collector, metrics server, dashboard, cloud provider or business audit schema is added. Operators still need chosen log collection/storage/access/rotation and incident procedures before deployment. Phase 1G verifies local proxy/browser/PostgreSQL/Docker, parser and captured log redaction; its report records exact scope and remaining deployment checks. Runner atomic bookkeeping/checksums/advisory lock/lookup error semantics belong to separately authorized Phase 1H, before relying heavily on product migrations.
+
+## Phase 4A browser integration and deferred boundaries
+
+The product login form uses the existing centralized transport and safe account projection. Protected frontend routes revalidate GET /auth/me; no request-body role or JWT decoding authorizes navigation. Existing generic GET /users/ remains ADMIN-only through the central permission guard; there are no provisioning/status/role-management endpoints. Self PATCH retains display-name-only strict binding with a current active product-role repository predicate.
+
+Login invalid/missing/inactive accounts share INVALID_CREDENTIALS/401. Deactivation after issuance denies protected reads (403) and refresh restoration (401). Ordinary resource 403 does not invalidate an otherwise valid session; current-account denial and persistent 401 follow existing fenced invalidation. Network failures remain recoverable. Logout preserves bodyless 204, serialized cookie revocation/clearing, immediate client/private-cache clearing and non-secret peer signals.
+
+Migration 000004 maps `user`→`BORROWER`, `admin`→`ADMIN`, adds `STAFF` to the role constraint and changes only the role default/values/constraint. Identity, password hashes, status, timestamps and refresh records are preserved. Down reverses representable roles and refuses while any Staff exists; migrate application and schema together. Historical 000001–000003 SQL/checksums are unchanged.
+
+Phase 4B will introduce versioned terms/acceptance evidence at the reviewed domain ports and future request/direct-issue gate. Those candidate routes/tables in docs/domain/API_RESOURCE_DRAFT.md are not implemented endpoints. Phase 5 owns secure provisioning/import/status/privileged account controls. Authentication does not imply accepted terms or an activated onboarding process.

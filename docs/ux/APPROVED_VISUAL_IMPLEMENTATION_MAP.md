@@ -4,7 +4,7 @@
 
 **36 files =35 screen PNGs +1 brand PNG. S01 contains two baseline screens, so36 screen targets =4 baselines +32 future screens.** Role below is the confirmed capability boundary, not the manifest's device label. Named components refer to current shared compositions or clearly deferred retained primitives, not evidence that a full screen exists.
 
-Expected phase is sequencing/dependency guidance, never authorization. All32 remaining targets are **NOT IMPLEMENTED**, including S06-01 whose reusable feedback pieces alone now exist. Visual inspection of a reference is not runtime review of a future feature. Existing59 Phase3A.1 behavior surfaces still apply where PNGs combine variants.
+Expected phase is sequencing/dependency guidance, never authorization. **Phase 4A update:** B06-02 sign-in/session recovery is implemented and runtime-reviewed; B04-02 has a limited safe read-only account surface. The other30 targets remain NOT IMPLEMENTED, including S06-01 whose shared feedback components do not implement its complete feature states. Visual inspection of a reference is not runtime review of a future feature. Existing59 Phase3A.1 behavior surfaces still apply where PNGs combine variants.
 
 ## Four baseline previews
 
@@ -205,8 +205,8 @@ Expected phase is sequencing/dependency guidance, never authorization. All32 rem
 - **Unique components/content:** Own account display, supported name edit, terms access and existing sign-out.
 - **Expected responsive behavior:** Readable single mobile column; paired display groups with one logical edit form.
 - **Expected implementation phase:** Phase 4 account/access;5 profile.
-- **Current implementation status:** NOT IMPLEMENTED. Shared shell/component availability is not screen completion.
-- **Visual review status:** Actual PNG inspected; future runtime fidelity is NOT VERIFIED. Individual content/dependency findings are in the fidelity contract's32-reference ledger.
+- **Current implementation status:** PARTIAL, Phase 4A: safe real read-only name/email/role and shared theme/sign-out. No category/contact/terms acceptance or profile editor is fabricated.
+- **Visual review status:** PNG opened and limited account capture inspected; full profile/preferences/terms composition remains deferred to its authorized feature. See Phase 4A deviations.
 
 ### B04-03 — Borrower - Terms Acceptance
 
@@ -399,12 +399,12 @@ Expected phase is sequencing/dependency guidance, never authorization. All32 rem
 
 - **Role:** Shared access; no authenticated borrower nav. **Reference file:** [remaining/B06-02.png](approved/remaining/B06-02.png).
 - **Layout structure:** Compact brand then provisioned-account sign-in form and session-recovery notice.
-- **Shared components:** AppBrand, Input, Button, Alert; any workflow-specific composition is deferred.
+- **Shared components:** AppBrand, Input, Button, Alert; LoginPage, SessionBootstrap and shared recovery/forbidden compositions.
 - **Unique components/content:** Existing secure session restoration/expired handling; no signup or invented activation state.
 - **Expected responsive behavior:** Centered readable form at all widths; remove protected navigation from unauthenticated state.
-- **Expected implementation phase:** Phase 4.
-- **Current implementation status:** NOT IMPLEMENTED. Shared shell/component availability is not screen completion.
-- **Visual review status:** Actual PNG inspected; future runtime fidelity is NOT VERIFIED. Individual content/dependency findings are in the fidelity contract's32-reference ledger.
+- **Expected implementation phase:** Phase 4A.
+- **Current implementation status:** IMPLEMENTED in Phase 4A: real provisioned-account login and existing secure restoration/logout/recovery.
+- **Visual review status:** Approved PNG opened; new 320/390/1280 light/dark captures inspected against shared tokens/composition. Deviations and limits are recorded in the Phase 4A report; no new owner-approval claim.
 
 ## Separate brand manifest record
 

@@ -1,6 +1,6 @@
 # Phase 2.5 relational design candidates
 
-2026-10-08. **ENGINEERING RECOMMENDATION** for later approved migrations, driven by working owner policy DEC-051–061. No SQL migration, table or runtime permission has been changed. Existing Phase 1H owner/runtime split and paired immutable migrations remain authoritative. Do not copy boss SQL or fabricate table numbering. [Rules](BUSINESS_RULES.md), [stock arithmetic](DOMAIN_MODEL.md#selected-inventory-model-and-alternatives), [transactions](STATE_MACHINES.md#expiry-races-and-atomicity), [invariants](INVARIANTS.md).
+2026-10-08. **ENGINEERING RECOMMENDATION** for later approved migrations, driven by working owner policy DEC-051–061. No SQL migration, table or runtime permission has been changed. **Phase 4A implementation note:** 000004 now reconciles the existing users role values/default/constraint only; no new business/category/terms tables are created. All other candidates remain unimplemented. Existing Phase 1H owner/runtime split and paired immutable migrations remain authoritative. Do not copy boss SQL or fabricate table numbering. [Rules](BUSINESS_RULES.md), [stock arithmetic](DOMAIN_MODEL.md#selected-inventory-model-and-alternatives), [transactions](STATE_MACHINES.md#expiry-races-and-atomicity), [invariants](INVARIANTS.md).
 
 ## Candidate inventory — 26 table entries
 
@@ -8,7 +8,7 @@
 
 | # | Table | Status | Purpose / principal columns |
 |---|---|---|---|
-| 1 | users | EXISTING, future approved extension | Stable ID/name/email/password hash/current generic role/is_active and timestamps remain. Proposed product roles BORROWER/STAFF/ADMIN, nullable borrower_category/program/contact where justified; no category-as-permission |
+| 1 | users | EXISTING, future approved extension | Stable ID/name/email/password hash/current product role/is_active and timestamps remain. Implemented product roles BORROWER/STAFF/ADMIN; proposed nullable borrower_category/program/contact where justified; no category-as-permission |
 | 2 | refresh_tokens | EXISTING unchanged | Phase 1 strict rotation/session evidence; no product schema rewrite |
 | 3 | schema_migrations | EXISTING unchanged | Phase 1H checksum/history/operator ownership; runtime cannot access |
 | 4 | equipment | NEW CORE | ID, metadata, optional category/image FK, lifecycle ACTIVE/INACTIVE/ARCHIVED, A/R/C/damaged_held/total_tracked, stock_sequence, metadata_version, timestamps |

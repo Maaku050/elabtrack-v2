@@ -62,7 +62,7 @@ func TestPlainPassword_Validate(t *testing.T) {
 
 func TestNewUser_Defaults(t *testing.T) {
 	u := domainuser.NewUser("user@example.com", "Alice", "hashed")
-	if u.Role != domainuser.RoleUser {
+	if u.Role != domainuser.RoleBorrower {
 		t.Fatalf("expected default role user, got %s", u.Role)
 	}
 	if !u.IsActive {

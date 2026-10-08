@@ -148,7 +148,7 @@ func setupRefresh() (*Service, *sessionHarness, *pairIssuer, string) {
 	id := uuid.MustParse("00000000-0000-0000-0000-000000000001")
 	raw := strings.Repeat("a", 64)
 	hash, _ := (security.SHA256RefreshHasher{}).Hash(raw)
-	h := &sessionHarness{sessions: sessionState{}, now: now, account: &domainuser.Account{ID: id, Email: "current@example.invalid", Role: domainuser.RoleUser, IsActive: true}}
+	h := &sessionHarness{sessions: sessionState{}, now: now, account: &domainuser.Account{ID: id, Email: "current@example.invalid", Role: domainuser.RoleBorrower, IsActive: true}}
 	h.sessions[hash] = domainauth.NewRefreshToken(hash, id, now.Add(-time.Hour), now.Add(time.Hour))
 	i := &pairIssuer{}
 	s := NewService(nil, h, nil, i, security.SHA256RefreshHasher{}, h, h, time.Minute, time.Hour)
@@ -177,7 +177,7 @@ func TestRefreshRotationAndHashOnlyPersistence(t *testing.T) {
 	if len(h.sessions) != 2 || old.RevokedAt == nil || old.ReplacedBy == nil || replacement == nil || *old.ReplacedBy != replacement.ID || replacement.TokenHash == pair.RefreshToken || replacement.UserID != h.account.ID {
 		t.Fatal("rotation/persistence invariant failed")
 	}
-	if replacement.ExpiresAt != h.now.Add(time.Hour) || pair.ExpiresAt != h.now.Add(time.Minute) || pair.TokenType != "Bearer" || i.issuedRole != domainuser.RoleUser {
+	if replacement.ExpiresAt != h.now.Add(time.Hour) || pair.ExpiresAt != h.now.Add(time.Minute) || pair.TokenType != "Bearer" || i.issuedRole != domainuser.RoleBorrower {
 		t.Fatal("typed TTL/transport/current role contract")
 	}
 	if strings.Join(h.operations, ",") != "begin,lock session,lock account,insert,consume,commit" {

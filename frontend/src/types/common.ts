@@ -4,8 +4,8 @@ export type ID = string
 
 export type ISODateString = string
 
-// Temporary generic infrastructure roles, not the final eLabTrack taxonomy.
-export type UserRole = 'user' | 'admin'
+// Current server-owned FSMO product role; Student/Faculty are categories.
+export type UserRole = 'BORROWER' | 'STAFF' | 'ADMIN'
 
 export interface User {
   id: ID

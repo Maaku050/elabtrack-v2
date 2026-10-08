@@ -98,12 +98,22 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 ## Phase 4 — Authentication & Authorization
 
-- **Status:** NOT STARTED. Local foundation readiness is verified in the [readiness report](LOCAL_ENVIRONMENT_READINESS_REPORT.md); implementation requires an explicit next-phase instruction.
-- **Goal:** Implement future BORROWER/STAFF/ADMIN policy on the preserved Phase 1 security/session foundation.
-- **Deliverables:** Current server permission/ownership checks, named Admin accounts, secure provisioned onboarding design, terms-version acceptance and inactive-account controls, role reconciliation through approved migrations.
-- **Dependencies:** Phase 2.5 matrix, approved Phase 3A/3B UX and secure activation/recovery design; no public registration or category-derived authority.
-- **Non-goals:** No Phase 1 wholesale rewrite, separate suspension subsystem, device kiosk auth or automatic fine eligibility gate.
-- **Exit gate:** Actor/target/role/status/replay/session boundaries pass relevant real database/HTTP/browser tests.
+- **Status:** Phase 4A COMPLETE; Phase 4B NOT STARTED. No next-phase authorization implied.
+- **Foundation:** Preserve completed Phase 1 security/session architecture and approved visual shells; confirmed product roles and provisioned-account policy apply.
+
+### Phase 4A — Authentication, Roles & Protected Navigation
+
+- **Result:** COMPLETE, 2026-10-08; [32-section report](PHASE4A_REPORT.md), DEC-065.
+- **Deliverables:** Real responsive login, current database Borrower/Staff/Admin permission checks, paired reversible role mapping with safe Staff rollback refusal, protected exact routes/deep-link restoration, loading/error/recovery/logout/disabled handling, truthful feature placeholders, safe own-account display and existing development previews.
+- **Verification:** Actual PostgreSQL migration and HTTP role/session tests, strict rotation/concurrent replay/rollback and runtime privilege regressions, real Chromium forms/cross-tab/role/status/theme/responsive checks, preserved visual preview checks and full quality gates. No public registration or published test passwords.
+- **Non-goals:** No Phase 4B terms/activation workflow, Phase 5 directory/provisioning/import/status UI or business feature services.
+
+### Phase 4B — First-Use Terms & Onboarding
+
+- **Status:** NOT STARTED; requires explicit authorization.
+- **Integration points:** Immutable terms versions/content/hash, unique user/version/time acceptance; current material version before new request/direct issue, preserve access to existing obligations. Use existing account/session ports and future transactional request guards; authentication does not imply acceptance.
+- **Dependencies:** Institutional terms content/publication responsibility and secure activation/initial-password/email ownership/recovery design under OPEN-001/009/016. These require review before dependent implementation, without reopening confirmed core policy.
+- **Exit gate:** Version/change/concurrency/ownership/acceptance evidence and accessible first-use flow verified against real PostgreSQL/HTTP/browser boundaries.
 
 ## Phase 5 — Users & Borrower Management
 

@@ -24,6 +24,5 @@ type AccountRepository interface {
 	FindAccountByID(ctx context.Context, id uuid.UUID) (*Account, error)
 }
 
-// Valid recognizes only the temporary generic foundation roles. It does not
-// establish eLabTrack's final institutional role taxonomy.
-func (r Role) Valid() bool { return r == RoleUser || r == RoleAdmin }
+// Valid fails closed for unknown, legacy and category values after reconciliation.
+func (r Role) Valid() bool { return r == RoleBorrower || r == RoleStaff || r == RoleAdmin }

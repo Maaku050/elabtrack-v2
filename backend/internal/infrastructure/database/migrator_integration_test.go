@@ -16,10 +16,15 @@ import (
 // Explicit opt-in; only the named disposable integration database is accepted.
 // Run before API/auth tests. All fault DDL lives in fixtures, never migrations/.
 func TestRealMigrator(t *testing.T) {
-	if os.Getenv("ELABTRACK_MIGRATION_INTEGRATION") != "1" {
+	phase4a := os.Getenv("ELABTRACK_PHASE4A") == "1"
+	if os.Getenv("ELABTRACK_MIGRATION_INTEGRATION") != "1" && !phase4a {
 		t.Skip("requires Phase 1H disposable PostgreSQL")
 	}
-	cfg, err := config.Parse(map[string]string{"APP_ENV": "test", "JWT_SECRET": "migration-tests-only", "DB_HOST": "127.0.0.1", "DB_PORT": "15432", "DB_NAME": "elabtrack_v2_integration", "DB_USER": "elabtrack_runtime", "DB_PASSWORD": os.Getenv("DB_PASSWORD"), "MIGRATION_DATABASE_URL": os.Getenv("MIGRATION_DATABASE_URL")})
+	port, dbName := "15432", "elabtrack_v2_integration"
+	if phase4a {
+		port, dbName = "25432", "elabtrack_v2_phase4a_test"
+	}
+	cfg, err := config.Parse(map[string]string{"APP_ENV": "test", "JWT_SECRET": "migration-tests-only", "DB_HOST": "127.0.0.1", "DB_PORT": port, "DB_NAME": dbName, "DB_USER": "elabtrack_runtime", "DB_PASSWORD": os.Getenv("DB_PASSWORD"), "MIGRATION_DATABASE_URL": os.Getenv("MIGRATION_DATABASE_URL")})
 	must(t, err == nil, "config")
 	migration, err := cfg.MigrationConnection()
 	must(t, err == nil && migration.User == "elabtrack_migrator", "migration identity config")
@@ -31,10 +36,10 @@ func TestRealMigrator(t *testing.T) {
 	must(t, err == nil, "runtime connection")
 	t.Cleanup(runtime.Close)
 	var identity bool
-	err = owner.Pool.QueryRow(ctx, `SELECT current_database()='elabtrack_v2_integration' AND current_user='elabtrack_migrator' AND NOT rolsuper AND NOT rolcreaterole AND NOT rolcreatedb FROM pg_roles WHERE rolname=current_user`).Scan(&identity)
+	err = owner.Pool.QueryRow(ctx, `SELECT current_database()=$1 AND current_user='elabtrack_migrator' AND NOT rolsuper AND NOT rolcreaterole AND NOT rolcreatedb FROM pg_roles WHERE rolname=current_user`, dbName).Scan(&identity)
 	must(t, err == nil && identity, "non-superuser migrator")
 	base, err := NewMigrator(nil, "../../../migrations").discover()
-	must(t, err == nil && len(base) == 3, "immutable foundation files")
+	must(t, err == nil && len(base) == 4, "immutable foundation plus approved product-role files")
 	exec := func(sql string, args ...any) {
 		_, err := owner.Pool.Exec(ctx, sql, args...)
 		must(t, err == nil, "fixture SQL")
@@ -199,7 +204,7 @@ func TestRealMigrator(t *testing.T) {
 	})
 	t.Run("explicit_legacy_adoption", func(t *testing.T) {
 		m := makeRunner(t, "", "")
-		exec(`ALTER TABLE schema_migrations RENAME TO phase1h_saved_tracking; CREATE TABLE schema_migrations(version TEXT PRIMARY KEY,applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW()); INSERT INTO schema_migrations(version,applied_at)SELECT version,applied_at FROM phase1h_saved_tracking`)
+		exec(`ALTER TABLE schema_migrations RENAME TO phase1h_saved_tracking; CREATE TABLE schema_migrations(version TEXT PRIMARY KEY,applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW()); INSERT INTO schema_migrations(version,applied_at)SELECT version,applied_at FROM phase1h_saved_tracking WHERE version IN ('000001_create_users','000002_create_refresh_tokens','000003_refresh_session_security')`)
 		defer exec(`DROP TABLE schema_migrations; ALTER TABLE phase1h_saved_tracking RENAME TO schema_migrations`)
 		expectFail(t, m.Up(ctx), "legacy tracking requires explicit")
 		exec(`INSERT INTO schema_migrations(version)VALUES('unknown_external')`)

@@ -16,6 +16,6 @@ func RegisterUser(v1 fiber.Router, h *handlers.UserHandler, protected fiber.Hand
 	g.Get("/me", protected, h.Me)
 	g.Patch("/me", protected, h.UpdateMe)
 
-	// Temporary generic admin read access only; no account administration.
-	g.Get("/", protected, middleware.RequireRole(domainuser.RoleAdmin), h.List)
+	// Current Admin read access only; no account administration.
+	g.Get("/", protected, middleware.RequirePermission(domainuser.ReadAccountDirectory), h.List)
 }

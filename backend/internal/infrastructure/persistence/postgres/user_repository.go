@@ -113,7 +113,7 @@ func (r *UserRepository) LockAccountByID(ctx context.Context, id uuid.UUID) (*do
 // change. Permission is rechecked in the same statement as the name mutation.
 func (r *UserRepository) UpdateProfile(ctx context.Context, id uuid.UUID, name string) (*domainuser.Account, error) {
 	const q = `UPDATE users SET name = $2, updated_at = NOW()
-  WHERE id = $1 AND is_active = TRUE AND role IN ('user','admin')
+  WHERE id = $1 AND is_active = TRUE AND role IN ('BORROWER','STAFF','ADMIN')
   RETURNING ` + accountColumns
 	account, err := scanAccount(r.executor(ctx).QueryRow(ctx, q, id, name))
 	if errors.Is(err, pgx.ErrNoRows) {

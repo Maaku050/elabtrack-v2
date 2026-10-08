@@ -36,7 +36,7 @@ func (row accountRow) Scan(dest ...any) error {
 	if row.err != nil {
 		return row.err
 	}
-	values := []any{uuid.MustParse("00000000-0000-0000-0000-000000000001"), "synthetic@example.invalid", "Safe Name", "user", true, time.Time{}, time.Time{}}
+	values := []any{uuid.MustParse("00000000-0000-0000-0000-000000000001"), "synthetic@example.invalid", "Safe Name", "BORROWER", true, time.Time{}, time.Time{}}
 	if len(dest) != len(values) {
 		return errors.New("unexpected sensitive projection")
 	}
@@ -53,7 +53,7 @@ func TestAccountLookupProjectsNoSecrets(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if account.ID != id || account.Role != domainuser.RoleUser || !account.IsActive {
+	if account.ID != id || account.Role != domainuser.RoleBorrower || !account.IsActive {
 		t.Fatal("safe account not scanned")
 	}
 	if strings.Contains(tx.query, "password") || strings.Contains(tx.query, "refresh") || strings.Contains(tx.query, id.String()) || !strings.Contains(tx.query, "WHERE id = $1") || len(tx.args) != 1 || tx.args[0] != id {
@@ -78,7 +78,7 @@ func TestSelfUpdateSQLPreservesSecurityFields(t *testing.T) {
 			t.Fatal("profile SQL writes security/identity field", sensitive)
 		}
 	}
-	if !strings.Contains(tx.query, "is_active = TRUE") || !strings.Contains(tx.query, "role IN ('user','admin')") || strings.Contains(tx.query, name) || len(tx.args) != 2 || tx.args[0] != id || tx.args[1] != name {
+	if !strings.Contains(tx.query, "is_active = TRUE") || !strings.Contains(tx.query, "role IN ('BORROWER','STAFF','ADMIN')") || strings.Contains(tx.query, name) || len(tx.args) != 2 || tx.args[0] != id || tx.args[1] != name {
 		t.Fatal("mutation must recheck permission and parameterize name/identity")
 	}
 	if strings.Contains(tx.query, "password") {

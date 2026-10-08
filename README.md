@@ -1,6 +1,6 @@
 # eLabTrack V2
 
-eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phases 1A–1I add configuration safeguards, current-account authorization, strict access JWTs, hash-only transactional refresh sessions, browser sessions, HTTP perimeter controls and API contracts/structured observability, real local verification and atomic/checksummed/locked migrations with database role separation and cross-tab session coordination to the Go Fiber/React/PostgreSQL foundation. Phase 3B is complete and owner visually approved; the four implemented previews and both themes are the accepted visual baseline. Phase 4 has not started. See the [local readiness report](docs/project/LOCAL_ENVIRONMENT_READINESS_REPORT.md) for the verified full-stack setup and checkpoint plan.
+eLabTrack V2 is a ground-up modernization of the existing FSMO laboratory equipment borrowing system. **eLabTrack V2 is NOT the campus-wide system.** Phase 0 is complete; Phases 1A–1I add configuration safeguards, current-account authorization, strict access JWTs, hash-only transactional refresh sessions, browser sessions, HTTP perimeter controls and API contracts/structured observability, real local verification and atomic/checksummed/locked migrations with database role separation and cross-tab session coordination to the Go Fiber/React/PostgreSQL foundation. Phase 3B is complete and owner visually approved; the four implemented previews and both themes are the accepted visual baseline. Phase 4A implements real login, current BORROWER/STAFF/ADMIN authority and protected navigation; see the [Phase 4A report](docs/project/PHASE4A_REPORT.md). Phase 4B/5 have not started. See the [local readiness report](docs/project/LOCAL_ENVIRONMENT_READINESS_REPORT.md) for the verified full-stack setup and checkpoint plan.
 
 Start with the [project charter](docs/project/PROJECT_CHARTER.md), [source policy](docs/project/SOURCE_OF_TRUTH.md), [decision register](docs/project/DECISIONS.md), [open decisions](docs/project/OPEN_DECISIONS.md), and [roadmap](docs/project/ROADMAP.md). The [foundation audit](docs/project/FOUNDATION_AUDIT.md) distinguishes inherited code from approved product requirements. See the [Phase 1 security backlog](docs/project/PHASE1_SECURITY_BACKLOG.md), [Phase 0 report](docs/project/PHASE0_REPORT.md), and [Phase 1 foundation report](docs/project/PHASE1_FOUNDATION.md) before treating this foundation as production ready.
 
@@ -67,7 +67,7 @@ Inspect the dedicated development database before applying anything:
 make migrate-status
 ```
 
-The restored database already has all three **generic auth** migrations with verified checksums and runtime grants. No migration command is needed to start it. For a fresh database or an explicitly reviewed pending suffix, use the existing runner:
+The preserved local database now has all four migrations with verified checksums, including 000004 product roles. Runtime grants remain restricted to named application-table DML. No migration command is needed to start this verified database. For a fresh database or an explicitly reviewed pending suffix, use the existing runner:
 
 ```bash
 make migrate-up
@@ -77,13 +77,13 @@ make migrate-status
 
 Preserve initialized history; investigate checksum/history errors instead of rewriting SQL, adopting history automatically or resetting the database. The runner retains atomic bookkeeping, paired checksums and advisory exclusion. No seed is required for startup or anonymous previews.
 
-There are no equipment/borrowing/fine/report/notification domain tables. Optional `make seed` loads synthetic starter accounts with published development passwords; never use it on real data or production.
+There are no equipment/borrowing/fine/report/notification domain tables. `make seed` now contains no accounts or passwords. No default product login is published; use existing authorized provisioned accounts. Safe test accounts are generated only inside the disposable verification database.
 
 Migration 000003 explicitly invalidates existing refresh sessions when applied or rolled back; users must log in again. Coordinate schema and application versions. Historical migrations are preserved. `make sessions-cleanup` explicitly deletes at most 1000 expired/revoked records terminal for over seven days; operators must run enough batches regularly. It never runs at API startup. Phase 1G verified migrations, refresh concurrency/rollback and cleanup against disposable PostgreSQL. See the [integration run instructions](integration/README.md) and [Phase 1 foundation report](docs/project/PHASE1_FOUNDATION.md).
 
-Browser access tokens live only in memory; refresh credentials use the host-only `elabtrack_v2_refresh` HttpOnly cookie at `/api/v1/auth`, with explicit SameSite=Lax and production Secure. Cookie-changing auth POSTs require an exact configured frontend Origin, including login and local registration. Configure explicit local origins (the example includes `http://localhost:5173`); local HTTP cookies derive Secure=false only from development/test APP_ENV. Production requires HTTPS and a same-site SPA/API arrangement, normally the same-origin nginx `/api/v1` proxy. Arbitrary cross-site deployments are unsupported. Login/refresh JSON carries access credentials and safe current account fields only; raw refresh JSON input has been removed.
+Browser access tokens live only in memory; refresh credentials use the host-only `elabtrack_v2_refresh` HttpOnly cookie at `/api/v1/auth`, with explicit SameSite=Lax and production Secure. Cookie-changing auth POSTs require an exact configured frontend Origin, including login. Configure explicit local origins (the example includes `http://localhost:5173`); local HTTP cookies derive Secure=false only from development/test APP_ENV. Production requires HTTPS and a same-site SPA/API arrangement, normally the same-origin nginx `/api/v1` proxy. Arbitrary cross-site deployments are unsupported. Login/refresh JSON carries access credentials and safe current account fields only; raw refresh JSON input has been removed.
 
-The HTTP perimeter uses the socket peer by default. `TRUSTED_PROXIES` accepts deliberately chosen literal proxy IPs/CIDRs; forwarded client IP is honored only from those peers, using the first untrusted hop from the right. Proxy operators must sanitize forwarding headers and restrict bypass; no hosting provider or production network is selected. Limits are per process and effective client IP: login 10, refresh 60, local registration 5, general API/logout 120 per one-minute window, with safe 429/Retry-After. Shared/NAT clients share budgets; configure operational values deliberately before deployment. CORS permits only explicit canonical origins and current GET/POST/PATCH/OPTIONS methods. Global body ceiling defaults to 1 MiB, auth POSTs to 16 KiB; read/write/idle defaults are 10/15/60 seconds.
+The HTTP perimeter uses the socket peer by default. `TRUSTED_PROXIES` accepts deliberately chosen literal proxy IPs/CIDRs; forwarded client IP is honored only from those peers, using the first untrusted hop from the right. Proxy operators must sanitize forwarding headers and restrict bypass; no hosting provider or production network is selected. Limits are per process and effective client IP: login 10, refresh 60, general API/logout 120 per one-minute window, with safe 429/Retry-After. Shared/NAT clients share budgets; configure operational values deliberately before deployment. CORS permits only explicit canonical origins and current GET/POST/PATCH/OPTIONS methods. Global body ceiling defaults to 1 MiB, auth POSTs to 16 KiB; read/write/idle defaults are 10/15/60 seconds.
 
 The nginx container serves same-origin production assets/API with a baseline document CSP and security headers; its Docker build defaults to `/api/v1`. External API build overrides require a reviewed matching connect-src policy. Host Vite development retains the explicit separate localhost API origin. The supplied nginx template is HTTP development only and does not assert HSTS. Production's authoritative HTTPS edge must own TLS/HSTS; API HSTS is emitted only in production on actual TLS or exact `https` from an explicitly trusted peer. Phase 1G verifies the local nginx/browser/proxy/rate/logging behavior; production HTTPS and hosting topology remain deployment checks. See the [foundation report](docs/project/PHASE1_FOUNDATION.md).
 
@@ -103,7 +103,7 @@ make frontend  # Vite only; fails if port 5173 is occupied
 make help
 ```
 
-Default frontend: **http://localhost:5173/**. Default backend: **http://localhost:8080/**; liveness **http://localhost:8080/api/v1/health**, readiness **http://localhost:8080/api/v1/ready**. The root frontend route remains the foundation page, with a theme toggle and `/status` link.
+Default frontend: **http://localhost:5173/**. Default backend: **http://localhost:8080/**; liveness **http://localhost:8080/api/v1/health**, readiness **http://localhost:8080/api/v1/ready**. The root frontend route redirects to `/login` or the current role workspace. `/status` remains the explicit public connection check.
 
 Phase 3B development-only visual previews:
 
@@ -154,15 +154,9 @@ cd ..
 git diff --check
 ```
 
-For a live browser/API/session regression, keep `make dev` running, provide an installed headless Chromium executable and local `psql`, then run from the root:
+For a live browser/API/session regression, provide headless Chromium and follow the isolated database/fixture instructions.
 
-```bash
-CHROMIUM_EXECUTABLE=/path/to/chromium node frontend/scripts/local-environment-smoke.mjs
-```
-
-This uses real API requests, creates one temporary unprivileged synthetic fixture through development registration, expires only its own session for the expiry check, and removes only that fixture in cleanup. It refuses a non-development runtime target. Results/captures go to `/tmp/elabtrack-local-environment-smoke`; no tokens, cookies or passwords are exported. Chromium may need system libraries or an environment-specific `LD_LIBRARY_PATH`. This is separate from the original visual QA, which uses an anonymous 401 fixture. See [closeout evidence](docs/ux/verification/local-environment/README.md).
-
-Report blocked and unrun checks accurately. See the [local readiness report](docs/project/LOCAL_ENVIRONMENT_READINESS_REPORT.md) for this run. No commit, push, deployment, or V1 Firebase access is authorized by this setup.
+Current live authentication verification uses the [Phase 4A isolated reproduction guide](integration/PHASE4A.md) and `frontend/scripts/phase4a-browser-qa.mjs`. It generates random-password fixtures in a separate database and removes only those IDs afterward. The previous `local-environment-smoke.mjs` and its [closeout evidence](docs/ux/verification/local-environment/README.md) are historical: their public-registration fixture step is unavailable after Phase 4A. Do not re-enable registration to run an old harness.
 
 ## Reference hygiene
 

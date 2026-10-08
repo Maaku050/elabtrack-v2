@@ -28,13 +28,18 @@ import (
 // Explicit opt-in; the supplied Compose stack must already be migrated/running.
 // This test never starts Docker, migrates, or reads an ambient DATABASE_URL.
 func TestRealFoundation(t *testing.T) {
-	if os.Getenv("ELABTRACK_INTEGRATION") != "1" {
+	phase4a := os.Getenv("ELABTRACK_PHASE4A") == "1"
+	if os.Getenv("ELABTRACK_INTEGRATION") != "1" && !phase4a {
 		t.Skip("requires isolated integration Compose stack")
+	}
+	port, dbName, baseURL, origin := "15432", "elabtrack_v2_integration", "http://localhost:18080/api/v1", "http://localhost:15173"
+	if phase4a {
+		port, dbName, baseURL, origin = "25432", "elabtrack_v2_phase4a_test", "http://localhost:8080/api/v1", "http://localhost:5173"
 	}
 	ctx := context.Background()
 	cfg, err := config.Parse(map[string]string{
 		"APP_ENV": "test", "JWT_SECRET": os.Getenv("JWT_SECRET"),
-		"DB_HOST": "127.0.0.1", "DB_PORT": "15432", "DB_NAME": "elabtrack_v2_integration",
+		"DB_HOST": "127.0.0.1", "DB_PORT": port, "DB_NAME": dbName,
 		"DB_USER": "elabtrack_runtime", "DB_PASSWORD": os.Getenv("DB_PASSWORD"), "DB_SSLMODE": "disable",
 	})
 	require(t, err == nil, "integration configuration")
@@ -43,7 +48,7 @@ func TestRealFoundation(t *testing.T) {
 	t.Cleanup(db.Close)
 	var identity string
 	err = db.Pool.QueryRow(ctx, `SELECT current_database()`).Scan(&identity)
-	require(t, err == nil && identity == "elabtrack_v2_integration", "disposable database identity")
+	require(t, err == nil && identity == dbName, "disposable database identity")
 	var runtimeOnly bool
 	err = db.Pool.QueryRow(ctx, `SELECT current_user='elabtrack_runtime' AND NOT rolsuper AND NOT rolcreaterole FROM pg_roles WHERE rolname=current_user`).Scan(&runtimeOnly)
 	require(t, err == nil && runtimeOnly, "DML-only runtime identity")
@@ -63,9 +68,10 @@ func TestRealFoundation(t *testing.T) {
 		})
 		return u
 	}
-	u := fixture(domainuser.RoleUser, true)
+	u := fixture(domainuser.RoleBorrower, true)
+	staff := fixture(domainuser.RoleStaff, true)
 	admin := fixture(domainuser.RoleAdmin, true)
-	inactive := fixture(domainuser.RoleUser, false)
+	inactive := fixture(domainuser.RoleBorrower, false)
 	client := &http.Client{Timeout: 10 * time.Second}
 	var secretMu sync.Mutex
 	secrets := []string{password, hash, os.Getenv("JWT_SECRET"), os.Getenv("DB_PASSWORD")}
@@ -75,9 +81,9 @@ func TestRealFoundation(t *testing.T) {
 		if body != nil {
 			encoded, _ = json.Marshal(body)
 		}
-		req, e := http.NewRequest(method, "http://localhost:18080/api/v1"+path, bytes.NewReader(encoded))
+		req, e := http.NewRequest(method, baseURL+path, bytes.NewReader(encoded))
 		require(t, e == nil, "request creation")
-		req.Header.Set("Origin", "http://localhost:15173")
+		req.Header.Set("Origin", origin)
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("X-Request-ID", "ignored-upstream-id")
 		if access != "" {
@@ -131,7 +137,7 @@ func TestRealFoundation(t *testing.T) {
 			require(t, r.StatusCode == 200 && b["success"] == true, "health/current account")
 			if path == "/auth/me" {
 				data := b["data"].(map[string]any)
-				require(t, len(data) == 5 && data["id"] == u.ID.String() && data["role"] == "user", "safe current DB account")
+				require(t, len(data) == 5 && data["id"] == u.ID.String() && data["role"] == "BORROWER", "safe current DB account")
 			}
 		}
 	})
@@ -149,16 +155,33 @@ func TestRealFoundation(t *testing.T) {
 			prior = msg
 		}
 	})
+	t.Run("product_permission_matrix", func(t *testing.T) {
+		for _, account := range []*domainuser.User{fixture(domainuser.RoleBorrower, true), staff, admin} {
+			a, _ := login(account)
+			r, b := request("GET", "/auth/me", nil, a, "")
+			require(t, r.StatusCode == 200 && b["data"].(map[string]any)["role"] == string(account.Role), "current product role")
+			r, _ = request("GET", "/users/", nil, a, "")
+			expected := 403
+			if account.Role == domainuser.RoleAdmin {
+				expected = 200
+			}
+			require(t, r.StatusCode == expected, "server role permission")
+		}
+		r, _ := request("POST", "/auth/register", map[string]string{"email": "unused@example.invalid", "password": password, "role": "ADMIN"}, "", "")
+		require(t, r.StatusCode == 404, "no public registration")
+	})
 	t.Run("stale_authority", func(t *testing.T) {
-		a, _ := login(admin)
+		a, adminCookie := login(admin)
 		r, _ := request("GET", "/users/", nil, a, "")
 		require(t, r.StatusCode == 200, "temporary admin authorized")
-		_, e := db.Pool.Exec(ctx, `UPDATE users SET role='user' WHERE id=$1`, admin.ID)
+		_, e := db.Pool.Exec(ctx, `UPDATE users SET role='BORROWER' WHERE id=$1`, admin.ID)
 		require(t, e == nil, "demote synthetic account")
 		r, _ = request("GET", "/users/", nil, a, "")
 		require(t, r.StatusCode == 403, "old admin token loses privilege")
 		_, e = db.Pool.Exec(ctx, `UPDATE users SET is_active=false WHERE id=$1`, admin.ID)
 		require(t, e == nil, "disable synthetic account")
+		r, _ = request("POST", "/auth/refresh", nil, "", adminCookie)
+		require(t, r.StatusCode == 401, "disabled account cannot restore session")
 		for _, path := range []string{"/users/", "/auth/me"} {
 			r, _ = request("GET", path, nil, a, "")
 			require(t, r.StatusCode == 403, "old token disabled")
@@ -246,8 +269,18 @@ func TestRealFoundation(t *testing.T) {
 		_, e = svc.Refresh(ctx, appauth.RefreshRequest{RefreshToken: pair.RefreshToken})
 		require(t, e == nil, "old session usable after rollback")
 	})
+	t.Run("missing_account_after_issuance", func(t *testing.T) {
+		missing := fixture(domainuser.RoleBorrower, true)
+		a, c := login(missing)
+		_, e := db.Pool.Exec(ctx, `DELETE FROM users WHERE id=$1`, missing.ID)
+		require(t, e == nil, "delete only owned fixture")
+		r, _ := request("GET", "/auth/me", nil, a, "")
+		require(t, r.StatusCode == 401, "missing identity denied")
+		r, _ = request("POST", "/auth/refresh", nil, "", c)
+		require(t, r.StatusCode == 401, "missing session denied")
+	})
 	t.Run("bounded_retention", func(t *testing.T) {
-		old := fixture(domainuser.RoleUser, true)
+		old := fixture(domainuser.RoleBorrower, true)
 		for i := 0; i < 3; i++ {
 			_, e := db.Pool.Exec(ctx, `INSERT INTO refresh_tokens(id,token_hash,user_id,created_at,updated_at,expires_at) VALUES($1,$2,$3,now()-interval '10 days',now()-interval '10 days',now()-interval '9 days')`, uuid.New(), digest(uuid.NewString()), old.ID)
 			require(t, e == nil, "expired fixture")

@@ -25,7 +25,7 @@ function coordinatedClient(adapter: AxiosAdapter, locks: SessionLocks | undefine
 
 const session: BrowserSession = {
   access_token: 'synthetic-renewed-access', expires_at: '2026-10-06T12:00:00Z', token_type: 'Bearer',
-  user: { id: '00000000-0000-0000-0000-000000000001', email: 'synthetic@example.invalid', name: 'Current Account', role: 'user', is_active: true },
+  user: { id: '00000000-0000-0000-0000-000000000001', email: 'synthetic@example.invalid', name: 'Current Account', role: 'BORROWER', is_active: true },
 }
 function response(config: InternalAxiosRequestConfig, status: number, data: unknown = session): AxiosResponse {
   const res = { config, status, statusText: String(status), headers: {}, data: status < 400 ? { success: true, data, message: 'Success', meta: null, error: null } : { success: false, message: 'Authentication required.', error: { code: 'UNAUTHORIZED' } } }
@@ -62,7 +62,7 @@ describe('memory and cookie browser sessions', () => {
     expect(set.mock.calls.filter(([key]) => /(?:access|refresh)_token/.test(key))).toEqual([])
     expect(result).toEqual(session)
     expect(useAuthStore.getState().accessToken).toBe(session.access_token)
-    expect(useAuthStore.getState().user?.role).toBe('user')
+    expect(useAuthStore.getState().user?.role).toBe('BORROWER')
     expect(useAuthStore.getState()).not.toHaveProperty('refreshToken')
     expect(result).not.toHaveProperty('refresh_token')
     expect(useAuthStore.getState().user).not.toHaveProperty('password')

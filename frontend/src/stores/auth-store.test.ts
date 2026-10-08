@@ -7,7 +7,7 @@ const user: AuthUser = {
   id: '00000000-0000-0000-0000-000000000001',
   email: 'test@example.com',
   name: 'Test User',
-  role: 'user',
+  role: 'BORROWER',
   is_active: true,
 }
 
@@ -82,4 +82,18 @@ describe('auth store', () => {
     expect(useAuthStore.getState().user?.name).toBe('Renamed')
     expect(useAuthStore.getState().accessToken).toBe('access-123')
   })
+  it.each(['current-account', 'rotation'])('fences stale work and removes private cache when a role changes through %s', source => {
+    useAuthStore.getState().setSession({ ...tokens, user: { ...user, role: 'ADMIN' } })
+    queryClient.setQueryData(['users', 'directory'], { confidential: true })
+    queryClient.setQueryData(['auth', 'me', '/admin/reports'], user)
+    queryClient.setQueryData(['foundation', 'health'], { status: 'ok' })
+    const generation = useAuthStore.getState().generation
+    if (source === 'current-account') useAuthStore.getState().setUser(user)
+    else useAuthStore.getState().setSession(tokens)
+    expect(useAuthStore.getState().generation).toBe(generation + 1)
+    expect(queryClient.getQueryData(['users', 'directory'])).toBeUndefined()
+    expect(queryClient.getQueryData(['auth', 'me', '/admin/reports'])).toEqual(user)
+    expect(queryClient.getQueryData(['foundation', 'health'])).toEqual({ status: 'ok' })
+  })
+
 })

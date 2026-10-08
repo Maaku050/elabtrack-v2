@@ -19,7 +19,7 @@ const currentAccount: AuthUser = {
   id: '00000000-0000-0000-0000-000000000001',
   email: 'synthetic@example.invalid',
   name: 'Current User',
-  role: 'user',
+  role: 'BORROWER',
   is_active: true,
 }
 
@@ -31,13 +31,17 @@ beforeEach(() => {
 afterEach(() => localStorage.clear())
 
 describe('Phase 1B trusted account adapters', () => {
-  it.each(['login', 'register'] as const)('%s exposes only safe account metadata to mutation results', async (operation) => {
+  it.each(['login'] as const)('%s exposes only safe account metadata to mutation results', async (operation) => {
     vi.mocked(apiClient.authenticate).mockResolvedValue({
       access_token: 'synthetic-memory-access', expires_at: '2026-10-06T12:00:00Z', token_type: 'Bearer', user: currentAccount,
     })
     const input = { email: 'synthetic@example.invalid', password: 'synthetic-password', name: 'Current User' }
     expect(await authApi[operation](input)).toEqual({ user: currentAccount })
     expect(apiClient.authenticate).toHaveBeenCalledWith(`/auth/${operation}`, input)
+  })
+
+  it('does not expose a public registration adapter', () => {
+    expect(authApi).not.toHaveProperty('register')
   })
 
   it('manual refresh updates the centralized memory session without returning credentials to feature callers', async () => {
@@ -55,12 +59,12 @@ describe('Phase 1B trusted account adapters', () => {
     expect(apiClient.get).toHaveBeenCalledWith('/auth/me', { signal: controller.signal })
   })
 
-  it('hydrates metadata from the current-account endpoint without replacing profile cache or tokens', async () => {
+  it('hydrates current roles without replacing memory credentials', async () => {
     vi.mocked(apiClient.get).mockResolvedValue(currentAccount)
     useAuthStore.setState({
       isAuthenticated: true,
       status: 'authenticated',
-      user: { ...currentAccount, role: 'admin' },
+      user: { ...currentAccount, role: 'ADMIN' },
       accessToken: 'existing-access',
     })
     const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
@@ -95,7 +99,7 @@ describe('Phase 1B trusted account adapters', () => {
 
   it('sends only a display name even if a runtime caller supplies privileged fields', async () => {
     vi.mocked(apiClient.patch).mockResolvedValue(currentAccount)
-    const injected = { name: 'New Name', email: 'other@example.invalid', role: 'admin', is_active: true, id: 'other' }
+    const injected = { name: 'New Name', email: 'other@example.invalid', role: 'ADMIN', is_active: true, id: 'other' }
     await usersApi.updateMe(injected as UpdateProfileInput)
     expect(apiClient.patch).toHaveBeenCalledWith('/users/me', { name: 'New Name' })
   })

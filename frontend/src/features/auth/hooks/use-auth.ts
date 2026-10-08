@@ -2,81 +2,58 @@ import { apiErrorMessage } from '@/lib/api-error'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { authApi } from '../api/auth.api'
+import { loginDestination } from '../navigation'
 import { useAuthStore } from '@/stores/auth-store'
-import { useToast } from '@/components/feedback/toast'
+import { useSessionActionStore } from '@/stores/session-action-store'
 import { queryKeys } from '@/lib/query-keys'
-import type { LoginInput, RegisterInput } from '../types'
+import type { LoginInput } from '../types'
 
-/**
- * Login mutation. The centralized client sets the memory session before navigation.
- */
-export function useLogin() {
+export function useLogin(requested?: unknown) {
   const navigate = useNavigate()
-  const toast = useToast()
-
   return useMutation({
+    onMutate: () => { useSessionActionStore.getState().setSigningIn(true) },
+    onSettled: () => { useSessionActionStore.getState().setSigningIn(false) },
     mutationFn: (input: LoginInput) => authApi.login(input),
-    onSuccess: (data) => {
-      toast.success('Welcome back!', `Signed in as ${data.user.email}`)
-      navigate('/', { replace: true })
-    },
-    onError: (err) => {
-      const message = apiErrorMessage(err)
-      toast.error('Login failed', message)
+    onSuccess: ({ user }) => {
+      useSessionActionStore.getState().setLogout('idle')
+      navigate(loginDestination(user.role, requested), { replace: true })
     },
   })
 }
 
-/**
- * Local registration mutation; the centralized client owns session state.
- */
-export function useRegister() {
-  const navigate = useNavigate()
-  const toast = useToast()
-
-  return useMutation({
-    mutationFn: (input: RegisterInput) => authApi.register(input),
-    onSuccess: (data) => {
-      toast.success('Account created', `Welcome, ${data.user.name}!`)
-      navigate('/', { replace: true })
-    },
-    onError: (err) => {
-      const message = apiErrorMessage(err)
-      toast.error('Registration failed', message)
-    },
-  })
-}
-
-/**
- * Logout mutation. Clears the session regardless of the server response
- * (idempotent) and navigates to the placeholder.
- */
 export function useLogout() {
   const navigate = useNavigate()
-
-  return () => {
-    void authApi.logout().catch(() => {})
-    navigate('/', { replace: true })
+  return async () => {
+    if (useSessionActionStore.getState().logout === 'pending') return
+    useSessionActionStore.getState().setLogout('pending')
+    // Existing transport immediately clears memory/queries and notifies peers.
+    useAuthStore.getState().clear()
+    const operation = authApi.logout()
+    navigate('/login', { replace: true, state: { signedOut: true } })
+    try {
+      await operation
+      useSessionActionStore.getState().setLogout('idle')
+    } catch (error) {
+      useSessionActionStore.getState().setLogout('failed', apiErrorMessage(error))
+    }
   }
 }
 
-/**
- * Current-user query refreshes safe presentation metadata from the server.
- * Bootstrap already accepts current account state with its access response.
- */
-export function useCurrentUser() {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-  const setUser = useAuthStore((s) => s.setUser)
-
+export function useCurrentUser(route?: string) {
+  const isAuthenticated = useAuthStore(s => s.isAuthenticated)
   return useQuery({
-    queryKey: queryKeys.auth.me(),
+    queryKey: route ? [...queryKeys.auth.me(), route] : queryKeys.auth.me(),
     queryFn: async ({ signal }) => {
       const generation = useAuthStore.getState().generation
       const user = await authApi.me(signal)
-      if (!signal.aborted && generation === useAuthStore.getState().generation) setUser(user)
+      if (!signal.aborted && generation === useAuthStore.getState().generation) useAuthStore.getState().setUser(user)
       return user
     },
     enabled: isAuthenticated,
-    staleTime: 60_000,
+    staleTime: 0,
+    retry: false,
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
   })
 }

@@ -120,7 +120,7 @@ export class ApiClient {
   }
   private acceptSession(data: BrowserSession): BrowserSession {
     const user = data?.user
-    if (!data || typeof data.access_token !== 'string' || !data.access_token || data.token_type !== 'Bearer' || typeof data.expires_at !== 'string' || !user || typeof user.id !== 'string' || !user.id || typeof user.email !== 'string' || typeof user.name !== 'string' || !['user', 'admin'].includes(user.role) || user.is_active !== true) {
+    if (!data || typeof data.access_token !== 'string' || !data.access_token || data.token_type !== 'Bearer' || typeof data.expires_at !== 'string' || !user || typeof user.id !== 'string' || !user.id || typeof user.email !== 'string' || typeof user.name !== 'string' || !['BORROWER', 'STAFF', 'ADMIN'].includes(user.role) || user.is_active !== true) {
       throw new ApiRequestError('Invalid session response', 502)
     }
     // Explicit safe projection; never decode JWTs or retain arbitrary fields.

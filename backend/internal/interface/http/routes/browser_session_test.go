@@ -84,7 +84,7 @@ func assertSafeSessionBody(t *testing.T, body string, raw, hash string) {
 		t.Fatal("refresh material exposed in JSON")
 	}
 	var user map[string]any
-	if json.Unmarshal(result.Data["user"], &user) != nil || len(user) != 5 || user["id"] != selfID.String() || user["role"] != "user" || user["is_active"] != true {
+	if json.Unmarshal(result.Data["user"], &user) != nil || len(user) != 5 || user["id"] != selfID.String() || user["role"] != "BORROWER" || user["is_active"] != true {
 		t.Fatal("safe current account projection incorrect")
 	}
 }
@@ -187,7 +187,7 @@ func TestOnlyExplicitLogoutClearsCookie(t *testing.T) {
 	}
 }
 func TestSessionCSRFOriginEnforcement(t *testing.T) {
-	for _, path := range []string{"/api/v1/auth/login", "/api/v1/auth/register", "/api/v1/auth/refresh", "/api/v1/auth/logout"} {
+	for _, path := range []string{"/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/logout"} {
 		t.Run(path, func(t *testing.T) {
 			for _, origin := range []string{"", "null", "https://attacker.example.invalid", trustedOrigin + ".attacker.invalid", trustedOrigin + "/", "http://app.example.invalid", "https://app.example.invalid:444"} {
 				r := &users{account: fixtureUser()}
@@ -268,7 +268,7 @@ func TestCookieAloneDoesNotAuthenticateProtectedRoutes(t *testing.T) {
 		}
 	}
 }
-func TestDevelopmentLocalhostAndLocalRegistrationCookies(t *testing.T) {
+func TestDevelopmentLocalhostCookieAndRegistrationAbsence(t *testing.T) {
 	r := &users{account: fixtureUser()}
 	r.account.Password, _ = security.NewBcryptHasher(4).Hash("synthetic-password")
 	persisted := &tokens{}
@@ -284,12 +284,12 @@ func TestDevelopmentLocalhostAndLocalRegistrationCookies(t *testing.T) {
 	r = &users{}
 	persisted = &tokens{}
 	app = newApp(config.Test, r, &issuer{}, persisted)
-	status, body, cookies := cookieRequest(t, app, "/api/v1/auth/register", "", trustedOrigin, `{"email":"synthetic@example.invalid","name":"Local User","password":"synthetic-password"}`)
-	if status != 201 || len(persisted.created) != 1 {
-		t.Fatal("local registration failed")
+	res, err := app.Test(httptest.NewRequest(http.MethodPost, "/api/v1/auth/register", strings.NewReader(`{"email":"synthetic@example.invalid","name":"Local User","password":"synthetic-password"}`)))
+	if err != nil {
+		t.Fatal(err)
 	}
-	cookie := assertCookie(t, cookies, false, false)
-	if strings.Contains(body, cookie.Value) || strings.Contains(body, persisted.created[0].TokenHash) || strings.Contains(body, r.account.Password) {
-		t.Fatal("local registration exposed refresh/password material")
+	defer res.Body.Close()
+	if res.StatusCode != 404 || len(res.Cookies()) != 0 || len(persisted.created) != 0 || r.creates != 0 {
+		t.Fatal("registration must remain unavailable")
 	}
 }

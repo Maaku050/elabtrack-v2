@@ -1,0 +1,571 @@
+{
+  "generatedAt": "2026-10-08T12:42:24.404Z",
+  "browser": "Chrome/140.0.7339.16",
+  "database": "elabtrack_v2_phase4a_test",
+  "realAuthentication": true,
+  "cookiePolicies": [
+    {
+      "name": "elabtrack_v2_refresh",
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax",
+      "path": "/api/v1/auth"
+    }
+  ],
+  "sessionEvents": [
+    {
+      "version": 1,
+      "tabId": "2961132a-1d14-4de7-83e0-d7ba7320aa07",
+      "attemptId": "ecb561f3-d043-4651-96c6-a52b97a5f332",
+      "epoch": 1791463319195500,
+      "timestamp": 1791463319195.6,
+      "type": "logout"
+    },
+    {
+      "version": 1,
+      "tabId": "2961132a-1d14-4de7-83e0-d7ba7320aa07",
+      "attemptId": "e471b024-d6e7-40c3-a941-3a460133f981",
+      "epoch": 1791463319223300,
+      "timestamp": 1791463319223.4,
+      "type": "logout"
+    }
+  ],
+  "screens": [
+    {
+      "file": "login-320-light.png",
+      "width": 320,
+      "pageWidth": 320,
+      "clientWidth": 320,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Welcome back",
+      "pass": true
+    },
+    {
+      "file": "login-320-dark.png",
+      "width": 320,
+      "pageWidth": 320,
+      "clientWidth": 320,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Welcome back",
+      "pass": true
+    },
+    {
+      "file": "login-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Welcome back",
+      "pass": true
+    },
+    {
+      "file": "login-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Welcome back",
+      "pass": true
+    },
+    {
+      "file": "login-1280-light.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Welcome back",
+      "pass": true
+    },
+    {
+      "file": "login-1280-dark.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Welcome back",
+      "pass": true
+    },
+    {
+      "file": "borrower-320-light.png",
+      "width": 320,
+      "pageWidth": 320,
+      "clientWidth": 320,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Equipment Catalog",
+      "pass": true
+    },
+    {
+      "file": "borrower-320-dark.png",
+      "width": 320,
+      "pageWidth": 320,
+      "clientWidth": 320,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Equipment Catalog",
+      "pass": true
+    },
+    {
+      "file": "borrower-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Equipment Catalog",
+      "pass": true
+    },
+    {
+      "file": "borrower-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Equipment Catalog",
+      "pass": true
+    },
+    {
+      "file": "borrower-1280-light.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Equipment Catalog",
+      "pass": true
+    },
+    {
+      "file": "borrower-1280-dark.png",
+      "width": 1280,
+      "pageWidth": 1280,
+      "clientWidth": 1280,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Equipment Catalog",
+      "pass": true
+    },
+    {
+      "file": "account-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Account",
+      "pass": true
+    },
+    {
+      "file": "forbidden-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Access denied",
+      "pass": true
+    },
+    {
+      "file": "forbidden-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Access denied",
+      "pass": true
+    },
+    {
+      "file": "staff-1024-light.png",
+      "width": 1024,
+      "pageWidth": 1024,
+      "clientWidth": 1024,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    },
+    {
+      "file": "staff-1024-dark.png",
+      "width": 1024,
+      "pageWidth": 1024,
+      "clientWidth": 1024,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    },
+    {
+      "file": "staff-1440-light.png",
+      "width": 1440,
+      "pageWidth": 1440,
+      "clientWidth": 1440,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    },
+    {
+      "file": "staff-1440-dark.png",
+      "width": 1440,
+      "pageWidth": 1440,
+      "clientWidth": 1440,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    },
+    {
+      "file": "staff-forbidden-1024-dark.png",
+      "width": 1024,
+      "pageWidth": 1024,
+      "clientWidth": 1024,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Access denied",
+      "pass": true
+    },
+    {
+      "file": "admin-1440-light.png",
+      "width": 1440,
+      "pageWidth": 1440,
+      "clientWidth": 1440,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    },
+    {
+      "file": "admin-1440-dark.png",
+      "width": 1440,
+      "pageWidth": 1440,
+      "clientWidth": 1440,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Dashboard",
+      "pass": true
+    },
+    {
+      "file": "logout-network-error-390-dark.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "dark",
+      "smallTargets": [],
+      "h1": "Welcome back",
+      "pass": true
+    },
+    {
+      "file": "session-network-error-390-light.png",
+      "width": 390,
+      "pageWidth": 390,
+      "clientWidth": 390,
+      "theme": "light",
+      "smallTargets": [],
+      "h1": "Welcome back",
+      "pass": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "Anonymous deep link denies protected content",
+      "pass": true
+    },
+    {
+      "name": "Empty form validates without API submission",
+      "pass": true
+    },
+    {
+      "name": "Invalid login is generic, clears password and restores keyboard focus",
+      "pass": true
+    },
+    {
+      "name": "Password visibility is accessible",
+      "pass": true
+    },
+    {
+      "name": "Allowed deep link restored after real login",
+      "pass": true
+    },
+    {
+      "name": "No synthetic business records in authenticated Borrower shell",
+      "pass": true
+    },
+    {
+      "name": "Account is real safe read-only metadata",
+      "pass": true
+    },
+    {
+      "name": "Borrower cannot enter Staff shell",
+      "pass": true
+    },
+    {
+      "name": "Access only in memory; refresh cookie hidden from JavaScript",
+      "pass": true
+    },
+    {
+      "name": "Keyboard focus reaches a named interactive element",
+      "pass": true
+    },
+    {
+      "name": "Reload never flashes protected content while refresh is pending",
+      "pass": true
+    },
+    {
+      "name": "Real refresh restores Borrower session after reload",
+      "pass": true
+    },
+    {
+      "name": "Cross-tab logout clears peer memory and private UI",
+      "pass": true
+    },
+    {
+      "name": "Native coordination uses non-secret lifecycle messages",
+      "pass": true
+    },
+    {
+      "name": "Back navigation after logout cannot expose protected content",
+      "pass": true
+    },
+    {
+      "name": "Logout stays anonymous after reload",
+      "pass": true
+    },
+    {
+      "name": "Sidebar sign-out remains readable in both themes",
+      "pass": true
+    },
+    {
+      "name": "Collapsed production sidebar retains accessible sign out without overflow",
+      "pass": true
+    },
+    {
+      "name": "Staff has operational navigation without Admin additions",
+      "pass": true
+    },
+    {
+      "name": "Admin inherits operations and enters administrative destination",
+      "pass": true
+    },
+    {
+      "name": "Database demotion clears old private cache and blocks old workspace",
+      "pass": true
+    },
+    {
+      "name": "Previously issued Admin JWT cannot authorize current demoted account",
+      "pass": true
+    },
+    {
+      "name": "Disabled account after issuance loses protected browser access",
+      "pass": true
+    },
+    {
+      "name": "Inactive login uses generic non-enumerating feedback",
+      "pass": true
+    },
+    {
+      "name": "Failed sign out still removes local private authority",
+      "pass": true
+    },
+    {
+      "name": "Server-revoked session cannot restore after reload",
+      "pass": true
+    },
+    {
+      "name": "Transient bootstrap failure displays a bounded manual retry",
+      "pass": true
+    },
+    {
+      "name": "No automatic refresh loop during offline observation",
+      "pass": true
+    },
+    {
+      "name": "Public self-registration remains unavailable",
+      "pass": true
+    }
+  ],
+  "responses": [
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/users/",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/users/",
+      "status": 403
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "path": "/api/v1/auth/register",
+      "status": 204
+    },
+    {
+      "path": "/api/v1/auth/register",
+      "status": 404
+    }
+  ],
+  "applicationErrors": [],
+  "applicationWarnings": [],
+  "networkFailureMethod": "Chromium offline and URL blocking; original API responses never fabricated",
+  "pass": true
+}

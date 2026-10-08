@@ -10,6 +10,7 @@ interface AuthState {
   status: SessionStatus
   generation: number
   isAuthenticated: boolean
+  sessionEnded: boolean
   setSession: (session: BrowserSession) => void
   setUser: (user: AuthUser) => void
   setStatus: (status: SessionStatus) => void
@@ -24,19 +25,27 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   status: 'idle',
   generation: 0,
   isAuthenticated: false,
+  sessionEnded: false,
   setSession: (session) => {
     clearLegacyAuthStorage()
     if (get().user?.id !== session.user.id) clearAuthenticatedQueries()
-    set({ user: session.user, accessToken: session.access_token, status: 'authenticated', isAuthenticated: true })
+    const roleChanged = !!get().user && get().user?.role !== session.user.role
+    if (roleChanged) clearAuthenticatedQueries(true)
+    set({ user: session.user, accessToken: session.access_token, status: 'authenticated', isAuthenticated: true, sessionEnded: false, generation: get().generation + (roleChanged ? 1 : 0) })
   },
   setUser: (user) => {
-    if (get().isAuthenticated && get().user?.id === user.id) set({ user })
+    if (get().isAuthenticated && get().user?.id === user.id) {
+      const roleChanged = get().user?.role !== user.role
+      if (roleChanged) clearAuthenticatedQueries(true)
+      set({ user, generation: get().generation + (roleChanged ? 1 : 0) })
+    }
   },
   setStatus: (status) => set({ status }),
   clear: (status = 'unauthenticated') => {
     clearLegacyAuthStorage()
     const generation = get().generation + 1
-    set({ user: null, accessToken: null, status, isAuthenticated: false, generation })
+    const sessionEnded = get().isAuthenticated || get().sessionEnded
+    set({ user: null, accessToken: null, status, isAuthenticated: false, generation, sessionEnded })
     clearAuthenticatedQueries()
     return generation
   },

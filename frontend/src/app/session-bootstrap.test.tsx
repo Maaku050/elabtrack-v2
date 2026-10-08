@@ -13,7 +13,7 @@ vi.mock('@/lib/api-client', async (importOriginal) => {
     if (mock.calls === 1) throw new AxiosError('Network unavailable', 'ERR_NETWORK', config)
     return { config, status: 200, statusText: 'OK', headers: {}, data: { success: true, data: {
       access_token: 'synthetic-memory-access', expires_at: '2026-10-06T12:00:00Z', token_type: 'Bearer',
-      user: { id: '00000000-0000-0000-0000-000000000001', email: 'synthetic@example.invalid', name: 'Current Account', role: 'user', is_active: true },
+      user: { id: '00000000-0000-0000-0000-000000000001', email: 'synthetic@example.invalid', name: 'Current Account', role: 'BORROWER', is_active: true },
     } } }
   }) }
 })

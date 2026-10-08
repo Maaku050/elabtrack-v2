@@ -1,5 +1,7 @@
 # Disposable foundation integration verification
 
+**Current Phase 4A:** use [PHASE4A.md](PHASE4A.md) for role-migration, live form/API/PostgreSQL and browser verification. Legacy browser/restart/local-readiness fixture entrypoints below depend on the now-unmounted registration route and are historical. Current Go foundation/migrator tests accept the isolated Phase 4A target without changing their security assertions.
+
 Phase 1I adds cross-tab session verification to the Phase 1H isolated target and
 its actual runtime/migrator separation on PostgreSQL 18.6, API/nginx and Chromium.
 Phase 1H resource/file names are deliberately retained for harness compatibility;
@@ -60,7 +62,7 @@ python3 integration/env-run.py python3 integration/sql.py migration backend/data
 (cd backend && python3 ../integration/env-run.py /tmp/elabtrack-phase1h-api --migrate-status)
 ```
 
-For explicit zero/latest/zero/latest testing, run `--migrate-down` three times
+For explicit zero/latest/zero/latest testing, run `--migrate-down` four times on the empty disposable database (000004 refuses if Staff accounts exist)
 before the final `--migrate-up`, then reapply runtime-grants.sql. Existing 000003
 invalidates sessions in either direction; do this before starting the API or
 creating authentication fixtures. No historical SQL is edited. Future approved
