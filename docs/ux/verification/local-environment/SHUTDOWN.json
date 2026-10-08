@@ -1,0 +1,96 @@
+{
+  "before": [
+    {
+      "pid": 58619,
+      "ppid": 1390,
+      "pgid": 58619,
+      "sid": 58619,
+      "command": "make dev"
+    },
+    {
+      "pid": 58620,
+      "ppid": 58619,
+      "pgid": 58619,
+      "sid": 58619,
+      "command": "/bin/sh -c bash scripts/dev.sh \"make\""
+    },
+    {
+      "pid": 58621,
+      "ppid": 58620,
+      "pgid": 58619,
+      "sid": 58619,
+      "command": "bash scripts/dev.sh make"
+    },
+    {
+      "pid": 58624,
+      "ppid": 58621,
+      "pgid": 58624,
+      "sid": 58624,
+      "command": "make --no-print-directory -C /home/marvin/projects/eLabTrack_V2 backend"
+    },
+    {
+      "pid": 58625,
+      "ppid": 58621,
+      "pgid": 58625,
+      "sid": 58625,
+      "command": "make --no-print-directory -C /home/marvin/projects/eLabTrack_V2 frontend"
+    },
+    {
+      "pid": 58626,
+      "ppid": 58625,
+      "pgid": 58625,
+      "sid": 58625,
+      "command": "/bin/sh -c cd frontend && npm run dev -- --strictPort"
+    },
+    {
+      "pid": 58627,
+      "ppid": 58624,
+      "pgid": 58624,
+      "sid": 58624,
+      "command": "/bin/sh -c cd backend && go run ./cmd/api"
+    },
+    {
+      "pid": 58628,
+      "ppid": 58626,
+      "pgid": 58625,
+      "sid": 58625,
+      "command": "npm run dev --strictPort"
+    },
+    {
+      "pid": 58634,
+      "ppid": 58627,
+      "pgid": 58624,
+      "sid": 58624,
+      "command": "go run ./cmd/api"
+    },
+    {
+      "pid": 58651,
+      "ppid": 58628,
+      "pgid": 58625,
+      "sid": 58625,
+      "command": "sh -c vite --strictPort"
+    },
+    {
+      "pid": 58652,
+      "ppid": 58651,
+      "pgid": 58625,
+      "sid": 58625,
+      "command": "node /home/marvin/projects/eLabTrack_V2/frontend/node_modules/.bin/vite --strictPort"
+    },
+    {
+      "pid": 58696,
+      "ppid": 58634,
+      "pgid": 58624,
+      "sid": 58624,
+      "command": "/home/marvin/.cache/go-build/c8/c8f8bcc4dddb701a4aa3a753d84e632da6baa3d4066489830ef3851004b074cf-d/api"
+    }
+  ],
+  "remainingProcessesInRecordedGroups": [],
+  "listenersClosed": {
+    "8080": true,
+    "5173": true,
+    "4173": true
+  },
+  "postgresStillHealthy": true,
+  "pass": true
+}

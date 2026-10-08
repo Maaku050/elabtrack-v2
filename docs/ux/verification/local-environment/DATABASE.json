@@ -1,0 +1,28 @@
+{
+  "finalFixtureCounts": {
+    "users": 0,
+    "refreshTokens": 0
+  },
+  "roleExtensionQuery": "0|0\nelabtrack_v2\nelabtrack_migrator|f|f|f|f|f\nelabtrack_runtime|f|f|f|f|f\ncitext\n",
+  "container": {
+    "Name": "elabtrack_v2_postgres",
+    "Service": "postgres",
+    "State": "running",
+    "Health": "healthy",
+    "Publishers": [
+      {
+        "URL": "0.0.0.0",
+        "TargetPort": 5432,
+        "PublishedPort": 5434,
+        "Protocol": "tcp"
+      },
+      {
+        "URL": "::",
+        "TargetPort": 5432,
+        "PublishedPort": 5434,
+        "Protocol": "tcp"
+      }
+    ]
+  },
+  "ownershipPermissionsQuery": "runtime_permissions|t|f|f|t|f|f\ntable_owner|refresh_tokens|elabtrack_migrator\ntable_owner|schema_migrations|elabtrack_migrator\ntable_owner|users|elabtrack_migrator\nschema_owner|elabtrack_migrator\nruntime_tracking_select|f\nruntime_truncate|f\n"
+}

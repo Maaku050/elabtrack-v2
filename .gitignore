@@ -45,3 +45,5 @@ logs/
 *:Zone.Identifier
 # ---------- Docker ----------
 docker-compose.override.yml
+# Extracted approved references are retained; keep the redundant owner archive local.
+eLabTrack_V2_APPROVED_VISUAL_HANDOFF.zip

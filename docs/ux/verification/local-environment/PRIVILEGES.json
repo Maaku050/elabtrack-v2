@@ -1,0 +1,17 @@
+[
+  {
+    "check": "runtime DDL denial",
+    "pass": true,
+    "exit": 3
+  },
+  {
+    "check": "migration tracking denied",
+    "pass": true,
+    "exit": 3
+  },
+  {
+    "check": "named DML grants and test fixture cleanup",
+    "result": "refresh_tokens|DELETE|NO\nrefresh_tokens|INSERT|NO\nrefresh_tokens|SELECT|NO\nrefresh_tokens|UPDATE|NO\nusers|DELETE|NO\nusers|INSERT|NO\nusers|SELECT|NO\nusers|UPDATE|NO\n0|0",
+    "pass": true
+  }
+]

@@ -1,0 +1,34 @@
+{
+  "/api/v1/health": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "message": "Service is alive.",
+      "data": {
+        "status": "ok",
+        "service": "elabtrack-v2"
+      },
+      "meta": null
+    },
+    "origin": "http://localhost:5173",
+    "credentials": "true",
+    "exposed": "X-Request-ID, Retry-After",
+    "request_id_present": true
+  },
+  "/api/v1/ready": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "message": "Service is ready.",
+      "data": {
+        "status": "ready",
+        "service": "elabtrack-v2"
+      },
+      "meta": null
+    },
+    "origin": "http://localhost:5173",
+    "credentials": "true",
+    "exposed": "X-Request-ID, Retry-After",
+    "request_id_present": true
+  }
+}

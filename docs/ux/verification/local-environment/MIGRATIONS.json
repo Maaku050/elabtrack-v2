@@ -1,0 +1,5 @@
+{
+  "advisoryExclusion": true,
+  "statusAfterRelease": 0,
+  "statusOutput": "cd backend && go run ./cmd/api --migrate-status\n000001_create_users applied checksum=verified\n000002_create_refresh_tokens applied checksum=verified\n000003_refresh_session_security applied checksum=verified\ncurrent version: 000003_refresh_session_security\n2026-10-08T19:23:34.490+0800\tINFO\tmigration command completed\t{\"event\": \"migration.command\", \"direction\": \"status\", \"result\": \"success\", \"migration_version\": \"\", \"reason\": \"\", \"duration_ms\": 18}\n"
+}

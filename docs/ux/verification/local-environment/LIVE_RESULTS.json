@@ -1,0 +1,493 @@
+{
+  "generatedAt": "2026-10-08T11:24:30.317Z",
+  "browser": "Chrome/140.0.7339.16",
+  "liveApi": true,
+  "apiInterception": false,
+  "checks": [
+    {
+      "name": "Anonymous visitor is unauthenticated; restored connectivity removes error banner",
+      "pass": true
+    },
+    {
+      "name": "Real credentialed API readiness and exposed request ID",
+      "pass": true
+    },
+    {
+      "name": "Synthetic fixture receives only the existing user role",
+      "pass": true
+    },
+    {
+      "name": "Host-only HttpOnly Lax refresh cookie; local HTTP Secure=false",
+      "pass": true
+    },
+    {
+      "name": "Access remains memory-only and refresh is hidden from document.cookie",
+      "pass": true
+    },
+    {
+      "name": "Valid cookie restores a fresh document and authorizes current-account read",
+      "pass": true
+    },
+    {
+      "name": "Two simultaneous real tab reloads restore their own memory sessions",
+      "pass": true
+    },
+    {
+      "name": "Real logout clears both tabs without shared credentials",
+      "pass": true
+    },
+    {
+      "name": "Revoked refresh is safely anonymous and does not clear possibly newer cookies",
+      "pass": true
+    },
+    {
+      "name": "Expired server session is safely anonymous with no connection-error banner",
+      "pass": true
+    },
+    {
+      "name": "B01 320 light live render",
+      "pass": true
+    },
+    {
+      "name": "B01 320 dark live render",
+      "pass": true
+    },
+    {
+      "name": "B01 390 light live render",
+      "pass": true
+    },
+    {
+      "name": "B01 390 dark live render",
+      "pass": true
+    },
+    {
+      "name": "B01 768 light live render",
+      "pass": true
+    },
+    {
+      "name": "B01 768 dark live render",
+      "pass": true
+    },
+    {
+      "name": "B01 1280 light live render",
+      "pass": true
+    },
+    {
+      "name": "B01 1280 dark live render",
+      "pass": true
+    },
+    {
+      "name": "B02 320 light live render",
+      "pass": true
+    },
+    {
+      "name": "B02 320 dark live render",
+      "pass": true
+    },
+    {
+      "name": "B02 390 light live render",
+      "pass": true
+    },
+    {
+      "name": "B02 390 dark live render",
+      "pass": true
+    },
+    {
+      "name": "B02 768 light live render",
+      "pass": true
+    },
+    {
+      "name": "B02 768 dark live render",
+      "pass": true
+    },
+    {
+      "name": "B02 1280 light live render",
+      "pass": true
+    },
+    {
+      "name": "B02 1280 dark live render",
+      "pass": true
+    },
+    {
+      "name": "S01-dashboard 1024 light live render",
+      "pass": true
+    },
+    {
+      "name": "S01-dashboard 1024 dark live render",
+      "pass": true
+    },
+    {
+      "name": "S01-dashboard 1440 light live render",
+      "pass": true
+    },
+    {
+      "name": "S01-dashboard 1440 dark live render",
+      "pass": true
+    },
+    {
+      "name": "S01-pending 1024 light live render",
+      "pass": true
+    },
+    {
+      "name": "S01-pending 1024 dark live render",
+      "pass": true
+    },
+    {
+      "name": "S01-pending 1440 light live render",
+      "pass": true
+    },
+    {
+      "name": "S01-pending 1440 dark live render",
+      "pass": true
+    },
+    {
+      "name": "Borrower mobile navigation opens the actual catalog route",
+      "pass": true
+    },
+    {
+      "name": "Staff tablet table is keyboard scrollable inside its named region",
+      "pass": true
+    },
+    {
+      "name": "Unconfigured Origin is denied without credentialed CORS",
+      "pass": true
+    },
+    {
+      "name": "Cookie-changing request without Origin remains denied",
+      "pass": true
+    },
+    {
+      "name": "No unexpected JavaScript exceptions or browser warnings",
+      "pass": true
+    },
+    {
+      "name": "Expected anonymous refresh 401 is observed, not connection refusal",
+      "pass": true
+    }
+  ],
+  "cases": [
+    {
+      "id": "B01",
+      "route": "/__preview/borrower/home",
+      "width": 320,
+      "theme": "light",
+      "file": "B01-320-light.png",
+      "pass": true
+    },
+    {
+      "id": "B01",
+      "route": "/__preview/borrower/home",
+      "width": 320,
+      "theme": "dark",
+      "file": "B01-320-dark.png",
+      "pass": true
+    },
+    {
+      "id": "B01",
+      "route": "/__preview/borrower/home",
+      "width": 390,
+      "theme": "light",
+      "file": "B01-390-light.png",
+      "pass": true
+    },
+    {
+      "id": "B01",
+      "route": "/__preview/borrower/home",
+      "width": 390,
+      "theme": "dark",
+      "file": "B01-390-dark.png",
+      "pass": true
+    },
+    {
+      "id": "B01",
+      "route": "/__preview/borrower/home",
+      "width": 768,
+      "theme": "light",
+      "file": "B01-768-light.png",
+      "pass": true
+    },
+    {
+      "id": "B01",
+      "route": "/__preview/borrower/home",
+      "width": 768,
+      "theme": "dark",
+      "file": "B01-768-dark.png",
+      "pass": true
+    },
+    {
+      "id": "B01",
+      "route": "/__preview/borrower/home",
+      "width": 1280,
+      "theme": "light",
+      "file": "B01-1280-light.png",
+      "pass": true
+    },
+    {
+      "id": "B01",
+      "route": "/__preview/borrower/home",
+      "width": 1280,
+      "theme": "dark",
+      "file": "B01-1280-dark.png",
+      "pass": true
+    },
+    {
+      "id": "B02",
+      "route": "/__preview/borrower/equipment",
+      "width": 320,
+      "theme": "light",
+      "file": "B02-320-light.png",
+      "pass": true
+    },
+    {
+      "id": "B02",
+      "route": "/__preview/borrower/equipment",
+      "width": 320,
+      "theme": "dark",
+      "file": "B02-320-dark.png",
+      "pass": true
+    },
+    {
+      "id": "B02",
+      "route": "/__preview/borrower/equipment",
+      "width": 390,
+      "theme": "light",
+      "file": "B02-390-light.png",
+      "pass": true
+    },
+    {
+      "id": "B02",
+      "route": "/__preview/borrower/equipment",
+      "width": 390,
+      "theme": "dark",
+      "file": "B02-390-dark.png",
+      "pass": true
+    },
+    {
+      "id": "B02",
+      "route": "/__preview/borrower/equipment",
+      "width": 768,
+      "theme": "light",
+      "file": "B02-768-light.png",
+      "pass": true
+    },
+    {
+      "id": "B02",
+      "route": "/__preview/borrower/equipment",
+      "width": 768,
+      "theme": "dark",
+      "file": "B02-768-dark.png",
+      "pass": true
+    },
+    {
+      "id": "B02",
+      "route": "/__preview/borrower/equipment",
+      "width": 1280,
+      "theme": "light",
+      "file": "B02-1280-light.png",
+      "pass": true
+    },
+    {
+      "id": "B02",
+      "route": "/__preview/borrower/equipment",
+      "width": 1280,
+      "theme": "dark",
+      "file": "B02-1280-dark.png",
+      "pass": true
+    },
+    {
+      "id": "S01-dashboard",
+      "route": "/__preview/staff/dashboard",
+      "width": 1024,
+      "theme": "light",
+      "file": "S01-dashboard-1024-light.png",
+      "pass": true
+    },
+    {
+      "id": "S01-dashboard",
+      "route": "/__preview/staff/dashboard",
+      "width": 1024,
+      "theme": "dark",
+      "file": "S01-dashboard-1024-dark.png",
+      "pass": true
+    },
+    {
+      "id": "S01-dashboard",
+      "route": "/__preview/staff/dashboard",
+      "width": 1440,
+      "theme": "light",
+      "file": "S01-dashboard-1440-light.png",
+      "pass": true
+    },
+    {
+      "id": "S01-dashboard",
+      "route": "/__preview/staff/dashboard",
+      "width": 1440,
+      "theme": "dark",
+      "file": "S01-dashboard-1440-dark.png",
+      "pass": true
+    },
+    {
+      "id": "S01-pending",
+      "route": "/__preview/staff/requests",
+      "width": 1024,
+      "theme": "light",
+      "file": "S01-pending-1024-light.png",
+      "pass": true
+    },
+    {
+      "id": "S01-pending",
+      "route": "/__preview/staff/requests",
+      "width": 1024,
+      "theme": "dark",
+      "file": "S01-pending-1024-dark.png",
+      "pass": true
+    },
+    {
+      "id": "S01-pending",
+      "route": "/__preview/staff/requests",
+      "width": 1440,
+      "theme": "light",
+      "file": "S01-pending-1440-light.png",
+      "pass": true
+    },
+    {
+      "id": "S01-pending",
+      "route": "/__preview/staff/requests",
+      "width": 1440,
+      "theme": "dark",
+      "file": "S01-pending-1440-dark.png",
+      "pass": true
+    }
+  ],
+  "responses": [
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/ready",
+      "status": 200
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/register",
+      "status": 204
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/register",
+      "status": 201
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/me",
+      "status": 204
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/me",
+      "status": 200
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 200
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/login",
+      "status": 204
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/logout",
+      "status": 204
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "url": "http://localhost:8080/api/v1/auth/refresh",
+      "status": 401
+    }
+  ],
+  "exceptions": [],
+  "warnings": [],
+  "fixtureRole": "user",
+  "fixtureCleanup": true,
+  "pass": true
+}

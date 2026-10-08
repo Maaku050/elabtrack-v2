@@ -1,0 +1,254 @@
+[
+  {
+    "theme": "light",
+    "pair": "Body on card",
+    "foreground": "#10132e",
+    "background": "#ffffff",
+    "ratio": 18.19,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Body on page",
+    "foreground": "#10132e",
+    "background": "#f5f7fd",
+    "ratio": 16.98,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Metadata on card",
+    "foreground": "#606680",
+    "background": "#ffffff",
+    "ratio": 5.66,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Metadata on muted",
+    "foreground": "#606680",
+    "background": "#f3f5fb",
+    "ratio": 5.19,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Primary button",
+    "foreground": "#ffffff",
+    "background": "#2b10bb",
+    "ratio": 11.09,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Primary on soft",
+    "foreground": "#2b10bb",
+    "background": "#efecff",
+    "ratio": 9.56,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Success badge",
+    "foreground": "#167346",
+    "background": "#eaf9f0",
+    "ratio": 5.4,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Warning badge",
+    "foreground": "#925700",
+    "background": "#fff5dd",
+    "ratio": 5.4,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Danger badge",
+    "foreground": "#b42332",
+    "background": "#fff0f1",
+    "ratio": 5.88,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Secondary label",
+    "foreground": "#4c4d74",
+    "background": "#f0effc",
+    "ratio": 7.04,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Sidebar active label",
+    "foreground": "#ffffff",
+    "background": "#384ce6",
+    "ratio": 6.28,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Sidebar metadata",
+    "foreground": "#c5d0eb",
+    "background": "#061e52",
+    "ratio": 10.34,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Input boundary on card",
+    "foreground": "#8993ad",
+    "background": "#ffffff",
+    "ratio": 3.07,
+    "target": 3,
+    "pass": true
+  },
+  {
+    "theme": "light",
+    "pair": "Focus on page",
+    "foreground": "#4c38db",
+    "background": "#f5f7fd",
+    "ratio": 6.77,
+    "target": 3,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Body on card",
+    "foreground": "#eef1fc",
+    "background": "#17213a",
+    "ratio": 14.16,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Body on page",
+    "foreground": "#eef1fc",
+    "background": "#0d1428",
+    "ratio": 16.22,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Metadata on card",
+    "foreground": "#b7c2dc",
+    "background": "#17213a",
+    "ratio": 8.95,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Metadata on muted",
+    "foreground": "#b7c2dc",
+    "background": "#202c46",
+    "ratio": 7.79,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Primary button",
+    "foreground": "#17113c",
+    "background": "#b1a0ff",
+    "ratio": 7.9,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Primary on soft",
+    "foreground": "#b1a0ff",
+    "background": "#2e2851",
+    "ratio": 6.07,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Success badge",
+    "foreground": "#82dfad",
+    "background": "#17392e",
+    "ratio": 7.89,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Warning badge",
+    "foreground": "#ffcf79",
+    "background": "#3c301c",
+    "ratio": 8.86,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Danger badge",
+    "foreground": "#ff9ca8",
+    "background": "#422332",
+    "ratio": 6.96,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Secondary label",
+    "foreground": "#d7dff5",
+    "background": "#26314f",
+    "ratio": 9.64,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Sidebar active label",
+    "foreground": "#ffffff",
+    "background": "#384ce6",
+    "ratio": 6.28,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Sidebar metadata",
+    "foreground": "#c5d0eb",
+    "background": "#061e52",
+    "ratio": 10.34,
+    "target": 4.5,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Input boundary on card",
+    "foreground": "#7986a8",
+    "background": "#17213a",
+    "ratio": 4.4,
+    "target": 3,
+    "pass": true
+  },
+  {
+    "theme": "dark",
+    "pair": "Focus on page",
+    "foreground": "#b5a3ff",
+    "background": "#0d1428",
+    "ratio": 8.41,
+    "target": 3,
+    "pass": true
+  }
+]

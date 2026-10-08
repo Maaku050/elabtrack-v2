@@ -1,0 +1,261 @@
+{
+  "productionUrl": "http://127.0.0.1:4173",
+  "productionBundles": [
+    "api-client-ZVBzK1o4.js",
+    "index-CDTMw-cF.js"
+  ],
+  "generatedAt": "2026-10-08T11:23:52.458Z",
+  "browser": "Chrome/140.0.7339.16",
+  "url": "http://localhost:5173",
+  "anonymousRefreshFixture": true,
+  "cases": [
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 390,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 362,
+          "height": 56
+        },
+        ".metric-card": {
+          "x": 14,
+          "y": 158,
+          "width": 176,
+          "height": 87
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Good morning, Alex!",
+      "viewport": 390,
+      "clientWidth": 390,
+      "pageWidth": 390,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": null,
+      "id": "B01",
+      "width": 390,
+      "file": "B01-390-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 64
+        },
+        ".borrower-bottom-nav": {
+          "x": 0,
+          "y": 827,
+          "width": 390,
+          "height": 73
+        },
+        ".staff-sidebar": null,
+        ".staff-top-bar": null,
+        ".page-heading": {
+          "x": 14,
+          "y": 84,
+          "width": 362,
+          "height": 56
+        },
+        ".metric-card": null,
+        ".equipment-card": {
+          "x": 14,
+          "y": 322,
+          "width": 362,
+          "height": 113
+        },
+        ".pending-table": null
+      },
+      "title": "Equipment Catalog",
+      "viewport": 390,
+      "clientWidth": 390,
+      "pageWidth": 390,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": {
+        "navigationTop": 827,
+        "contentBottom": 804
+      },
+      "dock": {
+        "bottom": 667,
+        "navigationTop": 827
+      },
+      "id": "B02",
+      "width": 390,
+      "file": "B02-390-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 238,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 238,
+          "y": 0,
+          "width": 1202,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 262,
+          "y": 88,
+          "width": 1154,
+          "height": 59.75
+        },
+        ".metric-card": {
+          "x": 262,
+          "y": 167.75,
+          "width": 276.5,
+          "height": 111
+        },
+        ".equipment-card": null,
+        ".pending-table": null
+      },
+      "title": "Dashboard",
+      "viewport": 1440,
+      "clientWidth": 1440,
+      "pageWidth": 1440,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": null,
+      "footer": null,
+      "dock": null,
+      "id": "S01-dashboard",
+      "width": 1440,
+      "file": "S01-dashboard-1440-light.png",
+      "pass": true
+    },
+    {
+      "boxes": {
+        ".borrower-top-bar": null,
+        ".borrower-bottom-nav": null,
+        ".staff-sidebar": {
+          "x": 0,
+          "y": 0,
+          "width": 238,
+          "height": 900
+        },
+        ".staff-top-bar": {
+          "x": 238,
+          "y": 0,
+          "width": 1202,
+          "height": 64
+        },
+        ".page-heading": {
+          "x": 262,
+          "y": 88,
+          "width": 1154,
+          "height": 59.75
+        },
+        ".metric-card": null,
+        ".equipment-card": null,
+        ".pending-table": {
+          "x": 263,
+          "y": 230.75,
+          "width": 1152,
+          "height": 433.5
+        }
+      },
+      "title": "Pending Requests",
+      "viewport": 1440,
+      "clientWidth": 1440,
+      "pageWidth": 1440,
+      "clipped": [],
+      "smallTargets": [],
+      "theme": "light",
+      "table": {
+        "width": 1152,
+        "contentWidth": 1152,
+        "tabIndex": 0,
+        "label": "Pending requests table; scroll horizontally for additional columns"
+      },
+      "footer": null,
+      "dock": null,
+      "id": "S01-pending",
+      "width": 1440,
+      "file": "S01-pending-1440-light.png",
+      "pass": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "Filter Sheet Escape closes and restores focus",
+      "pass": true
+    },
+    {
+      "name": "Selection dialog traps keyboard focus; contains no business action",
+      "pass": true
+    },
+    {
+      "name": "Staff smaller-width navigation Sheet is accessible",
+      "pass": true
+    },
+    {
+      "name": "Admin shell includes labeled Admin additions without authenticating",
+      "pass": true
+    },
+    {
+      "name": "Tablet table scroll is keyboard reachable and bounded",
+      "pass": true
+    },
+    {
+      "name": "Desktop sidebar collapse preserves workspace and named navigation",
+      "pass": true
+    },
+    {
+      "name": "Reduced motion removes spinning animations",
+      "pass": true
+    },
+    {
+      "name": "Production JS excludes development routes and synthetic fixtures",
+      "pass": true
+    },
+    {
+      "name": "Production preview URL resolves to existing404",
+      "pass": true
+    },
+    {
+      "name": "Production foundation root remains available",
+      "pass": true
+    }
+  ],
+  "applicationErrors": [],
+  "applicationWarnings": [],
+  "expectedAnonymous401Count": 11,
+  "businessRequests": [],
+  "requests": [
+    "http://localhost:8080/api/v1/auth/refresh"
+  ],
+  "pass": true
+}

@@ -6,14 +6,14 @@
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-18s\033[0m %s\n", $$1, $$2}'
 
-dev: ## Run backend and frontend together (requires concurrently installed or two terminals)
-	@echo "Open two terminals: 'make backend' and 'make frontend'"
+dev: ## Start backend and frontend together; Ctrl+C stops both
+	@bash scripts/dev.sh "$(MAKE)"
 
-backend: ## Run Go backend
+backend: ## Start backend only (requires PostgreSQL)
 	cd backend && go run ./cmd/api
 
-frontend: ## Run Vite frontend
-	cd frontend && npm run dev
+frontend: ## Start frontend only on Vite port 5173
+	cd frontend && npm run dev -- --strictPort
 
 migrate-up: ## Apply database migrations
 	cd backend && go run ./cmd/api --migrate-up

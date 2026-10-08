@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-08",
+  "tools": {
+    "go": "1.27.1 (selected by backend go.mod)",
+    "node": "24.19.0",
+    "npm": "11.17.0",
+    "vite": "8.3.2",
+    "chromium": "140.0.7339.16",
+    "postgres": "18.6",
+    "dockerEngine": "29.8.0",
+    "dockerDesktop": "4.92.0",
+    "compose": "5.5.1"
+  },
+  "commands": {
+    "go fmt ./...": {
+      "exit": 0
+    },
+    "go vet ./...": {
+      "exit": 0
+    },
+    "go test ./...": {
+      "exit": 0,
+      "isolatedDatabaseHarness": "not enabled; not reported as passed"
+    },
+    "npm run lint": {
+      "exit": 0,
+      "warnings": 19,
+      "newWarnings": 0
+    },
+    "npm run test:run": {
+      "exit": 0,
+      "files": 9,
+      "tests": 145
+    },
+    "npm run build": {
+      "exit": 0
+    },
+    "docker compose config --quiet": {
+      "exit": 0
+    },
+    "docker compose --profile full --profile tools config --quiet": {
+      "exit": 0
+    },
+    "live browser smoke": {
+      "exit": 0,
+      "checks": 40,
+      "cases": 24
+    },
+    "existing reference QA --quick": {
+      "exit": 0,
+      "checks": 10,
+      "cases": 4
+    },
+    "git diff --check": {
+      "exit": 0
+    }
+  },
+  "shutdown": {
+    "apiGracefulPoolClose": true,
+    "makeInterruptDiagnosticsObserved": true,
+    "ptyExit": 1,
+    "orphanGroups": 0
+  },
+  "notRun": [
+    "production TLS/deployment",
+    "full Docker API/nginx image builds",
+    "separate isolated destructive integration harness",
+    "physical devices"
+  ],
+  "untrackedWhitespaceChecks": {
+    "files": 241,
+    "issues": 0
+  },
+  "explicitStagingDryRun": {
+    "entries": 248,
+    "originalIndexUnchanged": true
+  }
+}

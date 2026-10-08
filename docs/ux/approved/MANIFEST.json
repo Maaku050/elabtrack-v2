@@ -1,0 +1,422 @@
+[
+  {
+    "file": "approved/core/B01-borrower-home.png",
+    "description": "Approved Borrower Mobile Home; canonical compact header",
+    "size": [
+      941,
+      1672
+    ],
+    "sha256": "3d2ebe215cbbfe0cd05c6057b8f780909ae0ba3b35bc0c542f3b629b3a4a1dd7"
+  },
+  {
+    "file": "approved/core/B02-borrower-equipment-catalog.png",
+    "description": "Approved Borrower Mobile Catalog; canonical compact header",
+    "size": [
+      941,
+      1672
+    ],
+    "sha256": "0ced1842f6a18271a2d9a9dc4bc043fa5c87ab4f8b8c5533d2a529939ac3769d"
+  },
+  {
+    "file": "approved/core/S01-staff-dashboard-and-pending-requests.png",
+    "description": "Approved Staff Desktop Dashboard upper half and Pending Requests lower half",
+    "size": [
+      1536,
+      1024
+    ],
+    "sha256": "322bb5bbb8ceb8d6b8372075a50fbccf94427490479190b4ef8808eef11d748b"
+  },
+  {
+    "file": "approved/brand/FSMO-seal-reference.png",
+    "description": "Generated sharp seal replica based on user-supplied low-quality image; visual reference, not verified official artwork",
+    "size": [
+      1254,
+      1254
+    ],
+    "sha256": "232fcbfa516a505897ca913b2918fb428f28b4f50d129103dbdadeefa869e15c"
+  },
+  {
+    "file": "approved/remaining/B02-01.png",
+    "id": "B02-01",
+    "description": "Borrower - Request Cart",
+    "batch": "02 Request and approval",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "bc1527061930ddb17c4e4d54ea45546da44e17ade96ea53cc3ed49e718f4784b"
+  },
+  {
+    "file": "approved/remaining/B02-02.png",
+    "id": "B02-02",
+    "description": "Borrower - Review and Submit",
+    "batch": "02 Request and approval",
+    "role": "mobile",
+    "size": [
+      390,
+      929
+    ],
+    "sha256": "03c2d0ba31cbb5233297cb737b59be23747131ed7009b3018b8071993e6e4cc3"
+  },
+  {
+    "file": "approved/remaining/B02-03.png",
+    "id": "B02-03",
+    "description": "Borrower - Pending Confirmation",
+    "batch": "02 Request and approval",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "61352c672a58c18b510f6a2003ac6915754c924b827945abc534ed9f2471b30b"
+  },
+  {
+    "file": "approved/remaining/B02-04.png",
+    "id": "B02-04",
+    "description": "Borrower - Denied Expired Cancelled",
+    "batch": "02 Request and approval",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "6347d5bcdfd7d6282cd6d6390e3c0acdcaf8ddf4181225416745e2a7f8373302"
+  },
+  {
+    "file": "approved/remaining/S02-01.png",
+    "id": "S02-01",
+    "description": "Staff - Request Review",
+    "batch": "02 Request and approval",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "d6be08013f53d25401aac9ddf693c07a2067493c79295320957b66d1fe30af93"
+  },
+  {
+    "file": "approved/remaining/S02-02.png",
+    "id": "S02-02",
+    "description": "Staff - Direct Checkout",
+    "batch": "02 Request and approval",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "91fffff52557acb502557f65b8e875ec3d8f90912aade50a4d75f34678682d6e"
+  },
+  {
+    "file": "approved/remaining/B03-01.png",
+    "id": "B03-01",
+    "description": "Borrower - Active Borrowing",
+    "batch": "03 Returns and replacement",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "54e83938c5c356b9abafacab80c3ec2274da9e36da02a368b8047a70d4677c07"
+  },
+  {
+    "file": "approved/remaining/B03-02.png",
+    "id": "B03-02",
+    "description": "Borrower - Partial and Replacement",
+    "batch": "03 Returns and replacement",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "b444d262c5f0d47ff1d6e476f7915b8bcf6171b7c7099633d468ee56c8a2f3d6"
+  },
+  {
+    "file": "approved/remaining/B03-03.png",
+    "id": "B03-03",
+    "description": "Borrower - Overdue Fine",
+    "batch": "03 Returns and replacement",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "fcfd3d1c3bcfb28278d446b87933f266aa1474696340bd84b753263ce4110281"
+  },
+  {
+    "file": "approved/remaining/S03-01.png",
+    "id": "S03-01",
+    "description": "Staff - Record Return",
+    "batch": "03 Returns and replacement",
+    "role": "desktop",
+    "size": [
+      1440,
+      902
+    ],
+    "sha256": "347271ad3985da7152afab2ab76727586cde25b067f8104610650f09fd06f4fa"
+  },
+  {
+    "file": "approved/remaining/S03-02.png",
+    "id": "S03-02",
+    "description": "Staff - Return Result",
+    "batch": "03 Returns and replacement",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "4b5c383ac9b7555bdeb961238db931d2980af0b87a141c2b3574265e9a85211c"
+  },
+  {
+    "file": "approved/remaining/S03-03.png",
+    "id": "S03-03",
+    "description": "Staff - Accept Replacement",
+    "batch": "03 Returns and replacement",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "d88b300e133dfb902ed558b3ce0c3e787b086cdd5b802d7999ccb8bcd0e8669f"
+  },
+  {
+    "file": "approved/remaining/B04-01.png",
+    "id": "B04-01",
+    "description": "Borrower - My Borrowings History",
+    "batch": "04 Accounts and history",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "c3c04bf60911a53896f23aa44bfb03afda63b7c9085ceda10c3d34ee8650e7aa"
+  },
+  {
+    "file": "approved/remaining/B04-02.png",
+    "id": "B04-02",
+    "description": "Borrower - Account",
+    "batch": "04 Accounts and history",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "a1bab92053ca51aa68f0d062787a6c1d10828ec9a37e31a178f13f9c1669d2f7"
+  },
+  {
+    "file": "approved/remaining/B04-03.png",
+    "id": "B04-03",
+    "description": "Borrower - Terms Acceptance",
+    "batch": "04 Accounts and history",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "c55021d267f2abedb8b8552c2b8310378e3573407f9cec7e2ddfd2fb0c958903"
+  },
+  {
+    "file": "approved/remaining/S04-01.png",
+    "id": "S04-01",
+    "description": "Staff - Borrower Directory",
+    "batch": "04 Accounts and history",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "1676e386312369c8a1e2376963319e6f4f85aa7faaa7495aa234d67971d69a07"
+  },
+  {
+    "file": "approved/remaining/S04-02.png",
+    "id": "S04-02",
+    "description": "Staff - Borrower Detail",
+    "batch": "04 Accounts and history",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "9ba25c991251c73005c47fd75a9203476730a0dd3dc9775ae6f9fb344ac8aa3b"
+  },
+  {
+    "file": "approved/remaining/S04-03.png",
+    "id": "S04-03",
+    "description": "Admin - Bulk Import",
+    "batch": "04 Accounts and history",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "88c495f4e198fbe8276d10a06fd3ef31a6a0ca2c8510799ff20ed2a4be4a402f"
+  },
+  {
+    "file": "approved/remaining/S05-01.png",
+    "id": "S05-01",
+    "description": "Staff - Inventory Overview",
+    "batch": "05 Inventory and administration",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "52477848451b3f61b4d1193f19620d69db064d27a06b8725dd14923ebb8e15f2"
+  },
+  {
+    "file": "approved/remaining/S05-02.png",
+    "id": "S05-02",
+    "description": "Staff - Equipment Detail and Movements",
+    "batch": "05 Inventory and administration",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "1dbdf91d162078b4a8a344a261475c9540297023376ed304434a0872d015a442"
+  },
+  {
+    "file": "approved/remaining/S05-03.png",
+    "id": "S05-03",
+    "description": "Admin - Full Fine Clearance",
+    "batch": "05 Inventory and administration",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "222440f14278a37a2faee37f3a68a4686b443b2fb3648c4059795a8b89cf77c1"
+  },
+  {
+    "file": "approved/remaining/S05-04.png",
+    "id": "S05-04",
+    "description": "Admin - Reports",
+    "batch": "05 Inventory and administration",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "697337d09f1e6682e91f95671bc20aea1a0642237c619b76a3445990cd4b119f"
+  },
+  {
+    "file": "approved/remaining/S05-05.png",
+    "id": "S05-05",
+    "description": "Admin - Administration",
+    "batch": "05 Inventory and administration",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "c3a149288b98de3d92e40bafad79608653f3b0c227a3e062977f969913360dc8"
+  },
+  {
+    "file": "approved/remaining/S05-06.png",
+    "id": "S05-06",
+    "description": "Staff - Borrowings List",
+    "batch": "05 Inventory and administration",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "cc75e39d4da2eaa7a3624be4ed307c8920bf804415394f5ed13ab3b719f761b7"
+  },
+  {
+    "file": "approved/remaining/B06-01.png",
+    "id": "B06-01",
+    "description": "Borrower - Activity",
+    "batch": "06 Shared states",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "57080d2cb167a4c5a067e980639c1319b939e9faf64f4cf0d42824a2fc2353f8"
+  },
+  {
+    "file": "approved/remaining/S06-01.png",
+    "id": "S06-01",
+    "description": "Shared - Empty Loading and Error States",
+    "batch": "06 Shared states",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "6b95904d30ecd63b762af5785254b2e03c51c5e1864828851880b8cf99315b66"
+  },
+  {
+    "file": "approved/remaining/B02-05.png",
+    "id": "B02-05",
+    "description": "Borrower - Equipment Detail",
+    "batch": "02 Request and approval",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "33c5fc4dca969720c850d22e4e45d58a56d4c973a3022309643b7add55a8226d"
+  },
+  {
+    "file": "approved/remaining/S02-03.png",
+    "id": "S02-03",
+    "description": "Staff - Deny Request Confirmation",
+    "batch": "02 Request and approval",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "aa6f63bb2deeaf398705771f36701fe38e45e68faf99a480512254b1ebcd3d3c"
+  },
+  {
+    "file": "approved/remaining/B04-04.png",
+    "id": "B04-04",
+    "description": "Borrower - Completed Detail",
+    "batch": "04 Accounts and history",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "99ea550ef4b972cef9e37439d1b35e92df16b725418296abfc7e9a18fc07f768"
+  },
+  {
+    "file": "approved/remaining/S04-04.png",
+    "id": "S04-04",
+    "description": "Admin - Staff and Admin Accounts",
+    "batch": "04 Accounts and history",
+    "role": "desktop",
+    "size": [
+      1440,
+      901
+    ],
+    "sha256": "77d4bd8aa2050dac39dea15976e4c5eed54eb1b758ed06708c74e5ae606bd7fd"
+  },
+  {
+    "file": "approved/remaining/S05-07.png",
+    "id": "S05-07",
+    "description": "Admin - Exceptional Stock Correction",
+    "batch": "05 Inventory and administration",
+    "role": "desktop",
+    "size": [
+      1440,
+      900
+    ],
+    "sha256": "aa04d0e642a15080c0cc23b9c4ed418d91bb2531a087e7dd9e5fa6ea509eb5c6"
+  },
+  {
+    "file": "approved/remaining/B06-02.png",
+    "id": "B06-02",
+    "description": "Shared - Sign in and Session Recovery",
+    "batch": "06 Shared states",
+    "role": "mobile",
+    "size": [
+      390,
+      900
+    ],
+    "sha256": "bc784b0e67e78da7aaf54bb2b4666c809001517fd978ed7cf20108e903503a34"
+  }
+]
