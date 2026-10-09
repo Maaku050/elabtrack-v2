@@ -1,0 +1,375 @@
+{
+  "date": "2026-10-09T19:30:35.493561+00:00",
+  "result": "PASS",
+  "owner_acceptance": "CONFIRMED_DEC-081",
+  "accepted_mobile_scope": "Functional Phase7; final presentation governed by DEC-080 in future Phase11",
+  "branch": "main",
+  "previous_commit": "73f3fe4",
+  "phases8_14": "PAUSED_NO_IMPLEMENTATION_AUTHORITY",
+  "git_scope": "Safe LOCAL checkpoint only; no push/deployment/history rewrite",
+  "backend": [
+    {
+      "check": "go-format",
+      "exit": 0,
+      "seconds": 0.97
+    },
+    {
+      "check": "go-vet",
+      "exit": 0,
+      "seconds": 1.37
+    },
+    {
+      "check": "go-unit",
+      "exit": 0,
+      "seconds": 3.19
+    },
+    {
+      "check": "go-race",
+      "exit": 0,
+      "seconds": 1.4
+    },
+    {
+      "check": "fixture-image",
+      "exit": 0,
+      "seconds": 5.92
+    },
+    {
+      "check": "python-guards",
+      "exit": 0,
+      "seconds": 0.4
+    }
+  ],
+  "frontend": [
+    {
+      "check": "frontend-lint",
+      "exit": 0,
+      "seconds": 1.18
+    },
+    {
+      "check": "frontend-tests",
+      "exit": 0,
+      "seconds": 71.68
+    },
+    {
+      "check": "frontend-build",
+      "exit": 0,
+      "seconds": 18.69
+    }
+  ],
+  "frontend_tests": {
+    "tests": 279,
+    "files": 23,
+    "duration_seconds": 70.06
+  },
+  "lint": {
+    "errors": 0,
+    "inherited_warnings": 19
+  },
+  "postgres": {
+    "result": "PASS",
+    "groups": [
+      {
+        "group": "terms",
+        "exit": 0,
+        "seconds": 5.25
+      },
+      {
+        "group": "accounts",
+        "exit": 0,
+        "seconds": 5.48
+      },
+      {
+        "group": "inventory",
+        "exit": 0,
+        "seconds": 4.41
+      },
+      {
+        "group": "borrowing",
+        "exit": 0,
+        "seconds": 8.7
+      },
+      {
+        "group": "http",
+        "exit": 0,
+        "seconds": 21.33
+      }
+    ],
+    "suites": 12,
+    "named_subtests": 70,
+    "race": true,
+    "uncached": true,
+    "named_evidence": [
+      {
+        "group": "postgres-inventory",
+        "suites": [
+          "TestRealInventory"
+        ],
+        "named_subtests": [
+          "TestRealInventory/empty_paired_rollback_preserves_accounts",
+          "TestRealInventory/authority_category_identity_and_metadata",
+          "TestRealInventory/bounded_search_filters_visibility",
+          "TestRealInventory/adjustment_retry_negative_overflow_and_atomicity",
+          "TestRealInventory/admin_reconciliation_preserves_reserved_custody_damaged",
+          "TestRealInventory/concurrent_last_stock_and_duplicate_key",
+          "TestRealInventory/safe_images_and_ownership",
+          "TestRealInventory/archive_future_boundary_and_history_guards"
+        ],
+        "passed": true
+      },
+      {
+        "group": "postgres-http",
+        "suites": [
+          "TestBatch1HTTP",
+          "TestBatch1InventoryHTTP",
+          "TestPhase7HTTP",
+          "TestBatch1InventoryBorrowabilityFilter"
+        ],
+        "named_subtests": [
+          "TestBatch1HTTP/role_origin_strict_payload_and_cors",
+          "TestPhase7HTTP/submit_replay_strict_origin_and_roles",
+          "TestPhase7HTTP/real_scoped_page_and_cancel",
+          "TestPhase7HTTP/staff_approval_denial_and_direct_contracts",
+          "TestPhase7HTTP/current_status_revocation",
+          "TestBatch1InventoryBorrowabilityFilter/unfiltered",
+          "TestBatch1InventoryBorrowabilityFilter/positive_active_first_page",
+          "TestBatch1InventoryBorrowabilityFilter/positive_active_second_page",
+          "TestBatch1InventoryBorrowabilityFilter/beyond_final_page",
+          "TestBatch1InventoryBorrowabilityFilter/active_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/inactive_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/archived_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/inactive_without_availability",
+          "TestBatch1InventoryBorrowabilityFilter/archived_original_visibility",
+          "TestBatch1InventoryBorrowabilityFilter/inactive_category_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/independent_other_category",
+          "TestBatch1InventoryBorrowabilityFilter/search_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/search_inactive_no_match",
+          "TestBatch1InventoryBorrowabilityFilter/stable_pages_and_sort",
+          "TestBatch1InventoryBorrowabilityFilter/authority_validation_and_borrower_visibility"
+        ],
+        "passed": true
+      },
+      {
+        "group": "postgres-terms",
+        "suites": [
+          "TestRealTerms"
+        ],
+        "named_subtests": [
+          "TestRealTerms/empty_migration_down_up_preserves_accounts_sessions",
+          "TestRealTerms/missing_terms_and_no_automatic_consent",
+          "TestRealTerms/publication_and_role_authority",
+          "TestRealTerms/first_repeat_and_account_scope",
+          "TestRealTerms/replacement_history_and_stale_consent",
+          "TestRealTerms/parallel_acceptance_one_original_receipt",
+          "TestRealTerms/acceptance_and_publication_transaction_rollback",
+          "TestRealTerms/constraints_immutability_and_runtime_privileges",
+          "TestRealTerms/publication_wins_old_view_conflicts",
+          "TestRealTerms/acceptance_wins_preserves_reviewed_version",
+          "TestRealTerms/parallel_publishers_no_blind_overwrite",
+          "TestRealTerms/history_safe_rollback_and_policy_transaction_boundary"
+        ],
+        "passed": true
+      },
+      {
+        "group": "postgres-accounts",
+        "suites": [
+          "TestRealAccounts"
+        ],
+        "named_subtests": [
+          "TestRealAccounts/empty_down_up_preserves_existing_identities_and_sessions",
+          "TestRealAccounts/individual_student_faculty_text_identity_and_idempotency",
+          "TestRealAccounts/domain_duplicates_and_authority",
+          "TestRealAccounts/bounded_search_filters_and_missing_mail_state",
+          "TestRealAccounts/single_use_password_and_current_terms",
+          "TestRealAccounts/reissue_expiry_inactive_and_no_session_resurrection",
+          "TestRealAccounts/bulk_preview_conflicts_selection_idempotency_and_rollback",
+          "TestRealAccounts/student_only_deactivation_ignores_obligations_and_retains_history",
+          "TestRealAccounts/concurrent_identity_and_activation",
+          "TestRealAccounts/database_constraints_history_and_nonempty_rollback"
+        ],
+        "passed": true
+      },
+      {
+        "group": "postgres-borrowing",
+        "suites": [
+          "TestRealBorrowingFoundation",
+          "TestRealBorrowingOperations",
+          "TestRealBorrowingCrossFeatureSafety",
+          "TestRealInventoryContention",
+          "TestRealInventoryCorrectionSafety"
+        ],
+        "named_subtests": [
+          "TestRealBorrowingFoundation/last_unit_and_many_reservations",
+          "TestRealBorrowingFoundation/multi_item_rollback_retries_and_invalid",
+          "TestRealBorrowingFoundation/eligibility_terms_and_inactive_equipment",
+          "TestRealBorrowingFoundation/cancel_and_expiry_release_once_after_restart",
+          "TestRealBorrowingOperations/deny_reason_checkout_due_and_replay",
+          "TestRealBorrowingOperations/detail_read_never_mixes_transition_headers_and_items",
+          "TestRealBorrowingOperations/cancel_checkout_and_deny_cancel_races",
+          "TestRealBorrowingOperations/direct_checkout_competes_with_reservation",
+          "TestRealBorrowingOperations/expiry_checkout_workers_restart_and_inactive_target",
+          "TestRealBorrowingOperations/issue_rollbacks_deactivation_and_role_revocation",
+          "TestRealBorrowingOperations/terms_revision_existing_binding_and_future_gates",
+          "TestRealBorrowingOperations/constraints_immutable_history_and_data_rollback_refusal",
+          "TestRealBorrowingCrossFeatureSafety/activation_and_missing_terms_fail_closed",
+          "TestRealBorrowingCrossFeatureSafety/required_audit_failure_rolls_back_every_effect",
+          "TestRealBorrowingCrossFeatureSafety/concurrent_same_key_exactly_one_reservation",
+          "TestRealBorrowingCrossFeatureSafety/deactivation_warns_without_resolving_stock_or_loans",
+          "TestRealBorrowingCrossFeatureSafety/clear_equipment_archives_but_future_liability_stays_closed",
+          "TestRealInventoryContention/competing_actor_equipment_locks",
+          "TestRealInventoryContention/optimistic_metadata_single_winner",
+          "TestRealInventoryContention/ledger_vector_and_audit_receipt_conservation"
+        ],
+        "passed": true
+      }
+    ],
+    "fresh_target": {
+      "container": "elabtrack_v2_phase7_checkpoint_20261009t192517z_postgres",
+      "volume": "elabtrack_v2_phase7_checkpoint_20261009t192517z_pgdata",
+      "database": "elabtrack_v2_batch1_test",
+      "port": 54832,
+      "previous_container_retained": "elabtrack_v2_system_test_20261009t162216z_postgres"
+    },
+    "initial_attempt": "Correctly refused existing terms history; no test bypass/deletion; previous container/volume retained"
+  },
+  "browser_smoke": {
+    "result": "PASS",
+    "checks": [
+      "Real demo login at 390px: hidden password, demo indicator, no overflow",
+      "Real demo login at 1440px: hidden password, demo indicator, no overflow",
+      "Real isolated API readiness200"
+    ],
+    "external_requests": [],
+    "runtime_errors": [],
+    "scope": "Read-only public demo login/readiness only; no credentials or consent/borrowing actions; historical24 workflow checks retained separately"
+  },
+  "historical_workflow_browser": {
+    "checks": 24,
+    "successful_screenshots": 44,
+    "diagnostics": 3,
+    "fresh_mutating_scenarios_rerun": false,
+    "reason": "No application-source change; preserve owner demo scenarios"
+  },
+  "normal_preservation": {
+    "result": "PASS",
+    "business_and_schema_tables": 20,
+    "all_unchanged": true,
+    "changed_tables": [],
+    "refresh_session_rows_before": 68,
+    "refresh_session_rows_after": 68,
+    "read_only": true,
+    "normal_database": "elabtrack_v2",
+    "port": 5434
+  },
+  "secret_privacy_audit": {
+    "actual_private_values_checked": 72,
+    "matches": 0,
+    "reviewed_pngs": 47,
+    "embedded_png_metadata": false,
+    "fictional_identities_only": true,
+    "raw_audit_logs": "Private temporary directory; not committed"
+  },
+  "unchanged_source_and_sql": true,
+  "preserved_private_phase8_files": 11,
+  "explicit_staging_paths": [
+    ".gitignore",
+    "docs/project/DECISIONS.md",
+    "docs/project/OPEN_DECISIONS.md",
+    "docs/project/PHASE7_COMPLETION_REPORT.md",
+    "docs/project/PHASE7_LOCAL_INTEGRATION_REPORT.md",
+    "docs/project/PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md",
+    "docs/project/PHASE7_OWNER_DEMO_ACCEPTANCE_GUIDE.md",
+    "docs/project/PHASE7_OWNER_DEMO_IMPLEMENTATION_REPORT.md",
+    "docs/project/PHASE7_PROGRESS.md",
+    "docs/project/PHASE8_14_PROGRESS.md",
+    "docs/project/ROADMAP.md",
+    "docs/project/SOURCE_OF_TRUTH.md",
+    "docs/project/verification/phase7-owner-checkpoint.json",
+    "docs/project/verification/phase7-owner-demo/api-eligibility.json",
+    "docs/project/verification/phase7-owner-demo/final-demo-state.json",
+    "docs/project/verification/phase7-owner-demo/git-status.json",
+    "docs/project/verification/phase7-owner-demo/migration-status.txt",
+    "docs/project/verification/phase7-owner-demo/normal-preservation.json",
+    "docs/project/verification/phase7-owner-demo/postgres-regressions.json",
+    "docs/project/verification/phase7-owner-demo/verification.json",
+    "docs/ux/APPROVED_VISUAL_IMPLEMENTATION_MAP.md",
+    "docs/ux/BORROWER_FLOWS.md",
+    "docs/ux/COMPONENT_COMPOSITION.md",
+    "docs/ux/PHASE11_EQUIPMENT_SELECTION_UX.md",
+    "docs/ux/RESPONSIVE_RULES.md",
+    "docs/ux/verification/phase7-owner-demo/README.md",
+    "docs/ux/verification/phase7-owner-demo/borrower-acceptance.json",
+    "docs/ux/verification/phase7-owner-demo/borrower-borrower-unaccepted-terms-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-cancel-confirmation-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-cancelled-history-390-dark.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-catalog-390-dark.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-catalog-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-equipment-detail-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-failure-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-history-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-history-768-dark.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-pending-1440-dark.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-pending-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-quantity-selection-1024-dark.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-quantity-selection-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-review-1440-dark.png",
+    "docs/ux/verification/phase7-owner-demo/borrower-review-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/identities-acceptance.json",
+    "docs/ux/verification/phase7-owner-demo/identities-admin-workspace-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/identities-borrower-unaccepted-terms-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/identities-faculty-unaccepted-terms-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/identities-faculty-workspace-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/identities-failure-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/identities-staff-workspace-1440-dark.png",
+    "docs/ux/verification/phase7-owner-demo/identities-student2-unaccepted-terms-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/identities-student2-workspace-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/owner-ready-acceptance.json",
+    "docs/ux/verification/phase7-owner-demo/owner-ready-admin-fresh-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/owner-ready-faculty-fresh-390-dark.png",
+    "docs/ux/verification/phase7-owner-demo/owner-ready-failure-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/owner-ready-staff-fresh-1440-dark.png",
+    "docs/ux/verification/phase7-owner-demo/owner-ready-student-fresh-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/owner-ready-student2-fresh-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/staff-acceptance.json",
+    "docs/ux/verification/phase7-owner-demo/staff-admin-directory-1440-dark.png",
+    "docs/ux/verification/phase7-owner-demo/staff-borrower-denied-history-390-dark.png",
+    "docs/ux/verification/phase7-owner-demo/staff-borrower-denied-history-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/staff-borrower-expired-history-390-dark.png",
+    "docs/ux/verification/phase7-owner-demo/staff-borrower-expired-history-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/staff-borrower-issued-history-390-light.png",
+    "docs/ux/verification/phase7-owner-demo/staff-checkout-form-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/staff-checkout-review-1024-dark.png",
+    "docs/ux/verification/phase7-owner-demo/staff-denial-form-1024-light.png",
+    "docs/ux/verification/phase7-owner-demo/staff-denial-review-1440-dark.png",
+    "docs/ux/verification/phase7-owner-demo/staff-direct-form-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/staff-direct-review-1024-dark.png",
+    "docs/ux/verification/phase7-owner-demo/staff-directory-1024-dark.png",
+    "docs/ux/verification/phase7-owner-demo/staff-directory-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/staff-issued-loan-1024-dark.png",
+    "docs/ux/verification/phase7-owner-demo/staff-issued-loan-1440-light.png",
+    "docs/ux/verification/phase7-owner-demo/staff-stock-after-issuance-1024-dark.png",
+    "docs/ux/verification/phase7-owner-demo/staff-stock-after-issuance-1440-light.png",
+    "frontend/scripts/phase7-owner-demo-qa.mjs",
+    "integration/phase7-demo.py",
+    "integration/phase7-demo/seed.go",
+    "integration/phase7-demo/seed_test.go",
+    "integration/phase7-demo/test_tool.py",
+    "integration/phase7-demo/verify_api.py"
+  ],
+  "exclusions": [
+    "elabtrack_phase11_v1_references.zip",
+    ".project-reference/",
+    "private .env configuration",
+    "backend/tmp/ including credentials, sessions, dumps, logs, binaries, paused Phase8 files",
+    "frontend dependencies/build/cache",
+    "private /tmp/elabtrack-phase7-checkpoint logs/digests/contact sheets",
+    "all database volumes/data"
+  ],
+  "limitations": [
+    "Official FSMO publication/current acceptance and required activation readiness gate live borrowing",
+    "Production Student-domain inputs",
+    "Live Brevo deferred",
+    "Final Phase11 presentation unimplemented",
+    "Previously failed paused Phase8 migration gate unresolved",
+    "Inherited19 lint warnings; non-Chromium/physical assistive-device/disconnected physical-device/deployment checks not executed"
+  ]
+}

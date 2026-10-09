@@ -1,0 +1,37 @@
+{
+  "result": "PASS",
+  "api": "http://127.0.0.1:18086/api/v1",
+  "origin": "http://127.0.0.1:15176",
+  "new_demo_version": "DEMO-2",
+  "stock_rejection_codes": {
+    "Inactive equipment": "EQUIPMENT_NOT_AVAILABLE",
+    "Zero-stock equipment": "EQUIPMENT_NOT_AVAILABLE",
+    "Insufficient available stock": "EQUIPMENT_NOT_AVAILABLE"
+  },
+  "checks": [
+    "Missing terms acceptance rejected by authoritative API",
+    "Pending activation rejects an existing access token",
+    "Direct issuance rejects pending activation",
+    "Inactive Borrower rejects existing access token",
+    "Direct issuance rejects inactive Borrower",
+    "Inactive equipment rejected without stock mutation",
+    "Zero-stock equipment rejected without stock mutation",
+    "Insufficient available stock rejected without stock mutation",
+    "Borrower cannot perform Staff direct issuance",
+    "Staff cannot create accounts",
+    "Unauthenticated borrowing read rejected",
+    "Strict request schema rejects photographic evidence fields",
+    "All rejected commands preserve original demo stock exactly",
+    "Admin can publish a newer labeled DEMO version",
+    "Existing acceptance cannot authorize a new request after version change",
+    "Stale terms-version acceptance is rejected"
+  ],
+  "stock": {
+    "available": 20,
+    "reserved": 0,
+    "checked_out": 0,
+    "damaged_held": 0,
+    "total_tracked": 20
+  },
+  "scope": "Real Phase7 APIs/PostgreSQL on isolated owner demo only; normal data untouched"
+}

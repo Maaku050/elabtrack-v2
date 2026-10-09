@@ -1,0 +1,133 @@
+{
+  "result": "PASS",
+  "database": "elabtrack_v2_batch1_test",
+  "port": 54832,
+  "baseline": "73f3fe4",
+  "race_detector": true,
+  "suite_count": 12,
+  "named_subtest_count": 70,
+  "groups": [
+    {
+      "group": "regression-accounts",
+      "suites": [
+        "TestRealAccounts"
+      ],
+      "named_subtests": [
+        "TestRealAccounts/empty_down_up_preserves_existing_identities_and_sessions",
+        "TestRealAccounts/individual_student_faculty_text_identity_and_idempotency",
+        "TestRealAccounts/domain_duplicates_and_authority",
+        "TestRealAccounts/bounded_search_filters_and_missing_mail_state",
+        "TestRealAccounts/single_use_password_and_current_terms",
+        "TestRealAccounts/reissue_expiry_inactive_and_no_session_resurrection",
+        "TestRealAccounts/bulk_preview_conflicts_selection_idempotency_and_rollback",
+        "TestRealAccounts/student_only_deactivation_ignores_obligations_and_retains_history",
+        "TestRealAccounts/concurrent_identity_and_activation",
+        "TestRealAccounts/database_constraints_history_and_nonempty_rollback"
+      ],
+      "passed": true
+    },
+    {
+      "group": "regression-borrowing",
+      "suites": [
+        "TestRealBorrowingFoundation",
+        "TestRealBorrowingOperations",
+        "TestRealBorrowingCrossFeatureSafety",
+        "TestRealInventoryContention",
+        "TestRealInventoryCorrectionSafety"
+      ],
+      "named_subtests": [
+        "TestRealBorrowingFoundation/last_unit_and_many_reservations",
+        "TestRealBorrowingFoundation/multi_item_rollback_retries_and_invalid",
+        "TestRealBorrowingFoundation/eligibility_terms_and_inactive_equipment",
+        "TestRealBorrowingFoundation/cancel_and_expiry_release_once_after_restart",
+        "TestRealBorrowingOperations/deny_reason_checkout_due_and_replay",
+        "TestRealBorrowingOperations/detail_read_never_mixes_transition_headers_and_items",
+        "TestRealBorrowingOperations/cancel_checkout_and_deny_cancel_races",
+        "TestRealBorrowingOperations/direct_checkout_competes_with_reservation",
+        "TestRealBorrowingOperations/expiry_checkout_workers_restart_and_inactive_target",
+        "TestRealBorrowingOperations/issue_rollbacks_deactivation_and_role_revocation",
+        "TestRealBorrowingOperations/terms_revision_existing_binding_and_future_gates",
+        "TestRealBorrowingOperations/constraints_immutable_history_and_data_rollback_refusal",
+        "TestRealBorrowingCrossFeatureSafety/activation_and_missing_terms_fail_closed",
+        "TestRealBorrowingCrossFeatureSafety/required_audit_failure_rolls_back_every_effect",
+        "TestRealBorrowingCrossFeatureSafety/concurrent_same_key_exactly_one_reservation",
+        "TestRealBorrowingCrossFeatureSafety/deactivation_warns_without_resolving_stock_or_loans",
+        "TestRealBorrowingCrossFeatureSafety/clear_equipment_archives_but_future_liability_stays_closed",
+        "TestRealInventoryContention/competing_actor_equipment_locks",
+        "TestRealInventoryContention/optimistic_metadata_single_winner",
+        "TestRealInventoryContention/ledger_vector_and_audit_receipt_conservation"
+      ],
+      "passed": true
+    },
+    {
+      "group": "regression-http",
+      "suites": [
+        "TestBatch1HTTP",
+        "TestBatch1InventoryHTTP",
+        "TestPhase7HTTP",
+        "TestBatch1InventoryBorrowabilityFilter"
+      ],
+      "named_subtests": [
+        "TestBatch1HTTP/role_origin_strict_payload_and_cors",
+        "TestPhase7HTTP/submit_replay_strict_origin_and_roles",
+        "TestPhase7HTTP/real_scoped_page_and_cancel",
+        "TestPhase7HTTP/staff_approval_denial_and_direct_contracts",
+        "TestPhase7HTTP/current_status_revocation",
+        "TestBatch1InventoryBorrowabilityFilter/unfiltered",
+        "TestBatch1InventoryBorrowabilityFilter/positive_active_first_page",
+        "TestBatch1InventoryBorrowabilityFilter/positive_active_second_page",
+        "TestBatch1InventoryBorrowabilityFilter/beyond_final_page",
+        "TestBatch1InventoryBorrowabilityFilter/active_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/inactive_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/archived_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/inactive_without_availability",
+        "TestBatch1InventoryBorrowabilityFilter/archived_original_visibility",
+        "TestBatch1InventoryBorrowabilityFilter/inactive_category_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/independent_other_category",
+        "TestBatch1InventoryBorrowabilityFilter/search_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/search_inactive_no_match",
+        "TestBatch1InventoryBorrowabilityFilter/stable_pages_and_sort",
+        "TestBatch1InventoryBorrowabilityFilter/authority_validation_and_borrower_visibility"
+      ],
+      "passed": true
+    },
+    {
+      "group": "regression-inventory",
+      "suites": [
+        "TestRealInventory"
+      ],
+      "named_subtests": [
+        "TestRealInventory/empty_paired_rollback_preserves_accounts",
+        "TestRealInventory/authority_category_identity_and_metadata",
+        "TestRealInventory/bounded_search_filters_visibility",
+        "TestRealInventory/adjustment_retry_negative_overflow_and_atomicity",
+        "TestRealInventory/admin_reconciliation_preserves_reserved_custody_damaged",
+        "TestRealInventory/concurrent_last_stock_and_duplicate_key",
+        "TestRealInventory/safe_images_and_ownership",
+        "TestRealInventory/archive_future_boundary_and_history_guards"
+      ],
+      "passed": true
+    },
+    {
+      "group": "regression-terms",
+      "suites": [
+        "TestRealTerms"
+      ],
+      "named_subtests": [
+        "TestRealTerms/empty_migration_down_up_preserves_accounts_sessions",
+        "TestRealTerms/missing_terms_and_no_automatic_consent",
+        "TestRealTerms/publication_and_role_authority",
+        "TestRealTerms/first_repeat_and_account_scope",
+        "TestRealTerms/replacement_history_and_stale_consent",
+        "TestRealTerms/parallel_acceptance_one_original_receipt",
+        "TestRealTerms/acceptance_and_publication_transaction_rollback",
+        "TestRealTerms/constraints_immutability_and_runtime_privileges",
+        "TestRealTerms/publication_wins_old_view_conflicts",
+        "TestRealTerms/acceptance_wins_preserves_reviewed_version",
+        "TestRealTerms/parallel_publishers_no_blind_overwrite",
+        "TestRealTerms/history_safe_rollback_and_policy_transaction_boundary"
+      ],
+      "passed": true
+    }
+  ]
+}

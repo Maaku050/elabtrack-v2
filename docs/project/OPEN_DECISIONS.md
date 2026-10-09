@@ -1,5 +1,11 @@
 # Open decisions and resolved source conflicts
 
+**Formal owner acceptance, 2026-10-10 — DEC-081:** Phase7 Borrowing & Reservations is OWNER ACCEPTED following manual core-workflow review and automated safeguards. Student/Faculty mobile UI is accepted as functional Phase7, not final presentation; DEC-080 governs the future Phase11 browse/cart. Only a safe LOCAL checkpoint of verified Phase7/demo tooling/UX documents is authorized now. Do not begin Phases8–14, push or deploy. Official FSMO terms/current consent, approved production Student domains and required activation readiness remain live-use gates. Earlier pending-acceptance/correction statements below are historical. See [the checkpoint report](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md).
+
+**Historical owner correction,2026-10-10:** Phase7 OWNER ACCEPTANCE PENDING. The prior formal acceptance/Phases8–14 authority below is superseded: PAUSE Phases8–14; create an isolated Phase7 demo using73f3fe4 and000001–000008 so the owner can test real eligible accounts and synthetic demo-only terms. Normal accounts,terms,stock and history remain untouched. [Paused progress](PHASE8_14_PROGRESS.md). The scoped [Phase7 demo report](PHASE7_OWNER_DEMO_IMPLEMENTATION_REPORT.md) and [owner guide](PHASE7_OWNER_DEMO_ACCEPTANCE_GUIDE.md) record isolated engineering verification; owner acceptance remains pending.
+
+**Historical authority before DEC-081:** The earlier owner message accepted Phase7 and authorized Phases8–14; DEC-079 then withdrew that acceptance and paused advancement. The newest DEC-081 reaccepts Phase7 and authorizes only the local checkpoint; further implementation remains paused. Commit `73f3fe4` remains the Phase7 engineering baseline. The previously confirmed fresh-installation direction remains: no V1 import. No commit, push, deployment or normal-data changes are authorized. [Paused progress](PHASE8_14_PROGRESS.md) records the preserved partial work.
+
 **Phase 7 local integration recovery, 2026-10-09: VERIFIED / OWNER ACCEPTANCE PENDING.** Full private-backup restoration succeeded using the existing bootstrap owner only on the isolated target. All17 restored tables and effective schema permissions match; only equivalent PostgreSQL metadata representations differ. Migration000008 passed restored-data rehearsal and was then applied through the existing normal-local migrator. All8 checksums verify; prior business data and physical20/0/0/0/20 stock are preserved. Normal directory200/empty/search/filter/direct-form checks, isolated workflows/races/restart,279 frontend tests in both modes, Go gates and22 Chromium checks pass. Official FSMO terms/acceptance, production Student domains and verified activation delivery remain live-use dependencies. Phase8 is not started. See [the local integration report](PHASE7_LOCAL_INTEGRATION_REPORT.md).
 
 **Phase 7 execution update, 2026-10-09:** The owner authorized complete milestones 7A–7D from baseline `366b6ef`. Borrowing/reservation/physical-checkout implementation and final verification are recorded in [the completion report](PHASE7_COMPLETION_REPORT.md). Current source and the Phase 7 sections govern these surfaces; earlier unstarted/unauthorized statements are historical checkpoints. New-screen owner acceptance remains pending. Phase 8 is not started. Official FSMO publication/current acceptance, approved production Student domains and verified live activation delivery remain external gates.
@@ -19,7 +25,7 @@ Reconciled **2026-10-08, Phase 2.5**. All 29 owner working decisions are recorde
 | Taxonomy/content, ordinary inventory action details | OPEN-011/012 | FSMO catalog/inventory owner; seed/content and specialized inventory actions |
 | Damaged-original disposition / equivalent acceptance guidance | OPEN-022 | FSMO inventory owner; disposal/repair feature. Core flow uses nonusable held originals and staff discretion |
 | Selected Brevo integration/API key/verified sender/live delivery; later notification cadence | OPEN-017/025 | Provider selection resolved DEC-071; backend adapter and fake-submission tests implemented; real configuration/tested delivery and future recovery remain; later scheduled business messages stay separate |
-| Legacy discovery/cutover and evidence gaps | OPEN-018/019 | Authorized V1 custodian/FSMO; real import/reconciliation |
+| Historical V1 discovery/cutover questions | OPEN-018/019 | Import cancelled by owner; retained evidence only, no active V2 import gate |
 | Institutional retention/privacy | OPEN-026 | Institutional/legal custodian; destructive cleanup and retention operations |
 | Institutional session policy / final operations | OPEN-027 and Phase 14 roadmap | FSMO/IT; optional future session policy and deployment readiness, existing foundation preserved |
 
@@ -213,6 +219,8 @@ Historical evidence labels below retain factual V1 versus intended legacy/capsto
 
 ## ELAB-V2-OPEN-018
 
+**Current delivery override:** Owner cancelled V1 import; FSMO starts fresh. This historical question is no longer an active Phase12 implementation dependency. Evidence below is retained.
+
 - **Original question:** What V1 data should migrate, reconcile or be excluded?
 - **Evidence from V1 (FACTUAL V1 BEHAVIOR):** Audit 04/07/14: users/Auth IDs, aggregate equipment, active transactions, snapshots, conflicting fines, notifications and images; live volumes/rules/state not inspected.
 - **Evidence from latest documentation (INTENDED LEGACY REQUIREMENT):** Product history/reporting intent P422/431 does not define cutover, historical retention or migration scope.
@@ -222,6 +230,8 @@ Historical evidence labels below retain factual V1 versus intended legacy/capsto
 - **Gate:** NON-BLOCKING for core UX/domain planning; only stated later dependent work requires its review/authorization.
 
 ## ELAB-V2-OPEN-019
+
+**Current delivery override:** V1 technology evidence remains historical; cancelled import has no active source-discovery gate for this delivery. The approved V2 stack is unchanged.
 
 - **Original question:** How should contradictory legacy technology/schema descriptions be treated?
 - **Evidence from V1 (FACTUAL V1 BEHAVIOR):** Audit 01/04/12: Expo/React Native + Firebase, Firestore collections and Functions; source is not supplied in this V2 workspace.

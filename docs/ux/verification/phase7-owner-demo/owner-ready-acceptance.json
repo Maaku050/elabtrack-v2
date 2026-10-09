@@ -1,0 +1,278 @@
+{
+  "date": "2026-10-09T17:18:26.215Z",
+  "result": "PASS",
+  "frontend": "http://127.0.0.1:15176",
+  "apiOrigin": "http://127.0.0.1:18086",
+  "blockedNonDemoOrigins": true,
+  "checks": [
+    "student fresh credentials authenticate; consent remains explicitly unaccepted",
+    "student2 fresh credentials authenticate; consent remains explicitly unaccepted",
+    "faculty fresh credentials authenticate; consent remains explicitly unaccepted",
+    "staff fresh credentials authenticate; consent remains explicitly unaccepted",
+    "admin fresh credentials authenticate; consent remains explicitly unaccepted"
+  ],
+  "screens": [
+    "owner-ready-student-fresh-390-light.png",
+    "owner-ready-student2-fresh-1440-light.png",
+    "owner-ready-faculty-fresh-390-dark.png",
+    "owner-ready-staff-fresh-1440-dark.png",
+    "owner-ready-admin-fresh-1440-light.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/terms/status"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/977222b1-2c42-4bd9-bc98-2eb4d853a4ff/images/b712a8aa-0704-4c01-a5ef-229f3fe8fde4"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/977222b1-2c42-4bd9-bc98-2eb4d853a4ff/images/b712a8aa-0704-4c01-a5ef-229f3fe8fde4"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/0f685cb8-fc07-4b46-8911-35c9f5c65823/images/69daf8a6-cd3a-4668-82d0-6b9c619485b3"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/0f685cb8-fc07-4b46-8911-35c9f5c65823/images/69daf8a6-cd3a-4668-82d0-6b9c619485b3"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/972383b2-2a41-4ec0-8dcd-e439e5beaf74/images/059abfcc-e06a-4e22-af22-44b8c6ff1ebd"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/972383b2-2a41-4ec0-8dcd-e439e5beaf74/images/059abfcc-e06a-4e22-af22-44b8c6ff1ebd"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/d82916e3-d656-4ca1-b604-14d954025686/images/ac5cf2bd-a189-4e61-bb3f-702f3f6062f5"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/0092a00d-705c-49bd-b67b-00b3a6545970/images/d8046654-90dd-43e6-b4f9-819fb6338a69"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/d82916e3-d656-4ca1-b604-14d954025686/images/ac5cf2bd-a189-4e61-bb3f-702f3f6062f5"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/ffe5e240-96a8-45e6-b5e2-c37f8ff304bd/images/361a642a-88fa-48bf-b7b3-af7a40207dee"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/0092a00d-705c-49bd-b67b-00b3a6545970/images/d8046654-90dd-43e6-b4f9-819fb6338a69"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/ffe5e240-96a8-45e6-b5e2-c37f8ff304bd/images/361a642a-88fa-48bf-b7b3-af7a40207dee"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/977222b1-2c42-4bd9-bc98-2eb4d853a4ff/images/b712a8aa-0704-4c01-a5ef-229f3fe8fde4"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/0f685cb8-fc07-4b46-8911-35c9f5c65823/images/69daf8a6-cd3a-4668-82d0-6b9c619485b3"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/972383b2-2a41-4ec0-8dcd-e439e5beaf74/images/059abfcc-e06a-4e22-af22-44b8c6ff1ebd"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/d82916e3-d656-4ca1-b604-14d954025686/images/ac5cf2bd-a189-4e61-bb3f-702f3f6062f5"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/0092a00d-705c-49bd-b67b-00b3a6545970/images/d8046654-90dd-43e6-b4f9-819fb6338a69"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/ffe5e240-96a8-45e6-b5e2-c37f8ff304bd/images/361a642a-88fa-48bf-b7b3-af7a40207dee"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/977222b1-2c42-4bd9-bc98-2eb4d853a4ff/images/b712a8aa-0704-4c01-a5ef-229f3fe8fde4"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/0f685cb8-fc07-4b46-8911-35c9f5c65823/images/69daf8a6-cd3a-4668-82d0-6b9c619485b3"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/972383b2-2a41-4ec0-8dcd-e439e5beaf74/images/059abfcc-e06a-4e22-af22-44b8c6ff1ebd"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/d82916e3-d656-4ca1-b604-14d954025686/images/ac5cf2bd-a189-4e61-bb3f-702f3f6062f5"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/0092a00d-705c-49bd-b67b-00b3a6545970/images/d8046654-90dd-43e6-b4f9-819fb6338a69"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/ffe5e240-96a8-45e6-b5e2-c37f8ff304bd/images/361a642a-88fa-48bf-b7b3-af7a40207dee"
+    }
+  ],
+  "externalRequests": [],
+  "scope": "Real Chromium and isolated PostgreSQL/API; synthetic accounts and terms only; owner acceptance pending"
+}

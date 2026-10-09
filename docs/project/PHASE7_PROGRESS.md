@@ -1,5 +1,7 @@
 # Phase 7 progress
 
+**Formal owner acceptance, 2026-10-10 — DEC-081:** Phase7 Borrowing & Reservations is OWNER ACCEPTED following manual core-workflow review and automated safeguards. Student/Faculty mobile UI is accepted as functional Phase7, not final presentation; DEC-080 governs the future Phase11 browse/cart. Only a safe LOCAL checkpoint of verified Phase7/demo tooling/UX documents is authorized now. Do not begin Phases8–14, push or deploy. Official FSMO terms/current consent, approved production Student domains and required activation readiness remain live-use gates. Earlier pending-acceptance/correction statements below are historical. See [the checkpoint report](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md).
+
 2026-10-09: Owner authorized complete7A–D. Baseline366b6ef, tracked tree initially clean; eight unrelated diagnostic PNGs preserved. Contract/source review and implementation plan complete. No normal database writes or migrations.
 
 Current step: final7D closeout after verified7A/7B/7C. Actual gates below record executed evidence; owner acceptance is separate. External terms/production Student domain/live Brevo gates remain enforced. Phase8 excluded.

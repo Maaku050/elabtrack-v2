@@ -1,5 +1,7 @@
 # Phase 7 local integration and backup-restore recovery report
 
+**Formal owner acceptance, 2026-10-10 — DEC-081:** Phase7 Borrowing & Reservations is OWNER ACCEPTED following manual core-workflow review and automated safeguards. Student/Faculty mobile UI is accepted as functional Phase7, not final presentation; DEC-080 governs the future Phase11 browse/cart. Only a safe LOCAL checkpoint of verified Phase7/demo tooling/UX documents is authorized now. Do not begin Phases8–14, push or deploy. Official FSMO terms/current consent, approved production Student domains and required activation readiness remain live-use gates. Earlier pending-acceptance/correction statements below are historical. See [the checkpoint report](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md).
+
 2026-10-09 — **PHASE 7 LOCAL INTEGRATION VERIFIED / OWNER ACCEPTANCE PENDING.** The owner expressly authorized safe recovery of the failed disposable restore, followed by guarded migration000008. Required restore/rehearsal/preservation/API/workflow/regression/browser gates were executed. No product-code or migration-file changes were needed. No Phase8, commit, push, deployment, normal reset, fake consent, account activation change or live mail.
 
 ## 1. Original application error and cause

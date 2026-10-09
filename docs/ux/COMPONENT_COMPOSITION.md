@@ -1,5 +1,7 @@
 # Component composition — approved Phase 3B foundation
 
+**Future Phase11 composition,2026-10-10:** [DEC-080 binding selection](PHASE11_EQUIPMENT_SELECTION_UX.md) composes existing equipment-image/card, quantity and button primitives into a combined mobile quantity+Add row; cart/review uses a sheet or dedicated screen, with desktop browse/cart together. Reuse real Phase7 hooks/APIs and protected image handling. These are future requirements, not newly implemented components; the DEC-081 implementation pause remains.
+
 2026-10-08. Owner-approved navy/violet screenshots supersede the former evergreen component proposal. [Visual system](VISUAL_SYSTEM.md), [coverage map](APPROVED_VISUAL_IMPLEMENTATION_MAP.md) and [fidelity contract](VISUAL_FIDELITY_CONTRACT.md) govern. Phase 3B is **COMPLETE AND OWNER VISUALLY APPROVED** after real implementation screenshot review (DEC-064). It implements shared presentation plus four **development previews**, not production business pages. All62 existing UI primitives and `components.json` are unchanged.
 
 ## Implemented compositions

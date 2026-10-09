@@ -1,5 +1,7 @@
 # Responsive rules — Phase 3A.1
 
+**Binding Phase11 selection override,2026-10-10:** [DEC-080 specification](PHASE11_EQUIPMENT_SELECTION_UX.md) governs card/action/cart composition. Mobile keeps `[ − ] [ quantity ] [ + ] [ Add ]` together, retaining the existing44px primary touch targets. Do not detach Add from quantity; document any compelling responsive exception. Use a mobile cart/review sheet or dedicated screen and V1-inspired desktop browse/cart. Conflicting historical selection/dock placement is superseded; both owner V1 screenshots are received and inspected in the specification; implementation is paused and mobile/rendered/runtime verification remains pending.
+
 Low-fidelity behavior contract, 2026-10-08; no CSS/components implemented or rendered layout verified. Applies to [59 surfaces](UX_ARCHITECTURE.md#screen-inventory-and-counting-rule) and [wireframes](WIREFRAMES.md). Screen behavior depends on available width, not detected role/device brand. Exact pixels are design proposals for Phase 3A.2 review, not locked domain policy.
 
 ## Width ranges and shell

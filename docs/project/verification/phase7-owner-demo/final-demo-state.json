@@ -1,0 +1,27 @@
+{
+  "database": "elabtrack_v2_phase7_demo",
+  "migration_count": 8,
+  "accounts": 5,
+  "active_accounts": 5,
+  "equipment": 8,
+  "categories": 3,
+  "images": 8,
+  "terms": 1,
+  "terms_acceptances": 0,
+  "borrowings": 0,
+  "opening_movements": 7,
+  "inventory_audit_events": 20,
+  "inventory_receipts": 20,
+  "ledger_mismatches": 0,
+  "date": "2026-10-09T17:18:14.176980+00:00",
+  "result": "PASS",
+  "frontend": "http://127.0.0.1:15176/login",
+  "api": "http://127.0.0.1:18086/api/v1",
+  "stock": {
+    "available": 114,
+    "reserved": 0,
+    "checked_out": 0,
+    "damaged_held": 0,
+    "total": 114
+  }
+}

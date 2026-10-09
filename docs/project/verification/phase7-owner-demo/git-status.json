@@ -1,0 +1,308 @@
+{
+  "date": "2026-10-09T17:19:16.732499+00:00",
+  "branch": "main",
+  "head": "73f3fe49c61961db4b678975d9ff2145da192f8a",
+  "staged_changes": 0,
+  "commit_push_deploy": false,
+  "tracked_modified_count": 4,
+  "untracked_file_count": 68,
+  "changes": [
+    {
+      "status": " M",
+      "path": "docs/project/DECISIONS.md"
+    },
+    {
+      "status": " M",
+      "path": "docs/project/OPEN_DECISIONS.md"
+    },
+    {
+      "status": " M",
+      "path": "docs/project/ROADMAP.md"
+    },
+    {
+      "status": " M",
+      "path": "docs/project/SOURCE_OF_TRUTH.md"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/PHASE7_OWNER_DEMO_ACCEPTANCE_GUIDE.md"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/PHASE7_OWNER_DEMO_IMPLEMENTATION_REPORT.md"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/PHASE8_14_PROGRESS.md"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/verification/phase7-owner-demo/api-eligibility.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/verification/phase7-owner-demo/final-demo-state.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/verification/phase7-owner-demo/git-status.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/verification/phase7-owner-demo/migration-status.txt"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/verification/phase7-owner-demo/normal-preservation.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/verification/phase7-owner-demo/postgres-regressions.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/project/verification/phase7-owner-demo/verification.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/README.md"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-acceptance.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-borrower-unaccepted-terms-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-cancel-confirmation-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-cancelled-history-390-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-catalog-390-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-catalog-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-equipment-detail-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-failure-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-history-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-history-768-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-pending-1440-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-pending-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-quantity-selection-1024-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-quantity-selection-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-review-1440-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/borrower-review-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/identities-acceptance.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/identities-admin-workspace-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/identities-borrower-unaccepted-terms-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/identities-faculty-unaccepted-terms-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/identities-faculty-workspace-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/identities-failure-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/identities-staff-workspace-1440-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/identities-student2-unaccepted-terms-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/identities-student2-workspace-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/owner-ready-acceptance.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/owner-ready-admin-fresh-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/owner-ready-faculty-fresh-390-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/owner-ready-failure-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/owner-ready-staff-fresh-1440-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/owner-ready-student-fresh-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/owner-ready-student2-fresh-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-acceptance.json"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-admin-directory-1440-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-borrower-denied-history-390-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-borrower-denied-history-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-borrower-expired-history-390-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-borrower-expired-history-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-borrower-issued-history-390-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-checkout-form-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-checkout-review-1024-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-denial-form-1024-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-denial-review-1440-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-direct-form-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-direct-review-1024-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-directory-1024-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-directory-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-issued-loan-1024-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-issued-loan-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-stock-after-issuance-1024-dark.png"
+    },
+    {
+      "status": "??",
+      "path": "docs/ux/verification/phase7-owner-demo/staff-stock-after-issuance-1440-light.png"
+    },
+    {
+      "status": "??",
+      "path": "frontend/scripts/phase7-owner-demo-qa.mjs"
+    },
+    {
+      "status": "??",
+      "path": "integration/phase7-demo.py"
+    },
+    {
+      "status": "??",
+      "path": "integration/phase7-demo/seed.go"
+    },
+    {
+      "status": "??",
+      "path": "integration/phase7-demo/seed_test.go"
+    },
+    {
+      "status": "??",
+      "path": "integration/phase7-demo/test_tool.py"
+    },
+    {
+      "status": "??",
+      "path": "integration/phase7-demo/verify_api.py"
+    }
+  ],
+  "excluded": [
+    ".env",
+    "backend/.env",
+    "backend/tmp/phase7-owner-demo/",
+    "backend/tmp/system-implementation/",
+    "frontend/dist/",
+    "frontend/node_modules/",
+    "Docker database volumes and private backup archives"
+  ]
+}

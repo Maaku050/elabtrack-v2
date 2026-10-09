@@ -47,3 +47,6 @@ logs/
 docker-compose.override.yml
 # Extracted approved references are retained; keep the redundant owner archive local.
 eLabTrack_V2_APPROVED_VISUAL_HANDOFF.zip
+
+# Owner V1 reference archive contains background legacy personal records; retain locally.
+elabtrack_phase11_v1_references.zip

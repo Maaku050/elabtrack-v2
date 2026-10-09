@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-09T17:18:51.000292+00:00",
+  "result": "PASS",
+  "normal_database": "elabtrack_v2",
+  "port": 5434,
+  "volume": "elabtrack_v2_pgdata",
+  "business_tables_compared": 20,
+  "all_business_rows_and_digests_unchanged": true,
+  "refresh_session_rows_before": 65,
+  "refresh_session_rows_after": 66,
+  "refresh_sessions_unchanged": false,
+  "actual_normal_summary": {
+    "migration": "000008_borrowing",
+    "admins": 1,
+    "borrowers": 2,
+    "pending_activation": 2,
+    "terms_versions": 0,
+    "acceptances": 0,
+    "borrowings": 0,
+    "equipment": 1,
+    "available": 20,
+    "reserved": 0,
+    "checked_out": 0,
+    "damaged_held": 0,
+    "total": 20
+  },
+  "normal_services_http_status": {
+    "normal_api": 200,
+    "normal_frontend": 200
+  }
+}

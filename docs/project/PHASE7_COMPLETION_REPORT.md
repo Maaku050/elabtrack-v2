@@ -1,5 +1,7 @@
 # Phase 7 completion report
 
+**Formal owner acceptance, 2026-10-10 — DEC-081:** Phase7 Borrowing & Reservations is OWNER ACCEPTED following manual core-workflow review and automated safeguards. Student/Faculty mobile UI is accepted as functional Phase7, not final presentation; DEC-080 governs the future Phase11 browse/cart. Only a safe LOCAL checkpoint of verified Phase7/demo tooling/UX documents is authorized now. Do not begin Phases8–14, push or deploy. Official FSMO terms/current consent, approved production Student domains and required activation readiness remain live-use gates. Earlier pending-acceptance/correction statements below are historical. See [the checkpoint report](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md).
+
 **Phase 7 local integration recovery, 2026-10-09: VERIFIED / OWNER ACCEPTANCE PENDING.** Full private-backup restoration succeeded using the existing bootstrap owner only on the isolated target. All17 restored tables and effective schema permissions match; only equivalent PostgreSQL metadata representations differ. Migration000008 passed restored-data rehearsal and was then applied through the existing normal-local migrator. All8 checksums verify; prior business data and physical20/0/0/0/20 stock are preserved. Normal directory200/empty/search/filter/direct-form checks, isolated workflows/races/restart,279 frontend tests in both modes, Go gates and22 Chromium checks pass. Official FSMO terms/acceptance, production Student domains and verified activation delivery remain live-use dependencies. Phase8 is not started. See [the local integration report](PHASE7_LOCAL_INTEGRATION_REPORT.md).
 
 **Original implementation checkpoint; normal-local rollout is superseded by the recovery verification above.**
@@ -129,7 +131,7 @@ Task-owned verification API/Vite/browser harness and isolated database container
 
 ## 19. Local migration instructions
 
-[Isolated verification and safe owner-run rollout](../../integration/PHASE7.md#safe-normal-local-rollout--owner-action-not-executed) contains the full procedure. Review first; stop normal API; confirm private local target; make/validate a new private backup; owner runs `make migrate-status`, checks existing checksums/pending000008, explicitly runs `make migrate-up`, then `make migrate-status` and restarts `make dev`. No automatic migration or reset. Never seed TEST terms/acceptance or artificially activate real users. History-bearing rollback refuses; recovery needs a separately reviewed restore plan. This report provides instructions, not evidence that normal rollout occurred.
+[Isolated verification and safe owner-run rollout](../../integration/PHASE7.md#historical-normal-local-rollout-plan--subsequently-executed-after-recovery) contains the full procedure. Review first; stop normal API; confirm private local target; make/validate a new private backup; owner runs `make migrate-status`, checks existing checksums/pending000008, explicitly runs `make migrate-up`, then `make migrate-status` and restarts `make dev`. No automatic migration or reset. Never seed TEST terms/acceptance or artificially activate real users. History-bearing rollback refuses; recovery needs a separately reviewed restore plan. This report provides instructions, not evidence that normal rollout occurred.
 
 ## 20. Owner acceptance checklist and handoff
 

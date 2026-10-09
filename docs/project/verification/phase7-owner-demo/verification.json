@@ -1,0 +1,121 @@
+{
+  "date": "2026-10-09T17:19:16.733562+00:00",
+  "result": "PASS",
+  "baseline": "73f3fe4",
+  "go": {
+    "format": 0,
+    "vet": 0,
+    "unit": 0,
+    "race": 0,
+    "fixture_image_test": {
+      "tests": 1,
+      "exit": 0
+    }
+  },
+  "python_guards": {
+    "tests": 6,
+    "exit": 0
+  },
+  "frontend": {
+    "serial": {
+      "tests": 279,
+      "files": 23,
+      "duration_seconds": 65.0,
+      "exit": 0
+    },
+    "parallel": {
+      "tests": 279,
+      "files": 23,
+      "duration_seconds": 56.32,
+      "exit": 0
+    },
+    "lint": {
+      "errors": 0,
+      "inherited_warnings": 19,
+      "exit": 0
+    },
+    "typescript_vite_build": 0
+  },
+  "postgres": {
+    "suites": 12,
+    "named_subtests": 70,
+    "race": true,
+    "result": "PASS"
+  },
+  "demo_api": {
+    "checks": 16,
+    "result": "PASS",
+    "stock_rejection_codes_verified": "EQUIPMENT_NOT_AVAILABLE"
+  },
+  "browser": {
+    "expected_final_groups": [
+      "borrower",
+      "staff",
+      "identities",
+      "owner-ready"
+    ],
+    "checks": 24,
+    "successful_screenshots": 44,
+    "diagnostic_screenshots": 3,
+    "result": "PASS",
+    "groups": [
+      {
+        "group": "borrower",
+        "checks": 6,
+        "screenshots": 14,
+        "external_requests": 0,
+        "runtime_errors": 0,
+        "date": "2026-10-09T17:13:52.611Z"
+      },
+      {
+        "group": "staff",
+        "checks": 8,
+        "screenshots": 18,
+        "external_requests": 0,
+        "runtime_errors": 0,
+        "date": "2026-10-09T17:06:18.744Z"
+      },
+      {
+        "group": "identities",
+        "checks": 5,
+        "screenshots": 7,
+        "external_requests": 0,
+        "runtime_errors": 0,
+        "date": "2026-10-09T17:15:28.354Z"
+      },
+      {
+        "group": "owner-ready",
+        "checks": 5,
+        "screenshots": 5,
+        "external_requests": 0,
+        "runtime_errors": 0,
+        "date": "2026-10-09T17:18:26.215Z"
+      }
+    ]
+  },
+  "reset_start_stop": {
+    "guarded_new_volume_reset": true,
+    "previous_volumes_retained": true,
+    "setup_repeat_noop": true,
+    "actual_stop_restart": true,
+    "download_disabled_reset": true
+  },
+  "normal_business_preservation": {
+    "tables": 20,
+    "all_unchanged": true
+  },
+  "historical_sql_files_byte_identical": 16,
+  "paused_phase8_preserved_files_checksum_verified": 11,
+  "phase7_owner_acceptance": "PENDING",
+  "phases8_14": "PAUSED",
+  "commit_push_deploy": false,
+  "hygiene": {
+    "changed_files_scanned": 72,
+    "known_secret_matches": 0,
+    "private_configuration_git_ignored": true,
+    "staged_changes": 0,
+    "git_diff_check": 0,
+    "untracked_text_whitespace_check": 0,
+    "known_secret_values_checked": 59
+  }
+}

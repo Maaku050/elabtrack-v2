@@ -1,5 +1,11 @@
 # Initial delivery roadmap
 
+**Formal owner acceptance, 2026-10-10 — DEC-081:** Phase7 Borrowing & Reservations is OWNER ACCEPTED following manual core-workflow review and automated safeguards. Student/Faculty mobile UI is accepted as functional Phase7, not final presentation; DEC-080 governs the future Phase11 browse/cart. Only a safe LOCAL checkpoint of verified Phase7/demo tooling/UX documents is authorized now. Do not begin Phases8–14, push or deploy. Official FSMO terms/current consent, approved production Student domains and required activation readiness remain live-use gates. Earlier pending-acceptance/correction statements below are historical. See [the checkpoint report](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md).
+
+**Historical owner correction,2026-10-10:** Phase7 OWNER ACCEPTANCE PENDING. The prior formal acceptance/Phases8–14 authority below is superseded: PAUSE Phases8–14; create an isolated Phase7 demo using73f3fe4 and000001–000008 so the owner can test real eligible accounts and synthetic demo-only terms. Normal accounts,terms,stock and history remain untouched. [Paused progress](PHASE8_14_PROGRESS.md). The scoped [Phase7 demo report](PHASE7_OWNER_DEMO_IMPLEMENTATION_REPORT.md) and [owner guide](PHASE7_OWNER_DEMO_ACCEPTANCE_GUIDE.md) record isolated engineering verification; owner acceptance remains pending.
+
+**Historical authority before DEC-081:** The earlier owner message accepted Phase7 and authorized Phases8–14; DEC-079 then withdrew that acceptance and paused advancement. The newest DEC-081 reaccepts Phase7 and authorizes only the local checkpoint; further implementation remains paused. Commit `73f3fe4` remains the Phase7 engineering baseline. The previously confirmed fresh-installation direction remains: no V1 import. No commit, push, deployment or normal-data changes are authorized. [Paused progress](PHASE8_14_PROGRESS.md) records the preserved partial work.
+
 **Phase 7 local integration recovery, 2026-10-09: VERIFIED / OWNER ACCEPTANCE PENDING.** Full private-backup restoration succeeded using the existing bootstrap owner only on the isolated target. All17 restored tables and effective schema permissions match; only equivalent PostgreSQL metadata representations differ. Migration000008 passed restored-data rehearsal and was then applied through the existing normal-local migrator. All8 checksums verify; prior business data and physical20/0/0/0/20 stock are preserved. Normal directory200/empty/search/filter/direct-form checks, isolated workflows/races/restart,279 frontend tests in both modes, Go gates and22 Chromium checks pass. Official FSMO terms/acceptance, production Student domains and verified activation delivery remain live-use dependencies. Phase8 is not started. See [the local integration report](PHASE7_LOCAL_INTEGRATION_REPORT.md).
 
 **Phase 7 execution update, 2026-10-09:** The owner authorized complete milestones 7A–7D from baseline `366b6ef`. Borrowing/reservation/physical-checkout implementation and final verification are recorded in [the completion report](PHASE7_COMPLETION_REPORT.md). Current source and the Phase 7 sections govern these surfaces; earlier unstarted/unauthorized statements are historical checkpoints. New-screen owner acceptance remains pending. Phase 8 is not started. Official FSMO publication/current acceptance, approved production Student domains and verified live activation delivery remain external gates.
@@ -188,19 +194,22 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 ## Phase 11 — Interactive Equipment Catalog / Kiosk Experience
 
+- **Status:** Not started / PAUSED under DEC-081; Phase7 owner acceptance is confirmed, while prerequisite advancement gates and implementation authority remain pending. DEC-080 confirms the [binding selection UX](../ux/PHASE11_EQUIPMENT_SELECTION_UX.md), without authorizing implementation now.
 - **Goal:** Complete and validate the academic Interactive Kiosk requirement as normal responsive borrower browse/search/filter/quantity/cart/review/request UX.
 - **Deliverables:** End-to-end catalog/cart usability/accessibility, responsive refinements and operator guidance; reuse earlier implemented canonical catalog/request flows, no duplicate app.
+- **Binding selection:** Each card has actual catalog imagery, name/category, available physical quantity and compact quantity/Add controls. Mobile keeps `[ − ] [ quantity ] [ + ] [ Add ]` together with adequate touch targets and a cart/review sheet or dedicated screen. Desktop follows the owner's V1 browse-and-cart interaction reference. No prices/payments.
 - **Dependencies:** Approved Phase 3A/3B flow and Phases4/6/7; Phase 9 notices where included. No device registration, shared-device identity, handoff or hardware policy dependency.
+- **Reference/contract gate:** Both owner V1 screenshots are received and inspected in the binding specification; future rendered Phase11 fidelity/runtime verification remains pending. Reuse Phase7 APIs, reservation transactions and eligibility/terms checks. Draft cart operations do not reserve stock.
 - **Non-goals:** No dedicated touchscreen shell, device tokens/authentication infrastructure, physical tracking or native application.
 - **Exit gate:** Mobile-first cart/request and larger-screen adaptations preserve stock/ownership/terms semantics and pass accessibility/usability tests; functional kiosk intent documented.
 
-## Phase 12 — V1 Data Migration
+## Phase 12 — Isolated FSMO presentation dataset (future, paused)
 
-- **Goal:** Migrate only approved legacy data with reconciliation and recoverable cutover.
-- **Primary deliverables:** Authorized discovery, mappings, reconciliation rules, dry-run tooling/results, backup/rollback/cutover plan.
-- **Dependencies:** Approved scope/data access; stable Phase 2 model and implemented Phases 5–11.
-- **Explicit non-goals:** No live V1 mutation without separate authorization or copying unverifiable data assumptions.
-- **Exit gate:** Owners sign off reconciled dry run, exclusions and balances; backup/rollback proven before authorized cutover.
+- **Status:** Not started; Phases8–14 remain paused pending Phase7 owner verification. The owner cancelled V1 import; no live legacy access or import is planned.
+- **Goal:** Extend the guarded Phase7 demo infrastructure for a fresh FSMO installation and offline presentation after the preceding authorized feature gates pass.
+- **Future scope:**40 fictional equipment,20 Students,5 Faculty,2 Staff,1 Admin, local illustrated avatars and realistic histories using implemented services. No return/fine fixtures before those features exist and pass verification.
+- **Current boundary:** [Phase7 demo](PHASE7_OWNER_DEMO_ACCEPTANCE_GUIDE.md) contains only5 fictional accounts,8 equipment and existing borrowing workflows. It does not implement Phase12.
+- **Safety gate:** Explicit disposable identity/reset confirmation, private credentials, real authorization/consent, retained normal data, local assets and tested offline operation. Official institutional terms and verified activation readiness still gate real borrowing.
 
 ## Phase 13 — QA, Security & Optimization
 
@@ -214,7 +223,7 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 - **Goal:** Deploy through approved controls and evaluate real FSMO operation.
 - **Primary deliverables:** Approved deployment/backups/monitoring, operator training, pilot, incident/rollback procedures and evaluation results.
-- **Dependencies:** Phase 13 release approval, migration/cutover signoff and operational owners.
+- **Dependencies:** Phase 13 release approval, fresh-installation/backup readiness, institutional terms, activation readiness and operational owners.
 - **Explicit non-goals:** No campus rollout or automatic expansion proposal approval.
 - **Exit gate:** Pilot meets agreed operational criteria; incidents/lessons and stakeholder evaluation recorded; future work remains separately approved.
 
