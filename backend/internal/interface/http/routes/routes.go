@@ -28,6 +28,9 @@ func Register(app *fiber.App, deps *Deps) {
 	if deps.Inventory != nil {
 		RegisterInventory(v1, deps.Inventory, protected)
 	}
+	if deps.Borrowing != nil {
+		RegisterBorrowing(v1, deps.Borrowing, protected)
+	}
 	if deps.Terms != nil {
 		RegisterTerms(v1, deps.Terms, protected)
 	}
@@ -42,6 +45,7 @@ type Deps struct {
 	Terms             *handlers.TermsHandler
 	AccountManagement *handlers.AccountsHandler
 	Inventory         *handlers.InventoryHandler
+	Borrowing         *handlers.BorrowingHandler
 	TokenIssuer       application.TokenIssuer
 	Accounts          appauth.AccountResolver
 	Environment       config.Environment

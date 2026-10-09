@@ -4,5 +4,5 @@ export interface Category { id: string; name: string; is_active: boolean; versio
 export interface EquipmentFilter { page: number; per_page: number; search?: string; status?: string; category_id?: string; available_only?: boolean; sort?: string }
 export interface EquipmentPage { items: Equipment[]; total: number; page: number; per_page: number; totals: Stock }
 export interface Metadata { name: string; description: string; category_id: string | null; expected_version: number }
-export interface Movement { id: string; actor_id: string; sequence: number; kind: string; delta: Stock; after: Stock; reason: string; created_at: string }
+export interface Movement { id: string; actor_id: string | null; sequence: number; kind: string; delta: Stock; after: Stock; reason: string; created_at: string }
 export interface Adjustment { kind: 'ADD' | 'REMOVE' | 'RECONCILE'; quantity: number; reason: string; expected_sequence?: number; confirm: boolean }

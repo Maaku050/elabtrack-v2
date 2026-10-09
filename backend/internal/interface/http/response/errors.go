@@ -5,6 +5,7 @@ import (
 
 	domainaccounts "github.com/Maaku050/elabtrack-v2/backend/internal/domain/accounts"
 	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
+	domainborrowing "github.com/Maaku050/elabtrack-v2/backend/internal/domain/borrowing"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	domainterms "github.com/Maaku050/elabtrack-v2/backend/internal/domain/terms"
 	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
@@ -34,6 +35,16 @@ func Map(err error) Mapping {
 		return Mapping{400, constants.CodeValidation, "Validation failed.", fe}
 	}
 	switch {
+	case errors.Is(err, domainborrowing.ErrExpired):
+		return result(409, "BORROWING_EXPIRED", "The request expired and its reservation was released.")
+	case errors.Is(err, domainborrowing.ErrStock):
+		return result(409, "EQUIPMENT_NOT_AVAILABLE", "Equipment availability changed. Review current stock.")
+	case errors.Is(err, domainborrowing.ErrState):
+		return result(409, "BORROWING_STATE_CONFLICT", "The borrowing state changed. Refresh its details.")
+	case errors.Is(err, domainborrowing.ErrKey):
+		return result(409, "IDEMPOTENCY_CONFLICT", "This command key belongs to a different request.")
+	case errors.Is(err, domainborrowing.ErrEligibility):
+		return result(403, "BORROWER_NOT_ELIGIBLE", "The borrower must be active and complete account activation.")
 	case errors.Is(err, domainaccounts.ErrDomainsMissing):
 		return result(503, "STUDENT_DOMAINS_NOT_CONFIGURED", "Approved Student email domains are not configured.")
 	case errors.Is(err, domainaccounts.ErrStudentDomain):

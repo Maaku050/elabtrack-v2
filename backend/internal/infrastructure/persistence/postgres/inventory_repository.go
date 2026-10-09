@@ -158,16 +158,41 @@ func (r *InventoryRepository) WriteReceipt(c context.Context, actor uuid.UUID, o
 	_, e := r.executor(c).Exec(c, `INSERT INTO inventory_operation_receipts(actor_id,operation,key,payload_hash,result) VALUES($1,$2,$3,$4,$5)`, actor, op, key, hash, data)
 	return accountError(e)
 }
-func (r *InventoryRepository) ArchiveSafety(c context.Context) (string, error) {
-	var exists bool
-	e := r.executor(c).QueryRow(c, `SELECT to_regclass('public.borrowings') IS NOT NULL OR to_regclass('public.replacement_obligations') IS NOT NULL`).Scan(&exists)
+
+// Equipment lock is held on archive writes. These liability reads acquire no
+// borrowing locks; a competing reservation/issue must lock the equipment too.
+func (r *InventoryRepository) ArchiveSafety(c context.Context, ids ...uuid.UUID) (string, error) {
+	var borrowing, replacement bool
+	e := r.executor(c).QueryRow(c, `SELECT to_regclass('public.borrowings') IS NOT NULL,to_regclass('public.replacement_obligations') IS NOT NULL`).Scan(&borrowing, &replacement)
 	if e != nil {
 		return "UNAVAILABLE", accountError(e)
 	}
-	if exists {
+	if replacement {
+		return "UNAVAILABLE", nil
+	} // Phase8 adapter has not been authorized/implemented.
+	if !borrowing {
+		return "NOT_INSTALLED", nil
+	}
+	if len(ids) != 1 {
 		return "UNAVAILABLE", nil
 	}
-	return "NOT_INSTALLED", nil
+	var installed bool
+	e = r.executor(c).QueryRow(c, `SELECT to_regclass('public.borrowing_items') IS NOT NULL AND to_regclass('public.borrowing_events') IS NOT NULL AND EXISTS(SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='borrowings' AND column_name='entry_path')`).Scan(&installed)
+	if e != nil {
+		return "UNAVAILABLE", accountError(e)
+	}
+	if !installed {
+		return "UNAVAILABLE", nil
+	}
+	var outstanding bool
+	e = r.executor(c).QueryRow(c, `SELECT EXISTS(SELECT 1 FROM borrowing_items i JOIN borrowings b ON b.id=i.borrowing_id WHERE i.equipment_id=$1 AND b.status IN ('PENDING','CHECKED_OUT') AND (i.reserved_quantity>0 OR i.issued_quantity>0))`, ids[0]).Scan(&outstanding)
+	if e != nil {
+		return "UNAVAILABLE", accountError(e)
+	}
+	if outstanding {
+		return "BLOCKED", nil
+	}
+	return "CLEAR", nil
 }
 func (r *InventoryRepository) PutImage(c context.Context, v d.Image) error {
 	_, e := r.executor(c).Exec(c, `INSERT INTO equipment_images(id,equipment_id,png,sha256,width,height,actor_id) VALUES($1,$2,$3,$4,$5,$6,$7)`, v.ID, v.EquipmentID, v.PNG, v.Hash, v.Width, v.Height, v.ActorID)

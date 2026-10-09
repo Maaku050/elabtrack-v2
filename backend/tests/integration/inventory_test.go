@@ -43,6 +43,7 @@ func TestRealInventory(t *testing.T) {
 		var count int
 		require(t, owner.Pool.QueryRow(ctx, `SELECT count(*) FROM equipment`).Scan(&count) == nil && count == 0, "empty inventory before history")
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil && m.Up(ctx) == nil, "empty007 rollback/reapply")
 	})
 	cat, e := s.Category(ctx, staff.ID, uuid.Nil, uuid.NewString(), d.CategoryInput{Name: "TEST " + uuid.NewString(), Active: &yes})
@@ -176,11 +177,11 @@ func TestRealInventory(t *testing.T) {
 		require(t, e != nil, "unsupported image rejects")
 	})
 	t.Run("archive_future_boundary_and_history_guards", func(t *testing.T) {
-		_, e := owner.Pool.Exec(ctx, `CREATE TABLE borrowings(batch1_probe bool)`)
+		_, e := owner.Pool.Exec(ctx, `CREATE TABLE replacement_obligations(batch1_probe bool)`)
 		require(t, e == nil, "test-only future table probe")
 		_, e = s.Status(ctx, staff.ID, v.ID, uuid.NewString(), d.StatusInput{Status: "ARCHIVED", ExpectedVersion: v.Version, Confirm: true})
 		require(t, errors.Is(e, shared.ErrConflict), "future liability unconnected fails closed")
-		_, e = owner.Pool.Exec(ctx, `DROP TABLE borrowings`)
+		_, e = owner.Pool.Exec(ctx, `DROP TABLE replacement_obligations`)
 		require(t, e == nil, "owned probe cleanup")
 		v, e = s.Status(ctx, staff.ID, v.ID, uuid.NewString(), d.StatusInput{Status: "ARCHIVED", ExpectedVersion: v.Version, Confirm: true})
 		require(t, e == nil, "safe current archive")
@@ -188,19 +189,22 @@ func TestRealInventory(t *testing.T) {
 		require(t, errors.Is(e, shared.ErrConflict), "archived immutable stock")
 		_, e = s.Detail(ctx, borrower.ID, v.ID)
 		require(t, errors.Is(e, shared.ErrNotFound), "archive hidden")
-		for _, q := range []string{`DELETE FROM equipment`, `UPDATE equipment SET reserved=reserved`, `UPDATE equipment SET checked_out=checked_out`, `UPDATE equipment SET damaged_held=damaged_held`, `UPDATE inventory_movements SET reason='rewrite'`, `DELETE FROM inventory_audit_events`, `TRUNCATE inventory_operation_receipts`, `UPDATE equipment_images SET width=1`, `CREATE TABLE forbidden_inventory(id int)`} {
+		for _, q := range []string{`DELETE FROM equipment`, `UPDATE equipment SET damaged_held=damaged_held`, `UPDATE inventory_movements SET reason='rewrite'`, `DELETE FROM inventory_audit_events`, `TRUNCATE inventory_operation_receipts`, `UPDATE equipment_images SET width=1`, `CREATE TABLE forbidden_inventory(id int)`} {
 			_, e = db.Pool.Exec(ctx, q)
 			require(t, e != nil, "runtime least privilege immutable evidence")
 		}
 		_, e = owner.Pool.Exec(ctx, `UPDATE inventory_movements SET reason='rewrite'`)
 		require(t, e != nil, "owner history trigger")
 		var narrow bool
-		require(t, owner.Pool.QueryRow(ctx, `SELECT NOT has_column_privilege('elabtrack_runtime','equipment','reserved','UPDATE') AND NOT has_column_privilege('elabtrack_runtime','equipment','checked_out','UPDATE') AND NOT has_column_privilege('elabtrack_runtime','equipment','damaged_held','UPDATE')`).Scan(&narrow) == nil && narrow, "no premature custody write grants")
+		require(t, owner.Pool.QueryRow(ctx, `SELECT has_column_privilege('elabtrack_runtime','equipment','reserved','UPDATE') AND has_column_privilege('elabtrack_runtime','equipment','checked_out','UPDATE') AND NOT has_column_privilege('elabtrack_runtime','equipment','damaged_held','UPDATE')`).Scan(&narrow) == nil && narrow, "Phase7 reviewed reservation/custody grants; no damaged override")
 		_, e = owner.Pool.Exec(ctx, `UPDATE equipment SET available=-1 WHERE id=$1`, v.ID)
 		require(t, e != nil, "DB negative constraint")
 		_, e = owner.Pool.Exec(ctx, `UPDATE equipment SET total_tracked=99 WHERE id=$1`, v.ID)
 		require(t, e != nil, "DB conservation constraint")
-		require(t, database.NewMigrator(owner.Pool, "../../migrations").Down(ctx) != nil, "history rollback refused")
+		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before inventory history guard")
+		require(t, m.Down(ctx) != nil, "history rollback refused")
+		require(t, m.Up(ctx) == nil, "restore Phase7 schema")
 	})
 }
 

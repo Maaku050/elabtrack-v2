@@ -97,6 +97,7 @@ func bounded(s string, max int) bool {
 
 type Obligations struct {
 	Availability      string `json:"availability"`
+	PendingRequests   *int   `json:"pending_requests,omitempty"`
 	ActiveBorrowings  *int   `json:"active_borrowings,omitempty"`
 	OverdueBorrowings *int   `json:"overdue_borrowings,omitempty"`
 	UnreturnedUnits   *int   `json:"unreturned_units,omitempty"`

@@ -1,0 +1,346 @@
+{
+  "checks": [
+    "Real Admin login/session restoration and actual normal borrowing directory HTTP200",
+    "Empty directory, correct server total0, disabled pagination, desktop/tablet/mobile light/dark",
+    "Search/status intersection and refresh persist URL filters with exact empty server results",
+    "Out-of-range server page and previous-page recovery preserve total0",
+    "Test-only browser response failure uses one bounded retry; explicit Retry recovers with real API200",
+    "Persistent SPA navigation opens actual Direct Issuance form; no borrower selection/checkout/activation bypass",
+    "Actual normal unpublished terms remain503 TERMS_NOT_PUBLISHED without artificial publication or retry loop",
+    "Keyboard focus and real normal UI logout"
+  ],
+  "screens": [
+    "normal-empty-directory-1440-light.png",
+    "normal-empty-directory-1024-dark.png",
+    "normal-empty-directory-390-light.png",
+    "normal-filtered-empty-1440-dark.png",
+    "normal-simulated-error-1440-light.png"
+  ],
+  "responses": [
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 503,
+      "simulated": true
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 503,
+      "simulated": true
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/equipment",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/equipment",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "status": 200,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/terms/current",
+      "status": 204,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/terms/current",
+      "status": 503,
+      "simulated": false
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "status": 204,
+      "simulated": false
+    }
+  ],
+  "requests": [
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/terms/current",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/current",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "method": "POST"
+    }
+  ],
+  "errors": [],
+  "simulated503": 2,
+  "normal_business_mutations": 0,
+  "personal_identity_redacted_in_screenshots": true,
+  "excluded_screenshots": {
+    "count": 3,
+    "reason": "Normal borrower metadata could expose an official Student ID; these test-owned images were removed. Direct Issuance remains browser-verified; published form screenshots use synthetic accounts."
+  }
+}

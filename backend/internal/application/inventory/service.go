@@ -72,7 +72,7 @@ func (s *Service) Detail(ctx context.Context, actor, id uuid.UUID) (d.Equipment,
 		return d.Equipment{}, shared.ErrNotFound
 	}
 	if !b {
-		v.ArchiveSafety, e = s.repo.ArchiveSafety(ctx)
+		v.ArchiveSafety, e = s.repo.ArchiveSafety(ctx, id)
 	}
 	return v, e
 }
@@ -160,7 +160,7 @@ func (s *Service) Create(ctx context.Context, actor uuid.UUID, key string, in d.
 			if e = s.repo.UpdateStock(c, v); e != nil {
 				return v, e
 			}
-			if e = s.repo.Movement(c, d.Movement{ID: uuid.New(), EquipmentID: v.ID, ActorID: actor, Sequence: 1, Kind: "OPENING", Delta: d.Stock{Available: in.Opening, Total: in.Opening}, After: v.Stock, Reason: in.Reason}); e != nil {
+			if e = s.repo.Movement(c, d.Movement{ID: uuid.New(), EquipmentID: v.ID, ActorID: &actor, Sequence: 1, Kind: "OPENING", Delta: d.Stock{Available: in.Opening, Total: in.Opening}, After: v.Stock, Reason: in.Reason}); e != nil {
 				return v, e
 			}
 		}
@@ -225,11 +225,11 @@ func (s *Service) Status(ctx context.Context, actor, id uuid.UUID, key string, i
 			return v, shared.ErrConflict
 		}
 		if in.Status == "ARCHIVED" {
-			safe, e := s.repo.ArchiveSafety(c)
+			safe, e := s.repo.ArchiveSafety(c, id)
 			if e != nil {
 				return v, e
 			}
-			if safe != "NOT_INSTALLED" || v.Stock.Reserved != 0 || v.Stock.CheckedOut != 0 {
+			if (safe != "NOT_INSTALLED" && safe != "CLEAR") || v.Stock.Reserved != 0 || v.Stock.CheckedOut != 0 {
 				return v, shared.ErrConflict
 			}
 		}
@@ -277,7 +277,7 @@ func (s *Service) Adjust(ctx context.Context, actor, id uuid.UUID, key string, i
 		if e = s.repo.UpdateStock(c, v); e != nil {
 			return v, e
 		}
-		if e = s.repo.Movement(c, d.Movement{ID: uuid.New(), EquipmentID: id, ActorID: actor, Sequence: v.Sequence, Kind: in.Kind, Delta: d.Stock{Available: delta, Total: delta}, After: v.Stock, Reason: in.Reason}); e != nil {
+		if e = s.repo.Movement(c, d.Movement{ID: uuid.New(), EquipmentID: id, ActorID: &actor, Sequence: v.Sequence, Kind: in.Kind, Delta: d.Stock{Available: delta, Total: delta}, After: v.Stock, Reason: in.Reason}); e != nil {
 			return v, e
 		}
 		if e = s.repo.Audit(c, actor, &id, nil, "STOCK_"+in.Kind, old, v); e != nil {

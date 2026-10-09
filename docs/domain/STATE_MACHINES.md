@@ -1,5 +1,7 @@
 # Phase 2.5 state machines and design walkthroughs
 
+**Phase 7 execution update, 2026-10-09:** The owner authorized complete milestones 7A–7D from baseline `366b6ef`. Borrowing/reservation/physical-checkout implementation and final verification are recorded in [the completion report](../project/PHASE7_COMPLETION_REPORT.md). Current source and the Phase 7 sections govern these surfaces; earlier unstarted/unauthorized statements are historical checkpoints. New-screen owner acceptance remains pending. Phase 8 is not started. Official FSMO publication/current acceptance, approved production Student domains and verified live activation delivery remain external gates.
+
 **Current Batch1 implementation,2026-10-09:** Phases5–6 now implement the scoped account/catalog/inventory boundaries described in the overlays below and current API_CONTRACTS.md. Earlier unimplemented/candidate statements are historical Phase2/4 design evidence, not current status. See PHASE5_REPORT.md (external-gate partial) and PHASE6_REPORT.md (reviewed inventory scope complete). Phase7 remains unauthorized.
 
 
@@ -111,3 +113,21 @@ Admin provisioning creates an account with activation_required=true and an unusa
 Paired000007 now implements operator-provided categories, catalog equipment metadata/lifecycle, four physical buckets, immutable movement/audit/command receipts and bounded equipment-only canonical PNG images. `T=A+R+C+D`; Staff/Admin usable acquisition/removal affects A/T only. Admin reviewed expected-sequence reconciliation sets observed A and preserves R/C/D; no custody or incident correction. Current per-pool quantity bound is2147483647; all arithmetic is checked server-side and by PostgreSQL. Loss history and replacement liability remain separate future concepts, with no invented current lost bucket or zero liability projection.
 
 Equipment ACTIVE is Borrower-visible; INACTIVE/ARCHIVED is operational-only. Archive retains current stock/history, blocks R/C, and requires verified absence of future borrowing/replacement tables; their presence without integrated liability checks fails closed. No archival return/settlement, repair/disposal, borrowing, reservation, replacement or fine workflow exists. Metadata and stock versions are separate; locked transactions make movements/audit/receipts atomic, idempotent and stale-basis safe. Category inactivity preserves existing references. Local database image support is bounded PNG/JPEG re-encoding for catalog use only, not return photographs or arbitrary storage. Actual routes/limits/storage/permissions and future integration requirements are in [API contracts](../API_CONTRACTS.md#phase-6-implemented-equipment-and-inventory-contracts). Historical Phase2/4 candidate/unimplemented descriptions above are dated design evidence, superseded for these scoped implemented surfaces.
+
+## Phase 7 actual lifecycle and expiration
+
+```mermaid
+stateDiagram-v2
+    [*] --> PENDING: Borrower submit / available to reserved
+    PENDING --> CANCELLED: Owner confirms / release
+    PENDING --> DENIED: Staff explanation / release
+    PENDING --> EXPIRED: Durable 24h deadline / release
+    PENDING --> CHECKED_OUT: Staff physical handover and due / reserved to custody
+    [*] --> CHECKED_OUT: Staff direct issue and due / available to custody
+```
+
+These are all implemented edges. No separate APPROVED or Phase8 completion/return edge exists. Staff approval is atomic checkout. At deadline equality, expiry wins; clock is captured after equipment locks. A late cancel/deny/approve commits EXPIRED and release, stores its receipt, then returns409 BORROWING_EXPIRED. Replaying this late decision repeats409 without consuming another hold.
+
+The API process runs an immediate catch-up sweep and a30s ticker; each10s cycle processes at most100 indexed persisted candidates through the same account→borrowing→equipment lock order. Each candidate is a separate transaction with conditional PENDING consumption. Restart and concurrent workers do not depend on remembered timers. Inactive borrowers' holds still expire. Physical availability remains the stored value until release commits; no read pretends a held unit is free. Bounded backlog/outage delay and lack of a dedicated worker lag dashboard are disclosed; no Redis/message broker/email dependency is introduced.
+
+Read-only own history remains accessible without current terms. Current terms are locked/bound inside new submission and direct issuance; existing pending checkout retains its original consent. Due times are absolute timestamptz and rendered in Manila, with no duration maximum. Current deactivation and future resolution authority remains unchanged.

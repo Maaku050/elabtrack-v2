@@ -1,0 +1,158 @@
+ M backend/internal/application/inventory/service.go
+ M backend/internal/bootstrap/app.go
+ M backend/internal/bootstrap/dependencies.go
+ M backend/internal/domain/accounts/accounts.go
+ M backend/internal/domain/inventory/inventory.go
+ M backend/internal/domain/user/permissions.go
+ M backend/internal/infrastructure/persistence/postgres/inventory_repository.go
+ M backend/internal/interface/http/response/errors.go
+ M backend/internal/interface/http/routes/routes.go
+ M backend/tests/integration/accounts_test.go
+ M backend/tests/integration/inventory_test.go
+ M backend/tests/integration/terms_test.go
+ M docs/API_CONTRACTS.md
+ M docs/domain/API_RESOURCE_DRAFT.md
+ M docs/domain/BUSINESS_RULES.md
+ M docs/domain/DATA_MODEL.md
+ M docs/domain/DOMAIN_MODEL.md
+ M docs/domain/INVARIANTS.md
+ M docs/domain/STATE_MACHINES.md
+ M docs/project/DECISIONS.md
+ M docs/project/OPEN_DECISIONS.md
+ M docs/project/ROADMAP.md
+ M docs/project/SOURCE_OF_TRUTH.md
+ M docs/ux/FRONTEND_RECONSTRUCTION_CONTRACT.md
+ M frontend/src/app/router.tsx
+ M frontend/src/features/accounts/pages/account-detail.tsx
+ M frontend/src/features/accounts/types.ts
+ M frontend/src/features/auth/navigation.ts
+ M frontend/src/features/inventory/pages/equipment-detail.tsx
+ M frontend/src/features/inventory/pages/equipment-list.tsx
+ M frontend/src/features/inventory/types.ts
+ M integration/batch1-env-run.py
+?? backend/internal/application/borrowing/service.go
+?? backend/internal/application/borrowing/service_test.go
+?? backend/internal/bootstrap/borrowing_expiry.go
+?? backend/internal/bootstrap/borrowing_integration_test.go
+?? backend/internal/domain/borrowing/borrowing.go
+?? backend/internal/domain/borrowing/borrowing_test.go
+?? backend/internal/infrastructure/persistence/postgres/borrowing_obligations.go
+?? backend/internal/infrastructure/persistence/postgres/borrowing_repository.go
+?? backend/internal/interface/http/handlers/borrowing_handler.go
+?? backend/internal/interface/http/routes/borrowing_routes.go
+?? backend/migrations/000008_borrowing.down.sql
+?? backend/migrations/000008_borrowing.up.sql
+?? backend/tests/integration/borrowing_restart_test.go
+?? backend/tests/integration/borrowing_test.go
+?? docs/project/PHASE7_COMPLETION_REPORT.md
+?? docs/project/PHASE7_IMPLEMENTATION_PLAN.md
+?? docs/project/PHASE7_LOCAL_INTEGRATION_REPORT.md
+?? docs/project/PHASE7_PROGRESS.md
+?? docs/project/verification/phase7-local-integration/changed-files.json
+?? docs/project/verification/phase7-local-integration/git-status.txt
+?? docs/project/verification/phase7-local-integration/migration-status.txt
+?? docs/project/verification/phase7-local-integration/restore-recovery.json
+?? docs/project/verification/phase7-local-integration/verification.json
+?? docs/project/verification/phase7/changed-files.json
+?? docs/project/verification/phase7/git-status.txt
+?? docs/project/verification/phase7/verification.json
+?? docs/ux/verification/phase7-local-integration/README.md
+?? docs/ux/verification/phase7-local-integration/borrower-acceptance.json
+?? docs/ux/verification/phase7-local-integration/borrower-cancel-confirmation-390-light.png
+?? docs/ux/verification/phase7-local-integration/borrower-cancelled-history-390-dark.png
+?? docs/ux/verification/phase7-local-integration/borrower-catalog-390-dark.png
+?? docs/ux/verification/phase7-local-integration/borrower-catalog-390-light.png
+?? docs/ux/verification/phase7-local-integration/borrower-equipment-detail-390-light.png
+?? docs/ux/verification/phase7-local-integration/borrower-history-390-light.png
+?? docs/ux/verification/phase7-local-integration/borrower-history-768-dark.png
+?? docs/ux/verification/phase7-local-integration/borrower-pending-1440-dark.png
+?? docs/ux/verification/phase7-local-integration/borrower-pending-390-light.png
+?? docs/ux/verification/phase7-local-integration/borrower-quantity-selection-1024-dark.png
+?? docs/ux/verification/phase7-local-integration/borrower-quantity-selection-390-light.png
+?? docs/ux/verification/phase7-local-integration/borrower-review-1440-dark.png
+?? docs/ux/verification/phase7-local-integration/borrower-review-390-light.png
+?? docs/ux/verification/phase7-local-integration/normal-acceptance.json
+?? docs/ux/verification/phase7-local-integration/normal-empty-directory-1024-dark.png
+?? docs/ux/verification/phase7-local-integration/normal-empty-directory-1440-light.png
+?? docs/ux/verification/phase7-local-integration/normal-empty-directory-390-light.png
+?? docs/ux/verification/phase7-local-integration/normal-filtered-empty-1440-dark.png
+?? docs/ux/verification/phase7-local-integration/normal-simulated-error-1440-light.png
+?? docs/ux/verification/phase7-local-integration/staff-acceptance.json
+?? docs/ux/verification/phase7-local-integration/staff-admin-directory-1440-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-admin-filter-intersection-1024-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-admin-real-pagination-1440-light.png
+?? docs/ux/verification/phase7-local-integration/staff-borrower-denied-history-390-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-borrower-denied-history-390-light.png
+?? docs/ux/verification/phase7-local-integration/staff-borrower-expired-history-390-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-borrower-expired-history-390-light.png
+?? docs/ux/verification/phase7-local-integration/staff-borrower-issued-history-390-light.png
+?? docs/ux/verification/phase7-local-integration/staff-checkout-form-1440-light.png
+?? docs/ux/verification/phase7-local-integration/staff-checkout-review-1024-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-denial-form-1024-light.png
+?? docs/ux/verification/phase7-local-integration/staff-denial-review-1440-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-direct-form-1440-light.png
+?? docs/ux/verification/phase7-local-integration/staff-direct-review-1024-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-directory-1024-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-directory-1440-light.png
+?? docs/ux/verification/phase7-local-integration/staff-issued-loan-1024-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-issued-loan-1440-light.png
+?? docs/ux/verification/phase7-local-integration/staff-stock-after-issuance-1024-dark.png
+?? docs/ux/verification/phase7-local-integration/staff-stock-after-issuance-1440-light.png
+?? docs/ux/verification/phase7/borrower-acceptance.json
+?? docs/ux/verification/phase7/borrower-cancel-confirmation-390-light.png
+?? docs/ux/verification/phase7/borrower-cancelled-history-390-dark.png
+?? docs/ux/verification/phase7/borrower-catalog-390-dark.png
+?? docs/ux/verification/phase7/borrower-catalog-390-light.png
+?? docs/ux/verification/phase7/borrower-equipment-detail-390-light.png
+?? docs/ux/verification/phase7/borrower-history-390-light.png
+?? docs/ux/verification/phase7/borrower-history-768-dark.png
+?? docs/ux/verification/phase7/borrower-pending-1440-dark.png
+?? docs/ux/verification/phase7/borrower-pending-390-light.png
+?? docs/ux/verification/phase7/borrower-quantity-selection-1024-dark.png
+?? docs/ux/verification/phase7/borrower-quantity-selection-390-light.png
+?? docs/ux/verification/phase7/borrower-review-1440-dark.png
+?? docs/ux/verification/phase7/borrower-review-390-light.png
+?? docs/ux/verification/phase7/staff-acceptance.json
+?? docs/ux/verification/phase7/staff-admin-directory-1440-dark.png
+?? docs/ux/verification/phase7/staff-borrower-denied-history-390-dark.png
+?? docs/ux/verification/phase7/staff-borrower-denied-history-390-light.png
+?? docs/ux/verification/phase7/staff-borrower-expired-history-390-dark.png
+?? docs/ux/verification/phase7/staff-borrower-expired-history-390-light.png
+?? docs/ux/verification/phase7/staff-borrower-issued-history-390-light.png
+?? docs/ux/verification/phase7/staff-checkout-form-1440-light.png
+?? docs/ux/verification/phase7/staff-checkout-review-1024-dark.png
+?? docs/ux/verification/phase7/staff-denial-form-1024-light.png
+?? docs/ux/verification/phase7/staff-denial-review-1440-dark.png
+?? docs/ux/verification/phase7/staff-direct-form-1440-light.png
+?? docs/ux/verification/phase7/staff-direct-review-1024-dark.png
+?? docs/ux/verification/phase7/staff-directory-1024-dark.png
+?? docs/ux/verification/phase7/staff-directory-1440-light.png
+?? docs/ux/verification/phase7/staff-issued-loan-1024-dark.png
+?? docs/ux/verification/phase7/staff-issued-loan-1440-light.png
+?? docs/ux/verification/phase7/staff-stock-after-issuance-1024-dark.png
+?? docs/ux/verification/phase7/staff-stock-after-issuance-1440-light.png
+?? docs/ux/verification/reconstruction-stage-a/failure.png
+?? docs/ux/verification/reconstruction-stage-b/administration-failure.png
+?? docs/ux/verification/reconstruction-stage-b/borrowers-failure.png
+?? docs/ux/verification/reconstruction-stage-b/categories-failure.png
+?? docs/ux/verification/reconstruction-stage-b/consistency-failure.png
+?? docs/ux/verification/reconstruction-stage-b/edges-failure.png
+?? docs/ux/verification/reconstruction-stage-b/final-visual-failure.png
+?? docs/ux/verification/reconstruction-stage-b/stock-failure.png
+?? frontend/scripts/phase7-browser-qa.mjs
+?? frontend/src/features/borrowing/api/borrowing.api.ts
+?? frontend/src/features/borrowing/borrowing.test.tsx
+?? frontend/src/features/borrowing/hooks/use-borrowing.ts
+?? frontend/src/features/borrowing/lib/time.ts
+?? frontend/src/features/borrowing/pages/borrowing-detail.tsx
+?? frontend/src/features/borrowing/pages/borrowing-directory.tsx
+?? frontend/src/features/borrowing/pages/borrowing-frame.tsx
+?? frontend/src/features/borrowing/pages/request-compose.tsx
+?? frontend/src/features/borrowing/pages/staff-actions.tsx
+?? frontend/src/features/borrowing/pages/staff-borrower-picker.tsx
+?? frontend/src/features/borrowing/schemas/borrowing.schema.ts
+?? frontend/src/features/borrowing/staff-actions.test.tsx
+?? frontend/src/features/borrowing/types.ts
+?? integration/PHASE7.md
+?? integration/compose.phase7-regression.yml
+?? integration/compose.phase7.yml

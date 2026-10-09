@@ -13,14 +13,16 @@ const (
 	ManageInventory      Permission = "inventory.manage"
 	ReadBorrowers        Permission = "borrowers.read"
 	ManageAccounts       Permission = "accounts.manage"
+	SubmitBorrowing      Permission = "borrowing.submit"
+	ManageBorrowings     Permission = "borrowing.manage"
 	PublishTerms         Permission = "terms.publish"
 )
 
 func (r Role) Allows(permission Permission) bool {
 	switch permission {
-	case BorrowerWorkspace, AcceptBorrowerTerms:
+	case BorrowerWorkspace, AcceptBorrowerTerms, SubmitBorrowing:
 		return r == RoleBorrower
-	case StaffWorkspace, ReadBorrowers, ManageInventory:
+	case StaffWorkspace, ReadBorrowers, ManageInventory, ManageBorrowings:
 		return r == RoleStaff || r == RoleAdmin
 	case Administration, ReadAccountDirectory, PublishTerms, ManageAccounts:
 		return r == RoleAdmin

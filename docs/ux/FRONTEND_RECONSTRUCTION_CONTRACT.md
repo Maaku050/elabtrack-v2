@@ -1,5 +1,7 @@
 # FSMO frontend reconstruction contract
 
+**Phase 7 execution update, 2026-10-09:** The owner authorized complete milestones 7A–7D from baseline `366b6ef`. Borrowing/reservation/physical-checkout implementation and final verification are recorded in [the completion report](../project/PHASE7_COMPLETION_REPORT.md). Current source and the Phase 7 sections govern these surfaces; earlier unstarted/unauthorized statements are historical checkpoints. New-screen owner acceptance remains pending. Phase 8 is not started. Official FSMO publication/current acceptance, approved production Student domains and verified live activation delivery remain external gates.
+
 Stage B, 2026-10-09. The owner explicitly approved Stage A and authorized Stage B in the current reconstruction brief. **STAGE B OWNER VISUAL ACCEPTANCE: APPROVED** in the subsequent pre-Phase 7 inventory-filter review; the final checkpoint follows the focused correction documented in [the inventory filter report](../project/INVENTORY_FILTER_REVIEW_REPORT.md). Phase 7 remains unauthorized. Product content/permissions follow the charter, confirmed decisions, API contracts and current backend. Owner screenshots guide layout quality, not demonstration features.
 
 ## Status and architecture
@@ -78,3 +80,11 @@ Student bulk preview always shows every returned row without fake paging; row se
 **OWNER VISUAL APPROVAL RECEIVED:** the focused inventory filter correction is complete, and owner manual verification is explicitly PASSED at the final checkpoint (DEC-076). Verification covers the seven requested widths and short heights; assistive-device/hardware checks and external institutional/delivery gates remain distinct limitations. The final owner instruction authorizes a reviewed LOCAL Git checkpoint. Stop after closure; no Phase 7 implementation, push or deployment is authorized.
 
 Reference APIs verified against local installed source and [Base Sidebar](https://ui.shadcn.com/docs/components/base/sidebar), [Base Pagination](https://ui.shadcn.com/docs/components/base/pagination), [Base Data Table](https://ui.shadcn.com/docs/components/base/data-table), [Base Field](https://ui.shadcn.com/docs/components/base/field). Use Base UI render composition, not incompatible Radix asChild examples.
+
+## Phase 7 implementation reuse and acceptance boundary
+
+Owner-approved StageA/B primitives, tokens and persistent shells are reused for catalog-to-request selection/review, own history/details/cancel, Staff request directory/details/denial/physical checkout and direct issuance. Existing ManagementCard/FormField/FormActions/WorkflowSteps/Notice, DirectoryTableRegion/search, ServerPagination, badges, AlertDialog, RHF/Zod and centralized TanStack Query transport remain the architecture. No approved visual assets or UI primitives were rewritten.
+
+New screens have loading/empty/error states, stable reviewed payload/key, duplicate-click guards, conflict revalidation and session-generation fences. Direct issuance selects an existing Borrower; dates explicitly use Manila. Catalog-prefill mounts a form initialized from loaded eligible equipment, with no state-copy effect loop. Own history is outside the new-request terms gate. Pending detail revalidates every30s and mutations invalidate borrowing/inventory/accounts without permanently caching roles.
+
+[Actual synthetic browser evidence](verification/phase7/) covers mobile/tablet/desktop, both themes and keyboard focus. Engineering evidence does not establish owner acceptance of Phase7 screens. StageA/B acceptance remains approved; Phase7 owner acceptance is pending. No kiosk expansion or Phase8 return interface is included.

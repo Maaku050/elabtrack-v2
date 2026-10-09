@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	appborrowing "github.com/Maaku050/elabtrack-v2/backend/internal/application/borrowing"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
@@ -20,10 +21,13 @@ import (
 // App is the fully wired application. Run it with Run; shut it down with
 // Shutdown (called automatically by Run on SIGINT/SIGTERM).
 type App struct {
-	cfg    *config.Config
-	log    *logger.Logger
-	db     *database.Postgres
-	server *fiber.App
+	cfg        *config.Config
+	log        *logger.Logger
+	db         *database.Postgres
+	server     *fiber.App
+	borrowing  *appborrowing.Service
+	stopExpiry context.CancelFunc
+	expiryDone chan struct{}
 }
 
 // New wires the entire application: config -> infrastructure -> services
@@ -42,16 +46,21 @@ func New(ctx context.Context) (*App, error) {
 	RegisterRoutes(server, c)
 
 	return &App{
-		cfg:    cfg,
-		log:    infra.Logger,
-		db:     infra.DB,
-		server: server,
+		cfg:       cfg,
+		log:       infra.Logger,
+		db:        infra.DB,
+		server:    server,
+		borrowing: c.BorrowingSvc,
 	}, nil
 }
 
 // Run starts the HTTP server and blocks until SIGINT/SIGTERM is received,
 // then performs a graceful shutdown.
 func (a *App) Run() error {
+	workerCtx, cancel := context.WithCancel(context.Background())
+	a.stopExpiry = cancel
+	a.expiryDone = make(chan struct{})
+	go a.runExpiry(workerCtx)
 	addr := ":" + a.cfg.App.Port
 	go func() {
 		logStartup(a.log, a.cfg)
@@ -79,6 +88,10 @@ func (a *App) Shutdown(ctx context.Context) error {
 	if err := a.server.ShutdownWithContext(shutdownCtx); err != nil {
 		class, _ := shared.FailureDetails(err)
 		a.log.Error("server shutdown error", zap.String("event", "server.shutdown_failed"), zap.String("error_class", class))
+	}
+	if a.stopExpiry != nil {
+		a.stopExpiry()
+		<-a.expiryDone
 	}
 	a.db.Close()
 	a.log.Info("database pool closed", zap.String("event", "server.shutdown_completed"))

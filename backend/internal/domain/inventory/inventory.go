@@ -112,15 +112,15 @@ type Page struct {
 	Totals  Stock       `json:"totals"`
 }
 type Movement struct {
-	ID          uuid.UUID `json:"id"`
-	EquipmentID uuid.UUID `json:"equipment_id"`
-	ActorID     uuid.UUID `json:"actor_id"`
-	Sequence    int64     `json:"sequence"`
-	Kind        string    `json:"kind"`
-	Delta       Stock     `json:"delta"`
-	After       Stock     `json:"after"`
-	Reason      string    `json:"reason"`
-	At          time.Time `json:"created_at"`
+	ID          uuid.UUID  `json:"id"`
+	EquipmentID uuid.UUID  `json:"equipment_id"`
+	ActorID     *uuid.UUID `json:"actor_id"`
+	Sequence    int64      `json:"sequence"`
+	Kind        string     `json:"kind"`
+	Delta       Stock      `json:"delta"`
+	After       Stock      `json:"after"`
+	Reason      string     `json:"reason"`
+	At          time.Time  `json:"created_at"`
 }
 type Image struct {
 	ID            uuid.UUID
@@ -145,7 +145,7 @@ type Repository interface {
 	Audit(context.Context, uuid.UUID, *uuid.UUID, *uuid.UUID, string, any, any) error
 	ReadReceipt(context.Context, uuid.UUID, string, string, string) ([]byte, error)
 	WriteReceipt(context.Context, uuid.UUID, string, string, string, []byte) error
-	ArchiveSafety(context.Context) (string, error)
+	ArchiveSafety(context.Context, ...uuid.UUID) (string, error)
 	PutImage(context.Context, Image) error
 	GetImage(context.Context, uuid.UUID, uuid.UUID) (Image, error)
 }

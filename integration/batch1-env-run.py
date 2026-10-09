@@ -19,7 +19,7 @@ env.update(APP_ENV='test', APP_PORT='18085', DB_HOST='127.0.0.1', DB_USER='elabt
            LOG_FORMAT='json', LOG_LEVEL='info', RATE_LIMIT_WINDOW='5s',
            GOCACHE='/tmp/elabtrack-phase1b-go-cache', ELABTRACK_BATCH1='1', STUDENT_EMAIL_DOMAINS='students.example.invalid')
 # Privileged settings are supplied only to explicit migration/test commands.
-if '--migrate-up' in sys.argv or '--migrate-status' in sys.argv or 'test' in sys.argv:
+if '--migrate-up' in sys.argv or '--migrate-status' in sys.argv or '--migrate-down' in sys.argv or 'test' in sys.argv:
     env['MIGRATION_DATABASE_URL'] = 'postgresql://elabtrack_migrator:' + quote(values['MIGRATION_DB_PASSWORD'], safe='') + '@127.0.0.1:54832/elabtrack_v2_batch1_test?sslmode=disable'
 else:
     env.pop('MIGRATION_DB_PASSWORD', None)

@@ -20,7 +20,10 @@ export const routes: RouteObject[] = [{ errorElement: <RouteFailure />, hydrateF
   { element: <ProtectedRoute roles={['BORROWER']} />, children: [
     { path: '/borrower/terms', lazy: async () => ({ Component: (await import('@/features/terms/pages/terms-page')).TermsPage }) },
     { lazy: async () => ({ Component: (await import('@/features/terms/components/terms-gate')).TermsGate }), children: [{path:'/borrower/home',lazy:async()=>({Component:(await import('@/features/workspace/workspace-page')).WorkspacePage})},{path:'/borrower/equipment',lazy:async()=>({Component:(await import('@/features/inventory/pages/equipment-list')).BorrowerCatalog})},{path:'/borrower/equipment/:id',lazy:async()=>({Component:(await import('@/features/inventory/pages/equipment-detail')).BorrowerEquipmentDetail})}] },
-    ...borrowerPaths.filter(path => path !== '/borrower/home' && path !== '/borrower/equipment').map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) })),
+    {path:'/borrower/borrowings',lazy:async()=>({Component:(await import('@/features/borrowing/pages/borrowing-directory')).BorrowingDirectory})},
+ {path:'/borrower/borrowings/:id',lazy:async()=>({Component:(await import('@/features/borrowing/pages/borrowing-detail')).BorrowingDetail})},
+ {lazy:async()=>({Component:(await import('@/features/terms/components/terms-gate')).TermsGate}),children:[{path:'/borrower/borrowings/new',lazy:async()=>({Component:(await import('@/features/borrowing/pages/request-compose')).BorrowerRequest})}]},
+ ...borrowerPaths.filter(path => path !== '/borrower/home' && path !== '/borrower/equipment' && path !== '/borrower/borrowings').map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) })),
   ] },
   { element: <OperationalLayout />, children: [
   { element: <ProtectedRoute roles={['STAFF', 'ADMIN']} embedded />, children: [
@@ -32,7 +35,10 @@ export const routes: RouteObject[] = [{ errorElement: <RouteFailure />, hydrateF
  {path:'/staff/inventory/:id/adjust',lazy:async()=>({Component:(await import('@/features/inventory/pages/stock-adjustment')).StockAdjustment})},
  {path:'/staff/borrowers',lazy: async()=>({Component:(await import('@/features/accounts/pages/account-directory')).AccountDirectory})},
  {path:'/staff/borrowers/:id',lazy: async()=>({Component:(await import('@/features/accounts/pages/account-detail')).AccountDetail})},
- ...staffPaths.filter(path=>path!='/staff/borrowers'&&path!='/staff/inventory').map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) }))] },
+ {path:'/staff/requests',lazy:async()=>({Component:(await import('@/features/borrowing/pages/borrowing-directory')).BorrowingDirectory})},
+ {path:'/staff/requests/direct',lazy:async()=>({Component:(await import('@/features/borrowing/pages/request-compose')).StaffDirectIssuance})},
+ {path:'/staff/requests/:id',lazy:async()=>({Component:(await import('@/features/borrowing/pages/borrowing-detail')).BorrowingDetail})},
+ ...staffPaths.filter(path=>path!='/staff/borrowers'&&path!='/staff/inventory'&&path!='/staff/requests').map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) }))] },
   { element: <ProtectedRoute roles={['ADMIN']} embedded />, children: [
  {path:'/admin/inventory/:id/reconcile',lazy:async()=>({Component:(await import('@/features/inventory/pages/stock-adjustment')).InventoryReconciliation})},
  {path:'/staff/borrowers/new',lazy:async()=>({Component:(await import('@/features/accounts/pages/account-create')).AccountCreate})},

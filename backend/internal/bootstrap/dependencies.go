@@ -4,6 +4,7 @@ import (
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application"
 	appaccounts "github.com/Maaku050/elabtrack-v2/backend/internal/application/accounts"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/application/auth"
+	appborrowing "github.com/Maaku050/elabtrack-v2/backend/internal/application/borrowing"
 	appinventory "github.com/Maaku050/elabtrack-v2/backend/internal/application/inventory"
 	appterms "github.com/Maaku050/elabtrack-v2/backend/internal/application/terms"
 	appuser "github.com/Maaku050/elabtrack-v2/backend/internal/application/user"
@@ -27,6 +28,7 @@ type Container struct {
 	TermsSvc             *appterms.Service
 	AccountManagementSvc *appaccounts.Service
 	InventorySvc         *appinventory.Service
+	BorrowingSvc         *appborrowing.Service
 
 	// HTTP handlers
 	Health            *handlers.HealthHandler
@@ -35,6 +37,7 @@ type Container struct {
 	Terms             *handlers.TermsHandler
 	AccountManagement *handlers.AccountsHandler
 	Inventory         *handlers.InventoryHandler
+	Borrowing         *handlers.BorrowingHandler
 
 	// Outbound ports needed by route registration (auth middleware).
 	TokenIssuer application.TokenIssuer
@@ -55,10 +58,14 @@ func buildContainer(infra *Infrastructure) *Container {
 
 	accountsSvc := appaccounts.NewService(postgres.NewAccountsRepository(infra.DB.Pool), infra.Tx, hasher, email.NewBrevo(infra.Config.Accounts.BrevoKey, infra.Config.Accounts.SenderEmail, infra.Config.Accounts.SenderName), infra.Config.Accounts.Policy)
 	inventorySvc := appinventory.NewService(postgres.NewInventoryRepository(infra.DB.Pool), postgres.NewAccountsRepository(infra.DB.Pool), infra.Tx, catalogimage.Validator{})
+	borrowingSvc := appborrowing.NewService(postgres.NewBorrowingRepository(infra.DB.Pool), postgres.NewAccountsRepository(infra.DB.Pool), postgres.NewInventoryRepository(infra.DB.Pool), termsSvc, infra.Tx)
+	accountsSvc.SetObligationReader(postgres.NewBorrowingObligations(postgres.NewBorrowingRepository(infra.DB.Pool)))
 	v := validator.New()
 
 	return &Container{
 		AuthSvc:              authSvc,
+		BorrowingSvc:         borrowingSvc,
+		Borrowing:            handlers.NewBorrowingHandler(borrowingSvc, infra.Config.App.Env, infra.Config.Security),
 		InventorySvc:         inventorySvc,
 		Inventory:            handlers.NewInventoryHandler(inventorySvc, infra.Config.App.Env, infra.Config.Security),
 		AccountManagementSvc: accountsSvc,
@@ -84,6 +91,7 @@ func (c *Container) routeDeps() *routes.Deps {
 		Terms:             c.Terms,
 		AccountManagement: c.AccountManagement,
 		Inventory:         c.Inventory,
+		Borrowing:         c.Borrowing,
 		TokenIssuer:       c.TokenIssuer,
 		Accounts:          c.Accounts,
 		Environment:       c.Environment,

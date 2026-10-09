@@ -1,5 +1,7 @@
 # Foundation API contracts and operational observability
 
+**Phase 7 execution update, 2026-10-09:** The owner authorized complete milestones 7A–7D from baseline `366b6ef`. Borrowing/reservation/physical-checkout implementation and final verification are recorded in [the completion report](project/PHASE7_COMPLETION_REPORT.md). Current source and the Phase 7 sections govern these surfaces; earlier unstarted/unauthorized statements are historical checkpoints. New-screen owner acceptance remains pending. Phase 8 is not started. Official FSMO publication/current acceptance, approved production Student domains and verified live activation delivery remain external gates.
+
 **Batch1 update,2026-10-09:** Phase5 account management and Phase6 catalog/inventory now have implemented contracts below. Other future resource drafts remain unimplemented; no borrowing/return/replacement/fine settlement is included.
 
 
@@ -219,3 +221,43 @@ Archive currently allows R/C zero only when PostgreSQL proves the future borrowi
 Database PNG storage is a bounded local strategy, not an object-storage-provider selection. Backups include image data; retained prior images preserve audit references. Large files, SVG/GIF, oversized dimensions, arbitrary external links, image removal/history deletion and return-evidence uploads are unsupported. Future object-storage scaling/retention requires a separately reviewed migration and provider decision.
 
 Frontend routes: `/borrower/equipment[/UUID]`, `/staff/inventory[/new,/categories,/UUID,/UUID/edit,/UUID/adjust]`, `/admin/inventory/UUID/reconcile`. Existing Borrower terms gate stays; catalog reads do not initiate borrowing or imply consent. No cart/request submission, return, replacement, lost correction, fine settlement or Phase7 implementation is included.
+
+## Phase 7 implemented borrowing contracts
+
+Implemented2026-10-09 under explicit complete7A–D authority. One borrowing resource retains REQUEST and DIRECT paths; no return/fine/replacement/completion endpoints. Standard `{success,message,data,meta}` envelope and current database-backed authentication remain in force. Responses are no-store. All POST commands require trusted Origin, strict object JSON and a nonzero UUID `Idempotency-Key`.
+
+| Method/path under `/api/v1` | Authority | Input/result |
+|---|---|---|
+| GET `/borrowings` | Current active authenticated account | BORROWER scope is always self; STAFF/ADMIN operational directory. `page=1`, `per_page=25`, optional `status`, `search`, operational `borrower_id`. Data `{items,page,per_page,total}` |
+| GET `/borrowings/:id` | Owner or STAFF/ADMIN | Full record, equipment quantities and chronological events; other borrower receives404 |
+| POST `/borrowings` | BORROWER only | `{items:[{equipment_id,quantity}],confirm:true}`;201 durable PENDING + reserve |
+| POST `/borrowings/:id/cancel` | Owner BORROWER only | `{confirm:true}`;200 CANCELLED + release while pending |
+| POST `/borrowings/:id/deny` | STAFF/ADMIN | `{reason,confirm:true}`;200 DENIED + release and visible reason |
+| POST `/borrowings/:id/approve` | STAFF/ADMIN | `{due_at,physical_handover_confirmed:true,confirm:true}`;200 CHECKED_OUT in same physical-issue transaction |
+| POST `/borrowings/direct-checkout` | STAFF/ADMIN | `{borrower_id,items,due_at,physical_handover_confirmed:true,confirm:true}`;201 DIRECT CHECKED_OUT; no hold |
+
+Page bounds1..100000, per_page1..100; search trimmed/maximum100 and literal wildcard escaping. Search matches immutable reference/borrower name/Student ID. States PENDING/CHECKED_OUT/DENIED/CANCELLED/EXPIRED only. Stable order created_at DESC,id DESC, real scoped count/page in one SQL snapshot. Optional borrower_id is intersected with operational filters; BORROWER always forces its own identity. Directory records have empty items/events arrays; detail supplies full arrays. There is no current-page client filtering or generic status PATCH/DELETE.
+
+Records contain `id,reference,borrower_id,borrower_name,borrower_type,student_id,status,entry_path,acceptance_id,created_at,expires_at,checked_out_at,due_at,terminal_at,denial_reason,is_overdue,items,events`. Items retain `id,equipment_id,name,quantity,reserved_quantity,issued_quantity`. Events contain `id,actor_id,kind,reason,occurred_at`; only system EXPIRED has NULL actor. Timestamps are RFC3339 instants (UTC or equivalent offset); clients must compare instants, and render Asia/Manila. REQUEST expiry is retained after issue; DIRECT expiry is null. Issued overdue is derived against current database time, without fine calculation or automatic status mutation.
+
+Transport bounds:1..100 distinct equipment lines (request-size bound, not borrower quota), whole quantity1..2147483647, denial explanation trimmed/nonblank/maximum1000. Duplicate IDs and inconsistent extra command fields are rejected. Due must be a valid future instant after authoritative lock-time; no seven-day maximum. Current ACTIVE equipment and sufficient available physical stock are required on submit/direct; checkout also rechecks ACTIVE equipment and active/activated/classified target. Student/Faculty remain BORROWER categories.
+
+Current Phase4B acceptance is required **inside the transaction** for submission and direct issuance, held with publication lock and bound to that borrower. Staff cannot accept on behalf of a target. Existing pending checkout retains original acceptance. Missing published terms503 `TERMS_NOT_PUBLISHED`, missing applicable acceptance409 `TERMS_ACCEPTANCE_REQUIRED` and service failures remain fail closed. Read-only own history is not terms-gated. Normal missing official content is not synthesized.
+
+| Failure | HTTP/code |
+|---|---|
+| Invalid command/query/key/due/confirmation |400 existing VALIDATION_ERROR |
+| Missing/invalid session/current account | Existing401/403 auth envelope |
+| Wrong command authority/untrusted Origin |403 existing FORBIDDEN |
+| Target inactive/pending activation/wrong role/category |403 BORROWER_NOT_ELIGIBLE |
+| Scoped missing borrowing |404 existing NOT_FOUND |
+| Inactive/insufficient equipment |409 EQUIPMENT_NOT_AVAILABLE |
+| Consumed/nonpending state |409 BORROWING_STATE_CONFLICT |
+| Reused receipt key with changed normalized payload |409 IDEMPOTENCY_CONFLICT |
+| Late pending decision |409 BORROWING_EXPIRED **after expiry/release/receipt commits** |
+
+Receipts are actor+operation/resource+key scoped; normalized line order/reason/UTC due determine payload hash. Replay requires current actor authority, and submit/direct target eligibility, then returns the original committed result/status without new effects. Historical results may predate subsequent transitions; fetch detail for current state. Late-decision replay remains409. Failure with no committed receipt leaves the same key safe for retry; no client automatic mutation retries.
+
+Each command atomically writes exact stock custody vectors, sequence, aggregate/items, immutable event, typed movement, operator audit when actor exists and receipt. System expiry has canonical event/movement actorNULL rather than an invented operator. Worker: immediate restart catch-up,30s interval,100 candidates/cycle,10s budget, persisted deadlines and independent candidate transactions. Availability changes only after release commits. Worker backlogs/outages can delay release; there is no timing-only authority, broker or live email integration.
+
+Phase5 account DTO obligations now have availability `PARTIAL` when only Phase7 is installed: pending_requests/active_borrowings/overdue_borrowings/unreturned_units are authoritative; fine_minor/replacement_units are omitted when unavailable. Absent borrowing or unintegrated future disposition/replacement modules returns UNAVAILABLE. Deactivation behavior is unchanged. Phase6 archive_safety may now be CLEAR or BLOCKED using real installed pending/issued equipment liabilities; unintegrated replacement tables remain UNAVAILABLE and fail closed; future return integration must replace the existing issued-liability adapter. Movement actor_id is nullable for automatic expiration only. Catalog images, stock correction and unavailable custody rules are unchanged.

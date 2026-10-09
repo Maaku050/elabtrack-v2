@@ -1,0 +1,318 @@
+{
+  "date": "2026-10-09T14:11:42.819Z",
+  "result": "PASS",
+  "checks": [
+    "Staff persistent directory and tablet/dark theme",
+    "Staff denial review persists the borrower-visible reason and release",
+    "Physical handover and Manila due time produce one checked-out loan",
+    "Direct issuance uses an eligible existing Borrower with no pending hold",
+    "Exact final stock A17/R0/C3/T20 and movement history",
+    "Admin operational navigation and keyboard access",
+    "Borrower sees denial reason and issued history in mobile view",
+    "Persisted deadline and actual sweep produce expired history without double release"
+  ],
+  "screens": [
+    "staff-directory-1440-light.png",
+    "staff-directory-1024-dark.png",
+    "staff-denial-form-1024-light.png",
+    "staff-denial-review-1440-dark.png",
+    "staff-checkout-form-1440-light.png",
+    "staff-checkout-review-1024-dark.png",
+    "staff-issued-loan-1440-light.png",
+    "staff-issued-loan-1024-dark.png",
+    "staff-direct-form-1440-light.png",
+    "staff-direct-review-1024-dark.png",
+    "staff-stock-after-issuance-1440-light.png",
+    "staff-stock-after-issuance-1024-dark.png",
+    "staff-admin-directory-1440-dark.png",
+    "staff-borrower-denied-history-390-light.png",
+    "staff-borrower-denied-history-390-dark.png",
+    "staff-borrower-issued-history-390-light.png",
+    "staff-borrower-expired-history-390-light.png",
+    "staff-borrower-expired-history-390-dark.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowings"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings/9a308873-a550-4da2-8beb-167bf9741f19"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowings/9a308873-a550-4da2-8beb-167bf9741f19"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/borrowings/9a308873-a550-4da2-8beb-167bf9741f19/deny"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowings/9a308873-a550-4da2-8beb-167bf9741f19/deny"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings/9a308873-a550-4da2-8beb-167bf9741f19"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings/3172f0c4-35e2-4ea6-b7c8-10035f19d2eb"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowings/3172f0c4-35e2-4ea6-b7c8-10035f19d2eb"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/borrowings/3172f0c4-35e2-4ea6-b7c8-10035f19d2eb/approve"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowings/3172f0c4-35e2-4ea6-b7c8-10035f19d2eb/approve"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings/3172f0c4-35e2-4ea6-b7c8-10035f19d2eb"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowings/direct-checkout"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/borrowings/direct-checkout"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings/dd0614d3-a689-4723-9c13-691ee28e65ef"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowings/dd0614d3-a689-4723-9c13-691ee28e65ef"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/dcee2378-01f4-4565-951c-dc3cc3352bee"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/dcee2378-01f4-4565-951c-dc3cc3352bee"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/dcee2378-01f4-4565-951c-dc3cc3352bee/movements"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/dcee2378-01f4-4565-951c-dc3cc3352bee/movements"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/dcee2378-01f4-4565-951c-dc3cc3352bee"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/dcee2378-01f4-4565-951c-dc3cc3352bee/movements"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/terms/status"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings/9a308873-a550-4da2-8beb-167bf9741f19"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings/3172f0c4-35e2-4ea6-b7c8-10035f19d2eb"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowings/9f89f4b4-521b-443a-947f-6a16f43c7b8b"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowings/9f89f4b4-521b-443a-947f-6a16f43c7b8b"
+    }
+  ],
+  "scope": "Real Chromium and isolated PostgreSQL/API; synthetic accounts and terms only; owner acceptance pending"
+}

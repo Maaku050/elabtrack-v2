@@ -1,0 +1,549 @@
+{
+  "date": "2026-10-09T14:17:17.231031+00:00",
+  "baseline": "366b6ef4457378a2cdcf5d74aae9d1103e443637",
+  "status": "PHASE7 ENGINEERING COMPLETE / OWNER ACCEPTANCE PENDING",
+  "guarded_suites": 16,
+  "guarded_named_subtests": 82,
+  "suite_names": [
+    "TestBatch1HTTP",
+    "TestBatch1InventoryBorrowabilityFilter",
+    "TestBatch1InventoryHTTP",
+    "TestPhase7HTTP",
+    "TestRealAccountDeliveryRace",
+    "TestRealAccounts",
+    "TestRealBorrowingCrossFeatureSafety",
+    "TestRealBorrowingFoundation",
+    "TestRealBorrowingOperations",
+    "TestRealBorrowingProcessRestart",
+    "TestRealFoundation",
+    "TestRealInventory",
+    "TestRealInventoryContention",
+    "TestRealInventoryCorrectionSafety",
+    "TestRealTerms",
+    "TestRealTermsHTTP"
+  ],
+  "named_subtests": [
+    "TestBatch1HTTP/role_origin_strict_payload_and_cors",
+    "TestBatch1InventoryBorrowabilityFilter/active_intersection",
+    "TestBatch1InventoryBorrowabilityFilter/archived_intersection",
+    "TestBatch1InventoryBorrowabilityFilter/archived_original_visibility",
+    "TestBatch1InventoryBorrowabilityFilter/authority_validation_and_borrower_visibility",
+    "TestBatch1InventoryBorrowabilityFilter/beyond_final_page",
+    "TestBatch1InventoryBorrowabilityFilter/inactive_category_intersection",
+    "TestBatch1InventoryBorrowabilityFilter/inactive_intersection",
+    "TestBatch1InventoryBorrowabilityFilter/inactive_without_availability",
+    "TestBatch1InventoryBorrowabilityFilter/independent_other_category",
+    "TestBatch1InventoryBorrowabilityFilter/positive_active_first_page",
+    "TestBatch1InventoryBorrowabilityFilter/positive_active_second_page",
+    "TestBatch1InventoryBorrowabilityFilter/search_inactive_no_match",
+    "TestBatch1InventoryBorrowabilityFilter/search_intersection",
+    "TestBatch1InventoryBorrowabilityFilter/stable_pages_and_sort",
+    "TestBatch1InventoryBorrowabilityFilter/unfiltered",
+    "TestPhase7HTTP/current_status_revocation",
+    "TestPhase7HTTP/real_scoped_page_and_cancel",
+    "TestPhase7HTTP/staff_approval_denial_and_direct_contracts",
+    "TestPhase7HTTP/submit_replay_strict_origin_and_roles",
+    "TestRealAccounts/bounded_search_filters_and_missing_mail_state",
+    "TestRealAccounts/bulk_preview_conflicts_selection_idempotency_and_rollback",
+    "TestRealAccounts/concurrent_identity_and_activation",
+    "TestRealAccounts/database_constraints_history_and_nonempty_rollback",
+    "TestRealAccounts/domain_duplicates_and_authority",
+    "TestRealAccounts/empty_down_up_preserves_existing_identities_and_sessions",
+    "TestRealAccounts/individual_student_faculty_text_identity_and_idempotency",
+    "TestRealAccounts/reissue_expiry_inactive_and_no_session_resurrection",
+    "TestRealAccounts/single_use_password_and_current_terms",
+    "TestRealAccounts/student_only_deactivation_ignores_obligations_and_retains_history",
+    "TestRealBorrowingCrossFeatureSafety/activation_and_missing_terms_fail_closed",
+    "TestRealBorrowingCrossFeatureSafety/clear_equipment_archives_but_future_liability_stays_closed",
+    "TestRealBorrowingCrossFeatureSafety/concurrent_same_key_exactly_one_reservation",
+    "TestRealBorrowingCrossFeatureSafety/deactivation_warns_without_resolving_stock_or_loans",
+    "TestRealBorrowingCrossFeatureSafety/required_audit_failure_rolls_back_every_effect",
+    "TestRealBorrowingFoundation/cancel_and_expiry_release_once_after_restart",
+    "TestRealBorrowingFoundation/eligibility_terms_and_inactive_equipment",
+    "TestRealBorrowingFoundation/last_unit_and_many_reservations",
+    "TestRealBorrowingFoundation/multi_item_rollback_retries_and_invalid",
+    "TestRealBorrowingOperations/cancel_checkout_and_deny_cancel_races",
+    "TestRealBorrowingOperations/constraints_immutable_history_and_data_rollback_refusal",
+    "TestRealBorrowingOperations/deny_reason_checkout_due_and_replay",
+    "TestRealBorrowingOperations/detail_read_never_mixes_transition_headers_and_items",
+    "TestRealBorrowingOperations/direct_checkout_competes_with_reservation",
+    "TestRealBorrowingOperations/expiry_checkout_workers_restart_and_inactive_target",
+    "TestRealBorrowingOperations/issue_rollbacks_deactivation_and_role_revocation",
+    "TestRealBorrowingOperations/terms_revision_existing_binding_and_future_gates",
+    "TestRealFoundation/bounded_retention",
+    "TestRealFoundation/generic_invalid_login",
+    "TestRealFoundation/hash_rotation_concurrent_http_logout",
+    "TestRealFoundation/health_and_safe_current_account",
+    "TestRealFoundation/missing_account_after_issuance",
+    "TestRealFoundation/product_permission_matrix",
+    "TestRealFoundation/real_transaction_rollback",
+    "TestRealFoundation/stale_authority",
+    "TestRealInventory/adjustment_retry_negative_overflow_and_atomicity",
+    "TestRealInventory/admin_reconciliation_preserves_reserved_custody_damaged",
+    "TestRealInventory/archive_future_boundary_and_history_guards",
+    "TestRealInventory/authority_category_identity_and_metadata",
+    "TestRealInventory/bounded_search_filters_visibility",
+    "TestRealInventory/concurrent_last_stock_and_duplicate_key",
+    "TestRealInventory/empty_paired_rollback_preserves_accounts",
+    "TestRealInventory/safe_images_and_ownership",
+    "TestRealInventoryContention/competing_actor_equipment_locks",
+    "TestRealInventoryContention/ledger_vector_and_audit_receipt_conservation",
+    "TestRealInventoryContention/optimistic_metadata_single_winner",
+    "TestRealTerms/acceptance_and_publication_transaction_rollback",
+    "TestRealTerms/acceptance_wins_preserves_reviewed_version",
+    "TestRealTerms/constraints_immutability_and_runtime_privileges",
+    "TestRealTerms/empty_migration_down_up_preserves_accounts_sessions",
+    "TestRealTerms/first_repeat_and_account_scope",
+    "TestRealTerms/history_safe_rollback_and_policy_transaction_boundary",
+    "TestRealTerms/missing_terms_and_no_automatic_consent",
+    "TestRealTerms/parallel_acceptance_one_original_receipt",
+    "TestRealTerms/parallel_publishers_no_blind_overwrite",
+    "TestRealTerms/publication_and_role_authority",
+    "TestRealTerms/publication_wins_old_view_conflicts",
+    "TestRealTerms/replacement_history_and_stale_consent",
+    "TestRealTermsHTTP/authentication_and_role_matrix",
+    "TestRealTermsHTTP/current_acceptance_repeat_and_version_conflict",
+    "TestRealTermsHTTP/current_database_role_and_inactive_after_issuance",
+    "TestRealTermsHTTP/strict_identity_and_origin_boundary"
+  ],
+  "database_api_logs": [
+    {
+      "log": "/tmp/elabtrack-phase7-fresh-terms.log",
+      "sha256": "2e6d37feed96b871f3f2df1ac153aee34acb84c01e907e365ffb2b7fb5f78617",
+      "passing_suites": [
+        "TestRealTerms"
+      ],
+      "passing_subtests": [
+        "TestRealTerms/empty_migration_down_up_preserves_accounts_sessions",
+        "TestRealTerms/missing_terms_and_no_automatic_consent",
+        "TestRealTerms/publication_and_role_authority",
+        "TestRealTerms/first_repeat_and_account_scope",
+        "TestRealTerms/replacement_history_and_stale_consent",
+        "TestRealTerms/parallel_acceptance_one_original_receipt",
+        "TestRealTerms/acceptance_and_publication_transaction_rollback",
+        "TestRealTerms/constraints_immutability_and_runtime_privileges",
+        "TestRealTerms/publication_wins_old_view_conflicts",
+        "TestRealTerms/acceptance_wins_preserves_reviewed_version",
+        "TestRealTerms/parallel_publishers_no_blind_overwrite",
+        "TestRealTerms/history_safe_rollback_and_policy_transaction_boundary"
+      ]
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-fresh-accounts.log",
+      "sha256": "96145be60807b87192db980a2a9beb0dee9ea0339605340508a64ab5ad6a5890",
+      "passing_suites": [
+        "TestRealAccounts"
+      ],
+      "passing_subtests": [
+        "TestRealAccounts/empty_down_up_preserves_existing_identities_and_sessions",
+        "TestRealAccounts/individual_student_faculty_text_identity_and_idempotency",
+        "TestRealAccounts/domain_duplicates_and_authority",
+        "TestRealAccounts/bounded_search_filters_and_missing_mail_state",
+        "TestRealAccounts/single_use_password_and_current_terms",
+        "TestRealAccounts/reissue_expiry_inactive_and_no_session_resurrection",
+        "TestRealAccounts/bulk_preview_conflicts_selection_idempotency_and_rollback",
+        "TestRealAccounts/student_only_deactivation_ignores_obligations_and_retains_history",
+        "TestRealAccounts/concurrent_identity_and_activation",
+        "TestRealAccounts/database_constraints_history_and_nonempty_rollback"
+      ]
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-fresh-inventory.log",
+      "sha256": "1dd06acdcc35ff315b6cc8e7cdc9a65120efb89f9eacf81124e6b7b9d916b01d",
+      "passing_suites": [
+        "TestRealInventory"
+      ],
+      "passing_subtests": [
+        "TestRealInventory/empty_paired_rollback_preserves_accounts",
+        "TestRealInventory/authority_category_identity_and_metadata",
+        "TestRealInventory/bounded_search_filters_visibility",
+        "TestRealInventory/adjustment_retry_negative_overflow_and_atomicity",
+        "TestRealInventory/admin_reconciliation_preserves_reserved_custody_damaged",
+        "TestRealInventory/concurrent_last_stock_and_duplicate_key",
+        "TestRealInventory/safe_images_and_ownership",
+        "TestRealInventory/archive_future_boundary_and_history_guards"
+      ]
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-fresh-races.log",
+      "sha256": "851ac8e5bd0c6cbab95e52b48003fad9f1b02d6b7ed0ae58dd53652df1310def",
+      "passing_suites": [
+        "TestRealAccountDeliveryRace",
+        "TestRealBorrowingFoundation",
+        "TestRealBorrowingOperations",
+        "TestRealBorrowingCrossFeatureSafety",
+        "TestRealInventoryContention",
+        "TestRealInventoryCorrectionSafety"
+      ],
+      "passing_subtests": [
+        "TestRealBorrowingFoundation/last_unit_and_many_reservations",
+        "TestRealBorrowingFoundation/multi_item_rollback_retries_and_invalid",
+        "TestRealBorrowingFoundation/eligibility_terms_and_inactive_equipment",
+        "TestRealBorrowingFoundation/cancel_and_expiry_release_once_after_restart",
+        "TestRealBorrowingOperations/deny_reason_checkout_due_and_replay",
+        "TestRealBorrowingOperations/cancel_checkout_and_deny_cancel_races",
+        "TestRealBorrowingOperations/direct_checkout_competes_with_reservation",
+        "TestRealBorrowingOperations/expiry_checkout_workers_restart_and_inactive_target",
+        "TestRealBorrowingOperations/issue_rollbacks_deactivation_and_role_revocation",
+        "TestRealBorrowingOperations/terms_revision_existing_binding_and_future_gates",
+        "TestRealBorrowingOperations/constraints_immutable_history_and_data_rollback_refusal",
+        "TestRealBorrowingCrossFeatureSafety/activation_and_missing_terms_fail_closed",
+        "TestRealBorrowingCrossFeatureSafety/required_audit_failure_rolls_back_every_effect",
+        "TestRealBorrowingCrossFeatureSafety/concurrent_same_key_exactly_one_reservation",
+        "TestRealBorrowingCrossFeatureSafety/deactivation_warns_without_resolving_stock_or_loans",
+        "TestRealBorrowingCrossFeatureSafety/clear_equipment_archives_but_future_liability_stays_closed",
+        "TestRealInventoryContention/competing_actor_equipment_locks",
+        "TestRealInventoryContention/optimistic_metadata_single_winner",
+        "TestRealInventoryContention/ledger_vector_and_audit_receipt_conservation"
+      ]
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-network-tests.log",
+      "sha256": "97ceb2194c27841359cf8190ed9d6106492de13f3265fe0e08537c3709e8234e",
+      "passing_suites": [
+        "TestRealFoundation",
+        "TestRealTermsHTTP"
+      ],
+      "passing_subtests": [
+        "TestRealFoundation/health_and_safe_current_account",
+        "TestRealFoundation/generic_invalid_login",
+        "TestRealFoundation/product_permission_matrix",
+        "TestRealFoundation/stale_authority",
+        "TestRealFoundation/hash_rotation_concurrent_http_logout",
+        "TestRealFoundation/real_transaction_rollback",
+        "TestRealFoundation/missing_account_after_issuance",
+        "TestRealFoundation/bounded_retention",
+        "TestRealTermsHTTP/authentication_and_role_matrix",
+        "TestRealTermsHTTP/strict_identity_and_origin_boundary",
+        "TestRealTermsHTTP/current_acceptance_repeat_and_version_conflict",
+        "TestRealTermsHTTP/current_database_role_and_inactive_after_issuance"
+      ]
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-api-regressions.log",
+      "sha256": "40389b2b1e8c2c0d613ba64ddd18a916296126cfc0d06c50c66b5168bbe035b5",
+      "passing_suites": [
+        "TestBatch1HTTP",
+        "TestBatch1InventoryHTTP",
+        "TestPhase7HTTP",
+        "TestBatch1InventoryBorrowabilityFilter"
+      ],
+      "passing_subtests": [
+        "TestBatch1HTTP/role_origin_strict_payload_and_cors",
+        "TestPhase7HTTP/submit_replay_strict_origin_and_roles",
+        "TestPhase7HTTP/real_scoped_page_and_cancel",
+        "TestPhase7HTTP/staff_approval_denial_and_direct_contracts",
+        "TestPhase7HTTP/current_status_revocation",
+        "TestBatch1InventoryBorrowabilityFilter/unfiltered",
+        "TestBatch1InventoryBorrowabilityFilter/positive_active_first_page",
+        "TestBatch1InventoryBorrowabilityFilter/positive_active_second_page",
+        "TestBatch1InventoryBorrowabilityFilter/beyond_final_page",
+        "TestBatch1InventoryBorrowabilityFilter/active_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/inactive_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/archived_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/inactive_without_availability",
+        "TestBatch1InventoryBorrowabilityFilter/archived_original_visibility",
+        "TestBatch1InventoryBorrowabilityFilter/inactive_category_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/independent_other_category",
+        "TestBatch1InventoryBorrowabilityFilter/search_intersection",
+        "TestBatch1InventoryBorrowabilityFilter/search_inactive_no_match",
+        "TestBatch1InventoryBorrowabilityFilter/stable_pages_and_sort",
+        "TestBatch1InventoryBorrowabilityFilter/authority_validation_and_borrower_visibility"
+      ]
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-final-borrowing-pg.log",
+      "sha256": "181b0c2680a1137c42ed0e3f11097907e4d772874d18bd1dc99360a6a002eaf4",
+      "passing_suites": [
+        "TestRealBorrowingFoundation",
+        "TestRealBorrowingOperations",
+        "TestRealBorrowingCrossFeatureSafety"
+      ],
+      "passing_subtests": [
+        "TestRealBorrowingFoundation/last_unit_and_many_reservations",
+        "TestRealBorrowingFoundation/multi_item_rollback_retries_and_invalid",
+        "TestRealBorrowingFoundation/eligibility_terms_and_inactive_equipment",
+        "TestRealBorrowingFoundation/cancel_and_expiry_release_once_after_restart",
+        "TestRealBorrowingOperations/deny_reason_checkout_due_and_replay",
+        "TestRealBorrowingOperations/detail_read_never_mixes_transition_headers_and_items",
+        "TestRealBorrowingOperations/cancel_checkout_and_deny_cancel_races",
+        "TestRealBorrowingOperations/direct_checkout_competes_with_reservation",
+        "TestRealBorrowingOperations/expiry_checkout_workers_restart_and_inactive_target",
+        "TestRealBorrowingOperations/issue_rollbacks_deactivation_and_role_revocation",
+        "TestRealBorrowingOperations/terms_revision_existing_binding_and_future_gates",
+        "TestRealBorrowingOperations/constraints_immutable_history_and_data_rollback_refusal",
+        "TestRealBorrowingCrossFeatureSafety/activation_and_missing_terms_fail_closed",
+        "TestRealBorrowingCrossFeatureSafety/required_audit_failure_rolls_back_every_effect",
+        "TestRealBorrowingCrossFeatureSafety/concurrent_same_key_exactly_one_reservation",
+        "TestRealBorrowingCrossFeatureSafety/deactivation_warns_without_resolving_stock_or_loans",
+        "TestRealBorrowingCrossFeatureSafety/clear_equipment_archives_but_future_liability_stays_closed"
+      ]
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-http-final.log",
+      "sha256": "566d26eaddaf875067b8d150dceb4e99fe9ecdc75321588348c4dc323643bd87",
+      "passing_suites": [
+        "TestPhase7HTTP"
+      ],
+      "passing_subtests": [
+        "TestPhase7HTTP/submit_replay_strict_origin_and_roles",
+        "TestPhase7HTTP/real_scoped_page_and_cancel",
+        "TestPhase7HTTP/staff_approval_denial_and_direct_contracts",
+        "TestPhase7HTTP/current_status_revocation"
+      ]
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-process-restart.log",
+      "sha256": "0cc0cd5ec288d328364c0a1c50cc6ccb162591c7106ad24593f0911b77039960",
+      "passing_suites": [
+        "TestRealBorrowingProcessRestart"
+      ],
+      "passing_subtests": []
+    }
+  ],
+  "quality_logs": [
+    {
+      "log": "/tmp/elabtrack-phase7-go-fmt-final.log",
+      "sha256": "401197688021fc9cf0015a4519e07152df29c3a19587ccd39c4f4935fe56f38d",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-go-vet-final.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-go-tests-final.log",
+      "sha256": "ded948cb2ce8057a66b266a38600d680a9d04f09a0160a112013769034e476c9",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-go-race-final.log",
+      "sha256": "135c77be754bef98a8beb484f4ddc526867d9097bc248260939991508ec54fce",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-front-serial.log",
+      "sha256": "6e5393f07ce1d227b5cf63ba77f14d36d37b52000cb5301a7bf15e398e192707",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-front-parallel-bounded.log",
+      "sha256": "8312d441a9fca3de9420069f4f1dc71086a8e5e0bc44957b0d13ef9192ef7860",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-lint-final.log",
+      "sha256": "b8635d70e6f885cb46360e49930439999b9f0e20512f59b0695fa9b89946e819",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-build-final.log",
+      "sha256": "ae39b749a696c7364c2f8d511332682ad568f4da6f0c133ee10e22cc50715edd",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-migration-status-final.log",
+      "sha256": "b2eaf20cd2b8775678fce38cfb939f4970dc19ebde510697f226d6ed724a985f",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-borrower-browser-final.log",
+      "sha256": "276e9efdc24e632c4c7b8c02e7cc0af716974c03c666d210e8f1efea8e01cd14",
+      "result": "PASS"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-staff-browser-final.log",
+      "sha256": "f7335b87fe236683f19d9ef1d13ae36cdd6d28919f3ec52d6b4cdbb835741e70",
+      "result": "PASS"
+    }
+  ],
+  "frontend": {
+    "tests": 279,
+    "files": 23,
+    "serial": "PASS",
+    "parallel_workers": 2,
+    "parallel": "PASS",
+    "lint_warnings": 19,
+    "new_lint_warnings": 0
+  },
+  "failed_loaded_runs": [
+    {
+      "log": "/tmp/elabtrack-phase7-front-parallel.log",
+      "passing": 277,
+      "failing": 2,
+      "cause": "inherited lazy-login timeout under concurrent unrestricted worker load"
+    },
+    {
+      "log": "/tmp/elabtrack-phase7-front-serial-loaded-failure.log",
+      "passing": 278,
+      "failing": 1,
+      "cause": "same inherited lazy-login timeout during concurrent work"
+    }
+  ],
+  "browser": {
+    "borrower": {
+      "checks": 5,
+      "screenshots": 13,
+      "evidence": "docs/ux/verification/phase7/borrower-acceptance.json"
+    },
+    "staff": {
+      "checks": 8,
+      "screenshots": 18,
+      "evidence": "docs/ux/verification/phase7/staff-acceptance.json"
+    }
+  },
+  "screenshots": [
+    {
+      "file": "docs/ux/verification/phase7/borrower-cancel-confirmation-390-light.png",
+      "sha256": "0f4b8808ac9e1d499b0d59dcf751298e565e4963926770a20e590cd4edb1ff5f"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-cancelled-history-390-dark.png",
+      "sha256": "fb317fdccd45b17bbc0d41dd4775aa96b3f7bd623c3919f9ff3e3a6c604dad34"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-catalog-390-dark.png",
+      "sha256": "3fab2980d3808620a9cc0a38230ce5828cf103edf4de3469de86f99b6e6e944a"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-catalog-390-light.png",
+      "sha256": "da3d46f0285edbba77fce988994395e322fb3881618d04f8e1d3a7b74b7b9a6f"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-equipment-detail-390-light.png",
+      "sha256": "7869df4b9beb14b18ad30c36fe34f8291f1a92059ee28931d2c505043f0caec0"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-history-390-light.png",
+      "sha256": "601b4fffb48d412d777e0aa9a11b655e421ea8573ab638a6c326c0c34185600c"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-history-768-dark.png",
+      "sha256": "58b4e60e4d0640e7e0626d97230dd8864a1dc69671dfd2ac2298f22d786ddffb"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-pending-1440-dark.png",
+      "sha256": "715ffcd7ede8cb8dc7b0a2adc1c501060e0cf14ae7e782ae601d0ee80dc87b8b"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-pending-390-light.png",
+      "sha256": "e5bf4aba30539ffc0037c4ae6a247b059c2c56215446f69ad3f880e5681ad0c1"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-quantity-selection-1024-dark.png",
+      "sha256": "f46531680a7ef131cb0ee5a25defb9fbcf06198752db7e3027ba5d8094baafe9"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-quantity-selection-390-light.png",
+      "sha256": "edb62298fc57319f1bdcd91c4420dff32e8e1a02fe0992a337580069c7451c31"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-review-1440-dark.png",
+      "sha256": "4f90befb78c73b04d60928edc73007e9b5ca39caa993b1eea045b2de3e1f6ddc"
+    },
+    {
+      "file": "docs/ux/verification/phase7/borrower-review-390-light.png",
+      "sha256": "a43933df3447afc44a87fe9e3bfd8c1b724651b57302073dadc723de90967445"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-admin-directory-1440-dark.png",
+      "sha256": "160de5ec425cae292f069085d05088fa5ecad3b1c99cb327fd558ecb59a99a87"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-borrower-denied-history-390-dark.png",
+      "sha256": "b218fa5f0d51fa9d838376c96db0fd7e865abc253356100091f2487354e2cdd8"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-borrower-denied-history-390-light.png",
+      "sha256": "1869f5dad63d16f03c317e1a741dcd9a9703be24e27a6817b1086cec96d4504e"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-borrower-expired-history-390-dark.png",
+      "sha256": "595b840aadaac72bb4b220a4e4c9b0ae80f32702de5a57ae56dba592a29cce83"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-borrower-expired-history-390-light.png",
+      "sha256": "f8607925e1ee0bd0cad627e51e9dbaed678fd2c06d2562353e7e1ae0eec2bfce"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-borrower-issued-history-390-light.png",
+      "sha256": "b5749d3cd109b86e4a26b7878a9edc1b26b08687e4c5d2a8d1945c4806df21fc"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-checkout-form-1440-light.png",
+      "sha256": "fd81e8b50d55cec8a2fa148c72822f7faeca1beab1bd487f23f64fbc207a6fe4"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-checkout-review-1024-dark.png",
+      "sha256": "b97282d59c8d9387ba9b89d74f5f08b1d23fb5242d5d59648beb389529671b9a"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-denial-form-1024-light.png",
+      "sha256": "c6f0b071446206da5fde579c6ae6037f9247a0c7f4347c9c94ab398af50a21af"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-denial-review-1440-dark.png",
+      "sha256": "1e82cd9e80800a10f693543810daa651f0d35d7162c9e0c1fd43d60d73a94649"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-direct-form-1440-light.png",
+      "sha256": "bdae2ca8c15b6bf24ae26bf7fda60e5f06936e253b29d17e5de9de480604489c"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-direct-review-1024-dark.png",
+      "sha256": "2c56a1afe7d7489cba1547c92a4b3b9baf848efb00fed55a6e1e0a5c3e04533b"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-directory-1024-dark.png",
+      "sha256": "d0fa10f5f2ea59fdeb0108985856f8715889708dca493e4bdd08dc2745512d59"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-directory-1440-light.png",
+      "sha256": "fcf84cbb767ada985e32608fe293edf7f387c5de523db86851bb1fdc2db072ae"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-issued-loan-1024-dark.png",
+      "sha256": "243c961aea1482fc816d609075eb173be71c02d0776d09435e1b223acde229a4"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-issued-loan-1440-light.png",
+      "sha256": "492a753db17238350e22d529b8cd16ffbd6cf5f72b0000093f9e9be8cf35b36a"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-stock-after-issuance-1024-dark.png",
+      "sha256": "e220f542a205e1c055a76a154794c877d77e84b8903fcb415435a18d0f35dab9"
+    },
+    {
+      "file": "docs/ux/verification/phase7/staff-stock-after-issuance-1440-light.png",
+      "sha256": "0c29def189cf270bf9dd0f72c9145173cb8632cc39a1ba808fdce1a20368b328"
+    }
+  ],
+  "normal_database_migrated": false,
+  "live_emails_sent": false,
+  "phase8_started": false,
+  "owner_acceptance": "PENDING",
+  "migration": "8 checksums verified only on isolated DB; empty up/down/reapply and history-bearing refusal pass",
+  "cleanup": "Owned verification listeners/harness stopped; isolated DB containers stopped; all volumes retained; private browser fixture/sentinels removed.",
+  "process_restart": {
+    "result": "PASS",
+    "actual_api_processes": 3,
+    "abrupt_termination_while_pending": true,
+    "deadline_elapsed_during_downtime": true,
+    "expiry_release_movements": 1,
+    "final_stock": {
+      "available": 1,
+      "reserved": 0,
+      "checked_out": 0,
+      "damaged_held": 0,
+      "total_tracked": 1
+    }
+  },
+  "credential_audit": {
+    "intended_text_files_checked": 71,
+    "high_confidence_credential_patterns_found": 0,
+    "private_test_environment": "Git-ignored/mode0600",
+    "screenshots": "Synthetic identities only; no passwords/tokens captured",
+    "index": "Unchanged; no staging"
+  }
+}

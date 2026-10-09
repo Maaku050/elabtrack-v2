@@ -1,0 +1,10 @@
+cd backend && go run ./cmd/api --migrate-status
+000001_create_users applied checksum=verified
+000002_create_refresh_tokens applied checksum=verified
+000003_refresh_session_security applied checksum=verified
+000004_product_roles applied checksum=verified
+000005_terms_acceptance applied checksum=verified
+000006_account_management applied checksum=verified
+000007_inventory applied checksum=verified
+000008_borrowing applied checksum=verified
+current version: 000008_borrowing

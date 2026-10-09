@@ -99,6 +99,7 @@ func TestRealAccounts(t *testing.T) {
 		}
 		before := snapshot()
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil, "empty inventory rollback before account pair")
 		require(t, m.Down(ctx) == nil && m.Up(ctx) == nil, "empty paired migration")
 		require(t, snapshot() == before, "existing identities and sessions unchanged")
@@ -315,6 +316,7 @@ func TestRealAccounts(t *testing.T) {
 		_, e = owner.Pool.Exec(ctx, `UPDATE users SET role='STAFF' WHERE id=$1`, student.ID)
 		require(t, e != nil, "classified borrower role integrity")
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil, "empty inventory rollback before account pair")
 		require(t, m.Down(ctx) != nil, "history-bearing rollback denied")
 		var count int

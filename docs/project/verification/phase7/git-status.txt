@@ -1,0 +1,67 @@
+Branch: main
+HEAD: 366b6ef4457378a2cdcf5d74aae9d1103e443637
+Index: unchanged; no staged changes
+
+$ git status --short
+ M backend/internal/application/inventory/service.go
+ M backend/internal/bootstrap/app.go
+ M backend/internal/bootstrap/dependencies.go
+ M backend/internal/domain/accounts/accounts.go
+ M backend/internal/domain/inventory/inventory.go
+ M backend/internal/domain/user/permissions.go
+ M backend/internal/infrastructure/persistence/postgres/inventory_repository.go
+ M backend/internal/interface/http/response/errors.go
+ M backend/internal/interface/http/routes/routes.go
+ M backend/tests/integration/accounts_test.go
+ M backend/tests/integration/inventory_test.go
+ M backend/tests/integration/terms_test.go
+ M docs/API_CONTRACTS.md
+ M docs/domain/API_RESOURCE_DRAFT.md
+ M docs/domain/BUSINESS_RULES.md
+ M docs/domain/DATA_MODEL.md
+ M docs/domain/DOMAIN_MODEL.md
+ M docs/domain/INVARIANTS.md
+ M docs/domain/STATE_MACHINES.md
+ M docs/project/DECISIONS.md
+ M docs/project/OPEN_DECISIONS.md
+ M docs/project/ROADMAP.md
+ M docs/project/SOURCE_OF_TRUTH.md
+ M docs/ux/FRONTEND_RECONSTRUCTION_CONTRACT.md
+ M frontend/src/app/router.tsx
+ M frontend/src/features/accounts/pages/account-detail.tsx
+ M frontend/src/features/accounts/types.ts
+ M frontend/src/features/auth/navigation.ts
+ M frontend/src/features/inventory/pages/equipment-detail.tsx
+ M frontend/src/features/inventory/pages/equipment-list.tsx
+ M frontend/src/features/inventory/types.ts
+ M integration/batch1-env-run.py
+?? backend/internal/application/borrowing/
+?? backend/internal/bootstrap/borrowing_expiry.go
+?? backend/internal/bootstrap/borrowing_integration_test.go
+?? backend/internal/domain/borrowing/
+?? backend/internal/infrastructure/persistence/postgres/borrowing_obligations.go
+?? backend/internal/infrastructure/persistence/postgres/borrowing_repository.go
+?? backend/internal/interface/http/handlers/borrowing_handler.go
+?? backend/internal/interface/http/routes/borrowing_routes.go
+?? backend/migrations/000008_borrowing.down.sql
+?? backend/migrations/000008_borrowing.up.sql
+?? backend/tests/integration/borrowing_restart_test.go
+?? backend/tests/integration/borrowing_test.go
+?? docs/project/PHASE7_COMPLETION_REPORT.md
+?? docs/project/PHASE7_IMPLEMENTATION_PLAN.md
+?? docs/project/PHASE7_PROGRESS.md
+?? docs/project/verification/phase7/
+?? docs/ux/verification/phase7/
+?? docs/ux/verification/reconstruction-stage-a/failure.png
+?? docs/ux/verification/reconstruction-stage-b/administration-failure.png
+?? docs/ux/verification/reconstruction-stage-b/borrowers-failure.png
+?? docs/ux/verification/reconstruction-stage-b/categories-failure.png
+?? docs/ux/verification/reconstruction-stage-b/consistency-failure.png
+?? docs/ux/verification/reconstruction-stage-b/edges-failure.png
+?? docs/ux/verification/reconstruction-stage-b/final-visual-failure.png
+?? docs/ux/verification/reconstruction-stage-b/stock-failure.png
+?? frontend/scripts/phase7-browser-qa.mjs
+?? frontend/src/features/borrowing/
+?? integration/PHASE7.md
+?? integration/compose.phase7-regression.yml
+?? integration/compose.phase7.yml

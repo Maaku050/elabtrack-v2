@@ -16,6 +16,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"os"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -130,6 +131,7 @@ func TestRealTerms(t *testing.T) {
 		}
 		before := snapshot()
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil, "empty inventory rollback before account and terms pairs")
 		require(t, m.Down(ctx) == nil, "empty account migration rollback before terms")
 		require(t, m.Down(ctx) == nil, "empty terms rollback")
@@ -264,7 +266,7 @@ func TestRealTerms(t *testing.T) {
 		for _, sql := range []string{`UPDATE terms_versions SET title=title`, `DELETE FROM terms_acceptances`, `TRUNCATE terms_acceptances`} {
 			_, err := owner.Pool.Exec(ctx, sql)
 			var pgErr *pgconn.PgError
-			require(t, errors.As(err, &pgErr) && pgErr.Code == "P0001", "owner cannot edit/delete/truncate history")
+			require(t, errors.As(err, &pgErr) && (pgErr.Code == "P0001" || strings.HasPrefix(sql, "TRUNCATE") && pgErr.Code == "0A000"), "owner cannot edit/delete/truncate history (trigger or consequential FK)")
 		}
 		_, err := svc.Publish(ctx, appterms.PublishCommand{ActorID: admin.ID, Version: "TEST-2", Title: "Synthetic", Body: "TEST ONLY", ExpectedCurrentVersionID: &current.ID})
 		require(t, errors.Is(err, terms.ErrVersionExists), "duplicate version identifier refused")
@@ -361,6 +363,7 @@ func TestRealTerms(t *testing.T) {
 	})
 	t.Run("history_safe_rollback_and_policy_transaction_boundary", func(t *testing.T) {
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil, "empty inventory rollback before account and terms pairs")
 		require(t, m.Down(ctx) == nil, "empty account migration rollback before terms history gate")
 		require(t, m.Down(ctx) != nil, "history-bearing rollback refused")

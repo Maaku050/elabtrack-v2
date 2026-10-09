@@ -1,0 +1,40 @@
+{
+  "backup": "backend/tmp/pre-phase7-backups/elabtrack_v2-pre-phase7-20261009T150053Z-000007.dump",
+  "backup_bytes": 145915,
+  "backup_mode": "0o600",
+  "backup_sha256": "4e008c0d40944344ab737adf71636aae2cf32d73a77d17ddf3e7605e87a7e8fa",
+  "database": "elabtrack_v2_phase7_restore_20261009t150053z",
+  "container": "elabtrack_v2_phase7_restore_20261009t150053z_postgres",
+  "volume": "elabtrack_v2_phase7_restore_20261009t150053z_pgdata",
+  "postgres_tool": "pg_restore (PostgreSQL) 18.6",
+  "restoring_role": "postgres (existing isolated bootstrap owner)",
+  "restore_passed": true,
+  "normal_tables_equal": 17,
+  "metadata_functionally_equal": true,
+  "effective_acl_equal": true,
+  "metadata_representation_differences": [
+    {
+      "constraint": "terms_versions_body_check",
+      "difference": "Equivalent associative AND parenthesis flattening",
+      "boundary_expression_mismatches": 0
+    },
+    {
+      "constraint": "terms_versions_title_check",
+      "difference": "Equivalent associative AND parenthesis flattening",
+      "boundary_expression_mismatches": 0
+    },
+    {
+      "table": "schema_migrations",
+      "difference": "Explicit owner ACL becomes equivalent default owner ACL",
+      "effective_acl_equal": true
+    }
+  ],
+  "constraints": 219,
+  "indexes": 38,
+  "triggers": 11,
+  "integrity": {
+    "version": "000007_inventory",
+    "conservation_violations": 0,
+    "invalid_constraints": 0
+  }
+}

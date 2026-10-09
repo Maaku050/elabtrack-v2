@@ -1,0 +1,383 @@
+{
+  "date": "2026-10-09T15:41:43.087214+00:00",
+  "status": "PHASE 7 LOCAL INTEGRATION VERIFIED / OWNER ACCEPTANCE PENDING",
+  "prior_stopped_attempt": {
+    "normal_migration_applied": false,
+    "backup_restore_passed": false,
+    "reason": "Migrator cannot COMMENT ON bootstrap-owned citext; restore transaction rolled back; normal17-table baseline unchanged"
+  },
+  "restore": {
+    "backup": "backend/tmp/pre-phase7-backups/elabtrack_v2-pre-phase7-20261009T150053Z-000007.dump",
+    "backup_bytes": 145915,
+    "backup_mode": "0o600",
+    "backup_sha256": "4e008c0d40944344ab737adf71636aae2cf32d73a77d17ddf3e7605e87a7e8fa",
+    "database": "elabtrack_v2_phase7_restore_20261009t150053z",
+    "container": "elabtrack_v2_phase7_restore_20261009t150053z_postgres",
+    "volume": "elabtrack_v2_phase7_restore_20261009t150053z_pgdata",
+    "postgres_tool": "pg_restore (PostgreSQL) 18.6",
+    "restoring_role": "postgres (existing isolated bootstrap owner)",
+    "restore_passed": true,
+    "normal_tables_equal": 17,
+    "metadata_functionally_equal": true,
+    "effective_acl_equal": true,
+    "metadata_representation_differences": [
+      {
+        "constraint": "terms_versions_body_check",
+        "difference": "Equivalent associative AND parenthesis flattening",
+        "boundary_expression_mismatches": 0
+      },
+      {
+        "constraint": "terms_versions_title_check",
+        "difference": "Equivalent associative AND parenthesis flattening",
+        "boundary_expression_mismatches": 0
+      },
+      {
+        "table": "schema_migrations",
+        "difference": "Explicit owner ACL becomes equivalent default owner ACL",
+        "effective_acl_equal": true
+      }
+    ],
+    "constraints": 219,
+    "indexes": 38,
+    "triggers": 11,
+    "integrity": {
+      "version": "000007_inventory",
+      "conservation_violations": 0,
+      "invalid_constraints": 0
+    }
+  },
+  "rehearsal": {
+    "all_existing_business_tables_preserved": 16,
+    "all_existing_rows_preserved_except_tracking_append": true,
+    "new_empty_tables": [
+      "borrowings",
+      "borrowing_items",
+      "borrowing_events",
+      "borrowing_operation_receipts"
+    ],
+    "version": "000008_borrowing",
+    "conservation_violations": 0,
+    "invalid_constraints": 0,
+    "constraints": 290,
+    "indexes": 53,
+    "borrowing_indexes": 6,
+    "runtime_reserved": true,
+    "runtime_checked_out": true,
+    "runtime_damaged_held": false,
+    "runtime_tracking": false,
+    "runtime_borrowing_delete": false,
+    "runtime_superuser": false,
+    "migrator_superuser": false
+  },
+  "normal_migration": {
+    "all_existing_business_tables_preserved": 16,
+    "all_existing_rows_preserved_except_tracking_append": true,
+    "new_empty_tables": [
+      "borrowings",
+      "borrowing_items",
+      "borrowing_events",
+      "borrowing_operation_receipts"
+    ],
+    "version": "000008_borrowing",
+    "conservation_violations": 0,
+    "invalid_constraints": 0,
+    "constraints": 290,
+    "indexes": 53,
+    "borrowing_indexes": 6,
+    "runtime_reserved": true,
+    "runtime_checked_out": true,
+    "runtime_damaged_held": false,
+    "runtime_tracking": false,
+    "runtime_borrowing_delete": false,
+    "runtime_superuser": false,
+    "migrator_superuser": false
+  },
+  "final_normal_preservation": {
+    "existing_non_session_non_tracking_tables_unchanged": 15,
+    "new_borrowing_tables_empty": true,
+    "session_row_changes": "Only authorized login/refresh/logout after verified migration baseline",
+    "token_handoff_file_removed": true,
+    "stock": {
+      "available": 20,
+      "reserved": 0,
+      "checked_out": 0,
+      "damaged_held": 0,
+      "total_tracked": 20
+    },
+    "violations": 0,
+    "citext_owner": "postgres",
+    "runtime_superuser": false,
+    "migrator_superuser": false
+  },
+  "regression_target": {
+    "container": "elabtrack_v2_phase7_recovery_regression_postgres",
+    "volume": "elabtrack_v2_phase7_recovery_20261009t151930z_pgdata",
+    "database": "elabtrack_v2_batch1_test",
+    "port": 54832,
+    "fresh": true
+  },
+  "database_api": {
+    "passing_suites": 16,
+    "passing_named_subtests": 82,
+    "suite_names": [
+      "TestBatch1HTTP",
+      "TestBatch1InventoryBorrowabilityFilter",
+      "TestBatch1InventoryHTTP",
+      "TestPhase7HTTP",
+      "TestRealAccountDeliveryRace",
+      "TestRealAccounts",
+      "TestRealBorrowingCrossFeatureSafety",
+      "TestRealBorrowingFoundation",
+      "TestRealBorrowingOperations",
+      "TestRealBorrowingProcessRestart",
+      "TestRealFoundation",
+      "TestRealInventory",
+      "TestRealInventoryContention",
+      "TestRealInventoryCorrectionSafety",
+      "TestRealTerms",
+      "TestRealTermsHTTP"
+    ],
+    "logs": [
+      {
+        "path": "/tmp/elabtrack-phase7-recovery-db-accounts.log",
+        "sha256": "229aae4590710a675e11d57598fd28aad2bf32d76c1f442de1e82d8512d10642",
+        "passing_suites": [
+          "TestRealAccounts"
+        ],
+        "passing_named_subtests": [
+          "TestRealAccounts/empty_down_up_preserves_existing_identities_and_sessions",
+          "TestRealAccounts/individual_student_faculty_text_identity_and_idempotency",
+          "TestRealAccounts/domain_duplicates_and_authority",
+          "TestRealAccounts/bounded_search_filters_and_missing_mail_state",
+          "TestRealAccounts/single_use_password_and_current_terms",
+          "TestRealAccounts/reissue_expiry_inactive_and_no_session_resurrection",
+          "TestRealAccounts/bulk_preview_conflicts_selection_idempotency_and_rollback",
+          "TestRealAccounts/student_only_deactivation_ignores_obligations_and_retains_history",
+          "TestRealAccounts/concurrent_identity_and_activation",
+          "TestRealAccounts/database_constraints_history_and_nonempty_rollback"
+        ]
+      },
+      {
+        "path": "/tmp/elabtrack-phase7-recovery-db-business.log",
+        "sha256": "4b4b9c4a7ee61257bd2b523b868e3a03e84604e3075ec337eb1bf70733fda525",
+        "passing_suites": [
+          "TestRealAccountDeliveryRace",
+          "TestRealBorrowingFoundation",
+          "TestRealBorrowingOperations",
+          "TestRealBorrowingCrossFeatureSafety",
+          "TestRealInventoryContention",
+          "TestRealInventoryCorrectionSafety"
+        ],
+        "passing_named_subtests": [
+          "TestRealBorrowingFoundation/last_unit_and_many_reservations",
+          "TestRealBorrowingFoundation/multi_item_rollback_retries_and_invalid",
+          "TestRealBorrowingFoundation/eligibility_terms_and_inactive_equipment",
+          "TestRealBorrowingFoundation/cancel_and_expiry_release_once_after_restart",
+          "TestRealBorrowingOperations/deny_reason_checkout_due_and_replay",
+          "TestRealBorrowingOperations/detail_read_never_mixes_transition_headers_and_items",
+          "TestRealBorrowingOperations/cancel_checkout_and_deny_cancel_races",
+          "TestRealBorrowingOperations/direct_checkout_competes_with_reservation",
+          "TestRealBorrowingOperations/expiry_checkout_workers_restart_and_inactive_target",
+          "TestRealBorrowingOperations/issue_rollbacks_deactivation_and_role_revocation",
+          "TestRealBorrowingOperations/terms_revision_existing_binding_and_future_gates",
+          "TestRealBorrowingOperations/constraints_immutable_history_and_data_rollback_refusal",
+          "TestRealBorrowingCrossFeatureSafety/activation_and_missing_terms_fail_closed",
+          "TestRealBorrowingCrossFeatureSafety/required_audit_failure_rolls_back_every_effect",
+          "TestRealBorrowingCrossFeatureSafety/concurrent_same_key_exactly_one_reservation",
+          "TestRealBorrowingCrossFeatureSafety/deactivation_warns_without_resolving_stock_or_loans",
+          "TestRealBorrowingCrossFeatureSafety/clear_equipment_archives_but_future_liability_stays_closed",
+          "TestRealInventoryContention/competing_actor_equipment_locks",
+          "TestRealInventoryContention/optimistic_metadata_single_winner",
+          "TestRealInventoryContention/ledger_vector_and_audit_receipt_conservation"
+        ]
+      },
+      {
+        "path": "/tmp/elabtrack-phase7-recovery-db-http.log",
+        "sha256": "9e05ca7469d7977f17285e8c68f2b215eb20e394865cf72af5f2dec380be18ec",
+        "passing_suites": [
+          "TestBatch1HTTP",
+          "TestBatch1InventoryHTTP",
+          "TestPhase7HTTP",
+          "TestBatch1InventoryBorrowabilityFilter"
+        ],
+        "passing_named_subtests": [
+          "TestBatch1HTTP/role_origin_strict_payload_and_cors",
+          "TestPhase7HTTP/submit_replay_strict_origin_and_roles",
+          "TestPhase7HTTP/real_scoped_page_and_cancel",
+          "TestPhase7HTTP/staff_approval_denial_and_direct_contracts",
+          "TestPhase7HTTP/current_status_revocation",
+          "TestBatch1InventoryBorrowabilityFilter/unfiltered",
+          "TestBatch1InventoryBorrowabilityFilter/positive_active_first_page",
+          "TestBatch1InventoryBorrowabilityFilter/positive_active_second_page",
+          "TestBatch1InventoryBorrowabilityFilter/beyond_final_page",
+          "TestBatch1InventoryBorrowabilityFilter/active_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/inactive_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/archived_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/inactive_without_availability",
+          "TestBatch1InventoryBorrowabilityFilter/archived_original_visibility",
+          "TestBatch1InventoryBorrowabilityFilter/inactive_category_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/independent_other_category",
+          "TestBatch1InventoryBorrowabilityFilter/search_intersection",
+          "TestBatch1InventoryBorrowabilityFilter/search_inactive_no_match",
+          "TestBatch1InventoryBorrowabilityFilter/stable_pages_and_sort",
+          "TestBatch1InventoryBorrowabilityFilter/authority_validation_and_borrower_visibility"
+        ]
+      },
+      {
+        "path": "/tmp/elabtrack-phase7-recovery-db-inventory.log",
+        "sha256": "cada40e99ba4e4743e13f483e17e9685a408085a3232bf07eaf36d3eb9d7d5eb",
+        "passing_suites": [
+          "TestRealInventory"
+        ],
+        "passing_named_subtests": [
+          "TestRealInventory/empty_paired_rollback_preserves_accounts",
+          "TestRealInventory/authority_category_identity_and_metadata",
+          "TestRealInventory/bounded_search_filters_visibility",
+          "TestRealInventory/adjustment_retry_negative_overflow_and_atomicity",
+          "TestRealInventory/admin_reconciliation_preserves_reserved_custody_damaged",
+          "TestRealInventory/concurrent_last_stock_and_duplicate_key",
+          "TestRealInventory/safe_images_and_ownership",
+          "TestRealInventory/archive_future_boundary_and_history_guards"
+        ]
+      },
+      {
+        "path": "/tmp/elabtrack-phase7-recovery-db-network.log",
+        "sha256": "c1e7ff287c5c60a537674ed794b84f70b72ba763390c78ca145a547a7ed03cf0",
+        "passing_suites": [
+          "TestRealFoundation",
+          "TestRealTermsHTTP"
+        ],
+        "passing_named_subtests": [
+          "TestRealFoundation/health_and_safe_current_account",
+          "TestRealFoundation/generic_invalid_login",
+          "TestRealFoundation/product_permission_matrix",
+          "TestRealFoundation/stale_authority",
+          "TestRealFoundation/hash_rotation_concurrent_http_logout",
+          "TestRealFoundation/real_transaction_rollback",
+          "TestRealFoundation/missing_account_after_issuance",
+          "TestRealFoundation/bounded_retention",
+          "TestRealTermsHTTP/authentication_and_role_matrix",
+          "TestRealTermsHTTP/strict_identity_and_origin_boundary",
+          "TestRealTermsHTTP/current_acceptance_repeat_and_version_conflict",
+          "TestRealTermsHTTP/current_database_role_and_inactive_after_issuance"
+        ]
+      },
+      {
+        "path": "/tmp/elabtrack-phase7-recovery-db-restart.log",
+        "sha256": "6c58c4724571a8ced597d304f6ca50933a4e861333fc87879933b07320408f5b",
+        "passing_suites": [
+          "TestRealBorrowingProcessRestart"
+        ],
+        "passing_named_subtests": []
+      },
+      {
+        "path": "/tmp/elabtrack-phase7-recovery-db-terms.log",
+        "sha256": "dde79894cb15729ee951405af050e9d7d05608a6008956ac869ba13ca3d2d652",
+        "passing_suites": [
+          "TestRealTerms"
+        ],
+        "passing_named_subtests": [
+          "TestRealTerms/empty_migration_down_up_preserves_accounts_sessions",
+          "TestRealTerms/missing_terms_and_no_automatic_consent",
+          "TestRealTerms/publication_and_role_authority",
+          "TestRealTerms/first_repeat_and_account_scope",
+          "TestRealTerms/replacement_history_and_stale_consent",
+          "TestRealTerms/parallel_acceptance_one_original_receipt",
+          "TestRealTerms/acceptance_and_publication_transaction_rollback",
+          "TestRealTerms/constraints_immutability_and_runtime_privileges",
+          "TestRealTerms/publication_wins_old_view_conflicts",
+          "TestRealTerms/acceptance_wins_preserves_reviewed_version",
+          "TestRealTerms/parallel_publishers_no_blind_overwrite",
+          "TestRealTerms/history_safe_rollback_and_policy_transaction_boundary"
+        ]
+      }
+    ]
+  },
+  "quality": {
+    "go_fmt": {
+      "path": "/tmp/elabtrack-phase7-recovery-go-fmt.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": "PASS"
+    },
+    "go_vet": {
+      "path": "/tmp/elabtrack-phase7-recovery-go-vet.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result": "PASS"
+    },
+    "go_unit": {
+      "path": "/tmp/elabtrack-phase7-recovery-go-unit.log",
+      "sha256": "aa0910b2adb7b15f71e464d41dbd423ad35b93233a56f3dfba9378ef8672c52f",
+      "result": "PASS"
+    },
+    "go_race": {
+      "path": "/tmp/elabtrack-phase7-recovery-go-race.log",
+      "sha256": "693ab2c608ec5777dc6535cfa70216347e70c8dd2daf3c5e77c854221c5d68f2",
+      "result": "PASS"
+    },
+    "frontend_lint": {
+      "path": "/tmp/elabtrack-phase7-recovery-lint.log",
+      "sha256": "d3706308ef94a94ec83b661c2baef61eda29c750571c2ee14bbc4968f7a7c59c",
+      "result": "PASS"
+    },
+    "frontend_serial": {
+      "path": "/tmp/elabtrack-phase7-recovery-frontend-serial.log",
+      "sha256": "a4357349c98f9fd304a40f462a986d50e966c91b5bdca73f32667b167be37e88",
+      "result": "PASS"
+    },
+    "frontend_parallel": {
+      "path": "/tmp/elabtrack-phase7-recovery-frontend-parallel.log",
+      "sha256": "adb2fb44886dbae2d4501c892a2bcd0462b4930c1b6566a6ac08c88911029c04",
+      "result": "PASS"
+    },
+    "typescript_build": {
+      "path": "/tmp/elabtrack-phase7-recovery-build.log",
+      "sha256": "0253ae4075ad97d60b210e6a49154dccaa95a0d8f3d2e53fabc089eadf1e5915",
+      "result": "PASS"
+    }
+  },
+  "frontend": {
+    "serial_tests": 279,
+    "parallel_tests": 279,
+    "test_files": 23,
+    "lint_warnings": 19,
+    "new_lint_warnings": 0,
+    "lazy_login_failures_this_run": 0
+  },
+  "browser": {
+    "normal_checks": 8,
+    "borrower_checks": 5,
+    "staff_admin_checks": 9,
+    "total_checks": 22,
+    "published_screenshots": 38,
+    "normal_direct_screenshots_excluded_for_privacy": 3,
+    "runtime_exceptions_final_runs": 0,
+    "earlier_incomplete_attempts": [
+      "Normal search/status changed before deferred search completed; final uses real request completion and native selection",
+      "Page.reload initially matched old document; final asserts fresh document",
+      "Counter included OPTIONS preflight; final counts GET only",
+      "Isolated frontend15175 initially absent; final explicitly started isolated Vite before running"
+    ]
+  },
+  "cleanup": {
+    "normal_api_frontend_running": true,
+    "isolated_api_frontend_stopped": true,
+    "disposable_containers_stopped_volumes_retained": true,
+    "handoff_cookie_removed": true,
+    "synthetic_credentials_removed": true,
+    "backup_unchanged": true
+  },
+  "git_diff_check": "PASS",
+  "phase8_started": false,
+  "commit_push_deploy": false,
+  "git": {
+    "head": "366b6ef4457378a2cdcf5d74aae9d1103e443637",
+    "branch": "main",
+    "modified": 32,
+    "untracked": 126,
+    "staged": 0
+  },
+  "credential_audit": {
+    "actual_private_values_found": 0,
+    "ignored_private_paths_verified": true
+  }
+}
