@@ -1,0 +1,82 @@
+ M backend/README.md
+ M backend/internal/application/accounts/service.go
+ M backend/internal/bootstrap/batch1_integration_test.go
+ M backend/internal/bootstrap/contracts_test.go
+ M backend/internal/infrastructure/spreadsheet/student.go
+ M backend/internal/infrastructure/spreadsheet/student_test.go
+ M backend/internal/interface/http/handlers/accounts_handler.go
+ M backend/internal/interface/http/middleware/logger.go
+ M backend/internal/interface/http/response/errors.go
+ M backend/tests/integration/inventory_test.go
+ M docs/ux/APPROVED_VISUAL_IMPLEMENTATION_MAP.md
+ M frontend/src/app/router.tsx
+ M frontend/src/components/application/operational-shell.tsx
+ M frontend/src/components/application/shells.tsx
+ M frontend/src/components/application/visual.tsx
+ M frontend/src/features/accounts/pages/account-create.tsx
+ M frontend/src/features/accounts/pages/account-detail.tsx
+ M frontend/src/features/accounts/pages/account-directory.tsx
+ M frontend/src/features/accounts/pages/administration-page.tsx
+ M frontend/src/features/accounts/pages/student-bulk.tsx
+ M frontend/src/features/auth/components/access-boundary.tsx
+ M frontend/src/features/auth/pages/login-page.tsx
+ M frontend/src/features/auth/product-auth.test.tsx
+ M frontend/src/features/foundation/foundation.test.tsx
+ M frontend/src/features/inventory/pages/category-management.tsx
+ M frontend/src/features/inventory/pages/equipment-detail.tsx
+ M frontend/src/features/inventory/pages/equipment-form.tsx
+ M frontend/src/features/inventory/pages/equipment-image.tsx
+ M frontend/src/features/inventory/pages/equipment-list.tsx
+ M frontend/src/features/inventory/pages/stock-adjustment.tsx
+ M frontend/src/features/terms/hooks/use-terms.ts
+ M frontend/src/features/workspace/workspace-page.tsx
+ M frontend/src/lib/api-client.test.ts
+ M frontend/src/lib/api-client.ts
+ M frontend/src/stores/session-action-store.ts
+ M frontend/src/styles/index.css
+?? backend/internal/domain/accounts/roster_error.go
+?? backend/internal/interface/http/handlers/roster_error.go
+?? backend/internal/interface/http/handlers/roster_error_test.go
+?? docs/project/API_REQUEST_EFFICIENCY_AUDIT.md
+?? docs/project/CULINARY_LOGIN_REDESIGN_REPORT.md
+?? docs/project/FRONTEND_RECONSTRUCTION_STAGE_A_REPORT.md
+?? docs/project/IMMERSIVE_LOGIN_REDESIGN_REPORT.md
+?? docs/project/PRE_PHASE7_PHASE5_6_REFINEMENT_REPORT.md
+?? docs/project/PRE_PHASE7_UI_REFINEMENT_REPORT.md
+?? docs/project/verification/
+?? docs/ux/FRONTEND_RECONSTRUCTION_CONTRACT.md
+?? docs/ux/SHADCN_COMPONENT_AUDIT.md
+?? docs/ux/verification/culinary-login/
+?? docs/ux/verification/immersive-login/
+?? docs/ux/verification/phase56-refinement/
+?? docs/ux/verification/pre-phase7-ui/
+?? docs/ux/verification/reconstruction-stage-a/
+?? frontend/scripts/culinary-login-qa.mjs
+?? frontend/scripts/immersive-login-qa.mjs
+?? frontend/scripts/phase56-refinement-qa.mjs
+?? frontend/scripts/pre-phase7-ui-qa.mjs
+?? frontend/scripts/reconstruction-stage-a-qa.mjs
+?? frontend/scripts/request-efficiency-qa.mjs
+?? frontend/src/assets/login/
+?? frontend/src/components/application/directory.tsx
+?? frontend/src/components/application/file-dropzone.test.tsx
+?? frontend/src/components/application/file-dropzone.tsx
+?? frontend/src/components/application/operational-frame.tsx
+?? frontend/src/components/application/server-pagination.test.tsx
+?? frontend/src/components/application/server-pagination.tsx
+?? frontend/src/features/accounts/lib/
+?? frontend/src/features/accounts/pages/borrower-directory.tsx
+?? frontend/src/features/inventory/components/
+?? frontend/src/features/inventory/hooks/use-catalog-image.test.tsx
+?? frontend/src/features/inventory/hooks/use-catalog-image.ts
+?? frontend/src/features/inventory/lib/
+?? frontend/src/features/inventory/pages/inventory-directory.tsx
+?? frontend/src/features/terms/current-terms.test.tsx
+?? frontend/src/hooks/use-directory-state.ts
+?? frontend/src/lib/page-range.ts
+?? frontend/src/styles/culinary-login.css
+?? frontend/src/styles/immersive-login.css
+?? frontend/src/styles/phase56-refinement.css
+?? frontend/src/styles/reconstruction.css
+?? frontend/src/styles/refinement.css
+?? integration/phase56-workbook-fixtures.go

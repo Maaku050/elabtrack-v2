@@ -1,5 +1,7 @@
 # Source-of-truth policy
 
+**Final frontend checkpoint overlay, 2026-10-09:** Stage A and Stage B reconstruction are engineering-complete and owner-approved. The owner explicitly confirmed the final corrected Inventory filter manual check as “Verified and passed”. DEC-076 and [the checkpoint audit/handoff](FRONTEND_RECONSTRUCTION_CHECKPOINT.md) record accepted status and authorized LOCAL Git checkpoint only. Earlier pending-approval statements are historical; Phase7 is not started or authorized. Production terms/acceptance and required activation readiness remain gates.
+
 **Batch 1 execution overlay, 2026-10-09:** Explicit owner authorization covers Phase5 and conditional Phase6 only. Current implementation is governed by [the scoped plan](BATCH1_IMPLEMENTATION_PLAN.md), [actual account API contracts](../API_CONTRACTS.md#phase-5-implemented-account-management-contracts) and phase verification reports; older unstarted checkpoints remain historical. Product policy DEC-070–073 is unchanged. Official terms, approved Student domains and verified real Brevo delivery are independent external gates.
 Status: accepted Phase 0 policy, 2026-10-05; refined by explicit Phase2 direction (DEC-048) and authoritative Phase2.5 owner working decisions (DEC-051–061), 2026-10-08.
 

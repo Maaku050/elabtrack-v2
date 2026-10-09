@@ -1,0 +1,205 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "equipment",
+  "checks": [
+    "Metadata persists through upload failure; retry uploads image only without duplicate equipment",
+    "Edit embeds existing image, keeps it after removing unsaved selection, and persists replacement plus metadata"
+  ],
+  "screens": [
+    "equipment-add-image-320-light.png",
+    "equipment-add-image-320-dark.png",
+    "equipment-add-image-390-light.png",
+    "equipment-add-image-390-dark.png",
+    "equipment-add-image-440-light.png",
+    "equipment-add-image-440-dark.png",
+    "equipment-add-image-768-light.png",
+    "equipment-add-image-768-dark.png",
+    "equipment-add-image-1024-light.png",
+    "equipment-add-image-1024-dark.png",
+    "equipment-add-image-1366-light.png",
+    "equipment-add-image-1366-dark.png",
+    "equipment-add-image-1440-light.png",
+    "equipment-add-image-1440-dark.png",
+    "equipment-add-image-390-short-dark.png",
+    "equipment-add-image-1366-short-dark.png",
+    "equipment-add-image-area-light.png",
+    "equipment-image-retry-light.png",
+    "equipment-edit-image-320-light.png",
+    "equipment-edit-image-320-dark.png",
+    "equipment-edit-image-390-light.png",
+    "equipment-edit-image-390-dark.png",
+    "equipment-edit-image-440-light.png",
+    "equipment-edit-image-440-dark.png",
+    "equipment-edit-image-768-light.png",
+    "equipment-edit-image-768-dark.png",
+    "equipment-edit-image-1024-light.png",
+    "equipment-edit-image-1024-dark.png",
+    "equipment-edit-image-1366-light.png",
+    "equipment-edit-image-1366-dark.png",
+    "equipment-edit-image-1440-light.png",
+    "equipment-edit-image-1440-dark.png",
+    "equipment-edit-image-390-short-dark.png",
+    "equipment-edit-image-1366-short-dark.png",
+    "equipment-edit-image-area-light.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/image",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/image",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/image",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/image",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/images/920a906a-95b0-4ea4-9915-67a67a645eee",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/images/920a906a-95b0-4ea4-9915-67a67a645eee",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/image",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    }
+  ],
+  "documentNavigations": 1
+}

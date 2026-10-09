@@ -1,0 +1,100 @@
+
+> elabtrack-v2-frontend@0.0.0 test:run
+> vitest run --no-file-parallelism --maxWorkers=1
+
+
+ RUN  v5.0.3 /home/marvin/projects/eLabTrack_V2/frontend
+
+ ❯ src/features/auth/product-auth.test.tsx (31 tests | 1 failed) 17129ms
+   ❯ Phase 4A product authentication (25)
+     × validates fields, exposes accessible errors, and never submits invalid credentials 1720ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/auth/product-auth.test.tsx > Phase 4A product authentication > validates fields, exposes accessible errors, and never submits invalid credentials
+TestingLibraryElementError: Unable to find a label with the text of: Email
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex items-center justify-center gap-2 p-10 text-sm text-muted-foreground"[39m
+      [33mrole[39m=[32m"status"[39m
+    [36m>[39m
+      [36m<svg[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33maria-label[39m=[32m"Loading"[39m
+        [33mclass[39m=[32m"lucide lucide-loader-circle lucide-loader-2 size-4 animate-spin"[39m
+        [33mdata-slot[39m=[32m"spinner"[39m
+        [33mfill[39m=[32m"none"[39m
+        [33mheight[39m=[32m"24"[39m
+        [33mrole[39m=[32m"status"[39m
+        [33mstroke[39m=[32m"currentColor"[39m
+        [33mstroke-linecap[39m=[32m"round"[39m
+        [33mstroke-linejoin[39m=[32m"round"[39m
+        [33mstroke-width[39m=[32m"2"[39m
+        [33mviewBox[39m=[32m"0 0 24 24"[39m
+        [33mwidth[39m=[32m"24"[39m
+        [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+      [36m>[39m
+        [36m<path[39m
+          [33md[39m=[32m"M21 12a9 9 0 1 1-6.219-8.56"[39m
+        [36m/>[39m
+      [36m</svg>[39m
+      [0mOpening your workspace…[0m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"flex items-center justify-center gap-2 p-10 text-sm text-muted-foreground"[39m
+      [33mrole[39m=[32m"status"[39m
+    [36m>[39m
+      [36m<svg[39m
+        [33maria-hidden[39m=[32m"true"[39m
+        [33maria-label[39m=[32m"Loading"[39m
+        [33mclass[39m=[32m"lucide lucide-loader-circle lucide-loader-2 size-4 animate-spin"[39m
+        [33mdata-slot[39m=[32m"spinner"[39m
+        [33mfill[39m=[32m"none"[39m
+        [33mheight[39m=[32m"24"[39m
+        [33mrole[39m=[32m"status"[39m
+        [33mstroke[39m=[32m"currentColor"[39m
+        [33mstroke-linecap[39m=[32m"round"[39m
+        [33mstroke-linejoin[39m=[32m"round"[39m
+        [33mstroke-width[39m=[32m"2"[39m
+        [33mviewBox[39m=[32m"0 0 24 24"[39m
+        [33mwidth[39m=[32m"24"[39m
+        [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+      [36m>[39m
+        [36m<path[39m
+          [33md[39m=[32m"M21 12a9 9 0 1 1-6.219-8.56"[39m
+        [36m/>[39m
+      [36m</svg>[39m
+      [0mOpening your workspace…[0m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/auth/product-auth.test.tsx:47:26
+     45| describe('Phase 4A product authentication', () => {
+     46|   it('validates fields, exposes accessible errors, and never submits i…
+     47|     open(); await screen.findByLabelText('Email'); submit()
+       |                          ^
+     48|     expect(await screen.findByText('Enter a valid email address')).toB…
+     49|     expect(screen.getByLabelText('Email')).toHaveAttribute('aria-inval…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 19 passed (20)
+      Tests  1 failed | 263 passed (264)
+   Start at  19:18:02
+   Duration  90.94s (tests 37%, environment 36%, import 13%, transform 7%, setup 6%, worker 1%)
+
+Environment  jsdom was created 20 times · 30.79s total, 36% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

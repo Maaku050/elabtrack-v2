@@ -1,0 +1,61 @@
+
+> elabtrack-v2-frontend@0.0.0 build
+> tsc -b && vite build
+
+vite v8.3.2 building client environment for production...
+transforming...
+✓ 2485 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                    0.94 kB │ gzip:   0.41 kB
+dist/assets/culinary-laboratory-y3DnfIVR.webp    204.42 kB
+dist/assets/fsmo-seal-reference-DluDQ4W1.png   2,053.07 kB
+dist/assets/login-page-CzG4BPtg.css                7.24 kB │ gzip:   1.76 kB
+dist/assets/index-BsylSy_o.css                   256.10 kB │ gzip:  40.73 kB
+dist/assets/check-Ci_r_LKo.js                      0.15 kB │ gzip:   0.16 kB
+dist/assets/plus-DYRoCkEf.js                       0.18 kB │ gzip:   0.16 kB
+dist/assets/arrow-right-DwYvwH-g.js                0.19 kB │ gzip:   0.17 kB
+dist/assets/session-action-store-DqfdOM0Y.js       0.22 kB │ gzip:   0.17 kB
+dist/assets/upload-diFThpTt.js                     0.26 kB │ gzip:   0.20 kB
+dist/assets/clock-C2INvXSo.js                      0.33 kB │ gzip:   0.24 kB
+dist/assets/shield-check-DC60aOTT.js               0.35 kB │ gzip:   0.26 kB
+dist/assets/account-status-DdNzmavx.js             0.69 kB │ gzip:   0.35 kB
+dist/assets/terms-gate-CGZtDrtk.js                 0.74 kB │ gzip:   0.45 kB
+dist/assets/use-accounts-DeIFezqM.js               1.20 kB │ gzip:   0.53 kB
+dist/assets/table-8dY2ZBTO.js                      1.21 kB │ gzip:   0.49 kB
+dist/assets/inventory.schema-D1gqPOQI.js           1.37 kB │ gzip:   0.72 kB
+dist/assets/equipment-image-Ch6tnvw1.js            1.39 kB │ gzip:   0.77 kB
+dist/assets/accounts.api-BWSwFuFM.js               1.58 kB │ gzip:   0.74 kB
+dist/assets/terms-frame-o9egtCbz.js                1.61 kB │ gzip:   0.69 kB
+dist/assets/use-terms-DiXv7MDZ.js                  1.66 kB │ gzip:   0.83 kB
+dist/assets/borrower-navigation-eU_2201G.js        2.02 kB │ gzip:   0.88 kB
+dist/assets/file-dropzone-A2xFSZr6.js              2.16 kB │ gzip:   1.09 kB
+dist/assets/use-inventory-DkjhRKku.js              2.66 kB │ gzip:   1.01 kB
+dist/assets/administration-page-BNGXbco0.js        2.82 kB │ gzip:   1.17 kB
+dist/assets/alert-dialog-QH9PIaZ9.js               2.96 kB │ gzip:   0.98 kB
+dist/assets/activation-page-B9osNdco.js            3.08 kB │ gzip:   1.43 kB
+dist/assets/use-directory-state-EmYm0J4E.js        3.88 kB │ gzip:   1.73 kB
+dist/assets/account-create-CubMaO8N.js             4.12 kB │ gzip:   1.94 kB
+dist/assets/workspace-page-CmfGQpbc.js             4.33 kB │ gzip:   1.64 kB
+dist/assets/directory-Dtldu4W3.js                  4.66 kB │ gzip:   1.69 kB
+dist/assets/login-page-DpXCjSwq.js                 5.94 kB │ gzip:   2.32 kB
+dist/assets/category-management-CGvXN0WO.js        6.10 kB │ gzip:   2.44 kB
+dist/assets/equipment-detail-svcf-EP3.js           6.38 kB │ gzip:   2.38 kB
+dist/assets/management-CcEyH1Po.js                 6.45 kB │ gzip:   2.25 kB
+dist/assets/stock-adjustment-CjFEFpUA.js           7.31 kB │ gzip:   2.74 kB
+dist/assets/student-bulk-DjyQx2Zt.js               7.39 kB │ gzip:   2.95 kB
+dist/assets/equipment-form-4KEqCz3A.js             7.86 kB │ gzip:   3.22 kB
+dist/assets/useQuery-C5FnnFr8.js                   7.99 kB │ gzip:   2.97 kB
+dist/assets/account-detail-DeZCjBvt.js             8.34 kB │ gzip:   2.95 kB
+dist/assets/account-directory-B5L2nqT1.js          8.41 kB │ gzip:   2.37 kB
+dist/assets/terms-page-suJ8DXQK.js                 9.74 kB │ gzip:   4.24 kB
+dist/assets/equipment-list-B7AcMz6N.js            10.93 kB │ gzip:   3.29 kB
+dist/assets/auth-store-CguMzHoz.js                16.21 kB │ gzip:   5.06 kB
+dist/assets/react-D8PsGdaV.js                     21.68 kB │ gzip:   7.92 kB
+dist/assets/zod-BezVE87t.js                       34.95 kB │ gzip:  12.41 kB
+dist/assets/DialogTitle-Y6WYtMz1.js               55.33 kB │ gzip:  18.66 kB
+dist/assets/api-client-D7ZjWBFz.js                60.47 kB │ gzip:  21.67 kB
+dist/assets/input-zJw-k0Vc.js                    150.79 kB │ gzip:  52.83 kB
+dist/assets/index-MxHyQhEx.js                    451.33 kB │ gzip: 140.04 kB
+
+✓ built in 3.02s

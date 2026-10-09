@@ -1,21 +1,22 @@
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { Bell, LayoutDashboard, ListChecks, Package, Users, ChartNoAxesCombined, Settings, Menu, Search, ChevronDown, type LucideIcon } from 'lucide-react'
+import { Bell, LayoutDashboard, ListChecks, Package, Users, ChartNoAxesCombined, Settings, Menu, Search, ChevronDown, ChevronRight, UserRound, LogOut, type LucideIcon } from 'lucide-react'
 import { SidebarProvider, Sidebar } from '@/components/ui/sidebar'
 import { Sheet, SheetContent, SheetTitle, SheetDescription, SheetHeader } from '@/components/ui/sheet'
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useUIStore } from '@/stores/ui-store'
 import { AppBrand, AppButton, ThemeControl } from './visual'
 
 export interface NavigationDestination { label: string; icon: LucideIcon; href?: string; onSelect?: () => void }
 interface WorkspaceIdentity { name: string; email: string }
-interface WorkspaceOptions { identity?: WorkspaceIdentity; destinationHrefs?: Record<string, string>; footerAction?: ReactNode }
+interface WorkspaceOptions { identity?: WorkspaceIdentity; destinationHrefs?: Record<string, string>; footerAction?: ReactNode; onSignOut?: () => void }
 
 function Destination({ item, active, onNavigate }: { item: NavigationDestination; active: boolean; onNavigate?: () => void }) {
   const Icon = item.icon
   const content = <><Icon size={21} aria-hidden="true" /><span>{item.label}</span></>
   return item.href
-    ? <Link aria-label={item.label} aria-current={active ? 'page' : undefined} to={item.href} onClick={onNavigate}>{content}</Link>
-    : <button type="button" aria-label={item.label} onClick={() => { onNavigate?.(); item.onSelect?.() }}>{content}</button>
+    ? <Link title={item.label} aria-label={item.label} aria-current={active ? 'page' : undefined} to={item.href} onClick={onNavigate}>{content}</Link>
+    : <button type="button" title={item.label} aria-label={item.label} onClick={() => { onNavigate?.(); item.onSelect?.() }}>{content}</button>
 }
 
 export function BorrowerTopBar({ action, preview = false }: { action?: ReactNode; preview?: boolean }) {
@@ -58,17 +59,17 @@ export function StaffSidebar({ audience, active, dashboardHref, requestsHref, on
   </div>
 }
 
-export function StaffTopBar({ onMenu, onUnavailable, audience, identity }: { audience: 'staff' | 'admin'; onMenu: () => void; onUnavailable: (label: string) => void; identity?: WorkspaceIdentity }) {
+export function StaffTopBar({ onMenu, onUnavailable, audience, identity, active, onSignOut }: { audience: 'staff' | 'admin'; onMenu: () => void; onUnavailable: (label: string) => void; identity?: WorkspaceIdentity; active: string; onSignOut?: () => void }) {
   return <header className="staff-top-bar"><AppButton variant="ghost" aria-label="Toggle navigation" onClick={onMenu}><Menu aria-hidden="true" size={22} /></AppButton>
-    {identity ? <span className="workspace-search">FSMO workspace</span> : <AppButton variant="ghost" className="workspace-search" onClick={() => onUnavailable('Workspace search')}><Search size={18} aria-hidden="true" /><span>Search borrowers, equipment, or request ID</span></AppButton>}
-    <div className="staff-top-bar-right">{!identity && <span className="preview-tag">Preview</span>}<AppButton variant="ghost" aria-label={identity ? 'Notifications' : 'Notifications preview'} onClick={() => onUnavailable('Notifications')}><Bell size={20} aria-hidden="true" /></AppButton>
-      <AppButton variant="ghost" aria-label={identity ? 'Account' : 'Account preview'} onClick={() => onUnavailable('Account')}><span className="account-avatar">{audience === 'admin' ? 'AD' : 'ST'}</span><span className={`toolbar-account-copy${identity ? " product-identity" : ""}`}><strong>{identity?.name ?? `Preview ${audience === 'admin' ? 'Admin' : 'Staff'}`}</strong><small>{audience === 'admin' ? 'Admin' : 'Staff'} {identity ? 'account' : 'preview'}</small></span><ChevronDown size={14} aria-hidden="true" /></AppButton>
+    {identity ? <nav className="workspace-context" aria-label="Page context"><span>FSMO</span><ChevronRight size={14} aria-hidden="true" /><span>{active}</span></nav> : <AppButton variant="ghost" className="workspace-search" onClick={() => onUnavailable('Workspace search')}><Search size={18} aria-hidden="true" /><span>Search borrowers, equipment, or request ID</span></AppButton>}
+    <div className="staff-top-bar-right">{!identity && <span className="preview-tag">Preview</span>}<AppButton variant="ghost" title={identity ? 'Notifications — not available yet' : 'Notifications preview'} aria-label={identity ? 'Notifications' : 'Notifications preview'} onClick={() => onUnavailable('Notifications')}><Bell size={20} aria-hidden="true" /></AppButton>
+      <DropdownMenu><DropdownMenuTrigger render={<AppButton variant="ghost" />} aria-label={identity ? 'Account actions' : 'Account preview'}><span className="account-avatar">{audience === 'admin' ? 'AD' : 'ST'}</span><span className={`toolbar-account-copy${identity ? " product-identity" : ""}`}><strong>{identity?.name ?? `Preview ${audience === 'admin' ? 'Admin' : 'Staff'}`}</strong><small>{audience === 'admin' ? 'Admin' : 'Staff'} {identity ? 'account' : 'preview'}</small></span><ChevronDown size={14} aria-hidden="true" /></DropdownMenuTrigger><DropdownMenuContent align="end" className="workspace-account-menu"><DropdownMenuItem onClick={() => onUnavailable('Account')}><UserRound aria-hidden="true" />Your account</DropdownMenuItem>{onSignOut && <DropdownMenuItem onClick={onSignOut}><LogOut aria-hidden="true" />Sign Out</DropdownMenuItem>}</DropdownMenuContent></DropdownMenu>
     </div>
   </header>
 }
 
 /** Audience chooses visual navigation only; never grants session/role authority. */
-export function StaffShell({ children, audience = 'staff', active, dashboardHref, requestsHref, onUnavailable, identity, destinationHrefs, footerAction }: {
+export function StaffShell({ children, audience = 'staff', active, dashboardHref, requestsHref, onUnavailable, identity, destinationHrefs, footerAction, onSignOut }: {
   children: ReactNode; audience?: 'staff' | 'admin'; active: string; dashboardHref: string; requestsHref: string; onUnavailable: (label: string) => void
 } & WorkspaceOptions) {
   const [drawer, setDrawer] = useState(false)
@@ -86,6 +87,6 @@ export function StaffShell({ children, audience = 'staff', active, dashboardHref
       <SheetHeader className="sr-only"><SheetTitle>Staff navigation</SheetTitle><SheetDescription>Choose a workspace destination. Escape closes navigation.</SheetDescription></SheetHeader>
       <StaffSidebar {...sidebarProps} onNavigate={() => setDrawer(false)} />
     </SheetContent></Sheet>
-    <div className="staff-workspace"><StaffTopBar audience={audience} identity={identity} onMenu={menu} onUnavailable={onUnavailable} /><main id="staff-content" tabIndex={-1} className="staff-content">{children}</main></div>
+    <div className="staff-workspace"><StaffTopBar active={active} onSignOut={onSignOut} audience={audience} identity={identity} onMenu={menu} onUnavailable={onUnavailable} /><main id="staff-content" tabIndex={-1} className="staff-content">{children}</main></div>
   </SidebarProvider>
 }

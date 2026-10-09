@@ -1,0 +1,24 @@
+=== RUN   TestRealAccounts
+=== RUN   TestRealAccounts/empty_down_up_preserves_existing_identities_and_sessions
+=== RUN   TestRealAccounts/individual_student_faculty_text_identity_and_idempotency
+=== RUN   TestRealAccounts/domain_duplicates_and_authority
+=== RUN   TestRealAccounts/bounded_search_filters_and_missing_mail_state
+=== RUN   TestRealAccounts/single_use_password_and_current_terms
+=== RUN   TestRealAccounts/reissue_expiry_inactive_and_no_session_resurrection
+=== RUN   TestRealAccounts/bulk_preview_conflicts_selection_idempotency_and_rollback
+=== RUN   TestRealAccounts/student_only_deactivation_ignores_obligations_and_retains_history
+=== RUN   TestRealAccounts/concurrent_identity_and_activation
+=== RUN   TestRealAccounts/database_constraints_history_and_nonempty_rollback
+--- PASS: TestRealAccounts (2.11s)
+    --- PASS: TestRealAccounts/empty_down_up_preserves_existing_identities_and_sessions (0.64s)
+    --- PASS: TestRealAccounts/individual_student_faculty_text_identity_and_idempotency (0.11s)
+    --- PASS: TestRealAccounts/domain_duplicates_and_authority (0.04s)
+    --- PASS: TestRealAccounts/bounded_search_filters_and_missing_mail_state (0.09s)
+    --- PASS: TestRealAccounts/single_use_password_and_current_terms (0.05s)
+    --- PASS: TestRealAccounts/reissue_expiry_inactive_and_no_session_resurrection (0.15s)
+    --- PASS: TestRealAccounts/bulk_preview_conflicts_selection_idempotency_and_rollback (0.12s)
+    --- PASS: TestRealAccounts/student_only_deactivation_ignores_obligations_and_retains_history (0.08s)
+    --- PASS: TestRealAccounts/concurrent_identity_and_activation (0.26s)
+    --- PASS: TestRealAccounts/database_constraints_history_and_nonempty_rollback (0.50s)
+PASS
+ok  	github.com/Maaku050/elabtrack-v2/backend/tests/integration	2.122s

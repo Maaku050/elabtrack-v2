@@ -5,6 +5,9 @@
 @import "./terms.css";
 @import "./management.css";
 @import "./inventory.css";
+@import "./refinement.css";
+@import "./phase56-refinement.css";
+@import "./reconstruction.css";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -1,0 +1,16 @@
+
+> elabtrack-v2-frontend@0.0.0 test:run
+> vitest run
+
+
+ RUN  v5.0.3 /home/marvin/projects/eLabTrack_V2/frontend
+
+
+ Test Files  20 passed (20)
+      Tests  263 passed (263)
+   Start at  16:48:53
+   Duration  33.86s (environment 46%, tests 26%, import 13%, setup 7%, transform 7%, worker 1%)
+
+Environment  jsdom was created 20 times · 42.95s total, 46% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

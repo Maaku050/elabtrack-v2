@@ -1,0 +1,5 @@
+Boundary layout {"cells":[{"cell":295.671875,"contents":[{"w":263.671875,"within":true}]},{"cell":126.71875,"contents":[]},{"cell":126.71875,"contents":[]},{"cell":126.71875,"contents":[]},{"cell":126.71875,"contents":[]},{"cell":126.71875,"contents":[{"w":97.5,"within":true}]},{"cell":126.734375,"contents":[{"w":84.40625,"within":true}]}],"scroll":1056,"client":1056}
+PASS Maximum supported stock, long identity and archived status remain readable without desktop table overflow
+PASS Real Chromium DataTransfer drop uses unchanged image validator and rejects unsupported SVG
+PASS Category Dialog keyboard focus remains contained and Escape dismisses safely
+{"result":"PASS","group":"edges","checks":3,"screens":19}

@@ -1,0 +1,53 @@
+{
+  "result": "PASS",
+  "stagedFilesAudited": 907,
+  "stagedBytesAuditedBeforeSummaryRefresh": 85141669,
+  "knownPrivateValuesComparedInMemory": 13,
+  "credentialFindings": [],
+  "serializedCredentialFindings": [],
+  "indexMatchesReviewedPlan": true,
+  "indexMatchesWorktree": true,
+  "gitDiffCheck": "PASS",
+  "gitDiffCachedCheck": "PASS",
+  "imageMetadataAudit": {
+    "imagesChecked": 702,
+    "metadataFindings": [],
+    "jsonSensitiveValues": []
+  },
+  "excludedUntracked": [
+    "docs/ux/verification/reconstruction-stage-a/failure.png",
+    "docs/ux/verification/reconstruction-stage-b/administration-failure.png",
+    "docs/ux/verification/reconstruction-stage-b/borrowers-failure.png",
+    "docs/ux/verification/reconstruction-stage-b/categories-failure.png",
+    "docs/ux/verification/reconstruction-stage-b/consistency-failure.png",
+    "docs/ux/verification/reconstruction-stage-b/edges-failure.png",
+    "docs/ux/verification/reconstruction-stage-b/final-visual-failure.png",
+    "docs/ux/verification/reconstruction-stage-b/stock-failure.png"
+  ],
+  "ignoredExclusions": [
+    ".env",
+    "backend/.env",
+    "backend/.env.phase4a",
+    "backend/.env.phase4b",
+    "frontend/.env",
+    "backend/tmp/",
+    ".project-reference/",
+    "frontend/node_modules/",
+    "frontend/dist/",
+    "eLabTrack_V2_APPROVED_VISUAL_HANDOFF.zip"
+  ],
+  "migrationsAndDependencyManifestsUnchanged": true,
+  "semanticSourceChangesDuringCheckpoint": false,
+  "formattingOnlySourceFiles": [
+    "frontend/scripts/pre-phase7-ui-qa.mjs",
+    "frontend/src/assets/login/CULINARY_LABORATORY.md",
+    "frontend/src/lib/page-range.ts"
+  ],
+  "whitespaceNormalizationEvidence": "WHITESPACE_NORMALIZATION.json",
+  "activeCommitHooks": false,
+  "ownerManualFilterVerification": "PASSED",
+  "phase7": "NOT_STARTED_NOT_AUTHORIZED",
+  "push": false,
+  "deployment": false,
+  "note": "Audit summary and check log re-staged and verified before local commit; no secret values recorded."
+}

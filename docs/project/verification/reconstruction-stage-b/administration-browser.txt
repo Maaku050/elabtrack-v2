@@ -1,0 +1,5 @@
+PASS Administration uses compact overview, actual terms status and embedded server directory with namespaced paging
+PASS Staff/Admin search describes name/email; paging and filter reset follow real server totals
+PASS Existing fixed-STAFF creation, pending activation, detail audit and confirmed status controls persist
+PASS Existing Admin remains read-only; no privileged provisioning or role/password control added
+{"result":"PASS","group":"administration","checks":4,"screens":65}

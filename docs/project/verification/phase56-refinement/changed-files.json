@@ -1,0 +1,639 @@
+{
+  "date": "2026-10-09T06:57:09.152858+00:00",
+  "basis": "SHA-256 comparison against the actual starting workspace, including earlier unstaged work",
+  "ignored_local_config_change": "backend/.env: added only STUDENT_EMAIL_DOMAINS=sksu.edu.ph after verifying local development target; no credentials recorded",
+  "files": [
+    {
+      "path": "backend/README.md",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "backend/internal/application/accounts/service.go",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "backend/internal/bootstrap/batch1_integration_test.go",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "backend/internal/domain/accounts/roster_error.go",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "backend/internal/infrastructure/spreadsheet/student.go",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "backend/internal/infrastructure/spreadsheet/student_test.go",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "backend/internal/interface/http/handlers/accounts_handler.go",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "backend/internal/interface/http/handlers/roster_error.go",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "backend/internal/interface/http/handlers/roster_error_test.go",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "backend/tests/integration/inventory_test.go",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "docs/project/PRE_PHASE7_PHASE5_6_REFINEMENT_REPORT.md",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/project/verification/phase56-refinement/changed-files.json",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/project/verification/phase56-refinement/git-status.txt",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/project/verification/phase56-refinement/quality-gates.json",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/APPROVED_VISUAL_IMPLEMENTATION_MAP.md",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/acceptance.json",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/borrower-details-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/categories-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/correction-review-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-create-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/equipment-edit-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/inventory-correction-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-adjustment-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/stock-review-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-1024-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-1024-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-1366-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-1366-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-390-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-390-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-768-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/after/student-bulk-768-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/acceptance.json",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/borrower-details-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/borrower-details-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/categories-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/categories-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/correction-review-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/correction-review-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/equipment-create-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/equipment-create-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/equipment-edit-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/equipment-edit-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/inventory-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/inventory-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/inventory-correction-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/inventory-correction-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/stock-adjustment-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/stock-adjustment-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/stock-review-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/stock-review-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/student-bulk-1440-dark.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "docs/ux/verification/phase56-refinement/before/student-bulk-1440-light.png",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/scripts/phase56-refinement-qa.mjs",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/components/application/file-dropzone.test.tsx",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/components/application/file-dropzone.tsx",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/accounts/lib/account-status.test.ts",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/accounts/lib/account-status.ts",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/accounts/pages/account-detail.tsx",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/accounts/pages/student-bulk.tsx",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/components/catalog-image-picker.tsx",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/hooks/use-catalog-image.test.tsx",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/hooks/use-catalog-image.ts",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/lib/stock-projection.test.ts",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/lib/stock-projection.ts",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/pages/category-management.tsx",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/pages/equipment-detail.tsx",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/pages/equipment-form.tsx",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/pages/equipment-image.tsx",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/pages/equipment-list.tsx",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/features/inventory/pages/stock-adjustment.tsx",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/styles/index.css",
+      "state": "MODIFIED_THIS_TASK"
+    },
+    {
+      "path": "frontend/src/styles/phase56-refinement.css",
+      "state": "NEW_THIS_TASK"
+    },
+    {
+      "path": "integration/phase56-workbook-fixtures.go",
+      "state": "NEW_THIS_TASK"
+    }
+  ]
+}

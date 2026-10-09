@@ -4,6 +4,7 @@ import { ApiClient } from './api-client'
 import { ApiRequestError } from './api-client'
 import { QueryClient } from '@tanstack/react-query'
 import { useAuthStore } from '@/stores/auth-store'
+import { useSessionActionStore } from '@/stores/session-action-store'
 import { queryClient } from '@/app/query-client'
 import type { BrowserSession } from '@/types/common'
 import { SessionCoordinator, type SessionChannel, type SessionLocks, type TerminalEvent, SESSION_WAIT_MS } from './session-coordinator'
@@ -38,6 +39,7 @@ function deferred<T>() {
   return { promise, resolve }
 }
 beforeEach(() => {
+  useSessionActionStore.getState().setSessionNotice(null)
   useAuthStore.getState().clear()
   useAuthStore.setState({ status: 'idle', generation: 0 })
   localStorage.clear(); sessionStorage.clear(); queryClient.clear()
@@ -393,5 +395,55 @@ describe('logout and session lifecycle races', () => {
     await started.promise; await client.logout(); gate.resolve(); await request
     expect(adapter.mock.calls.some(([config]) => config.url === '/auth/refresh')).toBe(false)
     expect(useAuthStore.getState().status).toBe('unauthenticated')
+  })
+})
+
+
+describe('session notice presentation does not alter session security', () => {
+  it('keeps ordinary anonymous bootstrap rejection neutral', async () => {
+    const adapter = vi.fn<AxiosAdapter>(async config => response(config, 401))
+    const { client } = coordinatedClient(adapter)
+    await client.bootstrap()
+    expect(useAuthStore.getState().status).toBe('unauthenticated')
+    expect(useSessionActionStore.getState().sessionNotice).toBeNull()
+  })
+  it('notifies when a live session refresh is actually rejected', async () => {
+    useAuthStore.getState().setSession(session)
+    const adapter = vi.fn<AxiosAdapter>(async config => response(config, 401))
+    const { client } = coordinatedClient(adapter)
+    await expect(client.refreshSession()).rejects.toMatchObject({ status: 401 })
+    expect(useSessionActionStore.getState().sessionNotice).toBe('invalidated')
+    expect(useAuthStore.getState().accessToken).toBeNull()
+  })
+  it.each([0, 503])('does not call a live-session transport failure %s expiration', async status => {
+    useAuthStore.getState().setSession(session)
+    const adapter = vi.fn<AxiosAdapter>(async config => {
+      if (!status) throw new AxiosError('Network unavailable', 'ERR_NETWORK', config)
+      return response(config, status)
+    })
+    const { client } = coordinatedClient(adapter)
+    await expect(client.refreshSession()).rejects.toMatchObject({ status })
+    expect(useAuthStore.getState().status).toBe('error')
+    expect(useSessionActionStore.getState().sessionNotice).toBeNull()
+    expect(useAuthStore.getState().accessToken).toBeNull()
+  })
+  it.each(['logout', 'session-invalidated', 'auth-state-changed'] as const)('classifies peer %s without changing private-data clearing', event => {
+    useAuthStore.getState().setSession(session)
+    const { notify } = coordinatedClient(vi.fn<AxiosAdapter>())
+    notify(event)
+    expect(useSessionActionStore.getState().sessionNotice).toBe(event === 'logout' ? null : 'invalidated')
+    expect(useAuthStore.getState()).toMatchObject({ user: null, accessToken: null, status: 'unauthenticated' })
+  })
+  it('ignores invalidation notices received on an already anonymous login', () => {
+    const { notify } = coordinatedClient(vi.fn<AxiosAdapter>())
+    notify('session-invalidated')
+    expect(useSessionActionStore.getState().sessionNotice).toBeNull()
+  })
+  it('keeps intentional logout neutral even when server acknowledgement fails', async () => {
+    useAuthStore.getState().setSession(session)
+    const { client } = coordinatedClient(vi.fn<AxiosAdapter>(async config => { throw new AxiosError('Network unavailable', 'ERR_NETWORK', config) }))
+    await expect(client.logout()).rejects.toMatchObject({ status: 0 })
+    expect(useAuthStore.getState().accessToken).toBeNull()
+    expect(useSessionActionStore.getState().sessionNotice).toBeNull()
   })
 })

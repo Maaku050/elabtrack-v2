@@ -1,0 +1,20 @@
+=== RUN   TestRealInventory
+=== RUN   TestRealInventory/empty_paired_rollback_preserves_accounts
+=== RUN   TestRealInventory/authority_category_identity_and_metadata
+=== RUN   TestRealInventory/bounded_search_filters_visibility
+=== RUN   TestRealInventory/adjustment_retry_negative_overflow_and_atomicity
+=== RUN   TestRealInventory/admin_reconciliation_preserves_reserved_custody_damaged
+=== RUN   TestRealInventory/concurrent_last_stock_and_duplicate_key
+=== RUN   TestRealInventory/safe_images_and_ownership
+=== RUN   TestRealInventory/archive_future_boundary_and_history_guards
+--- PASS: TestRealInventory (1.28s)
+    --- PASS: TestRealInventory/empty_paired_rollback_preserves_accounts (0.34s)
+    --- PASS: TestRealInventory/authority_category_identity_and_metadata (0.04s)
+    --- PASS: TestRealInventory/bounded_search_filters_visibility (0.05s)
+    --- PASS: TestRealInventory/adjustment_retry_negative_overflow_and_atomicity (0.04s)
+    --- PASS: TestRealInventory/admin_reconciliation_preserves_reserved_custody_damaged (0.04s)
+    --- PASS: TestRealInventory/concurrent_last_stock_and_duplicate_key (0.45s)
+    --- PASS: TestRealInventory/safe_images_and_ownership (0.05s)
+    --- PASS: TestRealInventory/archive_future_boundary_and_history_guards (0.08s)
+PASS
+ok  	github.com/Maaku050/elabtrack-v2/backend/tests/integration	1.299s

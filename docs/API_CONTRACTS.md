@@ -198,7 +198,7 @@ All routes use current-account authentication, `/api/v1`, standard envelope, and
 
 | Method / path | Contract |
 |---|---|
-| GET /equipment | `page`1..100000, `per_page`1..100(default25), literal search<=100bytes, optional UUID category_id/status, available_only true/false, sort name/available; page items/count and filtered physical totals |
+| GET /equipment | `page`1..100000, `per_page`1..100(default25), literal search<=100bytes, optional UUID category_id, optional status ACTIVE/INACTIVE/ARCHIVED, available_only true/false (true requires ACTIVE status AND available>0), sort name/available; server-filtered page items/count and physical totals |
 | GET /equipment/:id | Metadata, category, ACTIVE/INACTIVE/ARCHIVED, authoritative stock A/R/C/D/T, metadata_version, stock_sequence, current image_id/timestamps; operational archive_safety reflects future-domain installation |
 | POST /equipment | name1..160bytes, description<=2000, optional category_id, opening_quantity0..2147483647, reason required for positive opening, expected_version0. 201 creation/replay; server ACTIVE; opening is one ledger movement |
 | PATCH /equipment/:id | name/description/category_id/expected_version; no stock/status/identity fields. Stale metadata409; archived immutable; existing inactive category can remain but new association requires active category |
@@ -209,6 +209,8 @@ All routes use current-account authentication, `/api/v1`, standard envelope, and
 | POST /equipment-categories; PATCH /equipment-categories/:id | Staff/Admin name<=100bytes, explicit is_active; create expected_version0 / edit current positive expected_version. 201 create/replay,200 update; case-insensitive unique name; no delete; inactivity does not recategorize or hide existing active equipment |
 | POST /equipment/:id/image | Staff/Admin multipart exactly image + expected_version, UUID command key; PNG/JPEG input<=512KiB,2048/dimension and4M pixels. Re-encode canonical PNG, strip metadata; version-conflict safe, hash-based replay; no return photos |
 | GET /equipment/:id/images/:image | Current image only, equipment-owned, authenticated/scoped visibility; PNG binary envelope exception, no-store/nosniff, no arbitrary locator or external URL |
+
+`available_only=true` means **Available for borrowing**, an equipment catalog eligibility filter, not a physical-stock adjustment or permission to submit a borrowing request. Status, category and literal search intersect with it before counting, summing and paginating. ACTIVE + positive available stock matches; ACTIVE + zero stock, INACTIVE (any stock), and ARCHIVED (any stock) do not. Explicit INACTIVE or ARCHIVED + true therefore returns an empty page, total 0 and zero matching-stock totals; unchecking retains the independent Status filter. With false/omitted, operational status/archive visibility stays unchanged and Borrowers still see only ACTIVE equipment. Category inactivity does not hide existing active equipment. Account authority and the separate official-terms borrowing gate remain unchanged.
 
 Paired000007 uses bigint checked quantity arithmetic with per-pool2147483647 bound, conservation `T=A+R+C+D`, immutable stock movements/audit/receipts and immutable canonical PNG rows. Zero opening has no fictitious movement. Loss is historical and replacement liability is separate; neither gets a current-stock bucket. Runtime has named/narrow DML grants and no history updates/deletes/DDL. Down refuses inventory data/history. No synthetic catalog/category seeds or serialized tracking.
 

@@ -1,0 +1,272 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "administration",
+  "checks": [
+    "Administration uses compact overview, actual terms status and embedded server directory with namespaced paging",
+    "Staff/Admin search describes name/email; paging and filter reset follow real server totals",
+    "Existing fixed-STAFF creation, pending activation, detail audit and confirmed status controls persist",
+    "Existing Admin remains read-only; no privileged provisioning or role/password control added"
+  ],
+  "screens": [
+    "administration-overview-320-light.png",
+    "administration-overview-320-dark.png",
+    "administration-overview-390-light.png",
+    "administration-overview-390-dark.png",
+    "administration-overview-440-light.png",
+    "administration-overview-440-dark.png",
+    "administration-overview-768-light.png",
+    "administration-overview-768-dark.png",
+    "administration-overview-1024-light.png",
+    "administration-overview-1024-dark.png",
+    "administration-overview-1366-light.png",
+    "administration-overview-1366-dark.png",
+    "administration-overview-1440-light.png",
+    "administration-overview-1440-dark.png",
+    "administration-overview-390-short-dark.png",
+    "administration-overview-1366-short-dark.png",
+    "staff-admin-directory-320-light.png",
+    "staff-admin-directory-320-dark.png",
+    "staff-admin-directory-390-light.png",
+    "staff-admin-directory-390-dark.png",
+    "staff-admin-directory-440-light.png",
+    "staff-admin-directory-440-dark.png",
+    "staff-admin-directory-768-light.png",
+    "staff-admin-directory-768-dark.png",
+    "staff-admin-directory-1024-light.png",
+    "staff-admin-directory-1024-dark.png",
+    "staff-admin-directory-1366-light.png",
+    "staff-admin-directory-1366-dark.png",
+    "staff-admin-directory-1440-light.png",
+    "staff-admin-directory-1440-dark.png",
+    "staff-admin-directory-390-short-dark.png",
+    "staff-admin-directory-1366-short-dark.png",
+    "staff-create-320-light.png",
+    "staff-create-320-dark.png",
+    "staff-create-390-light.png",
+    "staff-create-390-dark.png",
+    "staff-create-440-light.png",
+    "staff-create-440-dark.png",
+    "staff-create-768-light.png",
+    "staff-create-768-dark.png",
+    "staff-create-1024-light.png",
+    "staff-create-1024-dark.png",
+    "staff-create-1366-light.png",
+    "staff-create-1366-dark.png",
+    "staff-create-1440-light.png",
+    "staff-create-1440-dark.png",
+    "staff-create-390-short-dark.png",
+    "staff-create-1366-short-dark.png",
+    "staff-details-320-light.png",
+    "staff-details-320-dark.png",
+    "staff-details-390-light.png",
+    "staff-details-390-dark.png",
+    "staff-details-440-light.png",
+    "staff-details-440-dark.png",
+    "staff-details-768-light.png",
+    "staff-details-768-dark.png",
+    "staff-details-1024-light.png",
+    "staff-details-1024-dark.png",
+    "staff-details-1366-light.png",
+    "staff-details-1366-dark.png",
+    "staff-details-1440-light.png",
+    "staff-details-1440-dark.png",
+    "staff-details-390-short-dark.png",
+    "staff-details-1366-short-dark.png",
+    "admin-read-only-details-light.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts",
+      "query": "?page=1&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts",
+      "query": "?page=1&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/current",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/terms/current",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts",
+      "query": "?page=2&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts",
+      "query": "?page=2&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts",
+      "query": "?page=1&per_page=25&search=TEST+Stage+B+Staff+00&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts",
+      "query": "?page=1&per_page=25&search=TEST+Stage+B+Staff+00&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/policy",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/policy",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/staff-accounts",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/policy",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts/bf057247-13b4-4acf-8645-89066ff745d2",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts/bf057247-13b4-4acf-8645-89066ff745d2",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts/bf057247-13b4-4acf-8645-89066ff745d2/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts/bf057247-13b4-4acf-8645-89066ff745d2/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/staff-accounts/bf057247-13b4-4acf-8645-89066ff745d2/status",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts/bf057247-13b4-4acf-8645-89066ff745d2/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts/bf057247-13b4-4acf-8645-89066ff745d2",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts/bf057247-13b4-4acf-8645-89066ff745d2/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts/0bd1c1be-fdba-45b1-91e3-67ba7ce490d2",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts/0bd1c1be-fdba-45b1-91e3-67ba7ce490d2/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts/0bd1c1be-fdba-45b1-91e3-67ba7ce490d2",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts/0bd1c1be-fdba-45b1-91e3-67ba7ce490d2/audit",
+      "query": "?page=1"
+    }
+  ],
+  "documentNavigations": 1
+}

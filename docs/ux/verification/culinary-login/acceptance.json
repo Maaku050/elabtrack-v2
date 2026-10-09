@@ -1,0 +1,236 @@
+{
+  "date": "2026-10-08T20:07:47.337Z",
+  "owner_acceptance": "PENDING",
+  "scope": "Real isolated HTTP/PostgreSQL authentication; no normal data, live mail, or owner passwords",
+  "checks": [
+    {
+      "name": "ordinary anonymous login is neutral",
+      "result": "PASS"
+    },
+    {
+      "name": "12 light/dark responsive cases, loaded local photograph, unclipped 44px form controls, desktop two columns",
+      "result": "PASS",
+      "detail": [
+        {
+          "theme": "light",
+          "width": 320,
+          "height": 844,
+          "documentWidth": 320,
+          "documentHeight": 844,
+          "columns": 1,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "dark",
+          "width": 320,
+          "height": 844,
+          "documentWidth": 320,
+          "documentHeight": 844,
+          "columns": 1,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "light",
+          "width": 390,
+          "height": 844,
+          "documentWidth": 390,
+          "documentHeight": 844,
+          "columns": 1,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "dark",
+          "width": 390,
+          "height": 844,
+          "documentWidth": 390,
+          "documentHeight": 844,
+          "columns": 1,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "light",
+          "width": 768,
+          "height": 900,
+          "documentWidth": 768,
+          "documentHeight": 900,
+          "columns": 2,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "dark",
+          "width": 768,
+          "height": 900,
+          "documentWidth": 768,
+          "documentHeight": 900,
+          "columns": 2,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "light",
+          "width": 1024,
+          "height": 900,
+          "documentWidth": 1024,
+          "documentHeight": 900,
+          "columns": 2,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "dark",
+          "width": 1024,
+          "height": 900,
+          "documentWidth": 1024,
+          "documentHeight": 900,
+          "columns": 2,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "light",
+          "width": 1366,
+          "height": 900,
+          "documentWidth": 1366,
+          "documentHeight": 900,
+          "columns": 2,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "dark",
+          "width": 1366,
+          "height": 900,
+          "documentWidth": 1366,
+          "documentHeight": 900,
+          "columns": 2,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "light",
+          "width": 1440,
+          "height": 900,
+          "documentWidth": 1440,
+          "documentHeight": 900,
+          "columns": 2,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        },
+        {
+          "theme": "dark",
+          "width": 1440,
+          "height": 900,
+          "documentWidth": 1440,
+          "documentHeight": 900,
+          "columns": 2,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password"
+        }
+      ]
+    },
+    {
+      "name": "short desktop form controls reachable by keyboard; password visibility works",
+      "result": "PASS"
+    },
+    {
+      "name": "short mobile invalid form focuses first invalid field",
+      "result": "PASS"
+    },
+    {
+      "name": "real invalid-credential error clears password and focuses retry; no expiration notice",
+      "result": "PASS"
+    },
+    {
+      "name": "real successful Admin login and intentional logout",
+      "result": "PASS"
+    },
+    {
+      "name": "later SPA login visit after logout remains neutral",
+      "result": "PASS"
+    },
+    {
+      "name": "actual server-revoked refresh session gives the involuntary-end notice",
+      "result": "PASS"
+    },
+    {
+      "name": "fresh unauthenticated page entry after invalidation stays neutral",
+      "result": "PASS"
+    },
+    {
+      "name": "new login and logout still work after invalidation",
+      "result": "PASS"
+    }
+  ],
+  "screens": [
+    "login-320-light.png",
+    "login-320-dark.png",
+    "login-390-light.png",
+    "login-390-dark.png",
+    "login-768-light.png",
+    "login-768-dark.png",
+    "login-1024-light.png",
+    "login-1024-dark.png",
+    "login-1366-light.png",
+    "login-1366-dark.png",
+    "login-1440-light.png",
+    "login-1440-dark.png",
+    "login-keyboard-1440x600-dark.png",
+    "login-validation-390x480-dark.png",
+    "login-authentication-error-1440-light.png",
+    "login-session-invalidated-390-light.png"
+  ],
+  "errors": []
+}

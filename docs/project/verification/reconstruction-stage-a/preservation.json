@@ -1,0 +1,13 @@
+{
+  "baseline_git_visible_files": 1164,
+  "modified_existing": [
+    "frontend/src/components/application/operational-shell.tsx",
+    "frontend/src/features/accounts/pages/account-directory.tsx",
+    "frontend/src/features/auth/product-auth.test.tsx",
+    "frontend/src/features/inventory/pages/equipment-list.tsx",
+    "frontend/src/styles/index.css"
+  ],
+  "removed_baseline_files": [],
+  "other_baseline_files_unchanged": 1159,
+  "backend_login_auth_source_manifests_routes_forms_history_preserved": true
+}

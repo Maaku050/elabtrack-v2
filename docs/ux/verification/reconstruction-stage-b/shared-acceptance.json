@@ -1,0 +1,55 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "shared",
+  "checks": [
+    "Shared uploader embeds image preview, replacement and unsaved removal through real file input"
+  ],
+  "screens": [
+    "shared-uploader-light.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    }
+  ],
+  "documentNavigations": 1
+}

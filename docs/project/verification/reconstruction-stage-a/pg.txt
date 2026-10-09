@@ -1,0 +1,14 @@
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/bootstrap	2.502s
+--- FAIL: TestRealAccounts (1.73s)
+    --- FAIL: TestRealAccounts/empty_down_up_preserves_existing_identities_and_sessions (0.01s)
+        accounts_test.go:94: migration rollback test must precede account history
+    --- FAIL: TestRealAccounts/database_constraints_history_and_nonempty_rollback (0.08s)
+        accounts_test.go:318: empty inventory rollback before account pair
+--- FAIL: TestRealInventory (1.65s)
+    --- FAIL: TestRealInventory/empty_paired_rollback_preserves_accounts (0.01s)
+        inventory_test.go:44: empty inventory before history
+--- FAIL: TestRealTerms (0.20s)
+    terms_test.go:95: run terms verification before any publications; refuse existing history
+FAIL
+FAIL	github.com/Maaku050/elabtrack-v2/backend/tests/integration	9.053s
+FAIL

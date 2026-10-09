@@ -4,6 +4,9 @@ import (
 	"archive/zip"
 	"bytes"
 	"encoding/binary"
+	"errors"
+	d "github.com/Maaku050/elabtrack-v2/backend/internal/domain/accounts"
+	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	"github.com/xuri/excelize/v2"
 	"testing"
 )
@@ -123,5 +126,60 @@ func TestHostileZip64UncompressedSize(t *testing.T) {
 	}
 	if preflight(hostile) == nil {
 		t.Fatal("huge unsigned size must be rejected before parser conversion/decompression")
+	}
+}
+
+func TestLocatedStudentWorkbookFailuresAndBlankID(t *testing.T) {
+	p := StudentRoster{}
+	for _, tc := range []struct {
+		name        string
+		edit        func(*excelize.File)
+		kind        d.RosterIssueKind
+		row, column int
+	}{
+		{"formula", func(f *excelize.File) { _ = f.SetCellFormula("Sheet1", "B2", "1+1") }, d.RosterFormula, 2, 2},
+		{"header", func(f *excelize.File) { _ = f.SetCellStr("Sheet1", "A1", "wrong") }, d.RosterHeaders, 1, 1},
+		{"extra column", func(f *excelize.File) { _ = f.SetCellStr("Sheet1", "F1", "password") }, d.RosterColumns, 1, 0},
+		{"extra worksheet", func(f *excelize.File) { _, _ = f.NewSheet("Other") }, d.RosterWorksheets, 0, 0},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			_, err := p.Parse(workbook(t, tc.edit))
+			var issue *d.RosterIssue
+			if !errors.As(err, &issue) || issue.Kind != tc.kind || issue.Row != tc.row || issue.Column != tc.column || !errors.Is(err, shared.ErrInvalidInput) {
+				t.Fatalf("classification: %v", err)
+			}
+		})
+	}
+	rows, err := p.Parse(workbook(t, func(f *excelize.File) { _ = f.SetCellStr("Sheet1", "A2", "") }))
+	if err != nil || len(rows) != 1 || rows[0].Error != "" || rows[0].Input.StudentID != "" {
+		t.Fatal("blank ID must reach required identity validation")
+	}
+	raw, err := p.Template()
+	if err != nil {
+		t.Fatal(err)
+	}
+	f, err := excelize.OpenReader(bytes.NewReader(raw))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer f.Close()
+	for _, cell := range []string{"A2", "A501", "E2", "E501"} {
+		id, _ := f.GetCellStyle("Sheet1", cell)
+		style, err := f.GetStyle(id)
+		if err != nil || style.NumFmt != 49 {
+			t.Fatal("input cell must use Text format", cell)
+		}
+	}
+	_ = f.SetCellStr("Sheet1", "A2", "0028366")
+	_ = f.SetCellStr("Sheet1", "B2", "Synthetic Student")
+	_ = f.SetCellStr("Sheet1", "C2", "student@students.example.invalid")
+	_ = f.SetCellStr("Sheet1", "E2", "00987654321")
+	b, err := f.WriteToBuffer()
+	if err != nil {
+		t.Fatal(err)
+	}
+	rows, err = p.Parse(b.Bytes())
+	if err != nil || len(rows) != 1 || rows[0].Input.StudentID != "0028366" || rows[0].Input.ContactNumber != "00987654321" {
+		t.Fatal("text input template round trip")
 	}
 }

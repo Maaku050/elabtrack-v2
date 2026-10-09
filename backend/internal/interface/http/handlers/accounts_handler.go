@@ -219,7 +219,7 @@ func (h *AccountsHandler) Prepare(c fiber.Ctx) error {
 	}
 	rows, e := h.parser.Parse(raw)
 	if e != nil {
-		return response.BadRequest(c, "Invalid Student workbook. Use the template, text Student IDs, one worksheet and at most 500 rows; formulas are not accepted.")
+		return response.BadRequest(c, rosterErrorMessage(e))
 	}
 	v, e := h.svc.Prepare(c.Context(), actor(c), form.Value["operation"][0], rows)
 	return accountResult(c, v, e)

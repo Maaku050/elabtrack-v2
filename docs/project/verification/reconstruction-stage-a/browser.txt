@@ -1,0 +1,18 @@
+PASS Real PostgreSQL fixtures: 32 Student/Faculty borrowers, 32 equipment, 101 categories; activation remains UNCONFIGURED
+PASS Admin Phase 4A login and existing protected Dashboard
+PASS Borrower server pagination and browser Back restore URL/view state
+PASS Student/Faculty and inactive filters use real server results
+PASS Zero-result empty state and disabled single-page navigation
+PASS All four server stock buckets, result-scoped metrics and actor-protected catalog image
+PASS Inventory sort and available-only filters preserve backend ordering/counts
+PASS Unknown-total category pages stay honest and stop at short final batch
+PASS Persistent shell/DOM, centered collapsed seal, keyboard tooltip and no SPA document reload
+PASS Ctrl+B uses the same SidebarProvider/Zustand collapse state
+PASS Base UI footer menu supports account link, Sign Out and Escape focus return
+PASS 390/768/1024/1366 responsive themes, mobile focus return, navigation closes drawer, no document overflow
+PASS Existing equipment and borrower detail links remain functional
+PASS Accessible loading/error/Retry states under controlled network delay/failure
+PASS STAFF navigation and controls respect roles; backend creation/correction and direct routes deny
+PASS Existing logout clears protected workspace and returns to unchanged immersive login
+PASS BORROWER cannot enter operational inventory
+{"result":"PASS","checks":17,"screenshots":25}

@@ -1,0 +1,264 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "stock",
+  "checks": [
+    "Admin correction increase persists; synchronous double confirmation submits once and shows success",
+    "Stock removal projection and persisted stock decrease",
+    "Required explanation and stock addition projection/persistence",
+    "Invalid and insufficient quantities cannot enter review",
+    "Concurrent write rejects stale review and forces updated basis",
+    "Correction decrease warning, persisted counts and ledger movement history",
+    "Backend correction permission remains Admin-only; unavailable buckets unchanged"
+  ],
+  "screens": [
+    "stock-adjustment-320-light.png",
+    "stock-adjustment-320-dark.png",
+    "stock-adjustment-390-light.png",
+    "stock-adjustment-390-dark.png",
+    "stock-adjustment-440-light.png",
+    "stock-adjustment-440-dark.png",
+    "stock-adjustment-768-light.png",
+    "stock-adjustment-768-dark.png",
+    "stock-adjustment-1024-light.png",
+    "stock-adjustment-1024-dark.png",
+    "stock-adjustment-1366-light.png",
+    "stock-adjustment-1366-dark.png",
+    "stock-adjustment-1440-light.png",
+    "stock-adjustment-1440-dark.png",
+    "stock-adjustment-390-short-dark.png",
+    "stock-adjustment-1366-short-dark.png",
+    "stock-review-320-light.png",
+    "stock-review-320-dark.png",
+    "stock-review-390-light.png",
+    "stock-review-390-dark.png",
+    "stock-review-440-light.png",
+    "stock-review-440-dark.png",
+    "stock-review-768-light.png",
+    "stock-review-768-dark.png",
+    "stock-review-1024-light.png",
+    "stock-review-1024-dark.png",
+    "stock-review-1366-light.png",
+    "stock-review-1366-dark.png",
+    "stock-review-1440-light.png",
+    "stock-review-1440-dark.png",
+    "stock-review-390-short-dark.png",
+    "stock-review-1366-short-dark.png",
+    "inventory-correction-320-light.png",
+    "inventory-correction-320-dark.png",
+    "inventory-correction-390-light.png",
+    "inventory-correction-390-dark.png",
+    "inventory-correction-440-light.png",
+    "inventory-correction-440-dark.png",
+    "inventory-correction-768-light.png",
+    "inventory-correction-768-dark.png",
+    "inventory-correction-1024-light.png",
+    "inventory-correction-1024-dark.png",
+    "inventory-correction-1366-light.png",
+    "inventory-correction-1366-dark.png",
+    "inventory-correction-1440-light.png",
+    "inventory-correction-1440-dark.png",
+    "inventory-correction-390-short-dark.png",
+    "inventory-correction-1366-short-dark.png",
+    "correction-review-320-light.png",
+    "correction-review-320-dark.png",
+    "correction-review-390-light.png",
+    "correction-review-390-dark.png",
+    "correction-review-440-light.png",
+    "correction-review-440-dark.png",
+    "correction-review-768-light.png",
+    "correction-review-768-dark.png",
+    "correction-review-1024-light.png",
+    "correction-review-1024-dark.png",
+    "correction-review-1366-light.png",
+    "correction-review-1366-dark.png",
+    "correction-review-1440-light.png",
+    "correction-review-1440-dark.png",
+    "correction-review-390-short-dark.png",
+    "correction-review-1366-short-dark.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/adjustments",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/adjustments",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/adjustments",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/adjustments",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/adjustments",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/adjustments",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77/movements",
+      "query": "?page=1"
+    }
+  ],
+  "documentNavigations": 1
+}

@@ -1,0 +1,203 @@
+{
+  "date": "2026-10-09T05:17:53.193Z",
+  "mode": "after",
+  "environment": "isolated synthetic accounts, localhost:15175 → localhost:18085; no normal data or live mail",
+  "navigation": {
+    "sequence": "Inventory → Borrowers → Dashboard, three cycles after login",
+    "elapsedMs": 2776,
+    "total": 15,
+    "application": 12,
+    "preflights": 3,
+    "documentLoads": 0,
+    "counts": {
+      "GET /api/v1/auth/me 200": 9,
+      "GET /api/v1/equipment-categories 200": 1,
+      "OPTIONS /api/v1/equipment-categories 204": 1,
+      "GET /api/v1/equipment 200": 1,
+      "OPTIONS /api/v1/equipment 204": 1,
+      "GET /api/v1/borrowers 200": 1,
+      "OPTIONS /api/v1/borrowers 204": 1
+    },
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/equipment-categories",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "OPTIONS",
+        "path": "/api/v1/equipment-categories",
+        "type": "Other",
+        "status": 204
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/equipment",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "OPTIONS",
+        "path": "/api/v1/equipment",
+        "type": "Other",
+        "status": 204
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/borrowers",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "OPTIONS",
+        "path": "/api/v1/borrowers",
+        "type": "Other",
+        "status": 204
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      }
+    ]
+  },
+  "administration": {
+    "sequence": "Administration → Dashboard, three cycles",
+    "total": 10,
+    "application": 8,
+    "preflights": 2,
+    "documentLoads": 0,
+    "counts": {
+      "GET /api/v1/auth/me 200": 6,
+      "GET /api/v1/staff-accounts 200": 1,
+      "OPTIONS /api/v1/staff-accounts 204": 1,
+      "GET /api/v1/terms/current 503": 1,
+      "OPTIONS /api/v1/terms/current 204": 1
+    },
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/staff-accounts",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "OPTIONS",
+        "path": "/api/v1/staff-accounts",
+        "type": "Other",
+        "status": 204
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/terms/current",
+        "type": "XHR",
+        "status": 503
+      },
+      {
+        "method": "OPTIONS",
+        "path": "/api/v1/terms/current",
+        "type": "Other",
+        "status": 204
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "path": "/api/v1/auth/me",
+        "type": "XHR",
+        "status": 200
+      }
+    ]
+  },
+  "checks": [
+    "one authoritative current-account request per route; persistent shell; no document load or session restoration during navigation",
+    "unpublished terms shows expected policy message; measured remount behavior",
+    "focus and reconnect each perform one fresh account check, without a loop",
+    "server role change denies cached Admin destination and clears private policy data",
+    "server deactivation rejects current-account access, ends session and clears privileged content/cache",
+    "rejected access credential triggers one server-verified refresh and one retry, without a loop",
+    "explicit refresh and deliberate full-document reload restore valid session with one refresh",
+    "transient refresh network failure withholds protected content; manual recovery succeeds using the existing cookie",
+    "actual logout propagates across two Chromium tabs and clears peer protected cache/content",
+    "server-revoked refresh cannot recover privileges; new login and intentional logout still succeed"
+  ],
+  "errors": []
+}

@@ -33,6 +33,13 @@ func (StudentRoster) Template() ([]byte, error) {
 	if e = f.SetColStyle("Sheet1", "A:E", style); e != nil {
 		return nil, e
 	}
+	// Explicit input-cell styles survive normal editing of the downloaded
+	// template. Pasting a numeric cell is still detected from its stored type.
+	for _, column := range []string{"A", "E"} {
+		if e = f.SetCellStyle("Sheet1", column+"2", column+"501", style); e != nil {
+			return nil, e
+		}
+	}
 	_ = f.SetColWidth("Sheet1", "A", "E", 24)
 	b, e := f.WriteToBuffer()
 	if e != nil {
@@ -42,53 +49,66 @@ func (StudentRoster) Template() ([]byte, error) {
 }
 func preflight(raw []byte) error {
 	if len(raw) == 0 || len(raw) > MaxUpload {
-		return shared.ErrInvalidInput
+		return &d.RosterIssue{Kind: d.RosterSize}
 	}
 	z, e := zip.NewReader(bytes.NewReader(raw), int64(len(raw)))
 	if e != nil || len(z.File) > 64 {
-		return shared.ErrInvalidInput
+		return &d.RosterIssue{Kind: d.RosterArchive}
 	}
 	seen := map[string]bool{}
 	var total uint64
 	for _, f := range z.File {
 		if seen[f.Name] || strings.Contains(f.Name, "..") || strings.HasPrefix(f.Name, "/") || strings.Contains(f.Name, "\\") || f.UncompressedSize64 > 4<<20 {
-			return shared.ErrInvalidInput
+			return &d.RosterIssue{Kind: d.RosterUnsafeArchive}
 		}
 		seen[f.Name] = true
 		total += f.UncompressedSize64
 		if total > 16<<20 {
-			return shared.ErrInvalidInput
+			return &d.RosterIssue{Kind: d.RosterUnsafeArchive}
 		}
 		lower := strings.ToLower(f.Name)
 		if strings.Contains(lower, "vbaproject") || strings.Contains(lower, "externallinks") || strings.Contains(lower, "embeddings") {
-			return shared.ErrInvalidInput
+			return &d.RosterIssue{Kind: d.RosterExternalContent}
 		}
 		r, e := f.Open()
 		if e != nil {
-			return shared.ErrInvalidInput
+			return &d.RosterIssue{Kind: d.RosterArchive}
 		}
 		body, e := io.ReadAll(io.LimitReader(r, 4<<20+1))
 		_ = r.Close()
 		if e != nil || len(body) > 4<<20 || uint64(len(body)) != f.UncompressedSize64 {
-			return shared.ErrInvalidInput
+			return &d.RosterIssue{Kind: d.RosterArchive}
 		}
 		if strings.HasSuffix(lower, ".rels") || strings.HasPrefix(lower, "xl/worksheets/") && strings.HasSuffix(lower, ".xml") {
 			dec := xml.NewDecoder(bytes.NewReader(body))
+			cell := ""
 			for {
 				t, e := dec.Token()
 				if e == io.EOF {
 					break
 				}
 				if e != nil {
-					return shared.ErrInvalidInput
+					return &d.RosterIssue{Kind: d.RosterXML}
 				}
 				if start, ok := t.(xml.StartElement); ok {
+					if start.Name.Local == "c" {
+						cell = ""
+						for _, a := range start.Attr {
+							if a.Name.Local == "r" {
+								cell = a.Value
+							}
+						}
+					}
 					if start.Name.Local == "f" {
-						return shared.ErrInvalidInput
+						column, row, _ := excelize.CellNameToCoordinates(cell)
+						if row < 1 || row > 501 || column < 1 || column > 5 {
+							row, column = 0, 0
+						}
+						return &d.RosterIssue{Kind: d.RosterFormula, Row: row, Column: column}
 					}
 					for _, a := range start.Attr {
 						if a.Name.Local == "TargetMode" && strings.EqualFold(a.Value, "External") {
-							return shared.ErrInvalidInput
+							return &d.RosterIssue{Kind: d.RosterExternalContent}
 						}
 					}
 				}
@@ -103,12 +123,12 @@ func (StudentRoster) Parse(raw []byte) ([]d.Row, error) {
 	}
 	f, e := excelize.OpenReader(bytes.NewReader(raw), excelize.Options{UnzipSizeLimit: 16 << 20, UnzipXMLSizeLimit: 4 << 20, RawCellValue: true})
 	if e != nil {
-		return nil, shared.ErrInvalidInput
+		return nil, &d.RosterIssue{Kind: d.RosterArchive}
 	}
 	defer f.Close()
 	sheets := f.GetSheetList()
 	if len(sheets) != 1 {
-		return nil, shared.ErrInvalidInput
+		return nil, &d.RosterIssue{Kind: d.RosterWorksheets}
 	}
 	sheet := sheets[0]
 	iterator, e := f.Rows(sheet)
@@ -121,11 +141,11 @@ func (StudentRoster) Parse(raw []byte) ([]d.Row, error) {
 	for iterator.Next() {
 		number++
 		if number > 501 {
-			return nil, shared.ErrInvalidInput
+			return nil, &d.RosterIssue{Kind: d.RosterRows}
 		}
 		cells, e := iterator.Columns(excelize.Options{RawCellValue: true})
 		if e != nil || len(cells) > 5 {
-			return nil, shared.ErrInvalidInput
+			return nil, &d.RosterIssue{Kind: d.RosterColumns, Row: number}
 		}
 		values := make([]string, 5)
 		copy(values, cells)
@@ -133,16 +153,19 @@ func (StudentRoster) Parse(raw []byte) ([]d.Row, error) {
 			cell, _ := excelize.CoordinatesToCellName(i+1, number)
 			formula, e := f.GetCellFormula(sheet, cell)
 			if e != nil || formula != "" {
-				return nil, shared.ErrInvalidInput
+				return nil, &d.RosterIssue{Kind: d.RosterFormula, Row: number, Column: i + 1}
 			}
-			if len(values[i]) > 512 || strings.HasPrefix(strings.TrimSpace(values[i]), "=") {
-				return nil, shared.ErrInvalidInput
+			if len(values[i]) > 512 {
+				return nil, &d.RosterIssue{Kind: d.RosterCellLength, Row: number, Column: i + 1}
+			}
+			if strings.HasPrefix(strings.TrimSpace(values[i]), "=") {
+				return nil, &d.RosterIssue{Kind: d.RosterFormula, Row: number, Column: i + 1}
 			}
 		}
 		if number == 1 {
 			for i, h := range headers {
 				if values[i] != h {
-					return nil, shared.ErrInvalidInput
+					return nil, &d.RosterIssue{Kind: d.RosterHeaders, Row: 1, Column: i + 1}
 				}
 			}
 			continue
@@ -156,13 +179,16 @@ func (StudentRoster) Parse(raw []byte) ([]d.Row, error) {
 			return nil, shared.ErrInvalidInput
 		}
 		row := d.Row{Number: number, Input: d.Input{StudentID: values[0], Name: values[1], Email: values[2], Course: values[3], ContactNumber: values[4], BorrowerType: "STUDENT"}}
-		if kind != excelize.CellTypeSharedString && kind != excelize.CellTypeInlineString {
-			row.Error = "Student ID must be a text cell; numeric cells can lose leading zeroes"
+		if values[0] != "" && kind != excelize.CellTypeSharedString && kind != excelize.CellTypeInlineString {
+			row.Error = "Student ID must be a text cell. Format the column as Text and re-enter the value; numeric cells can lose leading zeroes."
 		}
 		out = append(out, row)
 	}
-	if iterator.Error() != nil || len(out) == 0 {
-		return nil, shared.ErrInvalidInput
+	if iterator.Error() != nil {
+		return nil, &d.RosterIssue{Kind: d.RosterXML}
+	}
+	if len(out) == 0 {
+		return nil, &d.RosterIssue{Kind: d.RosterEmpty}
 	}
 	return out, nil
 }

@@ -1,0 +1,26 @@
+{
+  "finalFrontendTests": {
+    "result": "PASS",
+    "files": 21,
+    "tests": 268,
+    "runner": "independent default vitest run"
+  },
+  "initialFrontendTests": {
+    "result": "FAIL",
+    "passed": 267,
+    "failed": 1,
+    "limitation": "Inherited cold lazy-login Email-label timeout under competing build/Go load"
+  },
+  "frontendLint": {
+    "result": "PASS",
+    "errors": 0,
+    "inheritedWarnings": 19
+  },
+  "frontendBuild": "PASS",
+  "goFmt": "PASS_NO_CHANGES",
+  "goVet": "PASS",
+  "goTests": "PASS_OPT_IN_DATABASE_CASES_SEPARATELY_REVIEWED",
+  "postgresAndChromium": "Reviewed existing Stage A/B/filter evidence; not rerun during this checkpoint",
+  "semanticSourceChangesDuringCheckpoint": false,
+  "formattingOnlyNormalization": "WHITESPACE_NORMALIZATION.json"
+}

@@ -1,0 +1,79 @@
+=== RUN   TestBatch1InventoryHTTP
+{"level":"warn","ts":"2026-10-09T20:13:59.573+0800","msg":"http request completed","request_id":"8f70178c-bf76-4db1-b6dd-96970f891163","method":"POST","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":403,"duration_ms":3.511809,"error_code":"FORBIDDEN"}
+{"level":"warn","ts":"2026-10-09T20:13:59.575+0800","msg":"http request completed","request_id":"5222964d-53c7-4434-9a80-04f2ea43a896","method":"POST","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":403,"duration_ms":1.635056,"error_code":"FORBIDDEN"}
+{"level":"info","ts":"2026-10-09T20:13:59.628+0800","msg":"http request completed","request_id":"62e24515-4b41-4c5d-9360-7c6eeb272973","method":"POST","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":201,"duration_ms":45.729628}
+{"level":"info","ts":"2026-10-09T20:13:59.633+0800","msg":"http request completed","request_id":"9633b602-951b-40e7-a70a-135118896638","method":"GET","route":"/api/v1/equipment/:id","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":3.9194}
+{"level":"warn","ts":"2026-10-09T20:13:59.643+0800","msg":"http request completed","request_id":"6f066c0f-4bef-460b-b334-e81ce301ee60","method":"POST","route":"/api/v1/equipment/:id/adjustments","client_ip":"0.0.0.0","event":"http.request_completed","status":403,"duration_ms":4.963994,"error_code":"FORBIDDEN"}
+{"level":"info","ts":"2026-10-09T20:13:59.661+0800","msg":"http request completed","request_id":"59c49238-a472-4398-b182-e24f5a9537f7","method":"POST","route":"/api/v1/equipment/:id/adjustments","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":18.230807}
+{"level":"warn","ts":"2026-10-09T20:13:59.663+0800","msg":"http request completed","request_id":"d25abd1b-9376-4cef-866b-dbc8bde4e402","method":"GET","route":"/api/v1/equipment/:id/movements","client_ip":"0.0.0.0","event":"http.request_completed","status":403,"duration_ms":1.153857,"error_code":"FORBIDDEN"}
+{"level":"info","ts":"2026-10-09T20:13:59.679+0800","msg":"http request completed","request_id":"6286af5a-b2bc-4237-abbf-234bc88173a8","method":"PATCH","route":"/api/v1/equipment/:id/status","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":15.894029}
+{"level":"warn","ts":"2026-10-09T20:13:59.685+0800","msg":"http request completed","request_id":"413219bc-a207-47ae-bf0d-492984ad4d21","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":403,"duration_ms":2.086991,"error_code":"FORBIDDEN"}
+{"level":"warn","ts":"2026-10-09T20:13:59.690+0800","msg":"http request completed","request_id":"5838a5d1-c2a9-433c-af96-b4d4da3ed5b4","method":"GET","route":"/api/v1/equipment","client_ip":"0.0.0.0","event":"http.request_completed","status":403,"duration_ms":1.056679,"error_code":"FORBIDDEN"}
+--- PASS: TestBatch1InventoryHTTP (0.43s)
+=== RUN   TestBatch1InventoryBorrowabilityFilter
+=== RUN   TestBatch1InventoryBorrowabilityFilter/unfiltered
+{"level":"info","ts":"2026-10-09T20:14:00.662+0800","msg":"http request completed","request_id":"aa638fce-f462-4ed0-8699-1ffde94579e9","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":12.955656}
+{"level":"info","ts":"2026-10-09T20:14:00.668+0800","msg":"http request completed","request_id":"f71322e0-28ac-429a-b15f-0fb973042a56","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.882641}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/positive_active_first_page
+{"level":"info","ts":"2026-10-09T20:14:00.674+0800","msg":"http request completed","request_id":"32c4b9e3-2e6d-404a-8f5a-a5fece71f54f","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":5.341961}
+{"level":"info","ts":"2026-10-09T20:14:00.680+0800","msg":"http request completed","request_id":"997de978-4f29-4740-9df8-4f3b7e5ad427","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":5.060616}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/positive_active_second_page
+{"level":"info","ts":"2026-10-09T20:14:00.685+0800","msg":"http request completed","request_id":"f32d248e-f963-498f-b250-d0d38f77f529","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.594104}
+{"level":"info","ts":"2026-10-09T20:14:00.691+0800","msg":"http request completed","request_id":"203f59ba-f3d5-473c-9a80-f4ba8fe3d60b","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":5.446729}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/beyond_final_page
+{"level":"info","ts":"2026-10-09T20:14:00.695+0800","msg":"http request completed","request_id":"d34c8036-ef8a-4174-9d29-c241a6e4c435","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":3.688747}
+{"level":"info","ts":"2026-10-09T20:14:00.699+0800","msg":"http request completed","request_id":"a772d43f-2632-4a6b-89ef-17705f5b3e59","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":3.961802}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/active_intersection
+{"level":"info","ts":"2026-10-09T20:14:00.704+0800","msg":"http request completed","request_id":"a8ab4b6c-d48d-49bb-b063-d788fe01696e","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.088742}
+{"level":"info","ts":"2026-10-09T20:14:00.709+0800","msg":"http request completed","request_id":"4c31ec6b-c12d-4d33-8e93-18ef59ab8564","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.741618}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/inactive_intersection
+{"level":"info","ts":"2026-10-09T20:14:00.718+0800","msg":"http request completed","request_id":"61496461-c351-4ba8-91eb-805d886750f2","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":7.240865}
+{"level":"info","ts":"2026-10-09T20:14:00.727+0800","msg":"http request completed","request_id":"3532ed7c-4825-47ad-bf72-27d512eaca5f","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":8.922643}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/archived_intersection
+{"level":"info","ts":"2026-10-09T20:14:00.737+0800","msg":"http request completed","request_id":"3838ffe8-3a83-49b9-be7f-cf07d8792a33","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":7.475269}
+{"level":"info","ts":"2026-10-09T20:14:00.744+0800","msg":"http request completed","request_id":"89f99805-acb3-43fc-b2ce-a5c9a659c310","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":6.001628}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/inactive_without_availability
+{"level":"info","ts":"2026-10-09T20:14:00.748+0800","msg":"http request completed","request_id":"8c544a16-6bf1-425e-b000-cad05a41ad95","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":3.777534}
+{"level":"info","ts":"2026-10-09T20:14:00.752+0800","msg":"http request completed","request_id":"414b8f45-8f43-49d3-ab64-628fb82e2bfe","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.118305}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/archived_original_visibility
+{"level":"info","ts":"2026-10-09T20:14:00.758+0800","msg":"http request completed","request_id":"8d64311c-8c34-4794-88bb-7fd2e76af473","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.6769}
+{"level":"info","ts":"2026-10-09T20:14:00.762+0800","msg":"http request completed","request_id":"754243a1-befa-4b0d-b3ab-d79933be94af","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":3.999454}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/inactive_category_intersection
+{"level":"info","ts":"2026-10-09T20:14:00.767+0800","msg":"http request completed","request_id":"14a59459-1634-4dd6-b60d-90bdda300ac7","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":3.973287}
+{"level":"info","ts":"2026-10-09T20:14:00.774+0800","msg":"http request completed","request_id":"54654c32-2c64-4962-bfb9-94b7a659aaa6","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":6.749585}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/independent_other_category
+{"level":"info","ts":"2026-10-09T20:14:00.779+0800","msg":"http request completed","request_id":"5bb8ea89-014e-48f6-a0ed-92eccf3c5ecc","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":3.898382}
+{"level":"info","ts":"2026-10-09T20:14:00.784+0800","msg":"http request completed","request_id":"a9752795-6890-465b-b2e5-e0e9cff9feec","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.159752}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/search_intersection
+{"level":"info","ts":"2026-10-09T20:14:00.788+0800","msg":"http request completed","request_id":"4af4e7b3-20ae-449d-b2dc-66f0d6d2c971","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":3.746374}
+{"level":"info","ts":"2026-10-09T20:14:00.793+0800","msg":"http request completed","request_id":"4f1501f9-d740-4a6a-ac39-f0430a3c5dd6","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.680795}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/search_inactive_no_match
+{"level":"info","ts":"2026-10-09T20:14:00.798+0800","msg":"http request completed","request_id":"ed7c63b8-2df8-46cf-ba07-30ec9a1ec35b","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":3.649296}
+{"level":"info","ts":"2026-10-09T20:14:00.802+0800","msg":"http request completed","request_id":"8119a9ce-1fb9-4e12-be5a-ef9c370ad3d0","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.068667}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/stable_pages_and_sort
+{"level":"info","ts":"2026-10-09T20:14:00.809+0800","msg":"http request completed","request_id":"f7ad8be4-87cc-47d5-baa5-24b55cb3a480","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.650533}
+{"level":"info","ts":"2026-10-09T20:14:00.814+0800","msg":"http request completed","request_id":"359e7076-9a3f-4c8a-9ba8-25c3e6e79169","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.939169}
+{"level":"info","ts":"2026-10-09T20:14:00.823+0800","msg":"http request completed","request_id":"fadbe414-a112-4b4b-824e-bd020799a922","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":8.303624}
+{"level":"info","ts":"2026-10-09T20:14:00.834+0800","msg":"http request completed","request_id":"4e606091-65e6-458b-8efe-60848058480d","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":9.63834}
+=== RUN   TestBatch1InventoryBorrowabilityFilter/authority_validation_and_borrower_visibility
+{"level":"warn","ts":"2026-10-09T20:14:00.839+0800","msg":"http request completed","request_id":"a1225905-163e-41c1-a34a-4191b4ebac14","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":403,"duration_ms":2.451407,"error_code":"FORBIDDEN"}
+{"level":"info","ts":"2026-10-09T20:14:00.844+0800","msg":"http request completed","request_id":"51a44ffa-f5c8-4e45-8c41-fd291d654970","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.813328}
+{"level":"info","ts":"2026-10-09T20:14:00.850+0800","msg":"http request completed","request_id":"1023f899-377a-406b-9fc5-b3698013c40c","method":"GET","route":"/api/v1/equipment/","client_ip":"0.0.0.0","event":"http.request_completed","status":200,"duration_ms":4.648036}
+--- PASS: TestBatch1InventoryBorrowabilityFilter (1.23s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/unfiltered (0.02s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/positive_active_first_page (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/positive_active_second_page (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/beyond_final_page (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/active_intersection (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/inactive_intersection (0.02s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/archived_intersection (0.02s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/inactive_without_availability (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/archived_original_visibility (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/inactive_category_intersection (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/independent_other_category (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/search_intersection (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/search_inactive_no_match (0.01s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/stable_pages_and_sort (0.03s)
+    --- PASS: TestBatch1InventoryBorrowabilityFilter/authority_validation_and_borrower_visibility (0.02s)
+PASS
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/bootstrap	1.679s

@@ -1,6 +1,6 @@
 # Initial delivery roadmap
 
-Confirmed sequence from current stakeholder direction. **Phases 0, 1A–1I, 2, 2.5, 3A.1, 3A.2 and 3B are complete within their recorded scopes; Phase 3B is OWNER VISUALLY APPROVED.** The owner reviewed real implementation screenshots and accepted the disclosed minor adaptations. The navy/indigo/violet PNG package is binding for future screens. Phase 3B delivers shared presentation and four development previews. **Phase 4A is complete. Phase 4B terms foundation is implemented and verified; official terms after FSMO presentation and activation/Brevo integration/verified delivery remain pending; Admin-only Student/Faculty provisioning and email/separate-password rules are confirmed in DEC-070. Batch1 authorizes Phases5–6. Phase5 core gates pass with external activation/domain/official-term dependencies; see PHASE5_REPORT.md. Phase6 may now proceed independently; Phase7 remains unauthorized.** See [Phase 3B report](PHASE3B_REPORT.md), [DEC-064](DECISIONS.md#elab-v2-dec-064--phase-3b-implementation-visually-approved), [local readiness report](LOCAL_ENVIRONMENT_READINESS_REPORT.md) and [binding visual map](../ux/APPROVED_VISUAL_IMPLEMENTATION_MAP.md).
+Confirmed sequence from current stakeholder direction. **Phases 0, 1A–1I, 2, 2.5, 3A.1, 3A.2 and 3B are complete within their recorded scopes; Phase 3B is OWNER VISUALLY APPROVED.** The owner reviewed real implementation screenshots and accepted the disclosed minor adaptations. The navy/indigo/violet PNG package is binding for future screens. Phase 3B delivers shared presentation and four development previews. **Phase 4A is complete. Phase 4B terms foundation is implemented and verified; official terms after FSMO presentation and verified live activation delivery remain pending; secure activation and the backend Brevo adapter are implemented in Phase5; Admin-only Student/Faculty provisioning and email/separate-password rules are confirmed in DEC-070. Batch1 authorizes Phases5–6. Phase5 core gates pass with external activation/domain/official-term dependencies; see PHASE5_REPORT.md. Phase6 is complete within its reviewed scope. Frontend Reconstruction Stages A and B are engineering-complete and owner-approved; the corrected Inventory filter is engineering-verified and owner manually verified as passed at the final checkpoint. Phase7 remains NOT STARTED and unauthorized.** See [Phase 3B report](PHASE3B_REPORT.md), [DEC-064](DECISIONS.md#elab-v2-dec-064--phase-3b-implementation-visually-approved), [local readiness report](LOCAL_ENVIRONMENT_READINESS_REPORT.md) and [binding visual map](../ux/APPROVED_VISUAL_IMPLEMENTATION_MAP.md).
 
 ## Phase 0 — Rebaseline & Template Adaptation
 
@@ -136,7 +136,19 @@ Production configuration/runtime safety; authentication/current-account authoriz
 - **Non-goals:** No serialized tracking, mandatory repair workflow, lost-history physical bucket or inventory edits concealing custody.
 - **Exit gate:** Stock reconciliation, permissions, stale edits/archive races and history checks pass; unusable originals remain outside available.
 
+## Frontend reconstruction — final local checkpoint
+
+- **Stage A:** Engineering complete; owner approval confirmed by Stage B authorization and reconfirmed in the final checkpoint request.
+- **Stage B:** Engineering complete; owner visual approval confirmed in the filter review and final checkpoint request.
+- **Inventory filter:** “Available for borrowing” intersects ACTIVE + available>0 with independent Status/Category/Search before server counts/totals/paging. Owner manual verification **PASSED**, explicitly confirmed in the current checkpoint reply, 2026-10-09.
+- **Acceptance:** Final visual/functional reconstruction milestone **ACCEPTED**. [Checkpoint audit/handoff](FRONTEND_RECONSTRUCTION_CHECKPOINT.md) separates the local Git snapshot from production readiness; existing Stage A/B/filter reports retain dated engineering evidence.
+- **Remaining external gates:** Official FSMO terms after presentation, authoritative publication and borrower acceptance before live borrowing; approved production Student domains and required secure activation/ownership readiness; Brevo configured key/verified sender and verified live delivery. No placeholders or provider-submission-only claims substitute for these.
+- **Technical limitations:** Original unmatched GET 500 lacks path/request-ID evidence; inherited lazy-login timing sensitivity and 19 lint warnings; unknown-total endpoints, physical assistive-device/non-Chromium and production deployment checks remain documented.
+- **Boundary:** Authorized local checkpoint only. No push, deployment, new policy or Phase7 implementation.
+
 ## Phase 7 — Borrowing & Approval
+
+- **Status:** NOT STARTED / NOT AUTHORIZED. Accepted frontend reconstruction provides reusable components and reviewed contracts; request separate Phase7 scope/implementation authorization before work.
 
 - **Goal:** Implement reserve-on-submit and approval WITH physical release.
 - **Deliverables:** PENDING holds,24h expiry/sweep/lazy check, owner pending cancel, required visible denial reason, atomic CHECKED_OUT issue/direct checkout, required due date+time/Asia-Manila/current terms, retained history and idempotency.

@@ -1,0 +1,186 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "bulk",
+  "checks": [
+    "Complete Excel preview preserves duplicate/domain errors; selected Student creation confirms once with activation pending",
+    "Roster reuse deactivates only matched selected Students; Faculty and history remain intact"
+  ],
+  "screens": [
+    "student-bulk-320-light.png",
+    "student-bulk-320-dark.png",
+    "student-bulk-390-light.png",
+    "student-bulk-390-dark.png",
+    "student-bulk-440-light.png",
+    "student-bulk-440-dark.png",
+    "student-bulk-768-light.png",
+    "student-bulk-768-dark.png",
+    "student-bulk-1024-light.png",
+    "student-bulk-1024-dark.png",
+    "student-bulk-1366-light.png",
+    "student-bulk-1366-dark.png",
+    "student-bulk-1440-light.png",
+    "student-bulk-1440-dark.png",
+    "student-bulk-390-short-dark.png",
+    "student-bulk-1366-short-dark.png",
+    "bulk-validation-320-light.png",
+    "bulk-validation-320-dark.png",
+    "bulk-validation-390-light.png",
+    "bulk-validation-390-dark.png",
+    "bulk-validation-440-light.png",
+    "bulk-validation-440-dark.png",
+    "bulk-validation-768-light.png",
+    "bulk-validation-768-dark.png",
+    "bulk-validation-1024-light.png",
+    "bulk-validation-1024-dark.png",
+    "bulk-validation-1366-light.png",
+    "bulk-validation-1366-dark.png",
+    "bulk-validation-1440-light.png",
+    "bulk-validation-1440-dark.png",
+    "bulk-validation-390-short-dark.png",
+    "bulk-validation-1366-short-dark.png",
+    "bulk-creation-confirmation-320-light.png",
+    "bulk-creation-confirmation-320-dark.png",
+    "bulk-creation-confirmation-390-light.png",
+    "bulk-creation-confirmation-390-dark.png",
+    "bulk-creation-confirmation-440-light.png",
+    "bulk-creation-confirmation-440-dark.png",
+    "bulk-creation-confirmation-768-light.png",
+    "bulk-creation-confirmation-768-dark.png",
+    "bulk-creation-confirmation-1024-light.png",
+    "bulk-creation-confirmation-1024-dark.png",
+    "bulk-creation-confirmation-1366-light.png",
+    "bulk-creation-confirmation-1366-dark.png",
+    "bulk-creation-confirmation-1440-light.png",
+    "bulk-creation-confirmation-1440-dark.png",
+    "bulk-creation-confirmation-390-short-dark.png",
+    "bulk-creation-confirmation-1366-short-dark.png",
+    "bulk-creation-results-320-light.png",
+    "bulk-creation-results-320-dark.png",
+    "bulk-creation-results-390-light.png",
+    "bulk-creation-results-390-dark.png",
+    "bulk-creation-results-440-light.png",
+    "bulk-creation-results-440-dark.png",
+    "bulk-creation-results-768-light.png",
+    "bulk-creation-results-768-dark.png",
+    "bulk-creation-results-1024-light.png",
+    "bulk-creation-results-1024-dark.png",
+    "bulk-creation-results-1366-light.png",
+    "bulk-creation-results-1366-dark.png",
+    "bulk-creation-results-1440-light.png",
+    "bulk-creation-results-1440-dark.png",
+    "bulk-creation-results-390-short-dark.png",
+    "bulk-creation-results-1366-short-dark.png",
+    "bulk-deactivation-confirmation-320-light.png",
+    "bulk-deactivation-confirmation-320-dark.png",
+    "bulk-deactivation-confirmation-390-light.png",
+    "bulk-deactivation-confirmation-390-dark.png",
+    "bulk-deactivation-confirmation-440-light.png",
+    "bulk-deactivation-confirmation-440-dark.png",
+    "bulk-deactivation-confirmation-768-light.png",
+    "bulk-deactivation-confirmation-768-dark.png",
+    "bulk-deactivation-confirmation-1024-light.png",
+    "bulk-deactivation-confirmation-1024-dark.png",
+    "bulk-deactivation-confirmation-1366-light.png",
+    "bulk-deactivation-confirmation-1366-dark.png",
+    "bulk-deactivation-confirmation-1440-light.png",
+    "bulk-deactivation-confirmation-1440-dark.png",
+    "bulk-deactivation-confirmation-390-short-dark.png",
+    "bulk-deactivation-confirmation-1366-short-dark.png",
+    "bulk-deactivation-results-light.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/student-template",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/student-template",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/borrowers/rosters",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/rosters",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/borrowers/rosters/67b1c112-6b3e-47c3-be34-43b93ca85e73/confirm",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/rosters/67b1c112-6b3e-47c3-be34-43b93ca85e73/confirm",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/borrowers/rosters",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/borrowers/rosters/84acdd40-9178-4268-b83d-b80dc73a1db0/confirm",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/rosters/84acdd40-9178-4268-b83d-b80dc73a1db0/confirm",
+      "query": ""
+    }
+  ],
+  "documentNavigations": 1
+}

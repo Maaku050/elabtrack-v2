@@ -1,0 +1,944 @@
+{
+  "date": "2026-10-08T20:32:31.118Z",
+  "owner_acceptance": "PENDING",
+  "scope": "Immersive full-page captures; real isolated HTTP/PostgreSQL authentication; no normal data, live mail, or owner passwords",
+  "checks": [
+    {
+      "name": "ordinary anonymous login is neutral",
+      "result": "PASS"
+    },
+    {
+      "name": "12 light/dark responsive cases, full viewport and 59/41 desktop split, local cinematic image, unclipped 44px controls",
+      "result": "PASS",
+      "detail": [
+        {
+          "theme": "light",
+          "width": 320,
+          "height": 844,
+          "documentWidth": 320,
+          "documentHeight": 896,
+          "columns": 1,
+          "layoutLeft": 0,
+          "layoutWidth": 320,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 1,
+          "heroHeight": 200,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 8.74
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 5.22
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 5.22
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 6.32
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 6.92
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 7.04
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "width": 320,
+          "height": 844,
+          "documentWidth": 320,
+          "documentHeight": 896,
+          "columns": 1,
+          "layoutLeft": 0,
+          "layoutWidth": 320,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 1,
+          "heroHeight": 200,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 8.74
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 5.22
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 5.22
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 6.32
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 6.92
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 320,
+              "minimum": 4.5,
+              "ratio": 7.04
+            }
+          ]
+        },
+        {
+          "theme": "light",
+          "width": 390,
+          "height": 844,
+          "documentWidth": 390,
+          "documentHeight": 844,
+          "columns": 1,
+          "layoutLeft": 0,
+          "layoutWidth": 390,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 1,
+          "heroHeight": 204,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 8.92
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 5.7
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 5.7
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 5.79
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 7.29
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 7.27
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "width": 390,
+          "height": 844,
+          "documentWidth": 390,
+          "documentHeight": 844,
+          "columns": 1,
+          "layoutLeft": 0,
+          "layoutWidth": 390,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 1,
+          "heroHeight": 204,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 8.92
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 5.7
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 5.7
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 5.79
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 7.29
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 390,
+              "minimum": 4.5,
+              "ratio": 7.27
+            }
+          ]
+        },
+        {
+          "theme": "light",
+          "width": 768,
+          "height": 900,
+          "documentWidth": 768,
+          "documentHeight": 900,
+          "columns": 2,
+          "layoutLeft": 0,
+          "layoutWidth": 768,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 0.5199991861979166,
+          "heroHeight": 900,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 12.75
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 10.25
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 10.25
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 9.9
+            },
+            {
+              "name": ".signin-eyebrow",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 5.66
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 768,
+              "minimum": 3,
+              "ratio": 8.89
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 768,
+              "minimum": 3,
+              "ratio": 10.33
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 768,
+              "minimum": 3,
+              "ratio": 9.06
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 768,
+              "minimum": 3,
+              "ratio": 10.32
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 5.25
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 9.3
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "width": 768,
+          "height": 900,
+          "documentWidth": 768,
+          "documentHeight": 900,
+          "columns": 2,
+          "layoutLeft": 0,
+          "layoutWidth": 768,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 0.5199991861979166,
+          "heroHeight": 900,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 12.75
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 10.25
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 10.25
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 9.9
+            },
+            {
+              "name": ".signin-eyebrow",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 5.66
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 768,
+              "minimum": 3,
+              "ratio": 8.89
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 768,
+              "minimum": 3,
+              "ratio": 10.33
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 768,
+              "minimum": 3,
+              "ratio": 9.06
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 768,
+              "minimum": 3,
+              "ratio": 10.32
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 5.25
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 768,
+              "minimum": 4.5,
+              "ratio": 9.3
+            }
+          ]
+        },
+        {
+          "theme": "light",
+          "width": 1024,
+          "height": 900,
+          "documentWidth": 1024,
+          "documentHeight": 900,
+          "columns": 2,
+          "layoutLeft": 0,
+          "layoutWidth": 1024,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 0.589996337890625,
+          "heroHeight": 900,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 11.12
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 7.22
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 7.22
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 6.62
+            },
+            {
+              "name": ".signin-eyebrow",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 4.64
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1024,
+              "minimum": 3,
+              "ratio": 4.87
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1024,
+              "minimum": 3,
+              "ratio": 4.73
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 4.73
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 10.97
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "width": 1024,
+          "height": 900,
+          "documentWidth": 1024,
+          "documentHeight": 900,
+          "columns": 2,
+          "layoutLeft": 0,
+          "layoutWidth": 1024,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 0.589996337890625,
+          "heroHeight": 900,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 11.12
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 7.22
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 7.22
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 6.62
+            },
+            {
+              "name": ".signin-eyebrow",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 4.64
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1024,
+              "minimum": 3,
+              "ratio": 4.87
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1024,
+              "minimum": 3,
+              "ratio": 4.73
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 4.73
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1024,
+              "minimum": 4.5,
+              "ratio": 10.97
+            }
+          ]
+        },
+        {
+          "theme": "light",
+          "width": 1366,
+          "height": 768,
+          "documentWidth": 1366,
+          "documentHeight": 768,
+          "columns": 2,
+          "layoutLeft": 0,
+          "layoutWidth": 1366,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 0.5899981698389458,
+          "heroHeight": 768,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 13.12
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 8.22
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 8.22
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 7.78
+            },
+            {
+              "name": ".signin-eyebrow",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 5.1
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1366,
+              "minimum": 3,
+              "ratio": 4.53
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1366,
+              "minimum": 3,
+              "ratio": 4.79
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 9.29
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 12.44
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "width": 1366,
+          "height": 768,
+          "documentWidth": 1366,
+          "documentHeight": 768,
+          "columns": 2,
+          "layoutLeft": 0,
+          "layoutWidth": 1366,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 0.5899981698389458,
+          "heroHeight": 768,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 13.12
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 8.22
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 8.22
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 7.78
+            },
+            {
+              "name": ".signin-eyebrow",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 5.1
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1366,
+              "minimum": 3,
+              "ratio": 4.53
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1366,
+              "minimum": 3,
+              "ratio": 4.79
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 9.29
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1366,
+              "minimum": 4.5,
+              "ratio": 12.44
+            }
+          ]
+        },
+        {
+          "theme": "light",
+          "width": 1440,
+          "height": 900,
+          "documentWidth": 1440,
+          "documentHeight": 900,
+          "columns": 2,
+          "layoutLeft": 0,
+          "layoutWidth": 1440,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 0.5899956597222222,
+          "heroHeight": 900,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 12.05
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 8.74
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 8.74
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 9.88
+            },
+            {
+              "name": ".signin-eyebrow",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 5.1
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1440,
+              "minimum": 3,
+              "ratio": 4.6
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1440,
+              "minimum": 3,
+              "ratio": 4.61
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 8.33
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 12.44
+            }
+          ]
+        },
+        {
+          "theme": "dark",
+          "width": 1440,
+          "height": 900,
+          "documentWidth": 1440,
+          "documentHeight": 900,
+          "columns": 2,
+          "layoutLeft": 0,
+          "layoutWidth": 1440,
+          "layoutBorder": "0px",
+          "layoutRadius": "0px",
+          "heroRatio": 0.5899956597222222,
+          "heroHeight": 900,
+          "localImage": true,
+          "controls": true,
+          "imageLoaded": true,
+          "imageFilter": "none",
+          "decorative": true,
+          "emailAutocomplete": "username",
+          "passwordAutocomplete": "current-password",
+          "heroContrast": [
+            {
+              "name": ".app-brand strong",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 12.05
+            },
+            {
+              "name": ".app-brand strong",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 8.74
+            },
+            {
+              "name": ".app-brand strong span",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 8.74
+            },
+            {
+              "name": ".app-brand small",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 9.88
+            },
+            {
+              "name": ".signin-eyebrow",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 5.1
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1440,
+              "minimum": 3,
+              "ratio": 4.6
+            },
+            {
+              "name": ".signin-brand-message h2",
+              "viewport": 1440,
+              "minimum": 3,
+              "ratio": 4.61
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 8.33
+            },
+            {
+              "name": ".signin-hero-description",
+              "viewport": 1440,
+              "minimum": 4.5,
+              "ratio": 12.44
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "short desktop form controls reachable by keyboard; password visibility works",
+      "result": "PASS"
+    },
+    {
+      "name": "short mobile invalid form focuses first invalid field",
+      "result": "PASS"
+    },
+    {
+      "name": "real invalid-credential error clears password and focuses retry; no expiration notice",
+      "result": "PASS"
+    },
+    {
+      "name": "real successful Admin login and intentional logout",
+      "result": "PASS"
+    },
+    {
+      "name": "later SPA login visit after logout remains neutral",
+      "result": "PASS"
+    },
+    {
+      "name": "actual server-revoked refresh session gives the involuntary-end notice",
+      "result": "PASS"
+    },
+    {
+      "name": "fresh unauthenticated page entry after invalidation stays neutral",
+      "result": "PASS"
+    },
+    {
+      "name": "new login and logout still work after invalidation",
+      "result": "PASS"
+    }
+  ],
+  "screens": [
+    "login-320-light.png",
+    "login-320-dark.png",
+    "login-390-light.png",
+    "login-390-dark.png",
+    "login-768-light.png",
+    "login-768-dark.png",
+    "login-1024-light.png",
+    "login-1024-dark.png",
+    "login-1366-light.png",
+    "login-1366-dark.png",
+    "login-1440-light.png",
+    "login-1440-dark.png",
+    "login-keyboard-1440x600-dark.png",
+    "login-validation-390x480-dark.png",
+    "login-authentication-error-1440-light.png",
+    "login-session-invalidated-390-light.png"
+  ],
+  "errors": []
+}

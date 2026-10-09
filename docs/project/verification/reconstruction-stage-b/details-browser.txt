@@ -1,0 +1,2 @@
+PASS Details displays protected image and Edit action without duplicate uploader; status changes preserve physical stock and movement history
+{"result":"PASS","group":"details","checks":1,"screens":17}

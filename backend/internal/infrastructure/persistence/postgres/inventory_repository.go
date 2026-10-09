@@ -40,7 +40,7 @@ func (r *InventoryRepository) List(c context.Context, f d.Filter) (p d.Page, err
 	p.PerPage = f.PerPage
 	search := strings.NewReplacer(`\`, `\\`, `%`, `\%`, `_`, `\_`).Replace(f.Search)
 	args := []any{f.Status, f.CategoryID, "%" + search + "%", f.AvailableOnly}
-	where := ` FROM equipment e LEFT JOIN equipment_categories c ON c.id=e.category_id WHERE ($1='' OR e.status=$1) AND ($2::uuid IS NULL OR e.category_id=$2) AND (e.name ILIKE $3 OR e.description ILIKE $3) AND (NOT $4::bool OR e.available>0)`
+	where := ` FROM equipment e LEFT JOIN equipment_categories c ON c.id=e.category_id WHERE ($1='' OR e.status=$1) AND ($2::uuid IS NULL OR e.category_id=$2) AND (e.name ILIKE $3 OR e.description ILIKE $3) AND (NOT $4::bool OR (e.status='ACTIVE' AND e.available>0))`
 	e := r.executor(c).QueryRow(c, `SELECT count(*),COALESCE(sum(available),0)::bigint,COALESCE(sum(reserved),0)::bigint,COALESCE(sum(checked_out),0)::bigint,COALESCE(sum(damaged_held),0)::bigint,COALESCE(sum(total_tracked),0)::bigint`+where, args...).Scan(&p.Total, &p.Totals.Available, &p.Totals.Reserved, &p.Totals.CheckedOut, &p.Totals.DamagedHeld, &p.Totals.Total)
 	if e != nil {
 		return p, accountError(e)

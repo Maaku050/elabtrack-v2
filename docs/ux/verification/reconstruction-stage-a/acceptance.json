@@ -1,0 +1,381 @@
+{
+  "date": "2026-10-09T10:20:32.323Z",
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "scope": "Isolated PostgreSQL, real existing API, Chromium; synthetic fixture data, no live Brevo; delay/error checks explicitly intercepted",
+  "checks": [
+    "Real PostgreSQL fixtures: 32 Student/Faculty borrowers, 32 equipment, 101 categories; activation remains UNCONFIGURED",
+    "Admin Phase 4A login and existing protected Dashboard",
+    "Borrower server pagination and browser Back restore URL/view state",
+    "Student/Faculty and inactive filters use real server results",
+    "Zero-result empty state and disabled single-page navigation",
+    "All four server stock buckets, result-scoped metrics and actor-protected catalog image",
+    "Inventory sort and available-only filters preserve backend ordering/counts",
+    "Unknown-total category pages stay honest and stop at short final batch",
+    "Persistent shell/DOM, centered collapsed seal, keyboard tooltip and no SPA document reload",
+    "Ctrl+B uses the same SidebarProvider/Zustand collapse state",
+    "Base UI footer menu supports account link, Sign Out and Escape focus return",
+    "390/768/1024/1366 responsive themes, mobile focus return, navigation closes drawer, no document overflow",
+    "Existing equipment and borrower detail links remain functional",
+    "Accessible loading/error/Retry states under controlled network delay/failure",
+    "STAFF navigation and controls respect roles; backend creation/correction and direct routes deny",
+    "Existing logout clears protected workspace and returns to unchanged immersive login",
+    "BORROWER cannot enter operational inventory"
+  ],
+  "screens": [
+    "borrowers-expanded-light.png",
+    "borrowers-expanded-dark.png",
+    "borrowers-pagination-page2-light.png",
+    "borrowers-empty-light.png",
+    "inventory-expanded-light.png",
+    "inventory-expanded-dark.png",
+    "inventory-catalog-image-light.png",
+    "inventory-collapsed-light.png",
+    "inventory-collapsed-dark.png",
+    "collapsed-tooltip-light.png",
+    "account-footer-menu-light.png",
+    "borrowers-responsive-390-light.png",
+    "borrowers-responsive-390-dark.png",
+    "borrowers-responsive-768-light.png",
+    "borrowers-responsive-768-dark.png",
+    "borrowers-responsive-1024-light.png",
+    "borrowers-responsive-1024-dark.png",
+    "borrowers-responsive-1366-light.png",
+    "borrowers-responsive-1366-dark.png",
+    "mobile-navigation-light.png",
+    "mobile-navigation-dark.png",
+    "inventory-mobile-light.png",
+    "inventory-mobile-dark.png",
+    "borrowers-loading-light.png",
+    "borrowers-error-light.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=2&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=2&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=&borrower_type=FACULTY&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=&borrower_type=FACULTY&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=&borrower_type=FACULTY&status=INACTIVE"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=&borrower_type=FACULTY&status=INACTIVE"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=NO-MATCH-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=NO-MATCH-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/7b4f82b3-e47f-4818-8c17-95bb012671c4/images/cb78bd83-0832-462d-92a1-75c45d91f080",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/7b4f82b3-e47f-4818-8c17-95bb012671c4/images/cb78bd83-0832-462d-92a1-75c45d91f080",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=available"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=available"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=true&sort=available"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=true&sort=available"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=2"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=2"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/7b4f82b3-e47f-4818-8c17-95bb012671c4",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/7b4f82b3-e47f-4818-8c17-95bb012671c4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/7b4f82b3-e47f-4818-8c17-95bb012671c4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/7b4f82b3-e47f-4818-8c17-95bb012671c4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/5868f51e-fc45-494d-a8a5-c1ee141db0e2",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/5868f51e-fc45-494d-a8a5-c1ee141db0e2",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/5868f51e-fc45-494d-a8a5-c1ee141db0e2/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/5868f51e-fc45-494d-a8a5-c1ee141db0e2/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=LOADING-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=LOADING-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=ERROR-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=ERROR-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=ERROR-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=ERROR-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=ERROR-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=ERROR-STAGE-A&borrower_type=&status="
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    }
+  ],
+  "documentNavigations": 1
+}

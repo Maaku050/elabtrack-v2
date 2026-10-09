@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
+	domainterms "github.com/Maaku050/elabtrack-v2/backend/internal/domain/terms"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response"
@@ -22,6 +23,44 @@ import (
 	"go.uber.org/zap/zapcore"
 	"go.uber.org/zap/zaptest/observer"
 )
+
+func TestExpectedUnpublishedTermsLogging(t *testing.T) {
+	for _, tt := range []struct {
+		name     string
+		err      error
+		status   int
+		code     string
+		level    zapcore.Level
+		failures int
+	}{
+		{"unpublished", domainterms.ErrNotPublished, 503, "TERMS_NOT_PUBLISHED", zapcore.InfoLevel, 0},
+		{"wrapped-unpublished", fmt.Errorf("private detail: %w", domainterms.ErrNotPublished), 503, "TERMS_NOT_PUBLISHED", zapcore.InfoLevel, 0},
+		{"joined-internal", errors.Join(shared.ErrInternal, domainterms.ErrNotPublished), 500, "INTERNAL_ERROR", zapcore.ErrorLevel, 1},
+		{"dependency", fiber.ErrServiceUnavailable, 503, "SERVICE_UNAVAILABLE", zapcore.ErrorLevel, 1},
+		{"internal", errors.New("private detail"), 500, "INTERNAL_ERROR", zapcore.ErrorLevel, 1},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			core, logs := observer.New(zap.DebugLevel)
+			app := newServer(httpSecurityConfig(t), nil, &logger.Logger{Logger: zap.New(core)})
+			app.Get("/api/v1/terms/current", func(c fiber.Ctx) error {
+				c.Set("Cache-Control", "no-store") // terms route contract
+				return response.Error(c, tt.err)
+			})
+			status, body, headers := securityRequest(t, app, "GET", "/api/v1/terms/current", "", "")
+			var envelope response.Body
+			if status != tt.status || json.Unmarshal([]byte(body), &envelope) != nil || envelope.Error == nil || envelope.Error.Code != tt.code || headers["Cache-Control"] != "no-store" {
+				t.Fatal("policy response contract changed")
+			}
+			completed := logs.FilterMessage("http request completed").All()
+			if len(completed) != 1 || completed[0].Level != tt.level || completed[0].ContextMap()["error_code"] != tt.code || logs.FilterMessage("request error").Len() != tt.failures {
+				t.Fatal("expected policy state or genuine failure logged incorrectly")
+			}
+			if strings.Contains(fmt.Sprint(logs.All()), "private detail") {
+				t.Fatal("private failure text leaked")
+			}
+		})
+	}
+}
 
 func TestRequestEnvelopeCorrelationAndSafeLogs(t *testing.T) {
 	core, logs := observer.New(zap.DebugLevel)

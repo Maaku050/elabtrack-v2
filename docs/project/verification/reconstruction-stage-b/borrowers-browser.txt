@@ -1,0 +1,5 @@
+PASS Student creation preserves textual ID/domain, pending activation and no administrator password
+PASS Profile editing, confirmed deactivation/reactivation, audit display and alert-dialog keyboard containment
+PASS Faculty individual creation permits external email and omits Student ID
+PASS Activation UI retains safe missing-link state; no token or password exposed
+{"result":"PASS","group":"borrowers","checks":4,"screens":65}

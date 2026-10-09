@@ -1,26 +1,27 @@
-import { useDeferredValue, useState } from 'react'
+import { useDeferredValue } from 'react'
 import { Link } from 'react-router-dom'
-import { Plus, Upload, ChevronRight } from 'lucide-react'
-import { OperationalShell } from '@/components/application/operational-shell'
-import { AppButton, PageHeading, ToneBadge, SurfaceCard } from '@/components/application/visual'
-import { DataTableShell, SearchField } from '@/components/application/data-table'
-import { LoadingState, EmptyState } from '@/components/feedback/states'
+import { Plus, ArrowUpRight, Check, Clock } from 'lucide-react'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
+import { DirectoryHeader, DirectoryPanel, DirectorySearch, DirectorySelect, DirectoryTableRegion } from '@/components/application/directory'
+import { ServerPagination } from '@/components/application/server-pagination'
+import { AppButton, ToneBadge } from '@/components/application/visual'
+import { useDirectoryState } from '@/hooks/use-directory-state'
 import { useAuthStore } from '@/stores/auth-store'
 import { apiErrorMessage } from '@/lib/api-error'
 import { useAccounts } from '../hooks/use-accounts'
-export function AccountDirectory({ staff = false, embedded = false }: { staff?: boolean; embedded?: boolean }) {
- const admin = useAuthStore(s => s.user?.role === 'ADMIN'); const [search, setSearch] = useState(''); const deferred = useDeferredValue(search)
- const [page, setPage] = useState(1); const [type, setType] = useState(''); const [status, setStatus] = useState('')
- const query = useAccounts({ page, per_page: 25, search: deferred, borrower_type: type, status }, staff)
- const base = staff ? '/admin/administration/accounts' : '/staff/borrowers'
- const content = <>{!embedded && <PageHeading title={staff ? 'Staff & Admin Accounts' : 'Borrowers'} description={staff ? 'Restricted account administration. New Admin provisioning requires a separate approved security policy.' : 'Manage borrower accounts and operational information.'} action={admin && <div className="management-actions"><AppButton  nativeButton={false} render={<Link to={`${base}/new`} />}> <Plus size={18} />{staff ? 'Add Staff' : 'Add Borrower'}</AppButton>{!staff && <AppButton  variant="outline" nativeButton={false} render={<Link to="/admin/borrowers/bulk" />}> <Upload size={18} />Student Bulk Management</AppButton>}</div>} />}
- <div className="management-toolbar"><SearchField label="Search accounts" placeholder="Search name, email or Student ID…" value={search} onChange={value => { setSearch(value); setPage(1) }} />{!staff && <label>Borrower type<select value={type} onChange={e => { setType(e.target.value); setPage(1) }}><option value="">All types</option><option>STUDENT</option><option>FACULTY</option></select></label>}<label>Status<select value={status} onChange={e => { setStatus(e.target.value); setPage(1) }}><option value="">All statuses</option><option value="ACTIVE">Active</option><option value="INACTIVE">Inactive</option><option value="PENDING">Activation pending</option></select></label></div>
- {query.isPending ? <LoadingState label="Loading accounts…" /> : query.isError ? <SurfaceCard className="management-card"><p role="alert">{apiErrorMessage(query.error)}</p><AppButton variant="outline" onClick={() => { void query.refetch() }}>Retry</AppButton></SurfaceCard> : <DataTableShell label="Account directory" footer={<div className="pagination-controls"><p aria-live="polite">{query.data.total} accounts · Page {page} of {Math.max(1, Math.ceil(query.data.total / 25))}</p><nav aria-label="Account pagination"><AppButton variant="outline" disabled={page === 1} onClick={() => setPage(page - 1)}>Previous</AppButton><AppButton variant="outline" disabled={page * 25 >= query.data.total} onClick={() => setPage(page + 1)}>Next</AppButton></nav></div>}>
- {query.data.items.length === 0 ? <EmptyState title="No accounts found" description={search || type || status ? 'Try adjusting your search or filters.' : 'Provisioned accounts will appear here.'} /> : <table className="management-table"><thead><tr><th>{staff ? 'Account' : 'Borrower'}</th><th>{staff ? 'Role' : 'Type / program'}</th><th>Status</th><th>Activation</th>{!staff && <th>Accountability</th>}<th><span className="sr-only">Details</span></th></tr></thead><tbody>{query.data.items.map(account => <tr key={account.id}><td><strong>{account.name}</strong><small>{account.email}</small>{account.student_id && <small>Student ID: {account.student_id}</small>}</td><td>{staff ? account.role : account.borrower_type || 'Unclassified'}{account.course && <small>{account.course}</small>}</td><td><ToneBadge tone={account.is_active ? 'success' : 'neutral'}>{account.is_active ? 'Active' : 'Inactive'}</ToneBadge></td><td>{account.activation_required ? 'Pending' : 'Established'}</td>{!staff && <td><ToneBadge tone="neutral">{account.obligations.availability === 'UNAVAILABLE' ? 'Unavailable' : 'Review details'}</ToneBadge></td>}<td><AppButton  variant="outline" nativeButton={false} render={<Link to={`${base}/${account.id}`} aria-label={`Open ${account.name}`} />}> Open<ChevronRight size={16} /></AppButton></td></tr>)}</tbody></table>}
- </DataTableShell>}
- </>
- return embedded ? content : <OperationalShell active={staff ? 'Administration' : 'Borrowers'}>{content}</OperationalShell>
-}
-export function StaffDirectory() { return <AccountDirectory staff /> }
+import { activationLabel } from '../lib/account-status'
+import { BorrowerDirectory } from './borrower-directory'
 
-export function EmbeddedStaffDirectory() { return <AccountDirectory staff embedded /> }
+function StaffAccounts({ embedded = false }: { embedded?: boolean }) {
+ const admin=useAuthStore(s=>s.user?.role==='ADMIN'),view=useDirectoryState()
+ const prefix=embedded?'staff_':'',pageKey=prefix+'page',searchKey=prefix+'search',statusKey=prefix+'status'
+ const page=view.page(pageKey),search=view.value(searchKey),deferred=useDeferredValue(search),status=['ACTIVE','INACTIVE','PENDING'].includes(view.value(statusKey))?view.value(statusKey):''
+ const query=useAccounts({page,per_page:25,search:deferred,borrower_type:'',status},true),data=query.data,base='/admin/administration/accounts'
+ function filter(changes:Record<string,string>,replace=false){view.update({...changes,[pageKey]:''},false,replace)}
+ const panel=<DirectoryPanel title="Staff / Admin account directory" summary={data&&!query.isError?`${data.total.toLocaleString()} matching accounts`:'Restricted account administration'} pending={query.isPending} error={query.isError?apiErrorMessage(query.error):undefined} empty={!data?.items.length} onRetry={()=>{void query.refetch()}} toolbar={<><DirectorySearch label="Search Staff / Admin accounts" placeholder="Name or email" value={search} onChange={e=>filter({[searchKey]:e.target.value},true)} /><DirectorySelect label="Status" value={status} onChange={e=>filter({[statusKey]:e.target.value})}><option value="">All statuses</option><option value="ACTIVE">Active</option><option value="INACTIVE">Inactive</option><option value="PENDING">Activation pending</option></DirectorySelect>{(search||status)&&<AppButton variant="ghost" onClick={()=>filter({[searchKey]:'',[statusKey]:''})}>Clear filters</AppButton>}</>} footer={data&&<ServerPagination label="Staff / Admin accounts" pageKey={pageKey} page={data.page} perPage={data.per_page} total={data.total} count={data.items.length} totalPages={Math.ceil(data.total/data.per_page)} pending={query.isFetching} onPage={p=>view.update({[pageKey]:p===1?'':String(p)},false)} />}>
+ <DirectoryTableRegion label="Staff / Admin accounts table"><Table><TableHeader><TableRow>{['Account','Role','Status','Activation'].map(label=><TableHead key={label} scope="col">{label}</TableHead>)}<TableHead scope="col"><span className="sr-only">Details</span></TableHead></TableRow></TableHeader><TableBody>{data?.items.map(account=><TableRow key={account.id}><TableCell><div className="directory-person"><span className="directory-person-avatar" aria-hidden="true">{account.name.trim().split(/\s+/).slice(0,2).map(n=>n[0]).join('').toUpperCase()}</span><div><Link className="directory-record-name" to={`${base}/${account.id}`}>{account.name}</Link><span title={account.email}>{account.email}</span></div></div></TableCell><TableCell><ToneBadge tone={account.role==='ADMIN'?'primary':'neutral'}>{account.role}</ToneBadge></TableCell><TableCell><ToneBadge tone={account.is_active?'success':'neutral'} icon={Check}>{account.is_active?'Active':'Inactive'}</ToneBadge></TableCell><TableCell><ToneBadge tone={account.activation_required?'warning':'neutral'} icon={account.activation_required?Clock:Check}>{activationLabel(account.activation_required)}</ToneBadge></TableCell><TableCell><AppButton variant="ghost" nativeButton={false} render={<Link to={`${base}/${account.id}`} aria-label={`Open ${account.name}`} />}>Open<ArrowUpRight aria-hidden="true" /></AppButton></TableCell></TableRow>)}</TableBody></Table></DirectoryTableRegion></DirectoryPanel>
+ return embedded?panel:<div className="directory-page"><DirectoryHeader title="Staff & Admin Accounts" description="Manage Staff accounts and review existing Admin accounts. New Admin provisioning requires a separate approved security policy." eyebrow="Administration" actions={admin&&<AppButton nativeButton={false} render={<Link to={`${base}/new`} />}><Plus aria-hidden="true" />Add Staff</AppButton>} />{panel}</div>
+}
+export function StaffDirectory(){return <StaffAccounts />}
+export function EmbeddedStaffDirectory(){return <StaffAccounts embedded />}
+export function AccountDirectory({staff=false,embedded=false}:{staff?:boolean;embedded?:boolean}){return staff?<StaffAccounts embedded={embedded}/>:<BorrowerDirectory />}

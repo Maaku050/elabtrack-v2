@@ -1,0 +1,110 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "edges",
+  "checks": [
+    "Maximum supported stock, long identity and archived status remain readable without desktop table overflow",
+    "Real Chromium DataTransfer drop uses unchanged image validator and rejects unsupported SVG",
+    "Category Dialog keyboard focus remains contained and Escape dismisses safely"
+  ],
+  "screens": [
+    "inventory-final-320-light.png",
+    "inventory-final-320-dark.png",
+    "inventory-final-390-light.png",
+    "inventory-final-390-dark.png",
+    "inventory-final-440-light.png",
+    "inventory-final-440-dark.png",
+    "inventory-final-768-light.png",
+    "inventory-final-768-dark.png",
+    "inventory-final-1024-light.png",
+    "inventory-final-1024-dark.png",
+    "inventory-final-1366-light.png",
+    "inventory-final-1366-dark.png",
+    "inventory-final-1440-light.png",
+    "inventory-final-1440-dark.png",
+    "inventory-final-390-short-dark.png",
+    "inventory-final-1366-short-dark.png",
+    "inventory-maximum-stock-1366-light.png",
+    "inventory-maximum-stock-1366-dark.png",
+    "catalog-image-drag-drop-light.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/e063608b-6ffb-4f1b-9c43-806e4a82a0e8/images/dd939f78-ecd1-451c-96f5-a79f6a535b28",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/e063608b-6ffb-4f1b-9c43-806e4a82a0e8/images/dd939f78-ecd1-451c-96f5-a79f6a535b28",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    }
+  ],
+  "documentNavigations": 1
+}

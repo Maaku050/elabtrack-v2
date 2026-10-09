@@ -1,0 +1,36 @@
+ok  	github.com/Maaku050/elabtrack-v2/backend/cmd/api	(cached)
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/application	[no test files]
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/application/accounts	[no test files]
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/application/auth	(cached)
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/application/inventory	[no test files]
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/application/terms	(cached)
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/application/user	[no test files]
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/bootstrap	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/config	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/domain/accounts	(cached)
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth	[no test files]
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/domain/inventory	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/domain/terms	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/domain/user	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/catalogimage	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/email	(cached)
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/logger	[no test files]
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/persistence/postgres	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/security	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/spreadsheet	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/handlers	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/middleware	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/response	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/interface/http/routes	(cached)
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/shared/constants	[no test files]
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/shared/observability	[no test files]
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/shared/pagination	[no test files]
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/shared/utils	[no test files]
+?   	github.com/Maaku050/elabtrack-v2/backend/internal/shared/validator	[no test files]
+ok  	github.com/Maaku050/elabtrack-v2/backend/tests/integration	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/tests/unit/domain/auth	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/tests/unit/domain/user	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/tests/unit/security	(cached)
+ok  	github.com/Maaku050/elabtrack-v2/backend/tmp/dev-admin	(cached)

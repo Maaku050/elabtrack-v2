@@ -26,7 +26,7 @@ export function ThemeControl({ showLabel = false }: { showLabel?: boolean }) {
   const theme = useUIStore(s => s.theme)
   const toggle = useUIStore(s => s.toggleTheme)
   const Icon = theme === 'light' ? Moon : Sun
-  return <AppButton variant="ghost" className="theme-control" aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`} onClick={toggle}>
+  return <AppButton variant="ghost" className="theme-control" title={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`} aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} theme`} onClick={toggle}>
     <Icon aria-hidden="true" size={19} />{showLabel && <span>{theme === 'light' ? 'Dark mode' : 'Light mode'}</span>}
   </AppButton>
 }

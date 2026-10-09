@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-09T06:25:25.494Z",
+  "mode": "before",
+  "ownerAcceptance": "PENDING",
+  "scope": "Real isolated HTTP/PostgreSQL/Chromium; synthetic accounts and inventory only; no live email",
+  "checks": [
+    "before/after screens use real persisted equipment, image, category and unconfigured activation state"
+  ],
+  "screens": [
+    "borrower-details-1440-light.png",
+    "borrower-details-1440-dark.png",
+    "student-bulk-1440-light.png",
+    "student-bulk-1440-dark.png",
+    "categories-1440-light.png",
+    "categories-1440-dark.png",
+    "inventory-1440-light.png",
+    "inventory-1440-dark.png",
+    "equipment-create-1440-light.png",
+    "equipment-create-1440-dark.png",
+    "equipment-edit-1440-light.png",
+    "equipment-edit-1440-dark.png",
+    "stock-adjustment-1440-light.png",
+    "stock-adjustment-1440-dark.png",
+    "stock-review-1440-light.png",
+    "stock-review-1440-dark.png",
+    "inventory-correction-1440-light.png",
+    "inventory-correction-1440-dark.png",
+    "correction-review-1440-light.png",
+    "correction-review-1440-dark.png"
+  ],
+  "errors": []
+}

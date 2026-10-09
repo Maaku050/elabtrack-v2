@@ -1,0 +1,10 @@
+ Container elabtrack_v2_batch1_postgres Stopping
+ Container elabtrack_v2_batch1_postgres Stopped
+ Container elabtrack_v2_batch1_postgres Removing
+ Container elabtrack_v2_batch1_postgres Removed
+ Volume elabtrack_v2_batch1_pgdata Removing
+ Network elabtrack_v2_batch1_default Removing
+ Volume elabtrack_v2_batch1_pgdata Removed
+ Network elabtrack_v2_batch1_default Removed
+
+Verified after cleanup: normal API 8080/api/v1/health = 200; normal frontend 5173/login = 200. Test ports 54832, 18085 and 15175 closed. Owned private test fixtures/credentials removed.

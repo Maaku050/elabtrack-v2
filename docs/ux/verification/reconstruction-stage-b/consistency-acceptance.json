@@ -1,0 +1,393 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "consistency",
+  "checks": [
+    "Operational shell DOM persists through Stage B routes without document reload; all inventory stock columns fit at 1366 expanded desktop",
+    "Collapsed seal remains centered; account menu and short mobile Sheet preserve keyboard containment and Escape focus return in both themes",
+    "TERMS_NOT_PUBLISHED is truthful unavailable policy with no retry or redundant immediate navigation request",
+    "STAFF direct routes and backend account administration/creation remain denied",
+    "Borrower catalog/detail retain terms gate, protected image and read-only availability without stock, edit or upload actions"
+  ],
+  "screens": [
+    "inventory-final-320-light.png",
+    "inventory-final-320-dark.png",
+    "inventory-final-390-light.png",
+    "inventory-final-390-dark.png",
+    "inventory-final-440-light.png",
+    "inventory-final-440-dark.png",
+    "inventory-final-768-light.png",
+    "inventory-final-768-dark.png",
+    "inventory-final-1024-light.png",
+    "inventory-final-1024-dark.png",
+    "inventory-final-1366-light.png",
+    "inventory-final-1366-dark.png",
+    "inventory-final-1440-light.png",
+    "inventory-final-1440-dark.png",
+    "inventory-final-390-short-dark.png",
+    "inventory-final-1366-short-dark.png",
+    "staff-directory-collapsed-light.png",
+    "staff-directory-collapsed-dark.png",
+    "account-menu-light.png",
+    "navigation-320-short-light.png",
+    "navigation-320-short-dark.png",
+    "navigation-390-short-light.png",
+    "navigation-390-short-dark.png",
+    "administration-terms-unpublished-light.png",
+    "equipment-details-final-320-light.png",
+    "equipment-details-final-320-dark.png",
+    "equipment-details-final-390-light.png",
+    "equipment-details-final-390-dark.png",
+    "equipment-details-final-440-light.png",
+    "equipment-details-final-440-dark.png",
+    "equipment-details-final-768-light.png",
+    "equipment-details-final-768-dark.png",
+    "equipment-details-final-1024-light.png",
+    "equipment-details-final-1024-dark.png",
+    "equipment-details-final-1366-light.png",
+    "equipment-details-final-1366-dark.png",
+    "equipment-details-final-1440-light.png",
+    "equipment-details-final-1440-dark.png",
+    "equipment-details-final-390-short-dark.png",
+    "equipment-details-final-1366-short-dark.png",
+    "stock-adjustment-fields-desktop-light.png",
+    "stock-adjustment-projection-mobile-light.png",
+    "stock-adjustment-projection-mobile-dark.png",
+    "borrower-equipment-catalog-320-light.png",
+    "borrower-equipment-catalog-320-dark.png",
+    "borrower-equipment-catalog-390-light.png",
+    "borrower-equipment-catalog-390-dark.png",
+    "borrower-equipment-catalog-440-light.png",
+    "borrower-equipment-catalog-440-dark.png",
+    "borrower-equipment-catalog-768-light.png",
+    "borrower-equipment-catalog-768-dark.png",
+    "borrower-equipment-catalog-1024-light.png",
+    "borrower-equipment-catalog-1024-dark.png",
+    "borrower-equipment-catalog-1366-light.png",
+    "borrower-equipment-catalog-1366-dark.png",
+    "borrower-equipment-catalog-1440-light.png",
+    "borrower-equipment-catalog-1440-dark.png",
+    "borrower-equipment-catalog-390-short-dark.png",
+    "borrower-equipment-catalog-1366-short-dark.png",
+    "borrower-equipment-details-320-light.png",
+    "borrower-equipment-details-320-dark.png",
+    "borrower-equipment-details-390-light.png",
+    "borrower-equipment-details-390-dark.png",
+    "borrower-equipment-details-440-light.png",
+    "borrower-equipment-details-440-dark.png",
+    "borrower-equipment-details-768-light.png",
+    "borrower-equipment-details-768-dark.png",
+    "borrower-equipment-details-1024-light.png",
+    "borrower-equipment-details-1024-dark.png",
+    "borrower-equipment-details-1366-light.png",
+    "borrower-equipment-details-1366-dark.png",
+    "borrower-equipment-details-1440-light.png",
+    "borrower-equipment-details-1440-dark.png",
+    "borrower-equipment-details-390-short-dark.png",
+    "borrower-equipment-details-1366-short-dark.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/e063608b-6ffb-4f1b-9c43-806e4a82a0e8/images/dd939f78-ecd1-451c-96f5-a79f6a535b28",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/images/48f5918e-8c9f-47d3-9a78-347d9d17c101",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/e063608b-6ffb-4f1b-9c43-806e4a82a0e8/images/dd939f78-ecd1-451c-96f5-a79f6a535b28",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/images/48f5918e-8c9f-47d3-9a78-347d9d17c101",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": "?page=1&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/staff-accounts",
+      "query": "?page=1&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/staff-accounts",
+      "query": "?page=1&per_page=25&search=&borrower_type=&status="
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/current",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/terms/current",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/current",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/images/48f5918e-8c9f-47d3-9a78-347d9d17c101",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    }
+  ],
+  "documentNavigations": 1
+}

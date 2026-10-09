@@ -488,7 +488,20 @@ func (s *Service) Prepare(ctx context.Context, actor uuid.UUID, operation string
 			in, e := validationPolicy.Validate(r.Input, false)
 			r.Input = in
 			if e != nil {
-				r.Error = "Invalid required identity fields or institutional domain"
+				switch {
+				case errors.Is(e, d.ErrDomainsMissing):
+					r.Error = "Student email domains are not configured"
+				case errors.Is(e, d.ErrStudentDomain):
+					r.Error = "Email must use a configured institutional domain"
+				case errors.Is(e, user.ErrInvalidEmail):
+					r.Error = "Enter a valid email address"
+				case errors.Is(e, user.ErrInvalidName):
+					r.Error = "Enter a valid Student name"
+				case strings.TrimSpace(r.Input.StudentID) == "":
+					r.Error = "Student ID is required"
+				default:
+					r.Error = "Invalid required identity fields or field length"
+				}
 				continue
 			}
 			if in.BorrowerType != "STUDENT" {

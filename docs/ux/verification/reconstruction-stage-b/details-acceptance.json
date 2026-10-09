@@ -1,0 +1,151 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "details",
+  "checks": [
+    "Details displays protected image and Edit action without duplicate uploader; status changes preserve physical stock and movement history"
+  ],
+  "screens": [
+    "equipment-details-320-light.png",
+    "equipment-details-320-dark.png",
+    "equipment-details-390-light.png",
+    "equipment-details-390-dark.png",
+    "equipment-details-440-light.png",
+    "equipment-details-440-dark.png",
+    "equipment-details-768-light.png",
+    "equipment-details-768-dark.png",
+    "equipment-details-1024-light.png",
+    "equipment-details-1024-dark.png",
+    "equipment-details-1366-light.png",
+    "equipment-details-1366-dark.png",
+    "equipment-details-1440-light.png",
+    "equipment-details-1440-dark.png",
+    "equipment-details-390-short-dark.png",
+    "equipment-details-1366-short-dark.png",
+    "equipment-status-dialog-light.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/images/48f5918e-8c9f-47d3-9a78-347d9d17c101",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/images/48f5918e-8c9f-47d3-9a78-347d9d17c101",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/status",
+      "query": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/images/48f5918e-8c9f-47d3-9a78-347d9d17c101",
+      "query": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/movements",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/52c0ef1d-81e5-48ca-9568-d9ea2ccdd3f4/images/48f5918e-8c9f-47d3-9a78-347d9d17c101",
+      "query": ""
+    }
+  ],
+  "documentNavigations": 1
+}

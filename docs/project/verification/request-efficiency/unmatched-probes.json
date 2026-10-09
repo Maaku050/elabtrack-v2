@@ -1,0 +1,41 @@
+{
+  "environment": "normal local API; read-only probes without credentials",
+  "originalUnmatched500": "not identified or reproduced; owner path/request-ID/log evidence pending",
+  "probes": [
+    {
+      "method": "GET",
+      "path": "/api/v1/health",
+      "status": 200,
+      "code": null,
+      "requestId": "39f5cd9d-435d-40e6-8c09-25b36be90096"
+    },
+    {
+      "method": "GET",
+      "path": "/",
+      "status": 404,
+      "code": "NOT_FOUND",
+      "requestId": "bb0a16d2-e9e3-4374-b877-70237fd5608f"
+    },
+    {
+      "method": "GET",
+      "path": "/favicon.ico",
+      "status": 404,
+      "code": "NOT_FOUND",
+      "requestId": "e93ad7a0-be4b-4822-ad8b-c80eae05148f"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/request-audit-unmatched",
+      "status": 404,
+      "code": "NOT_FOUND",
+      "requestId": "421e896f-1ac3-4235-96a5-ed6da7c951d9"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/request-audit-unmatched",
+      "status": 404,
+      "code": "NOT_FOUND",
+      "requestId": "ca0ff873-88e2-4719-8f24-5a4b4f31132b"
+    }
+  ]
+}

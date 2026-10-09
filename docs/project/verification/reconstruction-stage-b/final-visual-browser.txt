@@ -1,0 +1,2 @@
+PASS Category close control has 44px target; current final dialog and stock/correction review/projection captured in both themes and narrow mobile
+{"result":"PASS","group":"final-visual","checks":1,"screens":24}

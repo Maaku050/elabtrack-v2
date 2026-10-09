@@ -1,8 +1,8 @@
-import { useLocation, useNavigate } from 'react-router-dom'
-import { Bell, LogOut } from 'lucide-react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Bell, LogOut, LayoutDashboard, ArrowRight, Package, Users, UserRound } from 'lucide-react'
 import { borrowerDestinations } from '@/components/application/borrower-navigation'
 import { AccountTerms } from '@/features/terms/components/account-terms'
-import { BorrowerShell, StaffShell } from '@/components/application/shells'
+import { BorrowerShell } from '@/components/application/shells'
 import { AppButton, PageHeading, SurfaceCard, ThemeControl } from '@/components/application/visual'
 import { EmptyState } from '@/components/feedback/states'
 import { useAuthStore } from '@/stores/auth-store'
@@ -15,7 +15,6 @@ const labels: Record<string, string> = {
   '/staff/borrowers': 'Borrowers', '/staff/account': 'Account', '/staff/notifications': 'Notifications',
   '/admin/reports': 'Reports', '/admin/administration': 'Administration',
 }
-const operationalDestinations = { Dashboard: '/staff/dashboard', 'Requests & Borrowings': '/staff/requests', Inventory: '/staff/inventory', Borrowers: '/staff/borrowers', Reports: '/admin/reports', Administration: '/admin/administration', Account: '/staff/account', Notifications: '/staff/notifications' }
 
 export function WorkspacePage() {
   const user = useAuthStore(s => s.user)
@@ -30,11 +29,15 @@ export function WorkspacePage() {
   const body = <>
     <PageHeading title={title} description={account ? 'Your FSMO account.' : `Welcome, ${user.name}.`} action={borrower ? <div className="workspace-actions"><ThemeControl />{signOut}</div> : undefined} />
     {account ? <SurfaceCard className="workspace-placeholder workspace-account"><h2>Account details</h2><dl><dt>Name</dt><dd>{user.name}</dd><dt>Email</dt><dd>{user.email}</dd><dt>Role</dt><dd>{user.role === 'BORROWER' ? 'Borrower' : user.role === 'STAFF' ? 'Staff' : 'Admin'}</dd></dl></SurfaceCard>
-      : <SurfaceCard className="workspace-placeholder"><EmptyState title="This feature is not available yet" description="Your account is connected. Contact FSMO for assistance while this workspace is being prepared." /></SurfaceCard>}
+      : !borrower && title === 'Dashboard' ? <DashboardWelcome /> : <SurfaceCard className="workspace-placeholder"><EmptyState title="This feature is not available yet" description="Your account is connected. Contact FSMO for assistance while this workspace is being prepared." /></SurfaceCard>}
     {account && borrower && <AccountTerms />}
   </>
   return borrower ? <BorrowerShell active={title === 'Equipment Catalog' ? 'Equipment' : title} destinations={borrowerDestinations}
     action={<AppButton variant="ghost" aria-label="Notifications" onClick={() => navigate('/borrower/notifications')}><Bell size={20} aria-hidden="true" /></AppButton>}>{body}</BorrowerShell>
-    : <StaffShell active={title} audience={user.role === 'ADMIN' ? 'admin' : 'staff'} identity={user} destinationHrefs={operationalDestinations} footerAction={signOut}
-      dashboardHref="/staff/dashboard" requestsHref="/staff/requests" onUnavailable={label => navigate(operationalDestinations[label as keyof typeof operationalDestinations] ?? '/staff/account')}>{body}</StaffShell>
+    : body
+}
+
+function DashboardWelcome() {
+  return <><SurfaceCard className="dashboard-welcome"><span className="dashboard-welcome-icon"><LayoutDashboard size={28} aria-hidden="true" /></span><p className="section-eyebrow">Your FSMO workspace</p><h2>A clear view of your operation.</h2><p>Dashboard insights will be available in a later phase. For now, manage equipment and borrower accounts from the workspaces below.</p><span className="dashboard-phase-note">This feature is not available yet</span></SurfaceCard>
+    <div className="dashboard-shortcuts">{[{ title: 'Inventory', description: 'Manage equipment and physical stock.', href: '/staff/inventory', icon: Package }, { title: 'Borrowers', description: 'View borrower accounts and their status.', href: '/staff/borrowers', icon: Users }, { title: 'Your account', description: 'Review your current account details.', href: '/staff/account', icon: UserRound }].map(({ title, description, href, icon: Icon }) => <Link key={href} to={href} className="dashboard-shortcut"><Icon size={22} aria-hidden="true" /><div><h3>{title}</h3><p>{description}</p></div><ArrowRight size={18} aria-hidden="true" /></Link>)}</div></>
 }

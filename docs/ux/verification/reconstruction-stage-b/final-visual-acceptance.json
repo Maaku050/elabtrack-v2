@@ -1,0 +1,103 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "final-visual",
+  "checks": [
+    "Category close control has 44px target; current final dialog and stock/correction review/projection captured in both themes and narrow mobile"
+  ],
+  "screens": [
+    "category-create-dialog-320-light.png",
+    "category-create-dialog-320-dark.png",
+    "category-create-dialog-390-light.png",
+    "category-create-dialog-390-dark.png",
+    "category-create-dialog-440-light.png",
+    "category-create-dialog-440-dark.png",
+    "category-create-dialog-768-light.png",
+    "category-create-dialog-768-dark.png",
+    "category-create-dialog-1024-light.png",
+    "category-create-dialog-1024-dark.png",
+    "category-create-dialog-1366-light.png",
+    "category-create-dialog-1366-dark.png",
+    "category-create-dialog-1440-light.png",
+    "category-create-dialog-1440-dark.png",
+    "category-create-dialog-390-short-dark.png",
+    "category-create-dialog-1366-short-dark.png",
+    "stock-review-projection-320-light.png",
+    "stock-review-projection-320-dark.png",
+    "stock-review-projection-1366-light.png",
+    "stock-review-projection-1366-dark.png",
+    "correction-review-projection-320-light.png",
+    "correction-review-projection-320-dark.png",
+    "correction-review-projection-1366-light.png",
+    "correction-review-projection-1366-dark.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment/225977ce-7543-4ac7-8ac6-f3c9ab8c7d77",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    }
+  ],
+  "documentNavigations": 1
+}

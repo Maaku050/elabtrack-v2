@@ -1,0 +1,8 @@
+PASS Admin correction increase persists; synchronous double confirmation submits once and shows success
+PASS Stock removal projection and persisted stock decrease
+PASS Required explanation and stock addition projection/persistence
+PASS Invalid and insufficient quantities cannot enter review
+PASS Concurrent write rejects stale review and forces updated basis
+PASS Correction decrease warning, persisted counts and ledger movement history
+PASS Backend correction permission remains Admin-only; unavailable buckets unchanged
+{"result":"PASS","group":"stock","checks":7,"screens":64}

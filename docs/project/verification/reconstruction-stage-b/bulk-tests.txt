@@ -1,0 +1,12 @@
+
+> elabtrack-v2-frontend@0.0.0 test:run
+> vitest run src/components/application/file-dropzone.test.tsx
+
+
+ RUN  v5.0.3 /home/marvin/projects/eLabTrack_V2/frontend
+
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  18:55:48
+   Duration  3.41s (environment 50%, setup 20%, tests 15%, transform 8%, import 7%)

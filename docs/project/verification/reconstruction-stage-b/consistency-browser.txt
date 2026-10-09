@@ -1,0 +1,6 @@
+PASS Operational shell DOM persists through Stage B routes without document reload; all inventory stock columns fit at 1366 expanded desktop
+PASS Collapsed seal remains centered; account menu and short mobile Sheet preserve keyboard containment and Escape focus return in both themes
+PASS TERMS_NOT_PUBLISHED is truthful unavailable policy with no retry or redundant immediate navigation request
+PASS STAFF direct routes and backend account administration/creation remain denied
+PASS Borrower catalog/detail retain terms gate, protected image and read-only availability without stock, edit or upload actions
+{"result":"PASS","group":"consistency","checks":5,"screens":75}

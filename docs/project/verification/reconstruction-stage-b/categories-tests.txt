@@ -1,0 +1,12 @@
+
+> elabtrack-v2-frontend@0.0.0 test:run
+> vitest run src/components/application/server-pagination.test.tsx
+
+
+ RUN  v5.0.3 /home/marvin/projects/eLabTrack_V2/frontend
+
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  18:58:55
+   Duration  2.84s (environment 51%, tests 23%, import 11%, transform 7%, setup 7%, worker 1%)

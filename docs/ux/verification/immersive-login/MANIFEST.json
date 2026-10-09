@@ -1,0 +1,118 @@
+{
+  "owner_acceptance": "PENDING",
+  "full_page": true,
+  "images": [
+    {
+      "file": "login-1024-dark.png",
+      "width": 1024,
+      "height": 900,
+      "bytes": 791094,
+      "sha256": "f52fb357cd8b656ce103e96939340f75df95f14d86b8c795149355aa5d7dcf8e"
+    },
+    {
+      "file": "login-1024-light.png",
+      "width": 1024,
+      "height": 900,
+      "bytes": 791406,
+      "sha256": "84165623d45bce64fd1ae9f687b28fa678d5ef28f621f8257ff664046b76563a"
+    },
+    {
+      "file": "login-1366-dark.png",
+      "width": 1366,
+      "height": 768,
+      "bytes": 874366,
+      "sha256": "ac71c6b8115c2ea62e4fcbdf4b273572eb9a05b8307242b005445ac9d19b845e"
+    },
+    {
+      "file": "login-1366-light.png",
+      "width": 1366,
+      "height": 768,
+      "bytes": 873885,
+      "sha256": "959b77aef4974f243a95d6e056b300e15bfc3b213a905a4e0a9b8201460be98b"
+    },
+    {
+      "file": "login-1440-dark.png",
+      "width": 1440,
+      "height": 900,
+      "bytes": 1023657,
+      "sha256": "21fb3a6d2f65414c28c5c9552a6608b29bbab4c2d0bb4f1b5d273e9ccc6d945e"
+    },
+    {
+      "file": "login-1440-light.png",
+      "width": 1440,
+      "height": 900,
+      "bytes": 1024160,
+      "sha256": "0b2b635d9795116e2925c308b0f15b3fb80ccd767a7f010f9cdd5e9016de2c96"
+    },
+    {
+      "file": "login-320-dark.png",
+      "width": 320,
+      "height": 896,
+      "bytes": 137491,
+      "sha256": "d0875261b81f0725f4d455fdbc0f3bea26fed771e8918ac9d5e00c40d06e4d99"
+    },
+    {
+      "file": "login-320-light.png",
+      "width": 320,
+      "height": 896,
+      "bytes": 137129,
+      "sha256": "188090c8f48b250e31f53a3941112ef50488e73846d91270d7834c19bc30c6b2"
+    },
+    {
+      "file": "login-390-dark.png",
+      "width": 390,
+      "height": 844,
+      "bytes": 158110,
+      "sha256": "bc9a7d9717bfc1ec6675dd1026d89d418d58ccdb2ed36024dcf28781dd7b3927"
+    },
+    {
+      "file": "login-390-light.png",
+      "width": 390,
+      "height": 844,
+      "bytes": 157511,
+      "sha256": "e5e5b3ce20b97847b4764763daf7d151038a5fad7cf58759e8db12d1f4ef91ff"
+    },
+    {
+      "file": "login-768-dark.png",
+      "width": 768,
+      "height": 900,
+      "bytes": 502679,
+      "sha256": "5a33d77eca467eae009a0bb82e44ff9d82b2acec26833a3a519c5995b2da5402"
+    },
+    {
+      "file": "login-768-light.png",
+      "width": 768,
+      "height": 900,
+      "bytes": 504036,
+      "sha256": "3786e97cff4ab1c1741131e4c8f35fe2f2c4da1ab6fbc752989275638b109801"
+    },
+    {
+      "file": "login-authentication-error-1440-light.png",
+      "width": 1440,
+      "height": 900,
+      "bytes": 1039588,
+      "sha256": "eb9af8cac78f4651d225ef509b2547d1bc62c0abb35c5b23eccfee28d581aeff"
+    },
+    {
+      "file": "login-keyboard-1440x600-dark.png",
+      "width": 1440,
+      "height": 615,
+      "bytes": 769291,
+      "sha256": "cd1135aa2250d9b20bb132d28efe3792711c69595d52024c0882bba64a7c4c56"
+    },
+    {
+      "file": "login-session-invalidated-390-light.png",
+      "width": 390,
+      "height": 914,
+      "bytes": 162385,
+      "sha256": "fecdbca233df564711b8b32e9f952d823b2308daf7fb6707175df48e63032f86"
+    },
+    {
+      "file": "login-validation-390x480-dark.png",
+      "width": 390,
+      "height": 892,
+      "bytes": 164795,
+      "sha256": "a9bcd0d0a4bbff301cf0adfc38fd10a9a2225ef03bd3f8747ec190d9b2437242"
+    }
+  ]
+}

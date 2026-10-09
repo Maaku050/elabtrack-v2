@@ -1,0 +1,12 @@
+=== RUN   TestRealInventoryContention
+=== RUN   TestRealInventoryContention/competing_actor_equipment_locks
+=== RUN   TestRealInventoryContention/optimistic_metadata_single_winner
+=== RUN   TestRealInventoryContention/ledger_vector_and_audit_receipt_conservation
+--- PASS: TestRealInventoryContention (0.79s)
+    --- PASS: TestRealInventoryContention/competing_actor_equipment_locks (0.55s)
+    --- PASS: TestRealInventoryContention/optimistic_metadata_single_winner (0.03s)
+    --- PASS: TestRealInventoryContention/ledger_vector_and_audit_receipt_conservation (0.04s)
+=== RUN   TestRealInventoryCorrectionSafety
+--- PASS: TestRealInventoryCorrectionSafety (0.35s)
+PASS
+ok  	github.com/Maaku050/elabtrack-v2/backend/tests/integration	1.162s

@@ -1,0 +1,28 @@
+{
+  "reason": "Final cached diff checks newly tracked historical files as additions; prior unstaged diff checks omitted these",
+  "changes": "Trailing spaces and redundant EOF blank lines only; source semantics and evidence results retained",
+  "files": [
+    "docs/project/FRONTEND_RECONSTRUCTION_STAGE_A_REPORT.md",
+    "docs/project/verification/frontend-checkpoint/frontend-tests-initial.txt",
+    "docs/project/verification/frontend-checkpoint/frontend-tests.txt",
+    "docs/project/verification/inventory-filter/frontend-tests.txt",
+    "docs/project/verification/reconstruction-stage-a/parallel.txt",
+    "docs/project/verification/reconstruction-stage-a/serial-final.txt",
+    "docs/project/verification/reconstruction-stage-b/administration-tests.txt",
+    "docs/project/verification/reconstruction-stage-b/borrowers-tests.txt",
+    "docs/project/verification/reconstruction-stage-b/bulk-tests.txt",
+    "docs/project/verification/reconstruction-stage-b/categories-tests.txt",
+    "docs/project/verification/reconstruction-stage-b/cleanup.txt",
+    "docs/project/verification/reconstruction-stage-b/details-tests.txt",
+    "docs/project/verification/reconstruction-stage-b/equipment-tests.txt",
+    "docs/project/verification/reconstruction-stage-b/final-parallel.txt",
+    "docs/project/verification/reconstruction-stage-b/final-serial.txt",
+    "docs/project/verification/reconstruction-stage-b/loaded-parallel.txt",
+    "docs/project/verification/reconstruction-stage-b/loaded-serial.txt",
+    "docs/project/verification/reconstruction-stage-b/shared-tests.txt",
+    "docs/project/verification/reconstruction-stage-b/stock-tests.txt",
+    "frontend/scripts/pre-phase7-ui-qa.mjs",
+    "frontend/src/assets/login/CULINARY_LABORATORY.md",
+    "frontend/src/lib/page-range.ts"
+  ]
+}

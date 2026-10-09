@@ -1,3 +1,4 @@
+import { OperationalLayout } from '@/components/application/operational-shell'
 import { createBrowserRouter, type RouteObject } from 'react-router-dom'
 import { EntryRoute, ProtectedRoute, RouteFailure } from '@/features/auth/components/access-boundary'
 import { borrowerPaths, staffPaths, adminPaths } from '@/features/auth/navigation'
@@ -21,7 +22,8 @@ export const routes: RouteObject[] = [{ errorElement: <RouteFailure />, hydrateF
     { lazy: async () => ({ Component: (await import('@/features/terms/components/terms-gate')).TermsGate }), children: [{path:'/borrower/home',lazy:async()=>({Component:(await import('@/features/workspace/workspace-page')).WorkspacePage})},{path:'/borrower/equipment',lazy:async()=>({Component:(await import('@/features/inventory/pages/equipment-list')).BorrowerCatalog})},{path:'/borrower/equipment/:id',lazy:async()=>({Component:(await import('@/features/inventory/pages/equipment-detail')).BorrowerEquipmentDetail})}] },
     ...borrowerPaths.filter(path => path !== '/borrower/home' && path !== '/borrower/equipment').map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) })),
   ] },
-  { element: <ProtectedRoute roles={['STAFF', 'ADMIN']} />, children: [
+  { element: <OperationalLayout />, children: [
+  { element: <ProtectedRoute roles={['STAFF', 'ADMIN']} embedded />, children: [
  {path:'/staff/inventory',lazy:async()=>({Component:(await import('@/features/inventory/pages/equipment-list')).EquipmentList})},
  {path:'/staff/inventory/new',lazy:async()=>({Component:(await import('@/features/inventory/pages/equipment-form')).EquipmentForm})},
  {path:'/staff/inventory/categories',lazy:async()=>({Component:(await import('@/features/inventory/pages/category-management')).CategoryManagement})},
@@ -31,7 +33,7 @@ export const routes: RouteObject[] = [{ errorElement: <RouteFailure />, hydrateF
  {path:'/staff/borrowers',lazy: async()=>({Component:(await import('@/features/accounts/pages/account-directory')).AccountDirectory})},
  {path:'/staff/borrowers/:id',lazy: async()=>({Component:(await import('@/features/accounts/pages/account-detail')).AccountDetail})},
  ...staffPaths.filter(path=>path!='/staff/borrowers'&&path!='/staff/inventory').map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) }))] },
-  { element: <ProtectedRoute roles={['ADMIN']} />, children: [
+  { element: <ProtectedRoute roles={['ADMIN']} embedded />, children: [
  {path:'/admin/inventory/:id/reconcile',lazy:async()=>({Component:(await import('@/features/inventory/pages/stock-adjustment')).InventoryReconciliation})},
  {path:'/staff/borrowers/new',lazy:async()=>({Component:(await import('@/features/accounts/pages/account-create')).AccountCreate})},
  {path:'/admin/borrowers/bulk',lazy:async()=>({Component:(await import('@/features/accounts/pages/student-bulk')).StudentBulk})},
@@ -40,6 +42,7 @@ export const routes: RouteObject[] = [{ errorElement: <RouteFailure />, hydrateF
  {path:'/admin/administration/accounts/new',lazy:async()=>({Component:(await import('@/features/accounts/pages/account-create')).StaffCreate})},
  {path:'/admin/administration/accounts/:id',lazy:async()=>({Component:(await import('@/features/accounts/pages/account-detail')).StaffDetail})},
  ...adminPaths.filter(path=>path!='/admin/administration').map(path => ({ path, lazy: async () => ({ Component: (await import('@/features/workspace/workspace-page')).WorkspacePage }) }))] },
+  ] },
   { path: '/status', element: <StatusPage /> },
   { path: '*', element: <NotFoundPage /> },
 ] }]

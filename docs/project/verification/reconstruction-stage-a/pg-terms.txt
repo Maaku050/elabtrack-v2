@@ -1,0 +1,28 @@
+=== RUN   TestRealTerms
+=== RUN   TestRealTerms/empty_migration_down_up_preserves_accounts_sessions
+=== RUN   TestRealTerms/missing_terms_and_no_automatic_consent
+=== RUN   TestRealTerms/publication_and_role_authority
+=== RUN   TestRealTerms/first_repeat_and_account_scope
+=== RUN   TestRealTerms/replacement_history_and_stale_consent
+=== RUN   TestRealTerms/parallel_acceptance_one_original_receipt
+=== RUN   TestRealTerms/acceptance_and_publication_transaction_rollback
+=== RUN   TestRealTerms/constraints_immutability_and_runtime_privileges
+=== RUN   TestRealTerms/publication_wins_old_view_conflicts
+=== RUN   TestRealTerms/acceptance_wins_preserves_reviewed_version
+=== RUN   TestRealTerms/parallel_publishers_no_blind_overwrite
+=== RUN   TestRealTerms/history_safe_rollback_and_policy_transaction_boundary
+--- PASS: TestRealTerms (2.94s)
+    --- PASS: TestRealTerms/empty_migration_down_up_preserves_accounts_sessions (1.14s)
+    --- PASS: TestRealTerms/missing_terms_and_no_automatic_consent (0.03s)
+    --- PASS: TestRealTerms/publication_and_role_authority (0.06s)
+    --- PASS: TestRealTerms/first_repeat_and_account_scope (0.06s)
+    --- PASS: TestRealTerms/replacement_history_and_stale_consent (0.05s)
+    --- PASS: TestRealTerms/parallel_acceptance_one_original_receipt (0.28s)
+    --- PASS: TestRealTerms/acceptance_and_publication_transaction_rollback (0.07s)
+    --- PASS: TestRealTerms/constraints_immutability_and_runtime_privileges (0.06s)
+    --- PASS: TestRealTerms/publication_wins_old_view_conflicts (0.05s)
+    --- PASS: TestRealTerms/acceptance_wins_preserves_reviewed_version (0.06s)
+    --- PASS: TestRealTerms/parallel_publishers_no_blind_overwrite (0.01s)
+    --- PASS: TestRealTerms/history_safe_rollback_and_policy_transaction_boundary (0.91s)
+PASS
+ok  	github.com/Maaku050/elabtrack-v2/backend/tests/integration	2.962s

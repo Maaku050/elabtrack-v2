@@ -1,0 +1,231 @@
+{
+  "phase": "before",
+  "date": "2026-10-08T19:22:56.477Z",
+  "scope": "Isolated real HTTP/PostgreSQL; synthetic identities only; owner visual acceptance pending",
+  "screens": [
+    "login-1440-light.png",
+    "login-1440-dark.png",
+    "login-320-light.png",
+    "login-390-light.png",
+    "login-768-light.png",
+    "dashboard-expanded-1440-light.png",
+    "dashboard-expanded-1440-dark.png",
+    "dashboard-collapsed-1440-light.png",
+    "dashboard-collapsed-1440-dark.png",
+    "inventory-expanded-1440-light.png",
+    "inventory-expanded-1440-dark.png",
+    "inventory-collapsed-1440-light.png",
+    "inventory-collapsed-1440-dark.png",
+    "inventory-390-light.png",
+    "inventory-768-light.png"
+  ],
+  "checks": [
+    {
+      "name": "baseline /staff/dashboard",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/requests",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/inventory",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/borrowers",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /admin/reports",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /admin/administration",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/dashboard",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/requests",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/inventory",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/borrowers",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /admin/reports",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /admin/administration",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/dashboard",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/requests",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/inventory",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /staff/borrowers",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /admin/reports",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline /admin/administration",
+      "detail": {
+        "sidebar": false,
+        "header": false,
+        "main": false,
+        "document": true,
+        "collapsed": true,
+        "dark": true
+      }
+    },
+    {
+      "name": "baseline navigation evidence",
+      "detail": {
+        "removals": 39,
+        "documentRequests": 0,
+        "meRequests": 18
+      }
+    }
+  ],
+  "errors": []
+}

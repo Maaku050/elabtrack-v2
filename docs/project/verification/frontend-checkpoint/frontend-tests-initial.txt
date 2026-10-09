@@ -1,0 +1,19 @@
+
+> elabtrack-v2-frontend@0.0.0 test:run
+> vitest run
+
+
+ RUN  v5.0.3 /home/marvin/projects/eLabTrack_V2/frontend
+
+ ❯ src/features/auth/product-auth.test.tsx (31 tests | 1 failed) 10018ms
+   ❯ Phase 4A product authentication (25)
+     × validates fields, exposes accessible errors, and never submits invalid credentials 1324ms
+
+ Test Files  1 failed | 20 passed (21)
+      Tests  1 failed | 267 passed (268)
+   Start at  20:42:21
+   Duration  45.72s (environment 44%, tests 27%, import 15%, setup 7%, transform 6%)
+
+Environment  jsdom was created 21 times · 54.61s total, 44% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

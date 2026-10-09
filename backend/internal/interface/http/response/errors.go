@@ -122,7 +122,9 @@ func OutcomeFromContext(c fiber.Ctx) Outcome {
 	return value
 }
 func record(c fiber.Ctx, m Mapping, err error) {
-	out := Outcome{Code: m.Code, Unexpected: m.Status >= 500}
+	// Only the trusted unavailable-policy mapping is expected. Joined internal
+	// failures still map to INTERNAL_ERROR and retain error-level visibility.
+	out := Outcome{Code: m.Code, Unexpected: m.Status >= 500 && m.Code != "TERMS_NOT_PUBLISHED"}
 	if err != nil {
 		out.ErrorClass, out.Operation = shared.FailureDetails(err)
 	}

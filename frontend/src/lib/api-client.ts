@@ -8,6 +8,7 @@ import axios, {
 import type { ApiResponse } from '@/types/api'
 import type { BrowserSession, AuthUser } from '@/types/common'
 import { useAuthStore } from '@/stores/auth-store'
+import { useSessionActionStore } from '@/stores/session-action-store'
 import { clearLegacyAuthStorage } from '@/lib/storage'
 import { ApiRequestError, normalizeApiError, normalizeApiResponseError } from '@/lib/api-error'
 import { SessionCoordinator, sessionCoordinator, classifyRefreshFailure, type SessionAttempt } from '@/lib/session-coordinator'
@@ -44,6 +45,9 @@ export class ApiClient {
     this.coordinator = coordinator
     this.unsubscribe = coordinator.subscribe((event) => {
       if (event.type === 'auth-state-changed') this.authChange++
+      // Notice metadata does not participate in session authority or fencing.
+      const live = useAuthStore.getState().isAuthenticated
+      useSessionActionStore.getState().setSessionNotice(live && event.type !== 'logout' ? 'invalidated' : null)
       useAuthStore.getState().clear()
     })
     this.axios = axios.create({ baseURL, timeout: 15_000, headers: { 'Content-Type': 'application/json' }, withCredentials: true, adapter })
@@ -94,6 +98,7 @@ export class ApiClient {
     // These retained current-account routes have no resource-specific 403:
     // the authoritative resolver denied current active/recognized account state.
     if (config && error.response?.status === 403 && config.sentAccessToken && config.sentAccessToken === useAuthStore.getState().accessToken && config.sessionGeneration === useAuthStore.getState().generation && ['/auth/me', '/users/me'].includes(config.url?.split('?')[0] ?? '')) {
+      useSessionActionStore.getState().setSessionNotice('invalidated')
       useAuthStore.getState().clear()
       if (config.sessionAttempt) this.coordinator.invalidate(config.sessionAttempt)
     }
@@ -103,6 +108,7 @@ export class ApiClient {
     if (config.sessionRetry) {
       // A persistent denial ends this session; Query must not restart it.
       if (config.sentAccessToken === state.accessToken) {
+        useSessionActionStore.getState().setSessionNotice('invalidated')
         state.clear()
         if (config.sessionAttempt) this.coordinator.invalidate(config.sessionAttempt)
       }
@@ -135,6 +141,9 @@ export class ApiClient {
   private failSession(error: unknown, generation: number): void {
     if (useAuthStore.getState().generation !== generation) return
     const status = this.normalize(error).status
+    if (status === 401 || status === 403) {
+      if (useAuthStore.getState().isAuthenticated) useSessionActionStore.getState().setSessionNotice('invalidated')
+    } else useSessionActionStore.getState().setSessionNotice(null)
     useAuthStore.getState().clear(status === 401 || status === 403 ? 'unauthenticated' : 'error')
   }
   refreshSession(): Promise<BrowserSession> {
@@ -147,6 +156,7 @@ export class ApiClient {
           try {
             const data = this.acceptSession(await this.post<BrowserSession>('/auth/refresh', undefined, { attachAuth: false, retryAuth: false }))
             if (this.disposed || generation !== useAuthStore.getState().generation) throw new ApiRequestError('Session ended', 401, 'SESSION_CHANGED')
+            useSessionActionStore.getState().setSessionNotice(null)
             useAuthStore.getState().setSession(data)
             this.coordinator.succeeded(attempt)
             return data
@@ -183,6 +193,7 @@ export class ApiClient {
   }
   authenticate(path: '/auth/login' | '/auth/register', input: unknown): Promise<BrowserSession> {
     this.authChange++
+    useSessionActionStore.getState().setSessionNotice(null)
     const generation = useAuthStore.getState().clear('bootstrapping')
     // Credentials may change accounts. Peers discard old presentation state;
     // they stay unauthenticated until deliberate server bootstrap/login.
@@ -203,6 +214,7 @@ export class ApiClient {
   logout(): Promise<void> {
     // Invalidate state immediately, even when the network is unavailable.
     const authChange = this.authChange
+    useSessionActionStore.getState().setSessionNotice(null)
     useAuthStore.getState().clear()
     this.coordinator.announce('logout')
     return this.scheduleSession(() => this.coordinator.run(false, async () => {

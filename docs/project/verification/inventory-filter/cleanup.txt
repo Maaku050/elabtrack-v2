@@ -1,0 +1,10 @@
+Normal local service before test cleanup: http://localhost:8080/api/v1/health status 200
+Normal local service before test cleanup: http://localhost:5173/login status 200
+Owned test API exited successfully; isolated Vite stopped.
+Verified Compose project labels before removing only elabtrack_v2_batch1 container/volume/network.
+Generated private credentials and synthetic fixture files removed.
+Owned test port 54832 closed.
+Owned test port 18085 closed.
+Owned test port 15175 closed.
+Normal local service after test cleanup: http://localhost:8080/api/v1/health status 200
+Normal local service after test cleanup: http://localhost:5173/login status 200

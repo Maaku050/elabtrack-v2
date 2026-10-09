@@ -1,0 +1,2 @@
+PASS Shared uploader embeds image preview, replacement and unsaved removal through real file input
+{"result":"PASS","group":"shared","checks":1,"screens":1}

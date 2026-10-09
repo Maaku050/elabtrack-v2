@@ -73,6 +73,8 @@ func completeRequest(l *logger.Logger, c fiber.Ctx, start time.Time) {
 		fields = append(fields, zap.String("security_event", event))
 	}
 	switch {
+	case status == 503 && out.Code == "TERMS_NOT_PUBLISHED" && !out.Unexpected:
+		l.Info("http request completed", fields...)
 	case status >= 500 || out.Unexpected:
 		l.Error("http request completed", fields...)
 	case status == 403 || status == 429:

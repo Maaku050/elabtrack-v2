@@ -1,0 +1,1177 @@
+{
+  "phase": "after",
+  "date": "2026-10-08T19:35:06.371Z",
+  "scope": "Isolated real HTTP/PostgreSQL; synthetic identities only; owner visual acceptance pending",
+  "screens": [
+    "login-1440-light.png",
+    "login-1440-dark.png",
+    "login-320-light.png",
+    "login-390-light.png",
+    "login-768-light.png",
+    "dashboard-expanded-1440-light.png",
+    "dashboard-expanded-1440-dark.png",
+    "dashboard-collapsed-1440-light.png",
+    "dashboard-collapsed-1440-dark.png",
+    "inventory-expanded-1440-light.png",
+    "inventory-expanded-1440-dark.png",
+    "inventory-collapsed-1440-light.png",
+    "inventory-collapsed-1440-dark.png",
+    "inventory-390-light.png",
+    "inventory-768-light.png",
+    "dashboard-320-light.png",
+    "dashboard-320-dark.png",
+    "dashboard-390-light.png",
+    "dashboard-390-dark.png",
+    "dashboard-768-light.png",
+    "dashboard-768-dark.png",
+    "inventory-320-light.png",
+    "inventory-320-dark.png",
+    "inventory-390-light.png",
+    "inventory-390-dark.png",
+    "inventory-768-light.png",
+    "inventory-768-dark.png",
+    "inventory-expanded-1366x480-light.png",
+    "inventory-expanded-1366x480-dark.png",
+    "inventory-collapsed-1366x480-light.png",
+    "inventory-collapsed-1366x480-dark.png",
+    "navigation-drawer-390x600-dark.png",
+    "login-320-light.png",
+    "login-320-dark.png",
+    "login-390-light.png",
+    "login-390-dark.png",
+    "login-768-light.png",
+    "login-768-dark.png",
+    "login-1024-light.png",
+    "login-1024-dark.png",
+    "login-1366-light.png",
+    "login-1366-dark.png",
+    "login-validation-390x480-dark.png",
+    "inventory-populated-1440-light.png",
+    "inventory-populated-1440-dark.png",
+    "inventory-populated-390-light.png",
+    "inventory-populated-768-dark.png",
+    "inventory-no-match-390-light.png"
+  ],
+  "checks": [
+    {
+      "name": "18 SPA navigations preserve sidebar/header/main/document/theme/collapse; no removed chrome or refresh",
+      "result": "PASS",
+      "detail": {
+        "removals": 0,
+        "navigationRequests": [
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "Script",
+            "path": "/src/features/accounts/pages/account-directory.tsx"
+          },
+          {
+            "type": "Script",
+            "path": "/src/components/application/data-table.tsx"
+          },
+          {
+            "type": "Script",
+            "path": "/src/features/accounts/hooks/use-accounts.ts"
+          },
+          {
+            "type": "Script",
+            "path": "/src/features/accounts/api/accounts.api.ts"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/borrowers"
+          },
+          {
+            "type": "Other",
+            "path": "/api/v1/borrowers"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "Script",
+            "path": "/src/features/accounts/pages/administration-page.tsx"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/staff-accounts"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/terms/current"
+          },
+          {
+            "type": "Other",
+            "path": "/api/v1/staff-accounts"
+          },
+          {
+            "type": "Other",
+            "path": "/api/v1/terms/current"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          },
+          {
+            "type": "XHR",
+            "path": "/api/v1/auth/me"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Dashboard/Inventory responsive light/dark, rail and page geometry",
+      "result": "PASS",
+      "detail": [
+        "dashboard 320 light expanded",
+        "dashboard 320 dark expanded",
+        "dashboard 390 light expanded",
+        "dashboard 390 dark expanded",
+        "dashboard 768 light expanded",
+        "dashboard 768 dark expanded",
+        "dashboard 1024 light expanded",
+        "dashboard 1024 light collapsed",
+        "dashboard 1024 dark expanded",
+        "dashboard 1024 dark collapsed",
+        "dashboard 1366 light expanded",
+        "dashboard 1366 light collapsed",
+        "dashboard 1366 dark expanded",
+        "dashboard 1366 dark collapsed",
+        "dashboard 1440 light expanded",
+        "dashboard 1440 light collapsed",
+        "dashboard 1440 dark expanded",
+        "dashboard 1440 dark collapsed",
+        "inventory 320 light expanded",
+        "inventory 320 dark expanded",
+        "inventory 390 light expanded",
+        "inventory 390 dark expanded",
+        "inventory 768 light expanded",
+        "inventory 768 dark expanded",
+        "inventory 1024 light expanded",
+        "inventory 1024 light collapsed",
+        "inventory 1024 dark expanded",
+        "inventory 1024 dark collapsed",
+        "inventory 1366 light expanded",
+        "inventory 1366 light collapsed",
+        "inventory 1366 dark expanded",
+        "inventory 1366 dark collapsed",
+        "inventory 1440 light expanded",
+        "inventory 1440 light collapsed",
+        "inventory 1440 dark expanded",
+        "inventory 1440 dark collapsed"
+      ]
+    },
+    {
+      "name": "48 short-height section/theme/mode cases: footer bounded, navigation scrolls independently",
+      "result": "PASS",
+      "detail": [
+        {
+          "href": "/staff/dashboard",
+          "height": 480,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/requests",
+          "height": 480,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/inventory",
+          "height": 480,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/borrowers",
+          "height": 480,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/reports",
+          "height": 480,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/administration",
+          "height": 480,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/dashboard",
+          "height": 480,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/requests",
+          "height": 480,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/inventory",
+          "height": 480,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/borrowers",
+          "height": 480,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/reports",
+          "height": 480,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/administration",
+          "height": 480,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/dashboard",
+          "height": 480,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/requests",
+          "height": 480,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/inventory",
+          "height": 480,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/borrowers",
+          "height": 480,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/reports",
+          "height": 480,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/administration",
+          "height": 480,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/dashboard",
+          "height": 480,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/requests",
+          "height": 480,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/inventory",
+          "height": 480,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/borrowers",
+          "height": 480,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/reports",
+          "height": 480,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/administration",
+          "height": 480,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/dashboard",
+          "height": 600,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/requests",
+          "height": 600,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/inventory",
+          "height": 600,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/borrowers",
+          "height": 600,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/reports",
+          "height": 600,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/administration",
+          "height": 600,
+          "theme": "light",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/dashboard",
+          "height": 600,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/requests",
+          "height": 600,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/inventory",
+          "height": 600,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/borrowers",
+          "height": 600,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/reports",
+          "height": 600,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/administration",
+          "height": 600,
+          "theme": "dark",
+          "expanded": true,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": false,
+            "labelHidden": false,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/dashboard",
+          "height": 600,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/requests",
+          "height": 600,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/inventory",
+          "height": 600,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/borrowers",
+          "height": 600,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/reports",
+          "height": 600,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/administration",
+          "height": 600,
+          "theme": "light",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/dashboard",
+          "height": 600,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/requests",
+          "height": 600,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/inventory",
+          "height": 600,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/staff/borrowers",
+          "height": 600,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/reports",
+          "height": 600,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        },
+        {
+          "href": "/admin/administration",
+          "height": 600,
+          "theme": "dark",
+          "expanded": false,
+          "geometry": {
+            "footerVisible": true,
+            "navSeparate": true,
+            "railOverflow": true,
+            "sealCentered": true,
+            "sealSquare": true,
+            "signOutContained": true,
+            "iconCentered": true,
+            "labelHidden": true,
+            "buttonHeight": true
+          }
+        }
+      ]
+    },
+    {
+      "name": "mobile drawer Escape and focus restoration",
+      "result": "PASS",
+      "detail": {
+        "footerVisible": true,
+        "navSeparate": true
+      }
+    },
+    {
+      "name": "account action menu keyboard and Escape focus return",
+      "result": "PASS"
+    },
+    {
+      "name": "real delayed /auth/me withholds protected content while chrome remains visible",
+      "result": "PASS"
+    },
+    {
+      "name": "full reload restores session once with existing HttpOnly refresh",
+      "result": "PASS"
+    },
+    {
+      "name": "Admin real logout and anonymous protected redirect",
+      "result": "PASS"
+    },
+    {
+      "name": "12 login viewport/theme cases, 44px controls, labels and password-manager attributes",
+      "result": "PASS",
+      "detail": [
+        {
+          "width": 320,
+          "theme": "light",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 320,
+          "theme": "dark",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 390,
+          "theme": "light",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 390,
+          "theme": "dark",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 768,
+          "theme": "light",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 768,
+          "theme": "dark",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 1024,
+          "theme": "light",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 1024,
+          "theme": "dark",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 1366,
+          "theme": "light",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 1366,
+          "theme": "dark",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 1440,
+          "theme": "light",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        },
+        {
+          "width": 1440,
+          "theme": "dark",
+          "controls": true,
+          "labels": true,
+          "autocomplete": "current-password"
+        }
+      ]
+    },
+    {
+      "name": "login short-height validation, visibility and keyboard focus",
+      "result": "PASS"
+    },
+    {
+      "name": "Staff real login, Admin route denial and restricted navigation, logout",
+      "result": "PASS"
+    },
+    {
+      "name": "Borrower real login, operational denial, unchanged synthetic terms gate, account and logout",
+      "result": "PASS"
+    },
+    {
+      "name": "real isolated stock table, internal scrolling, bounded search and no-match state",
+      "result": "PASS"
+    }
+  ],
+  "errors": []
+}

@@ -283,3 +283,62 @@ func TestRealInventoryContention(t *testing.T) {
 	require(t, e == nil, "preserve fixture ledger through safe archive")
 
 }
+
+// Dedicated Phase 6 acceptance pool; privileged writes below are fixture setup only.
+func TestRealInventoryCorrectionSafety(t *testing.T) {
+	ctx, db, owner, _ := batchDatabase(t)
+	r := postgres.NewInventoryRepository(db.Pool)
+	a := postgres.NewAccountsRepository(db.Pool)
+	tx := database.NewTxManager(db.Pool)
+	s := app.NewService(r, a, tx, catalogimage.Validator{})
+	admin := termsUser(t, ctx, db, user.RoleAdmin)
+	staff := termsUser(t, ctx, db, user.RoleStaff)
+	v, e := s.Create(ctx, admin.ID, uuid.NewString(), d.Create{Metadata: d.Metadata{Name: "TEST correction safety " + uuid.NewString()}, Opening: 15, Reason: "Verified synthetic opening"})
+	require(t, e == nil, "create test pool")
+	_, e = owner.Pool.Exec(ctx, `UPDATE equipment SET reserved=2,checked_out=3,damaged_held=4,total_tracked=available+9 WHERE id=$1`, v.ID)
+	require(t, e == nil, "fixture custody setup")
+	v, e = s.Detail(ctx, admin.ID, v.ID)
+	require(t, e == nil, "fixture read")
+	for _, tc := range []struct {
+		kind                       string
+		quantity, available, total int64
+	}{{"ADD", 5, 20, 29}, {"REMOVE", 5, 15, 24}, {"RECONCILE", 20, 20, 29}, {"RECONCILE", 10, 10, 19}} {
+		previous := v
+		seq := v.Sequence
+		in := d.Adjustment{Kind: tc.kind, Quantity: tc.quantity, ExpectedSequence: &seq, Reason: "Verified acceptance count", Confirm: true}
+		key := uuid.NewString()
+		v, e = s.Adjust(ctx, admin.ID, v.ID, key, in)
+		require(t, e == nil && v.Stock.Available == tc.available && v.Stock.Total == tc.total && v.Stock.Reserved == 2 && v.Stock.CheckedOut == 3 && v.Stock.DamagedHeld == 4, "quantity conservation with custody unchanged")
+		again, e := s.Adjust(ctx, admin.ID, v.ID, key, in)
+		require(t, e == nil && again.Sequence == v.Sequence && again.Stock == v.Stock, "retry records exactly one movement")
+		_, e = s.Adjust(ctx, admin.ID, v.ID, uuid.NewString(), in)
+		require(t, errors.Is(e, shared.ErrConflict), "stale reviewed sequence rejected")
+		var available, total, reserved, custody, damaged int64
+		require(t, owner.Pool.QueryRow(ctx, `SELECT delta_available,delta_total,delta_reserved,delta_checked_out,delta_damaged_held FROM inventory_movements WHERE equipment_id=$1 AND sequence=$2`, v.ID, v.Sequence).Scan(&available, &total, &reserved, &custody, &damaged) == nil, "persisted movement")
+		require(t, available == v.Stock.Available-previous.Stock.Available && total == available && reserved == 0 && custody == 0 && damaged == 0, "ledger expresses only available/total difference")
+	}
+	for _, in := range []d.Adjustment{{Kind: "REMOVE", Quantity: 11, Reason: "Insufficient", Confirm: true}, {Kind: "ADD", Quantity: 1, Reason: " ", Confirm: true}, {Kind: "RECONCILE", Quantity: -1, Reason: "Invalid", Confirm: true}, {Kind: "ADD", Quantity: 1, Reason: "Not confirmed"}} {
+		_, e = s.Adjust(ctx, admin.ID, v.ID, uuid.NewString(), in)
+		require(t, e != nil, "invalid input rejected")
+	}
+	seq := v.Sequence
+	in := d.Adjustment{Kind: "RECONCILE", Quantity: 12, ExpectedSequence: &seq, Reason: "Verified rollback count", Confirm: true}
+	_, e = s.Adjust(ctx, staff.ID, v.ID, uuid.NewString(), in)
+	require(t, errors.Is(e, shared.ErrForbidden), "Admin-only reconciliation")
+	var movements, audits, receipts int
+	count := func() (int, int, int) {
+		var m, a, r int
+		require(t, owner.Pool.QueryRow(ctx, `SELECT (SELECT count(*) FROM inventory_movements),(SELECT count(*) FROM inventory_audit_events),(SELECT count(*) FROM inventory_operation_receipts)`).Scan(&m, &a, &r) == nil, "count history")
+		return m, a, r
+	}
+	movements, audits, receipts = count()
+	abort := app.NewService(r, a, inventoryAbortTx{tx}, catalogimage.Validator{})
+	_, e = abort.Adjust(ctx, admin.ID, v.ID, uuid.NewString(), in)
+	require(t, e != nil, "forced transaction failure")
+	m, au, re := count()
+	require(t, m == movements && au == audits && re == receipts, "rollback includes ledger audit and receipt")
+	current, e := s.Detail(ctx, admin.ID, v.ID)
+	require(t, e == nil && current.Sequence == v.Sequence && current.Stock == v.Stock, "rollback preserves every physical bucket")
+	var corrections int
+	require(t, owner.Pool.QueryRow(ctx, `SELECT count(*) FROM inventory_audit_events WHERE equipment_id=$1`, v.ID).Scan(&corrections) == nil && corrections == 5, "opening and four confirmed changes audited")
+}

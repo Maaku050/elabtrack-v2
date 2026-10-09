@@ -209,6 +209,14 @@ func TestBatch1BrowserServer(t *testing.T) {
 	_ = f.Close()
 	inbox := &browserInbox{path: inboxPath}
 	c := testAccountsContainer(infra, inbox)
+	if os.Getenv("BATCH1_BROWSER_MAIL_UNCONFIGURED") == "1" {
+		// Exercise truthful missing-delivery UI through the real adapter, never
+		// a live provider. This test-only switch cannot affect product binaries.
+		if infra.Config.Accounts.BrevoKey != "" {
+			t.Fatal("refuse live mail in unconfigured browser verification")
+		}
+		c = buildContainer(infra)
+	}
 	fixtures := map[string]any{}
 	for _, role := range []user.Role{user.RoleAdmin, user.RoleStaff, user.RoleBorrower} {
 		u, password := fixtureAccount(t, infra, role)

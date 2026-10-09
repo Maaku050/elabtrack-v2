@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { createMemoryRouter, RouterProvider } from 'react-router-dom'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { routes } from '@/app/router'
@@ -33,7 +33,7 @@ beforeEach(() => {
   vi.stubGlobal('matchMedia', vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })))
   queryClient.clear()
   useAuthStore.getState().clear()
-  useSessionActionStore.setState({ signingIn: false, logout: 'idle', message: undefined })
+  useSessionActionStore.setState({ sessionNotice: null, signingIn: false, logout: 'idle', message: undefined })
   useUIStore.getState().setTheme('light')
   vi.spyOn(termsApi, 'status').mockResolvedValue({ state: 'accepted', current_terms: { id: 'terms-unit-v1', version: 'TEST-1', title: 'SYNTHETIC UNIT TEST TERMS', body: 'TEST ONLY', content_hash: '0'.repeat(64), published_at: '2026-01-01T00:00:00Z' }, acceptance: { id: 'unit-receipt', terms_version_id: 'terms-unit-v1', accepted_at: '2026-01-01T00:00:00Z' }, has_previous_acceptance: true, acceptance_required: false, can_initiate_borrowing: true })
   vi.spyOn(authApi, 'login')
@@ -140,5 +140,81 @@ describe('Phase 4A product authentication', () => {
     open(); await screen.findByLabelText('Email')
     fireEvent.click(screen.getByRole('button', { name: 'Switch to dark theme' }))
     expect(document.documentElement).toHaveClass('dark')
+  })
+})
+
+
+describe('pre-Phase 7 persistent operational layout', () => {
+  it('keeps chrome and UI state while route authority is pending, denied, and recovered', async () => {
+    authenticate('ADMIN'); useUIStore.getState().setSidebar(false); useUIStore.getState().setTheme('dark')
+    const router = open('/staff/dashboard')
+    await screen.findByRole('heading', { name: 'Dashboard' })
+    const sidebar = document.querySelector('.staff-sidebar'), header = document.querySelector('.staff-top-bar'), main = document.querySelector('#staff-content')
+    const gate = deferred<AuthUser>(); vi.mocked(authApi.me).mockReturnValueOnce(gate.promise)
+    await act(async () => { await router.navigate('/admin/reports') })
+    expect(await screen.findByText('Confirming account access…')).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Reports' })).not.toBeInTheDocument()
+    expect(document.querySelector('.staff-sidebar')).toBe(sidebar)
+    expect(document.querySelector('.staff-top-bar')).toBe(header)
+    expect(document.querySelector('#staff-content')).toBe(main)
+    await act(async () => { gate.resolve({ ...account('ADMIN'), is_active: false }) })
+    expect(await screen.findByText('Access denied')).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Reports' })).not.toBeInTheDocument()
+    expect(document.querySelector('.staff-sidebar')).toBe(sidebar)
+    vi.mocked(authApi.me).mockResolvedValue(account('ADMIN'))
+    await act(async () => { await router.navigate('/staff/requests') })
+    expect(await screen.findByRole('heading', { name: 'Requests & Borrowings' })).toBeInTheDocument()
+    expect(document.querySelector('.staff-top-bar')).toBe(header)
+    expect(document.querySelector('.reconstruction-shell')).toHaveAttribute('data-sidebar-open', 'false')
+    expect(document.documentElement).toHaveClass('dark')
+  })
+  it('withholds cached route content during revalidation without replacing chrome', async () => {
+    authenticate('ADMIN'); const router = open('/admin/reports')
+    await screen.findByRole('heading', { name: 'Reports' })
+    const header = document.querySelector('.staff-top-bar')
+    await act(async () => { await router.navigate('/staff/dashboard') })
+    await screen.findByRole('heading', { name: 'Dashboard' })
+    const gate = deferred<AuthUser>(); vi.mocked(authApi.me).mockReturnValueOnce(gate.promise)
+    await act(async () => { await router.navigate('/admin/reports') })
+    expect(await screen.findByText('Confirming account access…')).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Reports' })).not.toBeInTheDocument()
+    expect(document.querySelector('.staff-top-bar')).toBe(header)
+    await act(async () => { gate.resolve(account('STAFF')) })
+    expect(await screen.findByText('Access denied')).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Reports' })).not.toBeInTheDocument()
+  })
+  it('keeps the shell during an authority error and successful retry', async () => {
+    authenticate('STAFF'); const router = open('/staff/dashboard')
+    await screen.findByRole('heading', { name: 'Dashboard' })
+    const sidebar = document.querySelector('.staff-sidebar')
+    vi.mocked(authApi.me).mockRejectedValueOnce(new ApiRequestError('Unable to connect.', 0))
+    await act(async () => { await router.navigate('/staff/requests') })
+    expect(await screen.findByRole('heading', { name: 'Unable to confirm access' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Requests & Borrowings' })).not.toBeInTheDocument()
+    expect(document.querySelector('.staff-sidebar')).toBe(sidebar)
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
+    expect(await screen.findByRole('heading', { name: 'Requests & Borrowings' })).toBeInTheDocument()
+    expect(document.querySelector('.staff-sidebar')).toBe(sidebar)
+  })
+})
+
+
+describe('culinary login session notice', () => {
+  const notice = 'Your session is no longer available. Sign in again to continue.'
+  it('keeps a normal anonymous entry neutral even if the legacy ended flag remains', async () => {
+    useAuthStore.setState({ sessionEnded: true }); open('/login')
+    await screen.findByLabelText('Email')
+    expect(screen.queryByText(notice)).not.toBeInTheDocument()
+  })
+  it('shows an actual involuntary session invalidation and retains the form', async () => {
+    useSessionActionStore.getState().setSessionNotice('invalidated'); open('/login')
+    expect(await screen.findByText(notice)).toHaveAttribute('role', 'status')
+    expect(screen.getByLabelText('Email')).toBeEnabled()
+    expect(screen.getByLabelText('Password')).toHaveAttribute('autoComplete', 'current-password')
+  })
+  it('does not describe a recoverable network failure as an expired session', async () => {
+    useSessionActionStore.getState().setSessionNotice('invalidated')
+    useAuthStore.getState().setStatus('error'); open('/login')
+    await screen.findByLabelText('Email'); expect(screen.queryByText(notice)).not.toBeInTheDocument()
   })
 })

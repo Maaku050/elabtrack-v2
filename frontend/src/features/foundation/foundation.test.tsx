@@ -24,7 +24,7 @@ afterEach(() => vi.restoreAllMocks())
 describe('Phase 0 application boundaries', () => {
   it('loads the anonymous login and applies the theme without fetching protected data', async () => {
     renderRoute()
-    expect(await screen.findByRole('heading', { name: 'Welcome back' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Sign in to your account' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'Switch to dark theme' }))
     expect(document.documentElement).toHaveClass('dark')
     expect(apiClient.get).not.toHaveBeenCalled()

@@ -1,0 +1,272 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "borrowers",
+  "checks": [
+    "Student creation preserves textual ID/domain, pending activation and no administrator password",
+    "Profile editing, confirmed deactivation/reactivation, audit display and alert-dialog keyboard containment",
+    "Faculty individual creation permits external email and omits Student ID",
+    "Activation UI retains safe missing-link state; no token or password exposed"
+  ],
+  "screens": [
+    "borrower-create-student-320-light.png",
+    "borrower-create-student-320-dark.png",
+    "borrower-create-student-390-light.png",
+    "borrower-create-student-390-dark.png",
+    "borrower-create-student-440-light.png",
+    "borrower-create-student-440-dark.png",
+    "borrower-create-student-768-light.png",
+    "borrower-create-student-768-dark.png",
+    "borrower-create-student-1024-light.png",
+    "borrower-create-student-1024-dark.png",
+    "borrower-create-student-1366-light.png",
+    "borrower-create-student-1366-dark.png",
+    "borrower-create-student-1440-light.png",
+    "borrower-create-student-1440-dark.png",
+    "borrower-create-student-390-short-dark.png",
+    "borrower-create-student-1366-short-dark.png",
+    "borrower-details-320-light.png",
+    "borrower-details-320-dark.png",
+    "borrower-details-390-light.png",
+    "borrower-details-390-dark.png",
+    "borrower-details-440-light.png",
+    "borrower-details-440-dark.png",
+    "borrower-details-768-light.png",
+    "borrower-details-768-dark.png",
+    "borrower-details-1024-light.png",
+    "borrower-details-1024-dark.png",
+    "borrower-details-1366-light.png",
+    "borrower-details-1366-dark.png",
+    "borrower-details-1440-light.png",
+    "borrower-details-1440-dark.png",
+    "borrower-details-390-short-dark.png",
+    "borrower-details-1366-short-dark.png",
+    "borrower-deactivation-review-light.png",
+    "borrower-create-faculty-320-light.png",
+    "borrower-create-faculty-320-dark.png",
+    "borrower-create-faculty-390-light.png",
+    "borrower-create-faculty-390-dark.png",
+    "borrower-create-faculty-440-light.png",
+    "borrower-create-faculty-440-dark.png",
+    "borrower-create-faculty-768-light.png",
+    "borrower-create-faculty-768-dark.png",
+    "borrower-create-faculty-1024-light.png",
+    "borrower-create-faculty-1024-dark.png",
+    "borrower-create-faculty-1366-light.png",
+    "borrower-create-faculty-1366-dark.png",
+    "borrower-create-faculty-1440-light.png",
+    "borrower-create-faculty-1440-dark.png",
+    "borrower-create-faculty-390-short-dark.png",
+    "borrower-create-faculty-1366-short-dark.png",
+    "activation-missing-link-320-light.png",
+    "activation-missing-link-320-dark.png",
+    "activation-missing-link-390-light.png",
+    "activation-missing-link-390-dark.png",
+    "activation-missing-link-440-light.png",
+    "activation-missing-link-440-dark.png",
+    "activation-missing-link-768-light.png",
+    "activation-missing-link-768-dark.png",
+    "activation-missing-link-1024-light.png",
+    "activation-missing-link-1024-dark.png",
+    "activation-missing-link-1366-light.png",
+    "activation-missing-link-1366-dark.png",
+    "activation-missing-link-1440-light.png",
+    "activation-missing-link-1440-dark.png",
+    "activation-missing-link-390-short-dark.png",
+    "activation-missing-link-1366-short-dark.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/policy",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/policy",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/borrowers",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/policy",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4/status",
+      "query": ""
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/02a23644-42fb-4f59-a2bd-a9840ca43dc4/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/policy",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/borrowers",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/policy",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/e365e49f-2652-4650-bf71-cefc5dc01695",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/e365e49f-2652-4650-bf71-cefc5dc01695",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/borrowers/e365e49f-2652-4650-bf71-cefc5dc01695/audit",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/borrowers/e365e49f-2652-4650-bf71-cefc5dc01695/audit",
+      "query": "?page=1"
+    }
+  ],
+  "documentNavigations": 1
+}

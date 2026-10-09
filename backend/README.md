@@ -46,3 +46,15 @@ not API startup. Apply foundation runtime grants separately, as documented in
 silently re-owned or repaired. Immutable SQL 000001–000003 remains unchanged.
 
 Phase 4A adds paired 000004_product_roles: legacy `user`→`BORROWER`, legacy `admin`→`ADMIN`, new valid `STAFF`, default BORROWER. It preserves all non-role identity/account/session data. Down refuses if any Staff would lose its unrepresentable role; coordinate application rollback and explicit account disposition before retry. No table or runtime grant is added. Public signup remains absent; development seeds now contain no accounts or passwords. Current-account status/role resolution and a central permission guard protect the existing directory. See [Phase 4A](../docs/project/PHASE4A_REPORT.md) and [isolated real-PG/browser commands](../integration/PHASE4A.md).
+
+## Local Student-domain configuration and roster validation
+
+For the host development API, set this in the **ignored** `backend/.env`, then restart the API (`make backend`, or restart `make dev`):
+
+```dotenv
+STUDENT_EMAIL_DOMAINS=sksu.edu.ph
+```
+
+This is the owner's identified local development domain, not a declaration of production institutional approval. Root `.env` controls Compose; it does not configure the host API. Multiple explicitly approved domains can be comma-separated, without `@`, wildcards or URLs. Matching is exact and case-insensitive; a subdomain requires its own entry. An empty allowlist safely blocks Student creation. Faculty uses a valid unique email without a Student ID or institutional-domain restriction. The frontend obtains this policy from the protected API; no domain is hardcoded in its forms. Restart after configuration changes; an already-running API retains its startup configuration. Do not enable live Brevo delivery for isolated testing.
+
+Download the Student `.xlsx` template. It contains one worksheet and exactly `studentId`, `name`, `email`, `course`, `contactNumber`, with text-formatted Student ID/contact input cells for up to 500 rows. A cell already stored as numeric must be re-entered as text; changing Excel's display format alone cannot recover lost leading zeroes. Structure/header/formula failures return safe bounded locations where available. Numeric IDs, missing fields, domains, duplicate rows and existing identities are validation-preview issues; invalid rows cannot be confirmed. Faculty/Staff/Admin identities are never converted by Student import/deactivation. Preserve the rejected workbook locally if further diagnosis is needed; a screenshot cannot establish its internal structure.

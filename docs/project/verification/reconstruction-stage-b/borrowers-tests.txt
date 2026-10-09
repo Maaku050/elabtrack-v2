@@ -1,0 +1,12 @@
+
+> elabtrack-v2-frontend@0.0.0 test:run
+> vitest run src/features/auth/product-auth.test.tsx src/features/inventory/hooks/use-catalog-image.test.tsx src/components/application/file-dropzone.test.tsx
+
+
+ RUN  v5.0.3 /home/marvin/projects/eLabTrack_V2/frontend
+
+
+ Test Files  3 passed (3)
+      Tests  36 passed (36)
+   Start at  18:52:24
+   Duration  12.27s (tests 44%, environment 30%, import 11%, transform 9%, setup 5%)

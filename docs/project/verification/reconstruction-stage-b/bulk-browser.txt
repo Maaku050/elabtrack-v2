@@ -1,0 +1,3 @@
+PASS Complete Excel preview preserves duplicate/domain errors; selected Student creation confirms once with activation pending
+PASS Roster reuse deactivates only matched selected Students; Faculty and history remain intact
+{"result":"PASS","group":"bulk","checks":2,"screens":81}

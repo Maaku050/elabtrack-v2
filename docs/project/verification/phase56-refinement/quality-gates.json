@@ -1,0 +1,196 @@
+{
+  "date": "2026-10-09T06:54:55.258140+00:00",
+  "owner_acceptance": "PENDING",
+  "normal_database_modified": false,
+  "live_email_sent": false,
+  "go_executable": "/home/marvin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.1.linux-amd64/bin/go",
+  "node": "v24.19.0",
+  "gates": [
+    {
+      "command": "go -C backend fmt ./...; gofmt -w integration/phase56-workbook-fixtures.go",
+      "result": "PASS"
+    },
+    {
+      "command": "GOCACHE=/tmp/elabtrack-phase1b-go-cache go -C backend vet ./...",
+      "result": "PASS"
+    },
+    {
+      "command": "GOCACHE=/tmp/elabtrack-phase1b-go-cache go -C backend test -count=1 ./...",
+      "result": "PASS",
+      "tested_packages": 25,
+      "real_database_tests": "opt-in suites separately executed below"
+    },
+    {
+      "command": "go -C backend test -count=1 -race ./internal/infrastructure/spreadsheet ./internal/domain/accounts ./internal/interface/http/handlers",
+      "result": "PASS"
+    },
+    {
+      "command": "npm --prefix frontend run lint",
+      "result": "PASS",
+      "errors": 0,
+      "warnings": 19,
+      "warning_scope": "19 inherited primitives/use-mobile warnings; no new warnings"
+    },
+    {
+      "command": "npm --prefix frontend run test:run -- --maxWorkers=1",
+      "result": "PASS",
+      "test_files": 19,
+      "passed_tests": 252
+    },
+    {
+      "command": "npm --prefix frontend run test:run",
+      "result": "FAIL (existing parallel timing instability)",
+      "test_files_passed": 18,
+      "test_files_failed": 1,
+      "passed_tests": 251,
+      "failed_tests": 1,
+      "failure": "product-auth.test.tsx: validates fields, exposes accessible errors, and never submits invalid credentials; timed out while lazy login still displayed Loading, then could not find Email label. Earlier parallel run passed 250/250 before the final two image tests were added. No authentication test or assertion was weakened."
+    },
+    {
+      "command": "npm --prefix frontend run build",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "isolated_postgresql": {
+    "target": "elabtrack_v2_batch1_test on localhost:54832",
+    "order": [
+      "TestRealTerms",
+      "TestRealAccounts + TestRealAccountDeliveryRace",
+      "TestRealInventory + TestRealInventoryContention + TestRealInventoryCorrectionSafety",
+      "TestBatch1HTTP + TestBatch1InventoryHTTP"
+    ],
+    "command_prefix": "python3 integration/batch1-env-run.py <go> -C backend test",
+    "runs": [
+      {
+        "package": "./tests/integration",
+        "run_pattern": "^TestRealTerms$",
+        "result": "PASS",
+        "passed_test_names": [
+          "TestRealTerms",
+          "TestRealTerms/empty_migration_down_up_preserves_accounts_sessions",
+          "TestRealTerms/missing_terms_and_no_automatic_consent",
+          "TestRealTerms/publication_and_role_authority",
+          "TestRealTerms/first_repeat_and_account_scope",
+          "TestRealTerms/replacement_history_and_stale_consent",
+          "TestRealTerms/parallel_acceptance_one_original_receipt",
+          "TestRealTerms/acceptance_and_publication_transaction_rollback",
+          "TestRealTerms/constraints_immutability_and_runtime_privileges",
+          "TestRealTerms/publication_wins_old_view_conflicts",
+          "TestRealTerms/acceptance_wins_preserves_reviewed_version",
+          "TestRealTerms/parallel_publishers_no_blind_overwrite",
+          "TestRealTerms/history_safe_rollback_and_policy_transaction_boundary"
+        ]
+      },
+      {
+        "package": "./tests/integration",
+        "run_pattern": "^TestRealAccounts$|^TestRealAccountDeliveryRace$",
+        "result": "PASS",
+        "passed_test_names": [
+          "TestRealAccounts",
+          "TestRealAccounts/empty_down_up_preserves_existing_identities_and_sessions",
+          "TestRealAccounts/individual_student_faculty_text_identity_and_idempotency",
+          "TestRealAccounts/domain_duplicates_and_authority",
+          "TestRealAccounts/bounded_search_filters_and_missing_mail_state",
+          "TestRealAccounts/single_use_password_and_current_terms",
+          "TestRealAccounts/reissue_expiry_inactive_and_no_session_resurrection",
+          "TestRealAccounts/bulk_preview_conflicts_selection_idempotency_and_rollback",
+          "TestRealAccounts/student_only_deactivation_ignores_obligations_and_retains_history",
+          "TestRealAccounts/concurrent_identity_and_activation",
+          "TestRealAccounts/database_constraints_history_and_nonempty_rollback",
+          "TestRealAccountDeliveryRace"
+        ]
+      },
+      {
+        "package": "./tests/integration",
+        "run_pattern": "^TestRealInventory$|^TestRealInventoryContention$|^TestRealInventoryCorrectionSafety$",
+        "result": "PASS",
+        "passed_test_names": [
+          "TestRealInventory",
+          "TestRealInventory/empty_paired_rollback_preserves_accounts",
+          "TestRealInventory/authority_category_identity_and_metadata",
+          "TestRealInventory/bounded_search_filters_visibility",
+          "TestRealInventory/adjustment_retry_negative_overflow_and_atomicity",
+          "TestRealInventory/admin_reconciliation_preserves_reserved_custody_damaged",
+          "TestRealInventory/concurrent_last_stock_and_duplicate_key",
+          "TestRealInventory/safe_images_and_ownership",
+          "TestRealInventory/archive_future_boundary_and_history_guards",
+          "TestRealInventoryContention",
+          "TestRealInventoryContention/competing_actor_equipment_locks",
+          "TestRealInventoryContention/optimistic_metadata_single_winner",
+          "TestRealInventoryContention/ledger_vector_and_audit_receipt_conservation",
+          "TestRealInventoryCorrectionSafety"
+        ]
+      },
+      {
+        "package": "./internal/bootstrap",
+        "run_pattern": "^TestBatch1HTTP$|^TestBatch1InventoryHTTP$",
+        "result": "PASS",
+        "passed_test_names": [
+          "TestBatch1HTTP",
+          "TestBatch1HTTP/role_origin_strict_payload_and_cors",
+          "TestBatch1InventoryHTTP"
+        ]
+      }
+    ]
+  },
+  "preservation": {
+    "approved_artwork_and_manifest": {
+      "checked_files": 47,
+      "unchanged": true,
+      "changed_files": []
+    },
+    "auth_and_cross_tab_implementation": {
+      "checked_files": 28,
+      "unchanged": true,
+      "changed_files": []
+    },
+    "stock_authority_and_migrations": {
+      "checked_files": 19,
+      "unchanged": true,
+      "changed_files": []
+    },
+    "immersive_login_and_shell": {
+      "checked_files": 8,
+      "unchanged": true,
+      "changed_files": []
+    },
+    "manifests": {
+      "checked_files": 4,
+      "unchanged": true,
+      "changed_files": []
+    }
+  },
+  "chromium": {
+    "command": "cd frontend && node scripts/phase56-refinement-qa.mjs --after (with explicit private Chromium/library environment)",
+    "result": "PASS",
+    "acceptance_checks": 21,
+    "before_screenshots": 20,
+    "after_screenshots": 100,
+    "viewport_widths": [
+      390,
+      768,
+      1024,
+      1366,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "runtime_exceptions": 0,
+    "full_final_capture": true
+  },
+  "cleanup": {
+    "owned_api_listener_stopped": true,
+    "owned_vite_listener_stopped": true,
+    "owned_postgresql_container_and_volume_removed": true,
+    "private_credentials_and_workbooks_removed": true,
+    "normal_api_readiness_http": 200,
+    "normal_frontend_http": 200,
+    "normal_backend_restart_needed_for_domain_config": true
+  }
+}

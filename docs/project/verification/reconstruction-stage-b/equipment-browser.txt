@@ -1,0 +1,3 @@
+PASS Metadata persists through upload failure; retry uploads image only without duplicate equipment
+PASS Edit embeds existing image, keeps it after removing unsaved selection, and persists replacement plus metadata
+{"result":"PASS","group":"equipment","checks":2,"screens":35}

@@ -1,0 +1,325 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Real API excludes inactive/archived and zero stock for Admin, Staff and Borrower; matching total 27 and stock total 46",
+    "Real server pagination returns 25 then 2 unique eligible records with total 27; no page-local filter",
+    "Status intersections, archived visibility, retained inactive physical stock and reset-to-first-page behave predictably",
+    "Category, literal search, sorting and availability intersect; inactive category does not hide existing active equipment",
+    "Full document refresh restores all applied filters and authenticated server results",
+    "Clear filters removes search/category/status/availability/sort and resets pagination",
+    "Filtering and refresh do not mutate stock buckets, status, sequence or metadata versions",
+    "Staff uses the same independent status/availability controls and empty intersection",
+    "Borrower catalog uses the same terminology and 25/2 server pages under the existing terms guard"
+  ],
+  "screens": [
+    "inactive-availability-empty-light.png",
+    "inactive-availability-empty-dark.png",
+    "availability-320-light.png",
+    "availability-320-dark.png",
+    "availability-390-light.png",
+    "availability-390-dark.png",
+    "availability-1366-light.png",
+    "availability-1366-dark.png",
+    "borrower-availability-light.png",
+    "borrower-availability-dark.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&available_only=false&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&available_only=false&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&available_only=true&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&available_only=true&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=2&per_page=25&search=TEST+Borrowability+01d52e47&available_only=true&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=2&per_page=25&search=TEST+Borrowability+01d52e47&available_only=true&sort=name"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=2&per_page=25&search=TEST+Borrowability+01d52e47&available_only=true&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=INACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=INACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=INACTIVE&available_only=false&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=INACTIVE&available_only=false&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=ARCHIVED&available_only=false&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=ARCHIVED&available_only=false&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=ARCHIVED&available_only=true&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=ARCHIVED&available_only=true&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=ACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=ACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&category_id=ad896d64-45c9-42a9-83c5-98f606f9285a&status=ACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&category_id=ad896d64-45c9-42a9-83c5-98f606f9285a&status=ACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47+Spoon+inactive&category_id=ad896d64-45c9-42a9-83c5-98f606f9285a&status=ACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47+Spoon+inactive&category_id=ad896d64-45c9-42a9-83c5-98f606f9285a&status=ACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47+Spoon&category_id=ad896d64-45c9-42a9-83c5-98f606f9285a&status=ACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47+Spoon&category_id=ad896d64-45c9-42a9-83c5-98f606f9285a&status=ACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47+Spoon&category_id=ad896d64-45c9-42a9-83c5-98f606f9285a&status=ACTIVE&available_only=true&sort=available"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47+Spoon&category_id=ad896d64-45c9-42a9-83c5-98f606f9285a&status=ACTIVE&available_only=true&sort=available"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47+Spoon&category_id=ad896d64-45c9-42a9-83c5-98f606f9285a&status=ACTIVE&available_only=true&sort=available"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=&available_only=false&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&status=INACTIVE&available_only=true&sort=name"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/terms/status",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=1&per_page=25&search=TEST+Borrowability+01d52e47&available_only=true&sort=name"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment",
+      "query": "?page=2&per_page=25&search=TEST+Borrowability+01d52e47&available_only=true&sort=name"
+    }
+  ],
+  "documentNavigations": 3,
+  "fixtureSummary": {
+    "totalEquipment": 31,
+    "eligibleEquipment": 27,
+    "eligibleAvailable": 46
+  }
+}

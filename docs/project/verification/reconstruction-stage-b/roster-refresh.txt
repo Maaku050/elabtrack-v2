@@ -1,0 +1,1 @@
+ok  	github.com/Maaku050/elabtrack-v2/backend/internal/bootstrap	0.054s

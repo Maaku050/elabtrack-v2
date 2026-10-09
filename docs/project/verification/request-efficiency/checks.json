@@ -1,0 +1,113 @@
+{
+  "checks": [
+    {
+      "command": "npm run lint",
+      "exitCode": 0,
+      "existingWarnings": 19
+    },
+    {
+      "command": "npm run test:run (initial concurrent run)",
+      "exitCode": 1,
+      "passed": 234,
+      "failed": 2,
+      "failure": "initial lazy login route loading exceeded findBy timeout in product-auth and foundation"
+    },
+    {
+      "command": "npm run test:run (default-worker rerun)",
+      "exitCode": 1,
+      "passed": 235,
+      "failed": 1,
+      "failure": "initial lazy login route loading exceeded findBy timeout in product-auth"
+    },
+    {
+      "command": "npm run test:run -- --maxWorkers=1",
+      "exitCode": 0,
+      "passed": 236,
+      "files": 15
+    },
+    {
+      "command": "npm run test:run -- src/features/auth/product-auth.test.tsx",
+      "exitCode": 0,
+      "passed": 31
+    },
+    {
+      "command": "npm run build",
+      "exitCode": 0
+    },
+    {
+      "command": "go fmt ./...",
+      "exitCode": 0
+    },
+    {
+      "command": "go vet ./...",
+      "exitCode": 0
+    },
+    {
+      "command": "go test ./...",
+      "exitCode": 0,
+      "note": "environment-gated integration cases skip; separate actual HTTP checks below"
+    },
+    {
+      "command": "go test ./internal/bootstrap -run TestExpectedUnpublishedTermsLogging|TestRequestEnvelopeCorrelationAndSafeLogs -count=1",
+      "exitCode": 0
+    },
+    {
+      "command": "integration/batch1-env-run.py go -C backend test ./tests/integration -run ^(TestRealFoundation|TestRealTermsHTTP)$ -count=1 -v",
+      "exitCode": 0,
+      "environment": "disposable PostgreSQL and real HTTP"
+    },
+    {
+      "command": "node scripts/request-efficiency-qa.mjs --before",
+      "exitCode": 0,
+      "environment": "real Chromium and isolated API"
+    },
+    {
+      "command": "node scripts/request-efficiency-qa.mjs",
+      "exitCode": 0,
+      "environment": "real Chromium and isolated API"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "expectedPolicyLogs": {
+    "before": [
+      {
+        "level": "error",
+        "msg": "http request completed",
+        "request_id": "52388a49-dac3-4bb4-936f-285854ed5e4a",
+        "method": "GET",
+        "route": "/api/v1/terms/current",
+        "event": "http.request_completed",
+        "status": 503,
+        "error_code": "TERMS_NOT_PUBLISHED"
+      },
+      {
+        "level": "error",
+        "msg": "request error",
+        "request_id": "52388a49-dac3-4bb4-936f-285854ed5e4a",
+        "method": "GET",
+        "route": "/api/v1/terms/current",
+        "event": "http.request_failed",
+        "status": 503,
+        "error_code": "TERMS_NOT_PUBLISHED"
+      }
+    ],
+    "after": [
+      {
+        "level": "info",
+        "msg": "http request completed",
+        "request_id": "bfa0a7d9-48dc-4531-abc0-78bbcd64db9f",
+        "method": "GET",
+        "route": "/api/v1/terms/current",
+        "event": "http.request_completed",
+        "status": 503,
+        "error_code": "TERMS_NOT_PUBLISHED"
+      }
+    ]
+  },
+  "testConfigurationChanged": false,
+  "normalDatabaseMutated": false,
+  "productionDataAccessed": false
+}

@@ -1,0 +1,137 @@
+{
+  "result": "PASS",
+  "ownerVisualAcceptance": "PENDING",
+  "group": "categories",
+  "checks": [
+    "Category add/edit/inactive relationship preservation and honest unknown-total server pagination"
+  ],
+  "screens": [
+    "equipment-categories-320-light.png",
+    "equipment-categories-320-dark.png",
+    "equipment-categories-390-light.png",
+    "equipment-categories-390-dark.png",
+    "equipment-categories-440-light.png",
+    "equipment-categories-440-dark.png",
+    "equipment-categories-768-light.png",
+    "equipment-categories-768-dark.png",
+    "equipment-categories-1024-light.png",
+    "equipment-categories-1024-dark.png",
+    "equipment-categories-1366-light.png",
+    "equipment-categories-1366-dark.png",
+    "equipment-categories-1440-light.png",
+    "equipment-categories-1440-dark.png",
+    "equipment-categories-390-short-dark.png",
+    "equipment-categories-1366-short-dark.png",
+    "category-create-dialog-320-light.png",
+    "category-create-dialog-320-dark.png",
+    "category-create-dialog-390-light.png",
+    "category-create-dialog-390-dark.png",
+    "category-create-dialog-440-light.png",
+    "category-create-dialog-440-dark.png",
+    "category-create-dialog-768-light.png",
+    "category-create-dialog-768-dark.png",
+    "category-create-dialog-1024-light.png",
+    "category-create-dialog-1024-dark.png",
+    "category-create-dialog-1366-light.png",
+    "category-create-dialog-1366-dark.png",
+    "category-create-dialog-1440-light.png",
+    "category-create-dialog-1440-dark.png",
+    "category-create-dialog-390-short-dark.png",
+    "category-create-dialog-1366-short-dark.png",
+    "category-edit-dialog-light.png"
+  ],
+  "errors": [],
+  "apiRequests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "query": ""
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/login",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/auth/me",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=2"
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=2"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/equipment-categories",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/v1/equipment-categories/8dc40530-7b8b-4e97-a1e4-ee794c6330f0",
+      "query": ""
+    },
+    {
+      "method": "OPTIONS",
+      "path": "/api/v1/equipment-categories/8dc40530-7b8b-4e97-a1e4-ee794c6330f0",
+      "query": ""
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/equipment-categories",
+      "query": "?page=1"
+    }
+  ],
+  "documentNavigations": 1
+}

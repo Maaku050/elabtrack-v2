@@ -1,0 +1,10 @@
+PASS Real API excludes inactive/archived and zero stock for Admin, Staff and Borrower; matching total 27 and stock total 46
+PASS Real server pagination returns 25 then 2 unique eligible records with total 27; no page-local filter
+PASS Status intersections, archived visibility, retained inactive physical stock and reset-to-first-page behave predictably
+PASS Category, literal search, sorting and availability intersect; inactive category does not hide existing active equipment
+PASS Full document refresh restores all applied filters and authenticated server results
+PASS Clear filters removes search/category/status/availability/sort and resets pagination
+PASS Filtering and refresh do not mutate stock buckets, status, sequence or metadata versions
+PASS Staff uses the same independent status/availability controls and empty intersection
+PASS Borrower catalog uses the same terminology and 25/2 server pages under the existing terms guard
+{"result":"PASS","checks":9,"screens":10}
