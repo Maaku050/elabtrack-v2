@@ -9,3 +9,5 @@ export function manilaInstant(value: string): string | undefined {
 export function manilaTime(value: string | null | undefined): string {
  return value ? new Intl.DateTimeFormat('en-PH', { timeZone: 'Asia/Manila', dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) + ' · Manila' : '—'
 }
+// Local context is shown once by the containing page/table.
+export function manilaTimeCompact(value: string | null | undefined): string { return manilaTime(value).replace(' · Manila', '') }

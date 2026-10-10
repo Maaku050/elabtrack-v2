@@ -1,0 +1,310 @@
+{
+  "result": "PASS",
+  "date": "2026-10-10",
+  "authority": "DEC-083",
+  "owner_visual_acceptance": "PASSED \u2014 explicit owner final publication prompt, 2026-10-11",
+  "baseline": {
+    "branch": "main",
+    "head": "c2741c54ba3aca95df705ce612ade1a277e0335d",
+    "modified_tracked": 60,
+    "untracked_public_paths": 360,
+    "existing_work_preserved": true
+  },
+  "frontend": {
+    "serial": {
+      "test_files": 31,
+      "tests": 328,
+      "seconds": 162.78
+    },
+    "parallel": {
+      "test_files": 31,
+      "tests": 328,
+      "seconds": 70.89
+    },
+    "lint": "PASS; inherited warnings recorded separately",
+    "eslint": "PASS; zero diagnostics",
+    "typescript_and_production_build": "PASS",
+    "pdf_libraries": "jsPDF 4.2.1 and AutoTable 5.0.8; local licensed DejaVu font"
+  },
+  "backend": {
+    "go": "1.27.1",
+    "fmt": "PASS",
+    "vet": "PASS",
+    "unit": "PASS",
+    "race": "PASS",
+    "real_postgresql_api_suites": [
+      {
+        "suite": "terms",
+        "exit": 0,
+        "passing_named_tests": 13
+      },
+      {
+        "suite": "accounts",
+        "exit": 0,
+        "passing_named_tests": 11
+      },
+      {
+        "suite": "inventory",
+        "exit": 0,
+        "passing_named_tests": 9
+      },
+      {
+        "suite": "borrowing",
+        "exit": 0,
+        "passing_named_tests": 55
+      },
+      {
+        "suite": "http",
+        "exit": 0,
+        "passing_named_tests": 33
+      }
+    ],
+    "passing_named_parent_and_subtests": 121,
+    "fresh_empty_qa_migrations_1_to_11_up_down_up": "PASS",
+    "schema_changes_introduced_by_this_reconstruction": 0
+  },
+  "chromium": {
+    "suites": [
+      {
+        "suite": "functional",
+        "checks": 49,
+        "captures": 139,
+        "evidence": "docs/ux/verification/complete-ui/after/acceptance.json",
+        "javascript_exceptions": 0
+      },
+      {
+        "suite": "visual",
+        "checks": 24,
+        "captures": 137,
+        "evidence": "docs/ux/verification/complete-ui/after/visual-acceptance.json",
+        "javascript_exceptions": 0
+      },
+      {
+        "suite": "reference",
+        "checks": 2,
+        "captures": 8,
+        "evidence": "docs/ux/verification/complete-ui/after/reference-acceptance.json",
+        "javascript_exceptions": 0
+      },
+      {
+        "suite": "workflows",
+        "checks": 6,
+        "captures": 13,
+        "evidence": "docs/ux/verification/complete-ui/workflows/acceptance.json",
+        "javascript_exceptions": 0
+      },
+      {
+        "suite": "shared_operational",
+        "checks": 2,
+        "captures": 24,
+        "evidence": "docs/ux/verification/complete-ui/shared-operational/acceptance.json",
+        "javascript_exceptions": 0
+      }
+    ],
+    "passing_check_groups": 83,
+    "external_requests_in_full_functional_run": 0,
+    "physical_mobile_or_non_chromium_claimed": false
+  },
+  "screenshots": {
+    "before": 24,
+    "after": 151,
+    "workflows": 13,
+    "shared-operational": 24,
+    "pdf": 2
+  },
+  "pdf": {
+    "result": "PASS",
+    "scope": "Actual Chromium-generated PDFs parsed offline with Poppler; fictional data only. Source expected snapshots retained privately.",
+    "reports": [
+      {
+        "kind": "account-audit",
+        "records": 68,
+        "pages": 34,
+        "orientation": "portrait",
+        "full_identifier_cells_verified": 204,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 117067
+      },
+      {
+        "kind": "active",
+        "records": 5,
+        "pages": 1,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 15,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 61330
+      },
+      {
+        "kind": "fine-clearances",
+        "records": 2,
+        "pages": 1,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 6,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 60526
+      },
+      {
+        "kind": "fines",
+        "records": 33,
+        "pages": 6,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 66,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 77241
+      },
+      {
+        "kind": "incidents",
+        "records": 2,
+        "pages": 1,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 6,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 59993
+      },
+      {
+        "kind": "inventory",
+        "records": 40,
+        "pages": 4,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 40,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 72479
+      },
+      {
+        "kind": "issued",
+        "records": 33,
+        "pages": 7,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 99,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 79009
+      },
+      {
+        "kind": "movements",
+        "records": 116,
+        "pages": 16,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 231,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 127110
+      },
+      {
+        "kind": "overdue",
+        "records": 3,
+        "pages": 1,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 9,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 60708
+      },
+      {
+        "kind": "replacements",
+        "records": 4,
+        "pages": 1,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 8,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 59336
+      },
+      {
+        "kind": "requests",
+        "records": 7,
+        "pages": 2,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 21,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 63718
+      },
+      {
+        "kind": "returns",
+        "records": 30,
+        "pages": 14,
+        "orientation": "landscape",
+        "full_identifier_cells_verified": 90,
+        "all_columns_present": true,
+        "page_numbers_and_repeated_brand": true,
+        "bytes": 88691
+      }
+    ],
+    "filtered_inventory_records": 1,
+    "inventory_whole_snapshot_records": 40,
+    "inventory_directory_page_size": 25,
+    "column_headers_full_identifiers_page_numbers_and_unicode": "PASS",
+    "rendered_pages": [
+      "inventory-first.png",
+      "inventory-last.png"
+    ]
+  },
+  "preservation": [
+    {
+      "target": "normal",
+      "tables": 21,
+      "business_history_unchanged": true,
+      "historical_session_difference": false
+    },
+    {
+      "target": "accepted-phase7-demo",
+      "tables": 22,
+      "business_history_unchanged": true,
+      "historical_session_difference": true
+    }
+  ],
+  "shared_implementation": {
+    "result": "PASS",
+    "shared_frontend_source_files_verified": 260,
+    "normal_vite_config_and_manifests_identical": true,
+    "presentation_only_difference": "Compiled index banner and 28px bottom spacing; no replicated feature components.",
+    "normal_database_not_used_for_test_bundle": true
+  },
+  "presentation": "Running on loopback 15177/API 18087/PostgreSQL54836; all retained fictional records; original seed not reset.",
+  "normal_database": "Preserved schema 8; compatible schema 11 migration requires separate authorization. Normal-bundle browser check uses isolated schema 11 API.",
+  "secret_audit": {
+    "result": "PASS",
+    "public_files_scanned": 2570,
+    "private_configurations_scanned": 48,
+    "known_private_values_compared": 378,
+    "known_secret_matches": 0,
+    "index_empty": true,
+    "private_reference_and_configuration_ignored": true,
+    "no_credentials_printed": true
+  },
+  "git": {
+    "branch": "main",
+    "head": "c2741c54ba3aca95df705ce612ade1a277e0335d",
+    "modified_tracked": 77,
+    "untracked_paths": 607,
+    "total_changed_or_untracked": 684,
+    "staged_paths": 0,
+    "commit_performed": false,
+    "push_or_deployment": false,
+    "cumulative_existing_work_preserved": true,
+    "inventory": "docs/project/COMPLETE_UI_RECONSTRUCTION_GIT_STATUS.txt"
+  },
+  "external_dependencies": [
+    "Official FSMO terms/current documented consent",
+    "Approved production Student domains",
+    "Production activation/ownership readiness",
+    "Brevo key, verified sender and successful delivery; deferred",
+    "Reminder/disposal/retention decisions as recorded",
+    "Authorized normal schema integration and production configuration"
+  ],
+  "verification_limits": [
+    "Owner visual acceptance pending",
+    "Physical phones, Firefox/WebKit and Windows printing not tested",
+    "Deployment not performed"
+  ],
+  "git_diff_check": "PASS",
+  "publication_handoff": "docs/project/RELEASE_PUBLICATION_REPORT.md",
+  "historical_git_and_capture_counts": true
+}

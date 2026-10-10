@@ -1,0 +1,2171 @@
+{
+  "result": "PASS",
+  "checks": [
+    "HR-01: accepted Dashboard composition retained; themed page/panel scrollbars and reachable bottom at 1366/1440, both themes",
+    "HR-02: compact queue, independent table scroll, sticky headers, visible actions/pager at 1366/1440 \u00d7 600/768, expanded/collapsed, both themes",
+    "HR-02: full server totals, search intersections, status selection, clear and refreshed URL state",
+    "HR-03: bounded catalog/cart, visible progress/footer, independent scroll, compact controls; Back/Next and removal preserve draft state",
+    "MR-01: accepted Home retained with real data and existing navigation",
+    "student01: MR-02 overlay anchoring/layer/focus/Escape/outside, 44px adjacent controls; MR-03 red header sign-out, 24px spacing and actual revoked session at all widths/themes",
+    "faculty01: MR-02 overlay anchoring/layer/focus/Escape/outside, 44px adjacent controls; MR-03 red header sign-out, 24px spacing and actual revoked session at all widths/themes",
+    "MR-02: disabled limit, real quantity/Add, in-cart state, edit/remove; draft controls issue no borrowing POST"
+  ],
+  "screens": [
+    "dashboard-scrollbars-1366-768-light.png",
+    "dashboard-scrollbars-1366-768-dark.png",
+    "queue-expanded-1366-768-light.png",
+    "queue-expanded-1366-768-dark.png",
+    "direct-browse-expanded-1366-600-light.png",
+    "direct-browse-expanded-1366-600-dark.png",
+    "student01-catalog-open-390-844-light.png",
+    "student01-account-header-390-844-light.png",
+    "student01-account-sections-390-844-light.png",
+    "student01-catalog-open-390-844-dark.png",
+    "student01-account-header-390-844-dark.png",
+    "student01-account-sections-390-844-dark.png",
+    "faculty01-catalog-open-390-844-light.png",
+    "faculty01-catalog-open-390-844-dark.png"
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb/60a68521-b387-44af-9458-4b0e1657a58f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb/60a68521-b387-44af-9458-4b0e1657a58f",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/reporting/dashboard",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/reporting/dashboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/reporting/dashboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb/60a68521-b387-44af-9458-4b0e1657a58f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb/60a68521-b387-44af-9458-4b0e1657a58f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/775be329-766d-441a-94b9-3e31601c8a8f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/def22b0f-670e-4e06-aad9-89d537eb2c7f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a102a5b6-142a-4f52-b443-ee6bcbfe70ed",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/775be329-766d-441a-94b9-3e31601c8a8f",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/def22b0f-670e-4e06-aad9-89d537eb2c7f",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/a27bc509-0374-4bdc-a422-0c26c7db30d9",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a0af010d-1b65-4d5f-ad71-4f2810ffc154",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a95ff7cb-d0c9-457e-82f7-c8298bfec106",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/7f57f19f-2c98-4005-ab7c-e0c651573874",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/b58900b8-25d2-488d-87d1-33417c36add2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a102a5b6-142a-4f52-b443-ee6bcbfe70ed",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/5e6ee4ba-6f86-40d6-8dc7-7d41696885ed",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a27bc509-0374-4bdc-a422-0c26c7db30d9",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/a0af010d-1b65-4d5f-ad71-4f2810ffc154",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/027b38b7-d71c-43cf-b60b-8376e2c2ebe6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a95ff7cb-d0c9-457e-82f7-c8298bfec106",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/7f57f19f-2c98-4005-ab7c-e0c651573874",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/b58900b8-25d2-488d-87d1-33417c36add2",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/5e6ee4ba-6f86-40d6-8dc7-7d41696885ed",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/027b38b7-d71c-43cf-b60b-8376e2c2ebe6",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/89970a51-56e9-4a6e-ab05-26a232bfa756",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/c88ff5a4-e277-4875-86a2-f97cc3c7c082",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/d471fe97-8d17-4df0-bd6a-e7e27c231cab",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/bcc55d06-24f2-4516-b30d-b66a98e8b9f8",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/89970a51-56e9-4a6e-ab05-26a232bfa756",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/c88ff5a4-e277-4875-86a2-f97cc3c7c082",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/d471fe97-8d17-4df0-bd6a-e7e27c231cab",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/b3f4765f-86ea-42c4-b50a-dc4ae16f6a07",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/bcc55d06-24f2-4516-b30d-b66a98e8b9f8",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/b3f4765f-86ea-42c4-b50a-dc4ae16f6a07",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/8dc7c1a3-72cc-41b1-b196-b270e68d8ac3",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/8dc7c1a3-72cc-41b1-b196-b270e68d8ac3",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/775be329-766d-441a-94b9-3e31601c8a8f/5d8e41f3-4ecf-43c0-9d60-ba42a2838d80",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/775be329-766d-441a-94b9-3e31601c8a8f/5d8e41f3-4ecf-43c0-9d60-ba42a2838d80",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/def22b0f-670e-4e06-aad9-89d537eb2c7f/d50f81e7-2593-43c5-b634-a5f68a8b6aca",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/def22b0f-670e-4e06-aad9-89d537eb2c7f/d50f81e7-2593-43c5-b634-a5f68a8b6aca",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/a27bc509-0374-4bdc-a422-0c26c7db30d9/0f2d74e9-6e67-438b-93b0-8145a0d934b4",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a27bc509-0374-4bdc-a422-0c26c7db30d9/0f2d74e9-6e67-438b-93b0-8145a0d934b4",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/a102a5b6-142a-4f52-b443-ee6bcbfe70ed/8b0f7f64-c590-4040-8591-1c0f5b082350",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a102a5b6-142a-4f52-b443-ee6bcbfe70ed/8b0f7f64-c590-4040-8591-1c0f5b082350",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/a0af010d-1b65-4d5f-ad71-4f2810ffc154/3909f812-e0db-48da-a747-d2a99887ee98",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a0af010d-1b65-4d5f-ad71-4f2810ffc154/3909f812-e0db-48da-a747-d2a99887ee98",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/a95ff7cb-d0c9-457e-82f7-c8298bfec106/739e9520-96b3-4e96-85e0-5f9238fdc285",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a95ff7cb-d0c9-457e-82f7-c8298bfec106/739e9520-96b3-4e96-85e0-5f9238fdc285",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/027b38b7-d71c-43cf-b60b-8376e2c2ebe6/9963f094-d98c-41cd-9dcf-7b5bfa2e48b1",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/027b38b7-d71c-43cf-b60b-8376e2c2ebe6/9963f094-d98c-41cd-9dcf-7b5bfa2e48b1",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/7f57f19f-2c98-4005-ab7c-e0c651573874/bc1cd08f-5d30-494b-accb-ccac8ff5a2c8",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/7f57f19f-2c98-4005-ab7c-e0c651573874/bc1cd08f-5d30-494b-accb-ccac8ff5a2c8",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/89970a51-56e9-4a6e-ab05-26a232bfa756/523ac69d-0466-45aa-8b66-29d00a1ed93c",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/89970a51-56e9-4a6e-ab05-26a232bfa756/523ac69d-0466-45aa-8b66-29d00a1ed93c",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/5e6ee4ba-6f86-40d6-8dc7-7d41696885ed/3cb0bb77-3086-4e94-90d9-57cf6ad39285",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/5e6ee4ba-6f86-40d6-8dc7-7d41696885ed/3cb0bb77-3086-4e94-90d9-57cf6ad39285",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/b58900b8-25d2-488d-87d1-33417c36add2/62b7cba2-eb76-47ba-bb15-e9cfc298859f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/b58900b8-25d2-488d-87d1-33417c36add2/62b7cba2-eb76-47ba-bb15-e9cfc298859f",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/d471fe97-8d17-4df0-bd6a-e7e27c231cab/16fd0d32-6391-47cd-90de-8cf07f31062c",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/d471fe97-8d17-4df0-bd6a-e7e27c231cab/16fd0d32-6391-47cd-90de-8cf07f31062c",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/c88ff5a4-e277-4875-86a2-f97cc3c7c082/eca4b92a-4e0a-41ea-a93d-71ca01d1e012",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/c88ff5a4-e277-4875-86a2-f97cc3c7c082/eca4b92a-4e0a-41ea-a93d-71ca01d1e012",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/bcc55d06-24f2-4516-b30d-b66a98e8b9f8/a1d385fc-8000-4a15-8309-ed569526ecb0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/bcc55d06-24f2-4516-b30d-b66a98e8b9f8/a1d385fc-8000-4a15-8309-ed569526ecb0",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/b3f4765f-86ea-42c4-b50a-dc4ae16f6a07/40cb65d6-c54c-41db-9316-621017084c00",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/b3f4765f-86ea-42c4-b50a-dc4ae16f6a07/40cb65d6-c54c-41db-9316-621017084c00",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/8dc7c1a3-72cc-41b1-b196-b270e68d8ac3/f7fcbed0-99b7-455a-821a-3c2580bfec27",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/8dc7c1a3-72cc-41b1-b196-b270e68d8ac3/f7fcbed0-99b7-455a-821a-3c2580bfec27",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/3fd25824-1af5-464e-9ab9-7ffac946badb",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/674b30e4-1ad1-47c8-9219-83a2241ddb61",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/af2059b9-8279-4261-a2b8-5286994bfdb2",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/44e70db7-955e-42c3-bfeb-7e7708c7d7cc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/3fd25824-1af5-464e-9ab9-7ffac946badb",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/674b30e4-1ad1-47c8-9219-83a2241ddb61",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/6dd7a933-7cf1-4403-891f-9ac09850dc77",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/af2059b9-8279-4261-a2b8-5286994bfdb2",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/44e70db7-955e-42c3-bfeb-7e7708c7d7cc",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/7fb04136-2ad9-405e-a8f1-5d77a17d19cf",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/6dd7a933-7cf1-4403-891f-9ac09850dc77",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/7fb04136-2ad9-405e-a8f1-5d77a17d19cf",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/674b30e4-1ad1-47c8-9219-83a2241ddb61/ef59febb-7070-4acf-9e88-3648b53b7d04",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/af2059b9-8279-4261-a2b8-5286994bfdb2/6f089e2b-af17-45de-87a1-9b184f71992f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/674b30e4-1ad1-47c8-9219-83a2241ddb61/ef59febb-7070-4acf-9e88-3648b53b7d04",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/af2059b9-8279-4261-a2b8-5286994bfdb2/6f089e2b-af17-45de-87a1-9b184f71992f",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/3fd25824-1af5-464e-9ab9-7ffac946badb/3d809484-30c5-485d-98ca-c20cd6fa59ad",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/3fd25824-1af5-464e-9ab9-7ffac946badb/3d809484-30c5-485d-98ca-c20cd6fa59ad",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/44e70db7-955e-42c3-bfeb-7e7708c7d7cc/3fd762d2-462e-4079-ba97-43ad321fafbc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/44e70db7-955e-42c3-bfeb-7e7708c7d7cc/3fd762d2-462e-4079-ba97-43ad321fafbc",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/6dd7a933-7cf1-4403-891f-9ac09850dc77/3f5d2605-c74a-42c9-93ab-566f70e2653b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/6dd7a933-7cf1-4403-891f-9ac09850dc77/3f5d2605-c74a-42c9-93ab-566f70e2653b",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/7fb04136-2ad9-405e-a8f1-5d77a17d19cf/4c58e2b1-f221-4c74-8141-32caee9c809f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/7fb04136-2ad9-405e-a8f1-5d77a17d19cf/4c58e2b1-f221-4c74-8141-32caee9c809f",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb/60a68521-b387-44af-9458-4b0e1657a58f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a102a5b6-142a-4f52-b443-ee6bcbfe70ed",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/a102a5b6-142a-4f52-b443-ee6bcbfe70ed/8b0f7f64-c590-4040-8591-1c0f5b082350",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9108d8d8-17f0-49f6-9bb0-b7eec0b139fb/60a68521-b387-44af-9458-4b0e1657a58f",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowers",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/borrowings/eligibility/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings/eligibility/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/c7cbb779-e561-4493-a94d-865c678245f7/images/83e22041-b3e7-4b7b-b2b7-357d7a7e523e",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/c7cbb779-e561-4493-a94d-865c678245f7/images/83e22041-b3e7-4b7b-b2b7-357d7a7e523e",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/ff4b62d9-9295-4d51-b4c9-662efc46d501/images/044f19b4-d56e-4343-938b-70cb2b671a5e",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/ff4b62d9-9295-4d51-b4c9-662efc46d501/images/044f19b4-d56e-4343-938b-70cb2b671a5e",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/80d83941-e75b-44c9-8dca-c81fbeee4570/images/0490e215-2c80-4a15-8852-dd8cb21152be",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/80d83941-e75b-44c9-8dca-c81fbeee4570/images/0490e215-2c80-4a15-8852-dd8cb21152be",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/b81aa570-1dff-4d77-baa7-1485895204e4/images/26126c18-31a8-425f-a880-765a6b43c74e",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/5a0d4e81-39dc-4900-822b-556cd887e076/images/1cb33169-ae77-475a-81e5-3b2b7129b9b4",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/b81aa570-1dff-4d77-baa7-1485895204e4/images/26126c18-31a8-425f-a880-765a6b43c74e",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/5a0d4e81-39dc-4900-822b-556cd887e076/images/1cb33169-ae77-475a-81e5-3b2b7129b9b4",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/reporting/dashboard",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/borrowings",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/c1c3f4b3-f019-46f0-ac98-2f074eee0c53",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/c1c3f4b3-f019-46f0-ac98-2f074eee0c53",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/c1c3f4b3-f019-46f0-ac98-2f074eee0c53/images/99219006-cc65-46f0-a698-038f1f72fdfe",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/c1c3f4b3-f019-46f0-ac98-2f074eee0c53/images/99219006-cc65-46f0-a698-038f1f72fdfe",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "OPTIONS"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/fdc445c5-9700-429b-bcf6-2d00355606a0/29e4bf66-64bf-499c-83ff-4828c89811b6",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/logout",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/login",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/account/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/profile-images/9ef9ac98-0761-478a-ac1c-a9b15640c68b/c132cad4-d2e9-49d0-9c4d-5befa81a864a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/auth/refresh",
+      "method": "POST"
+    },
+    {
+      "path": "/api/v1/auth/me",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/notifications/count",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/terms/status",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment-categories",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/52142d6e-8a0d-4d80-8a8f-fc4472a35a8c/images/282a5f5a-551f-4838-99cf-73ad90401e7a",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/0c2d09a7-9dd0-41a7-91e0-5fa2aaad88eb/images/613499ab-98ac-43a3-a8db-9b495bd8b6fc",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/d94680a4-60e4-48ef-bb0f-82ce96bed671/images/83b9816f-dc99-47d5-9af9-b798f39ce301",
+      "method": "GET"
+    },
+    {
+      "path": "/api/v1/equipment/ff4b62d9-9295-4d51-b4c9-662efc46d501/images/044f19b4-d56e-4343-938b-70cb2b671a5e",
+      "method": "GET"
+    }
+  ],
+  "scope": "Shared human-review UI, real isolated PostgreSQL; draft cart/issuance and genuine auth/logout, no normal writes.",
+  "screens_original_capture_count": 146,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

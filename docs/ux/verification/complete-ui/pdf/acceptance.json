@@ -1,0 +1,134 @@
+{
+  "result": "PASS",
+  "scope": "Actual Chromium-generated PDFs parsed offline with Poppler; fictional data only. Source expected snapshots retained privately.",
+  "reports": [
+    {
+      "kind": "account-audit",
+      "records": 68,
+      "pages": 34,
+      "orientation": "portrait",
+      "full_identifier_cells_verified": 204,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 117067
+    },
+    {
+      "kind": "active",
+      "records": 5,
+      "pages": 1,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 15,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 61330
+    },
+    {
+      "kind": "fine-clearances",
+      "records": 2,
+      "pages": 1,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 6,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 60526
+    },
+    {
+      "kind": "fines",
+      "records": 33,
+      "pages": 6,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 66,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 77241
+    },
+    {
+      "kind": "incidents",
+      "records": 2,
+      "pages": 1,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 6,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 59993
+    },
+    {
+      "kind": "inventory",
+      "records": 40,
+      "pages": 4,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 40,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 72479
+    },
+    {
+      "kind": "issued",
+      "records": 33,
+      "pages": 7,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 99,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 79009
+    },
+    {
+      "kind": "movements",
+      "records": 116,
+      "pages": 16,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 231,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 127110
+    },
+    {
+      "kind": "overdue",
+      "records": 3,
+      "pages": 1,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 9,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 60708
+    },
+    {
+      "kind": "replacements",
+      "records": 4,
+      "pages": 1,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 8,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 59336
+    },
+    {
+      "kind": "requests",
+      "records": 7,
+      "pages": 2,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 21,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 63718
+    },
+    {
+      "kind": "returns",
+      "records": 30,
+      "pages": 14,
+      "orientation": "landscape",
+      "full_identifier_cells_verified": 90,
+      "all_columns_present": true,
+      "page_numbers_and_repeated_brand": true,
+      "bytes": 88691
+    }
+  ],
+  "filtered_inventory_records": 1,
+  "inventory_whole_snapshot_records": 40,
+  "inventory_directory_page_size": 25,
+  "column_headers_full_identifiers_page_numbers_and_unicode": "PASS",
+  "rendered_pages": [
+    "inventory-first.png",
+    "inventory-last.png"
+  ]
+}

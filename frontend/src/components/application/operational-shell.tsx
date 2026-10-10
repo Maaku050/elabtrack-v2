@@ -21,7 +21,7 @@ export function OperationalLayout() {
   const logout = useLogout()
   if (!user || !['ADMIN', 'STAFF'].includes(user.role)) return <Outlet />
 
-  const active = location.pathname.includes('/inventory') ? 'Inventory'
+  const active = location.pathname === '/staff/reports' ? 'Reports' : location.pathname.includes('/inventory') ? 'Inventory'
     : location.pathname.includes('/borrowers') ? 'Borrowers'
     : Object.entries(operationalDestinations).find(([, href]) => location.pathname.startsWith(href))?.[0] ?? 'Workspace'
   const signOut = () => { void logout() }

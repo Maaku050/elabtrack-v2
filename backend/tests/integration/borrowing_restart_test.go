@@ -1,10 +1,10 @@
 package integration
 
 import (
-	"io"
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -52,9 +52,19 @@ func TestRealBorrowingProcessRestart(t *testing.T) {
 	start := func() *exec.Cmd {
 		t.Helper()
 		cmd := exec.Command(binary)
-		cmd.Stdout, cmd.Stderr = io.Discard, io.Discard
+		log, err := os.OpenFile(filepath.Join(t.TempDir(), "api.log"), os.O_CREATE|os.O_WRONLY, 0600)
+		require(t, err == nil, "private isolated process diagnostic")
+		cmd.Stdout, cmd.Stderr = log, log
 		require(t, cmd.Start() == nil, "start isolated product API")
-		t.Cleanup(func() { _ = cmd.Process.Kill() })
+		t.Cleanup(func() {
+			_ = cmd.Process.Kill()
+			_ = cmd.Wait()
+			_ = log.Close()
+			if t.Failed() {
+				diagnostic, _ := os.ReadFile(log.Name())
+				t.Logf("Isolated restart diagnostic: %s", diagnostic)
+			}
+		})
 		ready := false
 		for n := 0; n < 100; n++ {
 			response, err := client.Get("http://127.0.0.1:18085/api/v1/ready")

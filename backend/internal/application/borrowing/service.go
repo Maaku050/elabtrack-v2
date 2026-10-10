@@ -71,7 +71,11 @@ func (s *Service) Read(c context.Context, actor, id uuid.UUID) (v d.Record, e er
 		}
 		// Hold the aggregate through item/history reads so another operator
 		// cannot mix pre-transition headers with post-transition custody.
-		v, e = s.repo.Get(c, id, true)
+		if r, ok := s.repo.(d.HistoryRepository); ok {
+			v, e = r.Preview(c, id, true)
+		} else {
+			v, e = s.repo.Get(c, id, true)
+		}
 		if e != nil {
 			return e
 		}
@@ -81,6 +85,9 @@ func (s *Service) Read(c context.Context, actor, id uuid.UUID) (v d.Record, e er
 		now, e := s.repo.Clock(c)
 		if e == nil {
 			v.Overdue = v.Status == "CHECKED_OUT" && v.DueAt != nil && now.After(*v.DueAt)
+			if e == nil {
+				e = v.ProjectFine(now)
+			}
 		}
 		return e
 	})
@@ -137,8 +144,10 @@ func (s *Service) command(c context.Context, actor, target uuid.UUID, op, key st
 		if e := s.accounts.LockAccounts(c, []uuid.UUID{actor, target}); e != nil {
 			return e
 		}
-		if _, e := s.actor(c, actor, staff); e != nil {
+		if u, e := s.actor(c, actor, staff); e != nil {
 			return e
+		} else if strings.HasPrefix(op, "clear:") && u.Role != user.RoleAdmin {
+			return shared.ErrForbidden
 		}
 		if targetEligible {
 			if _, e := s.eligible(c, target); e != nil {
@@ -421,4 +430,25 @@ func (s *Service) Sweep(c context.Context, limit int) (int, error) {
 		}
 	}
 	return count, nil
+}
+
+// Eligibility previews the same account and current terms checks as issuance.
+// Final issuance always checks again inside its authoritative transaction.
+func (s *Service) Eligibility(c context.Context, actor, target uuid.UUID) (e error) {
+	if target == uuid.Nil {
+		return shared.ErrInvalidInput
+	}
+	return s.tx.Within(c, func(c context.Context) error {
+		if e := s.accounts.LockAccounts(c, []uuid.UUID{actor, target}); e != nil {
+			return e
+		}
+		if _, e := s.actor(c, actor, true); e != nil {
+			return e
+		}
+		if _, e := s.eligible(c, target); e != nil {
+			return e
+		}
+		_, e := s.terms.RequireCurrentAcceptance(c, target)
+		return e
+	})
 }

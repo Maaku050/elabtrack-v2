@@ -1,0 +1,31 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Fresh isolated Admin uses normal authentication and live operational data with external browser network blocked",
+    "All28 protected fictional avatars and40 protected equipment images are served from the isolated local database",
+    "Unaccepted fictional Student consents through the real current-version terms workflow offline",
+    "Cold local fonts/images/icons and adjacent44px quantity/Add controls render without overflow on320/390/768/1440 light/dark",
+    "Keyboard focus, desktop browse/cart, inline quantity editing and item removal/re-add work with real catalog data",
+    "One actual multi-item reservation and confirmed cancellation preserve canonical history and restore exact physical stock offline",
+    "HttpOnly session recovery, protected Student avatar and Faculty Borrower dashboard operate without email or internet",
+    "Staff sees real accountability/notifications and remains barred from Admin reports/fine resolution while offline",
+    "Real retained return report and CSV download work with no external service"
+  ],
+  "screens": [
+    "offline-admin-dashboard-1440-light.png",
+    "offline-first-use-terms-390-dark.png",
+    "offline-desktop-browse-cart-1440-light.png",
+    "offline-mobile-cart-review-390-dark.png",
+    "offline-student-account-390-dark.png"
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "externalNetwork": "CDP blocks every non-loopback browser request from before first navigation",
+  "avatarCount": 28,
+  "catalogCount": 40,
+  "fontRequests": [],
+  "requestPosts": 1,
+  "scope": "Fresh independent dependency installation and production bundle; normal authentication/APIs/isolated PostgreSQL, not mocked transitions. Owner acceptance pending.",
+  "screens_original_capture_count": 19,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

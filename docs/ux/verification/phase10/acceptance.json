@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Borrower own real overdue loan, scoped recent link and responsive light/dark dashboard",
+    "Operational metrics reconcile with API and SPA report navigation preserves sidebar DOM",
+    "Exact search result and actual browser CSV download preserve filtered physical quantities",
+    "Filters recover through authenticated reload; Staff receives operational report definitions only",
+    "Separate fine-resolution history displays immutable Admin method and assessed/cleared amounts",
+    "Admin account audit is available within its separate authorized report route"
+  ],
+  "screens": [],
+  "errors": [],
+  "scope": "Real Chromium, normal login/API, fictional isolated PostgreSQL and real CSV download. Owner final acceptance pending.",
+  "screens_original_capture_count": 8,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

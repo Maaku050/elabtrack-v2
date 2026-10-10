@@ -50,3 +50,73 @@ eLabTrack_V2_APPROVED_VISUAL_HANDOFF.zip
 
 # Owner V1 reference archive contains background legacy personal records; retain locally.
 elabtrack_phase11_v1_references.zip
+
+# Python local verification caches
+__pycache__/
+*.pyc
+
+# Owner UI references contain private contact data; preserve locally.
+/staff-admin_desktop_UI_refinements.docx
+/student-faculty_mobile_UI_refinements.docx
+
+# Intermediate UI reconstruction previews are not final acceptance evidence.
+docs/ux/verification/complete-ui/preview/
+docs/ux/verification/complete-ui/**/incomplete.json
+
+# Owner human-review source documents (private embedded references)
+/staff-admin_desktop_UI_human_review_refinements.docx
+/student-faculty_mobile_UI_human_review_refinements.docx
+/docs/ux/verification/human-review/**/incomplete.json
+
+# Release evidence curation: preserve complete captures locally; publish reviewed subset.
+/docs/ux/verification/complete-ui/**/*.png
+/docs/ux/verification/human-review/**/*.png
+/docs/ux/verification/phase10/**/*.png
+/docs/ux/verification/phase11/**/*.png
+/docs/ux/verification/phase12/**/*.png
+/docs/ux/verification/phase13/**/*.png
+/docs/ux/verification/phase14/**/*.png
+/docs/ux/verification/phase8/**/*.png
+/docs/ux/verification/phase9/**/*.png
+!/docs/ux/verification/complete-ui/after/admin-admin-reports-1366-768-dark.png
+!/docs/ux/verification/complete-ui/after/admin-admin-reports-1366-768-light.png
+!/docs/ux/verification/complete-ui/after/admin-staff-notifications-1366-768-dark.png
+!/docs/ux/verification/complete-ui/after/admin-staff-notifications-1366-768-light.png
+!/docs/ux/verification/complete-ui/pdf/inventory-first.png
+!/docs/ux/verification/complete-ui/pdf/inventory-last.png
+!/docs/ux/verification/human-review/after/dashboard-scrollbars-1366-768-dark.png
+!/docs/ux/verification/human-review/after/dashboard-scrollbars-1366-768-light.png
+!/docs/ux/verification/human-review/after/direct-browse-expanded-1366-600-dark.png
+!/docs/ux/verification/human-review/after/direct-browse-expanded-1366-600-light.png
+!/docs/ux/verification/human-review/after/faculty01-catalog-open-390-844-dark.png
+!/docs/ux/verification/human-review/after/faculty01-catalog-open-390-844-light.png
+!/docs/ux/verification/human-review/after/queue-expanded-1366-768-dark.png
+!/docs/ux/verification/human-review/after/queue-expanded-1366-768-light.png
+!/docs/ux/verification/human-review/after/student01-account-header-390-844-dark.png
+!/docs/ux/verification/human-review/after/student01-account-header-390-844-light.png
+!/docs/ux/verification/human-review/after/student01-account-sections-390-844-dark.png
+!/docs/ux/verification/human-review/after/student01-account-sections-390-844-light.png
+!/docs/ux/verification/human-review/after/student01-catalog-open-390-844-dark.png
+!/docs/ux/verification/human-review/after/student01-catalog-open-390-844-light.png
+!/docs/ux/verification/human-review/before/-borrower-account-390-844-dark.png
+!/docs/ux/verification/human-review/before/-borrower-account-390-844-light.png
+!/docs/ux/verification/human-review/before/-staff-requests-1366-768-dark.png
+!/docs/ux/verification/human-review/before/-staff-requests-1366-768-light.png
+!/docs/ux/verification/human-review/before/catalog-open-390-844-dark.png
+!/docs/ux/verification/human-review/before/catalog-open-390-844-light.png
+!/docs/ux/verification/human-review/before/direct-browse-1366-768-dark.png
+!/docs/ux/verification/human-review/before/direct-browse-1366-768-light.png
+!/docs/ux/verification/human-review/workflows/direct-frozen-review-1366-dark.png
+!/docs/ux/verification/human-review/workflows/direct-frozen-review-1366-light.png
+!/docs/ux/verification/human-review/workflows/staff-completed-return-1366-dark.png
+!/docs/ux/verification/human-review/workflows/staff-completed-return-1366-light.png
+!/docs/ux/verification/phase11/cart-390-dark.png
+!/docs/ux/verification/phase11/catalog-1440-light.png
+!/docs/ux/verification/phase14/offline-admin-dashboard-1440-light.png
+!/docs/ux/verification/phase14/offline-desktop-browse-cart-1440-light.png
+!/docs/ux/verification/phase14/offline-first-use-terms-390-dark.png
+!/docs/ux/verification/phase14/offline-mobile-cart-review-390-dark.png
+!/docs/ux/verification/phase14/offline-student-account-390-dark.png
+!/docs/ux/verification/phase8/borrower-completed-390-light.png
+!/docs/ux/verification/phase8/fine-review-1440-dark.png
+!/docs/ux/verification/phase8/return-review-1440-dark.png

@@ -6,8 +6,7 @@ import (
 	"github.com/google/uuid"
 )
 
-// Phase7 exposes only installed borrowing facts. Fine/replacement balances are
-// unavailable, never fabricated zeroes; later disposition modules replace this adapter.
+// Complete installed accountability facts. This is read-only; deactivation never resolves them.
 type BorrowingObligations struct{ repo *BorrowingRepository }
 
 func NewBorrowingObligations(r *BorrowingRepository) *BorrowingObligations {
@@ -15,23 +14,30 @@ func NewBorrowingObligations(r *BorrowingRepository) *BorrowingObligations {
 }
 func (r *BorrowingObligations) Read(c context.Context, id uuid.UUID) (v d.Obligations, e error) {
 	v.Availability = "UNAVAILABLE"
-	var installed, future bool
-	e = r.repo.executor(c).QueryRow(c, `SELECT to_regclass('public.borrowing_items') IS NOT NULL,to_regclass('public.return_events') IS NOT NULL OR to_regclass('public.replacement_obligations') IS NOT NULL`).Scan(&installed, &future)
+	var installed bool
+	e = r.repo.executor(c).QueryRow(c, `SELECT to_regclass('public.return_lines') IS NOT NULL AND to_regclass('public.replacement_acceptances') IS NOT NULL AND to_regclass('public.fine_clearances') IS NOT NULL`).Scan(&installed)
 	if e != nil {
 		return v, accountError(e)
 	}
-	if !installed || future {
+	if !installed {
 		return v, nil
 	}
-	var pending, active, overdue, units int
-	e = r.repo.executor(c).QueryRow(c, `SELECT count(*) FILTER(WHERE b.status='PENDING'),count(*) FILTER(WHERE b.status='CHECKED_OUT'),count(*) FILTER(WHERE b.status='CHECKED_OUT' AND b.due_at<clock_timestamp()),COALESCE(sum((SELECT COALESCE(sum(issued_quantity),0) FROM borrowing_items i WHERE i.borrowing_id=b.id)) FILTER(WHERE b.status='CHECKED_OUT'),0)::bigint FROM borrowings b WHERE b.borrower_id=$1`, id).Scan(&pending, &active, &overdue, &units)
+	var pending, active, overdue, units, replacements int
+	var fine int64
+	e = r.repo.executor(c).QueryRow(c, `WITH tick AS MATERIALIZED (SELECT clock_timestamp() at), loans AS (SELECT * FROM borrowings WHERE borrower_id=$1) SELECT
+ count(*) FILTER(WHERE status='PENDING'),count(*) FILTER(WHERE status='CHECKED_OUT'),count(*) FILTER(WHERE status='CHECKED_OUT' AND due_at<(SELECT at FROM tick)),
+ COALESCE((SELECT sum(i.issued_quantity-COALESCE((SELECT sum(good+damaged+lost) FROM return_lines l WHERE l.item_id=i.id),0)) FROM borrowing_items i JOIN loans b ON b.id=i.borrowing_id WHERE b.status='CHECKED_OUT'),0)::bigint,
+ COALESCE((SELECT sum(o.required-COALESCE((SELECT sum(quantity) FROM replacement_acceptances a WHERE a.obligation_id=o.id),0)) FROM replacement_obligations o JOIN loans b ON b.id=o.borrowing_id),0)::bigint,
+ COALESCE(sum(COALESCE(fine_final_minor,borrowing_fine_amount(due_at,(SELECT at FROM tick)))-COALESCE((SELECT sum(cleared_minor) FROM fine_clearances f WHERE f.borrowing_id=loans.id),0)),0)::bigint FROM loans`, id).Scan(&pending, &active, &overdue, &units, &replacements, &fine)
 	if e != nil {
 		return v, accountError(e)
 	}
-	v.Availability = "PARTIAL"
+	v.Availability = "AVAILABLE"
 	v.PendingRequests = &pending
 	v.ActiveBorrowings = &active
 	v.OverdueBorrowings = &overdue
 	v.UnreturnedUnits = &units
+	v.ReplacementUnits = &replacements
+	v.FineMinor = &fine
 	return v, nil
 }

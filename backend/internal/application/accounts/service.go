@@ -103,6 +103,9 @@ func (s *Service) enrich(ctx context.Context, r d.Record) d.Record {
 	return r
 }
 func (s *Service) List(ctx context.Context, actor uuid.UUID, f d.Filter) (out d.Page, err error) {
+	if f.EligibleForIssuance && f.Staff {
+		return out, shared.ErrInvalidInput
+	}
 	if f.Page < 1 || f.Page > 10000 || f.PerPage < 1 || f.PerPage > 100 || len(f.Search) > 100 || (f.BorrowerType != "" && f.BorrowerType != "STUDENT" && f.BorrowerType != "FACULTY") || (f.Status != "" && f.Status != "ACTIVE" && f.Status != "INACTIVE" && f.Status != "PENDING") {
 		return out, shared.ErrInvalidInput
 	}

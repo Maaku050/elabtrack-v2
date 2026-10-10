@@ -45,6 +45,10 @@ type Item struct {
 	Quantity    int64     `json:"quantity"`
 	Reserved    int64     `json:"reserved_quantity"`
 	Issued      int64     `json:"issued_quantity"`
+	Good        int64     `json:"good_quantity"`
+	Damaged     int64     `json:"damaged_quantity"`
+	Lost        int64     `json:"lost_quantity"`
+	Outstanding int64     `json:"outstanding_quantity"`
 }
 type Event struct {
 	ID      uuid.UUID  `json:"id"`
@@ -54,24 +58,35 @@ type Event struct {
 	At      time.Time  `json:"occurred_at"`
 }
 type Record struct {
-	ID           uuid.UUID  `json:"id"`
-	Reference    string     `json:"reference"`
-	BorrowerID   uuid.UUID  `json:"borrower_id"`
-	BorrowerName string     `json:"borrower_name"`
-	BorrowerType string     `json:"borrower_type"`
-	StudentID    string     `json:"student_id"`
-	Status       string     `json:"status"`
-	EntryPath    string     `json:"entry_path"`
-	AcceptanceID uuid.UUID  `json:"acceptance_id"`
-	CreatedAt    time.Time  `json:"created_at"`
-	ExpiresAt    *time.Time `json:"expires_at"`
-	CheckedOutAt *time.Time `json:"checked_out_at"`
-	DueAt        *time.Time `json:"due_at"`
-	TerminalAt   *time.Time `json:"terminal_at"`
-	Reason       string     `json:"denial_reason"`
-	Items        []Item     `json:"items"`
-	Events       []Event    `json:"events"`
-	Overdue      bool       `json:"is_overdue"`
+	ID                     uuid.UUID     `json:"id"`
+	Reference              string        `json:"reference"`
+	BorrowerID             uuid.UUID     `json:"borrower_id"`
+	BorrowerName           string        `json:"borrower_name"`
+	BorrowerType           string        `json:"borrower_type"`
+	StudentID              string        `json:"student_id"`
+	Status                 string        `json:"status"`
+	EntryPath              string        `json:"entry_path"`
+	AcceptanceID           uuid.UUID     `json:"acceptance_id"`
+	CreatedAt              time.Time     `json:"created_at"`
+	ExpiresAt              *time.Time    `json:"expires_at"`
+	CheckedOutAt           *time.Time    `json:"checked_out_at"`
+	DueAt                  *time.Time    `json:"due_at"`
+	TerminalAt             *time.Time    `json:"terminal_at"`
+	Reason                 string        `json:"denial_reason"`
+	Items                  []Item        `json:"items"`
+	EventCount             int           `json:"event_count"`
+	PagedHistory           bool          `json:"paged_history"`
+	FineClearedMinor       *int64        `json:"-"`
+	ReplacementOutstanding *int64        `json:"replacement_units_outstanding,omitempty"`
+	Events                 []Event       `json:"events"`
+	Overdue                bool          `json:"is_overdue"`
+	FinalMinor             *int64        `json:"fine_final_minor"`
+	CompletedAt            *time.Time    `json:"completed_at"`
+	Returns                []Disposition `json:"returns"`
+	Obligations            []Obligation  `json:"obligations"`
+	Replacements           []Replacement `json:"replacements"`
+	Clearances             []Clearance   `json:"clearances"`
+	Fine                   Fine          `json:"fine"`
 }
 type Filter struct {
 	Page, PerPage  int
@@ -86,7 +101,7 @@ type Page struct {
 }
 
 func State(s string) bool {
-	return s == "PENDING" || s == "CHECKED_OUT" || s == "DENIED" || s == "CANCELLED" || s == "EXPIRED"
+	return s == "COMPLETED" || s == "PENDING" || s == "CHECKED_OUT" || s == "DENIED" || s == "CANCELLED" || s == "EXPIRED"
 }
 func (f Filter) Valid() bool {
 	return f.Page >= 1 && f.Page <= 100000 && f.PerPage >= 1 && f.PerPage <= 100 && (f.Status == "" || State(f.Status)) && inventory.Text(f.Search, 100)

@@ -455,11 +455,20 @@ func TestRealBorrowingOperations(t *testing.T) {
 		verify(v, 2, 0, 2)
 	})
 	t.Run("constraints_immutable_history_and_data_rollback_refusal", func(t *testing.T) {
-		for _, q := range []string{`DELETE FROM borrowings`, `UPDATE borrowings SET due_at=due_at+interval '1 hour' WHERE status='CHECKED_OUT'`, `TRUNCATE borrowing_items`, `UPDATE borrowing_events SET kind='DENIED'`, `DELETE FROM borrowing_operation_receipts`, `UPDATE equipment SET damaged_held=damaged_held`} {
+		for _, q := range []string{`DELETE FROM borrowings`, `UPDATE borrowings SET due_at=due_at+interval '1 hour' WHERE status='CHECKED_OUT'`, `TRUNCATE borrowing_items`, `UPDATE borrowing_events SET kind='DENIED'`, `DELETE FROM borrowing_operation_receipts`, `UPDATE equipment SET damaged_held=damaged_held+1`} {
 			_, e := db.Pool.Exec(ctx, q)
 			require(t, e != nil, "runtime history/custody guard")
 		}
-		require(t, database.NewMigrator(owner.Pool, "../../migrations").Down(ctx) != nil, "consequential down refusal")
+		m := database.NewMigrator(owner.Pool, "../../migrations")
+		refused := false
+		for n := 0; n < 4; n++ {
+			if m.Down(ctx) != nil {
+				refused = true
+				break
+			}
+		}
+		require(t, refused, "consequential down refusal after empty newer presentation pairs")
+		require(t, m.Up(ctx) == nil, "restore only empty newer schemas after refusal")
 	})
 }
 
@@ -568,7 +577,7 @@ func TestRealBorrowingCrossFeatureSafety(t *testing.T) {
 		loan, e := s.Decide(ctx, staff.ID, pending.ID, uuid.NewString(), "CHECKOUT", d.Decision{Confirm: true, Handover: true, DueAt: &due})
 		require(t, e == nil, "physical issue")
 		record, e := as.Detail(ctx, admin.ID, student.ID, false)
-		require(t, e == nil && record.Obligations.Availability == "PARTIAL" && *record.Obligations.ActiveBorrowings == 1 && *record.Obligations.UnreturnedUnits == 2 && record.Obligations.FineMinor == nil && record.Obligations.ReplacementUnits == nil, "real counts, no fabricated fine/replacement zeros")
+		require(t, e == nil && record.Obligations.Availability == "AVAILABLE" && *record.Obligations.ActiveBorrowings == 1 && *record.Obligations.UnreturnedUnits == 2 && record.Obligations.FineMinor != nil && *record.Obligations.FineMinor == 0 && record.Obligations.ReplacementUnits != nil && *record.Obligations.ReplacementUnits == 0, "installed accountability provides authoritative known fine/replacement zeros")
 		record, e = as.Status(ctx, admin.ID, student.ID, uuid.NewString(), accountapp.StatusInput{Active: false, Confirm: true, ExpectedUpdatedAt: record.UpdatedAt}, false)
 		require(t, e == nil && !record.IsActive, "deactivation does not veto obligations")
 		again, e := s.Read(ctx, admin.ID, loan.ID)

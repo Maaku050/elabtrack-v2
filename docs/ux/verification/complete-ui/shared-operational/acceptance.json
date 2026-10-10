@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "checks": [
+    "admin normal production bundle uses every reconstructed shared route without presentation styling",
+    "student01 normal production bundle uses every reconstructed shared route without presentation styling"
+  ],
+  "screens": [],
+  "errors": [],
+  "scope": "Normal Vite configuration and shared production source, temporarily served on the isolated compatible-schema API origin; fictional data only. No normal database writes or migrations.",
+  "screens_original_capture_count": 24,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

@@ -11,7 +11,7 @@ function payload(code: string, message = 'Safe public message.', fields?: unknow
 }
 
 describe('standard error contract', () => {
-  it.each([[400, 'VALIDATION_ERROR'], [401, 'UNAUTHORIZED'], [403, 'FORBIDDEN'], [404, 'NOT_FOUND'], [405, 'METHOD_NOT_ALLOWED'], [409, 'CONFLICT'], [429, 'RATE_LIMITED'], [500, 'INTERNAL_ERROR'], [503, 'SERVICE_UNAVAILABLE'], [503, 'TERMS_NOT_PUBLISHED'], [404, 'TERMS_VERSION_NOT_FOUND'], [409, 'TERMS_VERSION_CHANGED'], [409, 'TERMS_ACCEPTANCE_REQUIRED'], [409, 'TERMS_VERSION_EXISTS'], [409, 'TERMS_PUBLICATION_CHANGED']] as const)('normalizes %s/%s through the real transport', async (status, code) => {
+  it.each([[400, 'VALIDATION_ERROR'], [401, 'UNAUTHORIZED'], [403, 'FORBIDDEN'], [404, 'NOT_FOUND'], [405, 'METHOD_NOT_ALLOWED'], [409, 'CONFLICT'], [429, 'RATE_LIMITED'], [500, 'INTERNAL_ERROR'], [503, 'SERVICE_UNAVAILABLE'], [503, 'TERMS_NOT_PUBLISHED'], [404, 'TERMS_VERSION_NOT_FOUND'], [409, 'TERMS_VERSION_CHANGED'], [409, 'TERMS_ACCEPTANCE_REQUIRED'], [409, 'TERMS_VERSION_EXISTS'], [409, 'TERMS_PUBLICATION_CHANGED'], [409, 'EXPORT_LIMIT'], [403, 'BORROWER_NOT_ELIGIBLE'], [409, 'EQUIPMENT_NOT_AVAILABLE'], [409, 'BORROWING_STATE_CONFLICT'], [409, 'BORROWING_EXPIRED'], [409, 'IDEMPOTENCY_CONFLICT']] as const)('normalizes %s/%s through the real transport', async (status, code) => {
     const adapter: AxiosAdapter = async (config) => {
       const response: AxiosResponse = { config, status, statusText: String(status), headers: { 'x-request-id': id, 'retry-after': '60' }, data: payload(code) }
       throw new AxiosError('SQL password internal sentinel', 'ERR_BAD_RESPONSE', config, undefined, response)

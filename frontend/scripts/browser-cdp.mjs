@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
-export async function browser() {
- const child=spawn(process.env.CHROMIUM_EXECUTABLE || 'chromium',['--headless','--hide-scrollbars','--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--disable-crash-reporter','--remote-debugging-pipe'],{env:process.env,stdio:['ignore','ignore','pipe','pipe','pipe']});
+export async function browser({ showScrollbars = false } = {}) {
+ const child=spawn(process.env.CHROMIUM_EXECUTABLE || 'chromium',['--headless',...(showScrollbars ? [] : ['--hide-scrollbars']),'--no-sandbox','--disable-gpu','--disable-dev-shm-usage','--disable-crash-reporter','--remote-debugging-pipe'],{env:process.env,stdio:['ignore','ignore','pipe','pipe','pipe']});
  let buffer='',id=0;const pending=new Map(),listeners=[];
  child.stderr.on('data',()=>{});
  child.on('error',error=>{for(const p of pending.values())p.reject(error);});

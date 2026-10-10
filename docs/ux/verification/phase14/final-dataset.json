@@ -1,0 +1,23 @@
+{
+  "database": "elabtrack_v2_presentation_demo",
+  "migrations": 11,
+  "accounts": 28,
+  "students": 20,
+  "faculty": 5,
+  "staff": 2,
+  "admin": 1,
+  "equipment": 40,
+  "images": 40,
+  "avatars": 28,
+  "notifications": 248,
+  "terms_acceptances": 24,
+  "borrowings": 35,
+  "stock": {
+    "available": 584,
+    "reserved": 2,
+    "checked_out": 8,
+    "damaged_held": 2,
+    "total": 596,
+    "violations": 0
+  }
+}

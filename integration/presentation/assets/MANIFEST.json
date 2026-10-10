@@ -1,0 +1,549 @@
+{
+  "provenance": "Original project-owned vector illustrations, locally rendered by Chromium. Fictional presentation catalog and avatars, no external sources or real persons.",
+  "files": [
+    {
+      "file": "equipment/baking-sheet.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 6503,
+      "sha256": "99611c0025f18580b6731e4c1edf6c535dcf1e385a389349f45ab06067c53594",
+      "source_sha256": "387218290088b98824f63b078eba217edf92bfc5490b4c691a33dd50e572aef7"
+    },
+    {
+      "file": "equipment/balloon-whisk.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 11384,
+      "sha256": "d1f65f6aa083b9708a1bb71951f7f753b1b84eba132b011c96287fe26b6014d7",
+      "source_sha256": "49fb961e4e14da9a68d7c603f9eda295887277a1fb3c25ae512d56122a3d2a8d"
+    },
+    {
+      "file": "equipment/beverage-pitcher.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 9097,
+      "sha256": "8e7d7145b3abcef6d5b3eb514076dc72e302fdd7f14beffc74c6920feb4a9af2",
+      "source_sha256": "b5c46e545279c7f18a04e89be31e5cc47ba33d1fcf4e443112954943738df1d0"
+    },
+    {
+      "file": "equipment/bread-knife.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 6534,
+      "sha256": "78ddc60602895ce137df01f92b6c0cf2957387677c69bb2c04e759b80346c270",
+      "source_sha256": "b049736c6e29f7fb3db4aa139239fc322047f91356bebef311ec1665f314b363"
+    },
+    {
+      "file": "equipment/carbon-steel-wok.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 10278,
+      "sha256": "74018da82dce3b80882bca812ed518b96a8f2b54ed8423a5718540f06fc13868",
+      "source_sha256": "65a429c5d7787f9e62c4cc470282d29dc887d2e3fab7b5c12800e403edeac531"
+    },
+    {
+      "file": "equipment/chafing-dish.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 8392,
+      "sha256": "518bd0059065bdea37814dbc4627f04907c7b46c0cf8ced3e35f1ad00baa1399",
+      "source_sha256": "b6fa49a6c446b312b03c58f19af4348805472da77d10522fcf9ed951cfc3e7e2"
+    },
+    {
+      "file": "equipment/chef-knife.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 6534,
+      "sha256": "78ddc60602895ce137df01f92b6c0cf2957387677c69bb2c04e759b80346c270",
+      "source_sha256": "b4b18996d2e52c24b9901198c99d876f3908e0d18bb45fa18d7232cac641a29d"
+    },
+    {
+      "file": "equipment/countertop-blender.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 10703,
+      "sha256": "5a943362910406e36fec45f63c3c91f9fd6e5c2837d890d391deca50cc3a7fee",
+      "source_sha256": "976ee0c099cc6a6761584594cf41541eff5b055bda7517d91798f59e944e16c1"
+    },
+    {
+      "file": "equipment/digital-kitchen-scale.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 8205,
+      "sha256": "59ac04cf3d6830bdcec3d614a95cd7f22b01195312172a9ae9547f99b1b8ef21",
+      "source_sha256": "81a25af80ffb763fafe874a0c5875e2fcf376238a6cb3258b2f221d8672f8291"
+    },
+    {
+      "file": "equipment/food-prep-cutting-board.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 5708,
+      "sha256": "c7b2fec1411331b656a9532ada892884ebee548c3594f7f73a83e0b1ed1ee0a0",
+      "source_sha256": "5bda9f4cc8582f51ab46f3750a4dd41001fa5849639ee1e88e2e5ef03a1c9c70"
+    },
+    {
+      "file": "equipment/food-thermometer.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 5961,
+      "sha256": "b5cdc8cd814b08442518a758a061c1f6cfa95697827da387fc365b53e48441a1",
+      "source_sha256": "77b99be8652e93cb76724df3bdd51e7e910eb8b543f38f4557419d33ad7f0b0b"
+    },
+    {
+      "file": "equipment/glass-measuring-jug.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 9097,
+      "sha256": "8e7d7145b3abcef6d5b3eb514076dc72e302fdd7f14beffc74c6920feb4a9af2",
+      "source_sha256": "4b9cfae0cf063e6c31097ae88a1b2e4a12daf4db70eb17104093690b2b5453f4"
+    },
+    {
+      "file": "equipment/grill-pan.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 11002,
+      "sha256": "a778e455a08f9c26ece48ce709cd2e951b8c05974bf71a7e76de3c98dda36845",
+      "source_sha256": "8cfbd2dec7a1708a91451860a706c81238d9db505b12ff47d0c3669957d0d9f0"
+    },
+    {
+      "file": "equipment/kitchen-colander.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 9162,
+      "sha256": "71ba78f241561334b7ad5d667416d53ae1eb7a8360ed2976a1c1e14aefc59be8",
+      "source_sha256": "de81227651592e8b769810736383801bb2a577ba79297090155d0aca85754114"
+    },
+    {
+      "file": "equipment/kitchen-tongs.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 10173,
+      "sha256": "60cf0c34b5fbd4ed375ad24800ee387818f96a387a52c4c382cbba1ca2935a6f",
+      "source_sha256": "984781f1bd70ca82d438619b36aea9be9ab62d59675541b0b5645c397b154491"
+    },
+    {
+      "file": "equipment/large-serving-scoop.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7130,
+      "sha256": "b2974329b6c80fc974c666cf2b8661a3c8cfc8363574060e94dd4f4c5f7a3e3f",
+      "source_sha256": "58a289ac6b98d52a856de715a3bd632ede92fd2af45991d4b06907b1301d11b6"
+    },
+    {
+      "file": "equipment/large-stockpot.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7176,
+      "sha256": "38a40efd1f13bb979c677ab5071c557437dbfff3bc2cbc01df8ff31ada9fff08",
+      "source_sha256": "314a94df27cc5123179cf535526fe840d160a564471c107c4fe995ae65b80733"
+    },
+    {
+      "file": "equipment/measuring-cup-set.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 8233,
+      "sha256": "7fc307f43b7bce19f52b7fb9a42d261a57fe147d53b13d38d56bd8129cefe4b2",
+      "source_sha256": "b88d41e0e3f6d62573f209af14eab73a365ad3ad03caec86c41a0ede7de3aef0"
+    },
+    {
+      "file": "equipment/measuring-spoon-set.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7192,
+      "sha256": "0a6e510c6c49410c9bb2b93457e5a1a990f9be38dddf58a25a0e8d7074b6fae8",
+      "source_sha256": "1df84cccb1f5f7f43cd481de7a56cbc5082c2ce647c3c935d68cd78e1910f328"
+    },
+    {
+      "file": "equipment/medium-cooking-pot.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7176,
+      "sha256": "38a40efd1f13bb979c677ab5071c557437dbfff3bc2cbc01df8ff31ada9fff08",
+      "source_sha256": "bd877d86e6a231087bb9ad54f54d22008461eb2b9392b5f3f252db1a70da6ecb"
+    },
+    {
+      "file": "equipment/mesh-strainer.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 13426,
+      "sha256": "1a557d422e1d707f581802d7407d13e04646b983ce0953d0ece9c06dbc92677f",
+      "source_sha256": "5167787a2c6e37a5e9f246e98b1aab4bca62c0ca139c856cda7075a57511b0fe"
+    },
+    {
+      "file": "equipment/muffin-tray.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 11063,
+      "sha256": "e4aeebf0ccdcc9c83aed44cdd5c02448624e6a5e9f187e388d0803ab8b51b14b",
+      "source_sha256": "a23a95936565bb180c3e35e5fc2e9d28d6bcbbf6ae70661c7b4d29d04c09b90d"
+    },
+    {
+      "file": "equipment/nonstick-frying-pan.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 11002,
+      "sha256": "a778e455a08f9c26ece48ce709cd2e951b8c05974bf71a7e76de3c98dda36845",
+      "source_sha256": "401445867918ed548278892bf544dac0c160ba9b2d495437bb133abcb20e01cc"
+    },
+    {
+      "file": "equipment/pastry-brush.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 6164,
+      "sha256": "96411b1fc317716a5255ee68efb11a397f1bd80ba885d8d4e08e5223791422cd",
+      "source_sha256": "2bcb6b13ef4a3457d309c4e25c01a542466dfa6fdaea82ce35883320dd845562"
+    },
+    {
+      "file": "equipment/portion-scoop.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7130,
+      "sha256": "b2974329b6c80fc974c666cf2b8661a3c8cfc8363574060e94dd4f4c5f7a3e3f",
+      "source_sha256": "df306940a8d091d7271658207413db16c2d3a314e0178331a41a3f6c8bbe3d13"
+    },
+    {
+      "file": "equipment/rolling-pin.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 6428,
+      "sha256": "1c8228913494e638fae0e8f834746d73049e1911e3919d10a056f9e3cea1a3b1",
+      "source_sha256": "99c8e2e84c51450d362033da48aebedba330227b2d53047c0305cefd2aa949ee"
+    },
+    {
+      "file": "equipment/saute-pan.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 11002,
+      "sha256": "a778e455a08f9c26ece48ce709cd2e951b8c05974bf71a7e76de3c98dda36845",
+      "source_sha256": "04c673922ee039c65836e37c8d835ec905c9b252ef35d607061c89fc9ac45a15"
+    },
+    {
+      "file": "equipment/serving-tray.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 6503,
+      "sha256": "99611c0025f18580b6731e4c1edf6c535dcf1e385a389349f45ab06067c53594",
+      "source_sha256": "2c854ff2431a8209970d899da007a85559e39344c718b9f83ee70a6a4063241f"
+    },
+    {
+      "file": "equipment/silicone-spatula.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 5808,
+      "sha256": "e1fe3cb14632834a5190fd4644ce98bd0c91c826ef8f7b59ca874b6b00a9cb8f",
+      "source_sha256": "58980f038eb3820fc381cc85e72a50e607a9be74e01704783b52cf3311cfe05f"
+    },
+    {
+      "file": "equipment/slotted-serving-spoon.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7192,
+      "sha256": "0a6e510c6c49410c9bb2b93457e5a1a990f9be38dddf58a25a0e8d7074b6fae8",
+      "source_sha256": "bc7cf5d7fb12e386e416d997123de6bd4c99424c366d06445f403aad46d60f30"
+    },
+    {
+      "file": "equipment/small-saucepan.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7176,
+      "sha256": "38a40efd1f13bb979c677ab5071c557437dbfff3bc2cbc01df8ff31ada9fff08",
+      "source_sha256": "cc0cdc25d0005bbdf373a6a24e0a41f671a2b481a89ce043d0e62abcf99902e4"
+    },
+    {
+      "file": "equipment/soup-skimmer.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7046,
+      "sha256": "4a2c1414cb8c0723f177283241de9c8d6d3b791423de67ffdd4ec7b7fd8f86ac",
+      "source_sha256": "adf2dbef8196d6e879ffdc42db18cc43320b13bf28bca35227318315bfc51bc7"
+    },
+    {
+      "file": "equipment/stainless-food-pan.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 6503,
+      "sha256": "99611c0025f18580b6731e4c1edf6c535dcf1e385a389349f45ab06067c53594",
+      "source_sha256": "86c27328a0613309074bfc7aedc4121aef7919537dda6e146e269a9aeb5bbe02"
+    },
+    {
+      "file": "equipment/stainless-mixing-bowl.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 9744,
+      "sha256": "fdc1a05ab7f805db39e4165a7e166cf3b455137fb5e6f20f467725b94c2799e3",
+      "source_sha256": "4763737b3582be8058cbe8f391a076594e4889db021337319ba6af78675363e5"
+    },
+    {
+      "file": "equipment/stainless-steel-ladle.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7130,
+      "sha256": "b2974329b6c80fc974c666cf2b8661a3c8cfc8363574060e94dd4f4c5f7a3e3f",
+      "source_sha256": "3666f726d940f242f7ab46c61419311cf877409e0c86885c16b908a58f9d5bc8"
+    },
+    {
+      "file": "equipment/stainless-turner.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 5792,
+      "sha256": "c7f5e2fff309a713e285646e8b5b5efa1257d9859bb82c3a58d4f443b9eb61e1",
+      "source_sha256": "0a28c396d2b1e84f4e5ba4a26c60ecbcc066ca1f4a0c28922231f42db8bf8853"
+    },
+    {
+      "file": "equipment/stand-mixer.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 6558,
+      "sha256": "5c7e679739a9deb8b6ee12af4d0c11e4a474f4d6af25ccd90f2e22da7d788c50",
+      "source_sha256": "b2869da6a10c6a76c1ab1df1870096e8612a1a0f068e56526f1c8238de6ad395"
+    },
+    {
+      "file": "equipment/steamer-basket.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 13426,
+      "sha256": "1a557d422e1d707f581802d7407d13e04646b983ce0953d0ece9c06dbc92677f",
+      "source_sha256": "f5f7648d98a1ac60c14c3115439732792b609f204e6b97cd0a75bd455c658878"
+    },
+    {
+      "file": "equipment/wooden-cutting-board.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 5831,
+      "sha256": "5eae3c540068481d722a984bcd8792451d082c57fd55c1ce1ca44071d52500f2",
+      "source_sha256": "3b0553cc4199728a055f6290e0e3d87141fda395c05a97ecfe118be18a380e7d"
+    },
+    {
+      "file": "equipment/wooden-spoon.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 7576,
+      "sha256": "7dea5feac98d9718c81767525819d7a4ef1884a71fa1b7a7c13ad85dfa024680",
+      "source_sha256": "6ac741ee3f5bb4649944b8882015e35046c8ad5994f35dc99c1befe08e5478e3"
+    },
+    {
+      "file": "avatars/avatar-01.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14940,
+      "sha256": "e4738260fe8cb24ee928512d0e222cc338f51357d128d7509aa6d7668316a163",
+      "source_sha256": "859a5d45d446f17f7cf5db6249c413d3ec855ee4267fcd2327cc2e918895cef2"
+    },
+    {
+      "file": "avatars/avatar-02.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14898,
+      "sha256": "196f48072025f695e1062d2a6108ccffdb818c437b7f538bfcd7b7490090ea97",
+      "source_sha256": "a02fd803c2354b29702b9fa4c94937d5b61e5704ea95dbaaacd8d575f4fd75a7"
+    },
+    {
+      "file": "avatars/avatar-03.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14269,
+      "sha256": "7074d2f11745337377982a0bfcfcb78d76945f5ddd0d435e2fe223f78ca0d6b8",
+      "source_sha256": "7282f611478ecaf93c0314c4da36eb5a462279fc02c281efb99d5fe3bbddfa66"
+    },
+    {
+      "file": "avatars/avatar-04.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 16400,
+      "sha256": "3cb7c880d783cbc6404619ad8ca3b6365dde5e95c8b27a3f39651514ec1d7eb0",
+      "source_sha256": "91e19ceafa67f4322e424a1432d13dcdae2f3057bff2f4c98479113eff1ed503"
+    },
+    {
+      "file": "avatars/avatar-05.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 15124,
+      "sha256": "e45af74e588af304f177eef5262ef8eee366f364e17c95e4e3c8766cc7757961",
+      "source_sha256": "9de7d492711f917d90a1a214e83dcd7249cd5e220add1fb67f456c7dffb69df4"
+    },
+    {
+      "file": "avatars/avatar-06.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 15876,
+      "sha256": "07a8034ebce4bbca5e0e89a2a89ea87bbd7809b4a30293b62c0fa5bac18eb67f",
+      "source_sha256": "dc2c466d830d950bb5f650adaf91d5358d495570970c31db86898be585f7e7f8"
+    },
+    {
+      "file": "avatars/avatar-07.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14696,
+      "sha256": "95b4479087811d36aa8d4b2df0b94055eec0f3e9b96b4edf53f1d9dee27412a4",
+      "source_sha256": "16bd765815007f3bd3c7492b9b42dd912e61e164cdc86390d46dff55fad81ed9"
+    },
+    {
+      "file": "avatars/avatar-08.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14936,
+      "sha256": "0561898b5e38278c311cc9663278356ac3d82ae66701022a938fb329c0a17f0b",
+      "source_sha256": "e9dcd1ecf15b0a181ea153e224584e10f6bd0685dd9fef089270cdd48a5b94a4"
+    },
+    {
+      "file": "avatars/avatar-09.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14250,
+      "sha256": "5b4392121900a72aa587837e231ba3bf68a39f876e8abcfccefd3163074720b5",
+      "source_sha256": "e66cb80eb64bbb2b91fc898b7867ac7448923a991e9b4c5a80d44c3bd6e3f647"
+    },
+    {
+      "file": "avatars/avatar-10.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14892,
+      "sha256": "d3e64fcaa58ab0a6ac3777582faaad3b26820b0f5d7a15d0f5455b0b29f0c751",
+      "source_sha256": "2d267b6ce96ab4b0f12052d146e3337a160a5ba777f0d42a393928b20c7ea2a9"
+    },
+    {
+      "file": "avatars/avatar-11.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 16603,
+      "sha256": "059c8860f64520603eac997bbf672446ecdcfe36abd8d75c4cd374acb8b59324",
+      "source_sha256": "d46cb52e82b3416b26f0c1626fe505c50e8e815367998ea4402d32956dd90bc6"
+    },
+    {
+      "file": "avatars/avatar-12.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14226,
+      "sha256": "dfd490bda713f0d01b7d411fff07a8a2aa597aade2425cae153ff65cfe304e7a",
+      "source_sha256": "56b4a1b3790ba330828d0361ca28b2644feab56a5ae938b79f1e3baa1b9260f9"
+    },
+    {
+      "file": "avatars/avatar-13.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 16540,
+      "sha256": "9883fae1e48859bf042ff52296f64db1cc90dfc909efadfee7a3d82d6984849d",
+      "source_sha256": "810a9007482153a22a9e46f6c8fdacb916ec69bacab0c898ddefb7cd4cd909b2"
+    },
+    {
+      "file": "avatars/avatar-14.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14837,
+      "sha256": "a993c6e3eeac4088c272a7c6f8df2502a8fa8b927f2bd9ac616b55ad9f9c0a0d",
+      "source_sha256": "30e13b2f238e8dd5ed8b7e9320c4e68de4a4f04500b323f71ba14ebaeef5447f"
+    },
+    {
+      "file": "avatars/avatar-15.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14199,
+      "sha256": "0100dc574c1bd0bf29c7c6b10cfe7d0c08633cdab77e3aa4186e8c5f0cfd6eb8",
+      "source_sha256": "064510bf58d624f8fd1224ea5ffed9ce84e2946d3ba7a350027ceb808d00aa6c"
+    },
+    {
+      "file": "avatars/avatar-16.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14792,
+      "sha256": "e0d45718a0e136957b91c613fd3a50ce6365ec49342769d30135229088fbb199",
+      "source_sha256": "b6ba21b3a06fe9cc7c3cf84dc440e72441a8557e9c1babdd3885bccf0fe59790"
+    },
+    {
+      "file": "avatars/avatar-17.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 15128,
+      "sha256": "b10952acdd61eb3917bf2e77c9543059314e4b3b01ebfeb1afe7b1dcc8bf3d6a",
+      "source_sha256": "6527904c47e198f77ee6e088b397f2c215784a9f6396bd9cf2fd1c47beb1dab0"
+    },
+    {
+      "file": "avatars/avatar-18.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 15854,
+      "sha256": "d1b7bb50ed634488f1f6cc69c2641230c72fa14d018adcffd1f0448e97f6e63a",
+      "source_sha256": "e565a843d65cb725e60b334721c3d6fe3e26ebf3252a246235873ad747fa1b6c"
+    },
+    {
+      "file": "avatars/avatar-19.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14845,
+      "sha256": "9f43959375c2b1ba086aae4acb1fd2724d739f23e7977e131bc62a596f321987",
+      "source_sha256": "1a2d294a8dcda969c479beff10fce0f39b0d6dfdffe14a6f4fbb4ba513bf5d82"
+    },
+    {
+      "file": "avatars/avatar-20.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 16553,
+      "sha256": "56fd30f97692b7b57155aa743667309d369aa4d3727b581bb3ecedad651bb2b2",
+      "source_sha256": "36dd7773a7b423b8b59b6b8696a0b1ad6f04703798194ab92a025af4d395265d"
+    },
+    {
+      "file": "avatars/avatar-21.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14192,
+      "sha256": "d65bc13480eaff730c7ee2fa4f70f513481d2719e551d49f4bb57dd87308a421",
+      "source_sha256": "b3f123ffa7147efcc9cc04b3e4028fcfc3d1c888fc2858fca4198f9a716108d3"
+    },
+    {
+      "file": "avatars/avatar-22.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14890,
+      "sha256": "3cac3616077dca8b138c0eeb9cc11feece72ed968ca2fd42709613ad243c849a",
+      "source_sha256": "67042155c6b31966a950be66ef166da9470f8cb4199396efba60c5bcfe6d7bf4"
+    },
+    {
+      "file": "avatars/avatar-23.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14904,
+      "sha256": "d99c81d5fecdad3890d2795260baf120223ad2681604e1be5c36fe3121de0f22",
+      "source_sha256": "75991e09ddec209182fc03b3cf86543559ba3994c2e12d224e7a77ed174f3c55"
+    },
+    {
+      "file": "avatars/avatar-24.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14295,
+      "sha256": "43d5c51425196b89c15adc82408045fced27944c9fb32db35dc7dd42cc72b028",
+      "source_sha256": "d56751c7358f3f4a048dc2936b6d616acb244746eaf3f6fef69af6c59d452c04"
+    },
+    {
+      "file": "avatars/avatar-25.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 16549,
+      "sha256": "22a2f023b03a7cdb5e4a79eb7f788fa6b871b4aa014adc2b229d6bfbb72769f2",
+      "source_sha256": "f40e19f0ec7bd5eb8a01071f3f42217f61b8bf222709c54e9414fc2beeaeb9be"
+    },
+    {
+      "file": "avatars/avatar-26.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14978,
+      "sha256": "81a995a62e41952dad9f030ebbc9f7ed19429848357a09f7454ab9fba178df18",
+      "source_sha256": "bf613691da7a3526b67c17d78d1626becf05c53924cfb32e514cacb73392a137"
+    },
+    {
+      "file": "avatars/avatar-27.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 15883,
+      "sha256": "83d1d4d019996783a241db2a292d9702bc208e5869a5d05588a2be6cedf0f9da",
+      "source_sha256": "eb5b896acb0b38940d40de00b6efdbd8db2db4f3d279254ca024089a0c2e79dc"
+    },
+    {
+      "file": "avatars/avatar-28.png",
+      "width": 256,
+      "height": 256,
+      "bytes": 14686,
+      "sha256": "598f06bdc8d20a26503a2d7830a1dfe9a6dd9332ac2b6f83de569fd7c9c30f86",
+      "source_sha256": "a03e48d05e6aae1f94554e1a6d99d0f6f13aa2f472395350a34cb7ab63d61658"
+    }
+  ]
+}

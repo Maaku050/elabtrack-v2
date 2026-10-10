@@ -1,0 +1,12 @@
+import {cleanup,fireEvent,render,screen,waitFor} from '@testing-library/react'
+import {QueryClient,QueryClientProvider} from '@tanstack/react-query'
+import {afterEach,beforeEach,expect,it,vi} from 'vitest'
+import {BorrowingHistory} from './pages/borrowing-history'
+import {borrowingApi} from './api/borrowing.api'
+import {useAuthStore} from '@/stores/auth-store'
+import type {Borrowing} from './types'
+const record:Borrowing={id:'loan',reference:'TEST-HISTORY',borrower_id:'owner',borrower_name:'TEST Borrower',borrower_type:'FACULTY',student_id:'',status:'COMPLETED',entry_path:'REQUEST',acceptance_id:'fictional-consent',created_at:'2026-10-10T00:00:00Z',expires_at:null,checked_out_at:null,due_at:null,terminal_at:null,denial_reason:'',items:[],events:[],is_overdue:false,paged_history:true}
+beforeEach(()=>useAuthStore.setState({user:{id:'owner',email:'fictional@example.invalid',name:'TEST Borrower',role:'BORROWER',is_active:true}}))
+afterEach(()=>{cleanup();vi.restoreAllMocks();useAuthStore.setState({user:null})})
+it('pages actual immutable history and resets pagination on history type changes',async()=>{const api=vi.spyOn(borrowingApi,'history').mockImplementation(async(_id,kind,page)=>({kind,page,per_page:25,total:30,items:[{id:'row-'+page,kind:'RETURN',reason:page===1?'Newest verified return':'Older verified return',occurred_at:'2026-10-10T00:00:00Z'}]}));render(<QueryClientProvider client={new QueryClient({defaultOptions:{queries:{retry:false}}})}><BorrowingHistory record={record}/></QueryClientProvider>);await screen.findByText('Newest verified return');expect(screen.getByRole('button',{name:'Previous history'})).toBeDisabled();fireEvent.click(screen.getByRole('button',{name:'Next history'}));await screen.findByText('Older verified return');expect(screen.getByRole('button',{name:'Next history'})).toBeDisabled();fireEvent.change(screen.getByLabelText('History type'),{target:{value:'clearances'}});await waitFor(()=>expect(api).toHaveBeenLastCalledWith('loan','clearances',1,25,expect.any(AbortSignal)))})
+it('renders untrusted history text without executing markup',async()=>{vi.spyOn(borrowingApi,'history').mockResolvedValue({kind:'events',page:1,per_page:25,total:1,items:[{id:'row',reason:'<img src=x onerror=alert(1)>',occurred_at:'2026-10-10T00:00:00Z'}]});render(<QueryClientProvider client={new QueryClient()}><BorrowingHistory record={record}/></QueryClientProvider>);await screen.findByText('<img src=x onerror=alert(1)>');expect(document.querySelector('img')).toBeNull()})

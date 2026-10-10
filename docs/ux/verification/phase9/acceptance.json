@@ -1,0 +1,15 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Mobile borrower center and truthful unread badge, light/dark, no horizontal overflow",
+    "Read mutation invalidates count and list and survives authenticated reload",
+    "Read-state filter persists through reload and uses empty server result",
+    "Notification deep link opens only the borrower-owned normal borrowing interface",
+    "Staff action notification uses persistent operational shell and authorized request link"
+  ],
+  "screens": [],
+  "errors": [],
+  "scope": "Real Chromium, normal login/HTTP, isolated fictional PostgreSQL. Owner acceptance pending.",
+  "screens_original_capture_count": 4,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

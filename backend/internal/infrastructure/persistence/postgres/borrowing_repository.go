@@ -26,18 +26,24 @@ func (r *BorrowingRepository) Clock(c context.Context) (v time.Time, e error) {
 	return v, accountError(e)
 }
 
-const borrowingColumns = `id,reference,borrower_id,borrower_name,borrower_type,student_id,status,entry_path,acceptance_id,created_at,expires_at,checked_out_at,due_at,terminal_at,denial_reason`
+const borrowingColumns = `id,reference,borrower_id,borrower_name,borrower_type,student_id,status,entry_path,acceptance_id,created_at,expires_at,checked_out_at,due_at,terminal_at,denial_reason,completed_at,fine_final_minor`
 
 func scanBorrowing(s scanner) (v d.Record, e error) {
-	e = s.Scan(&v.ID, &v.Reference, &v.BorrowerID, &v.BorrowerName, &v.BorrowerType, &v.StudentID, &v.Status, &v.EntryPath, &v.AcceptanceID, &v.CreatedAt, &v.ExpiresAt, &v.CheckedOutAt, &v.DueAt, &v.TerminalAt, &v.Reason)
+	e = s.Scan(&v.ID, &v.Reference, &v.BorrowerID, &v.BorrowerName, &v.BorrowerType, &v.StudentID, &v.Status, &v.EntryPath, &v.AcceptanceID, &v.CreatedAt, &v.ExpiresAt, &v.CheckedOutAt, &v.DueAt, &v.TerminalAt, &v.Reason, &v.CompletedAt, &v.FinalMinor)
 	v.Items = []d.Item{}
 	v.Events = []d.Event{}
 	return v, accountError(e)
 }
-func (r *BorrowingRepository) Get(c context.Context, id uuid.UUID, lock bool) (v d.Record, e error) {
+func (r *BorrowingRepository) Get(c context.Context, id uuid.UUID, lock bool) (d.Record, error) {
+	return r.get(c, id, lock, 0)
+}
+func (r *BorrowingRepository) get(c context.Context, id uuid.UUID, lock bool, limit int) (v d.Record, e error) {
 	suffix := ""
 	if lock {
-		suffix = " FOR UPDATE"
+		// Lifecycle writes never change the borrowing primary key. This still
+		// serializes competing transitions, but permits notification FK KEY SHARE
+		// checks; FOR UPDATE creates a loan/account lock inversion with fan-out.
+		suffix = " FOR NO KEY UPDATE"
 	}
 	v, e = scanBorrowing(r.executor(c).QueryRow(c, `SELECT `+borrowingColumns+` FROM borrowings WHERE id=$1`+suffix, id))
 	if e != nil {
@@ -60,7 +66,16 @@ func (r *BorrowingRepository) Get(c context.Context, id uuid.UUID, lock bool) (v
 	if e != nil {
 		return v, accountError(e)
 	}
-	rows, e = r.executor(c).Query(c, `SELECT id,actor_id,kind,reason,occurred_at FROM borrowing_events WHERE borrowing_id=$1 ORDER BY occurred_at,id`, id)
+	if e = r.executor(c).QueryRow(c, `SELECT count(*) FROM borrowing_events WHERE borrowing_id=$1`, id).Scan(&v.EventCount); e != nil {
+		return v, accountError(e)
+	}
+	eventLimit := 2147483647
+	eventOrder := "occurred_at,id"
+	if limit > 0 {
+		eventLimit = limit
+		eventOrder = "occurred_at DESC,id DESC"
+	}
+	rows, e = r.executor(c).Query(c, `SELECT id,actor_id,kind,reason,occurred_at FROM borrowing_events WHERE borrowing_id=$1 ORDER BY `+eventOrder+` LIMIT $2`, id, eventLimit)
 	if e != nil {
 		return v, accountError(e)
 	}
@@ -72,7 +87,19 @@ func (r *BorrowingRepository) Get(c context.Context, id uuid.UUID, lock bool) (v
 		}
 		v.Events = append(v.Events, i)
 	}
-	return v, accountError(rows.Err())
+	if e = rows.Err(); e != nil {
+		return v, accountError(e)
+	}
+	rows.Close()
+	if limit > 0 {
+		for left, right := 0, len(v.Events)-1; left < right; left, right = left+1, right-1 {
+			v.Events[left], v.Events[right] = v.Events[right], v.Events[left]
+		}
+		e = r.previewAccountability(c, &v)
+	} else {
+		e = r.accountabilityDetails(c, &v)
+	}
+	return v, e
 }
 func (r *BorrowingRepository) List(c context.Context, f d.Filter) (p d.Page, e error) {
 	p.Items = []d.Record{}
@@ -83,13 +110,15 @@ func (r *BorrowingRepository) List(c context.Context, f d.Filter) (p d.Page, e e
 	where := ` FROM borrowings WHERE ($1::uuid IS NULL OR borrower_id=$1) AND ($2='' OR status=$2) AND (reference ILIKE $3 OR borrower_name ILIKE $3 OR student_id ILIKE $3)`
 	// One statement gives count and page a consistent snapshot under Read Committed.
 	var data []byte
-	e = r.executor(c).QueryRow(c, `SELECT (SELECT count(*)`+where+`),COALESCE((SELECT jsonb_agg(to_jsonb(b) ORDER BY b.created_at DESC,b.id DESC) FROM (SELECT `+borrowingColumns+where+` ORDER BY created_at DESC,id DESC LIMIT $4 OFFSET $5) b),'[]'::jsonb)`, append(args, f.PerPage, (f.Page-1)*f.PerPage)...).Scan(&p.Total, &data)
+	e = r.executor(c).QueryRow(c, `WITH tick AS MATERIALIZED (SELECT clock_timestamp() AS at) SELECT (SELECT count(*)`+where+`),COALESCE((SELECT jsonb_agg(to_jsonb(b) ORDER BY b.created_at DESC,b.id DESC) FROM (SELECT `+borrowingColumns+`,jsonb_build_object('assessed_minor',COALESCE(fine_final_minor,borrowing_fine_amount(due_at,(SELECT at FROM tick))),'cleared_minor',(SELECT COALESCE(sum(cleared_minor),0) FROM fine_clearances f WHERE f.borrowing_id=borrowings.id),'outstanding_minor',COALESCE(fine_final_minor,borrowing_fine_amount(due_at,(SELECT at FROM tick)))-(SELECT COALESCE(sum(cleared_minor),0) FROM fine_clearances f WHERE f.borrowing_id=borrowings.id),'is_final',completed_at IS NOT NULL,'as_of',(SELECT at FROM tick)) AS fine,COALESCE((SELECT jsonb_agg(to_jsonb(i) ORDER BY i.equipment_id) FROM(SELECT id,equipment_id,name,quantity,reserved_quantity,issued_quantity FROM borrowing_items WHERE borrowing_id=borrowings.id ORDER BY equipment_id LIMIT 100)i),'[]'::jsonb) AS items`+where+` ORDER BY created_at DESC,id DESC LIMIT $4 OFFSET $5) b),'[]'::jsonb)`, append(args, f.PerPage, (f.Page-1)*f.PerPage)...).Scan(&p.Total, &data)
 	if e != nil {
 		return p, accountError(e)
 	}
 	e = json.Unmarshal(data, &p.Items)
 	for n := range p.Items {
-		p.Items[n].Items = []d.Item{}
+		if p.Items[n].Items == nil {
+			p.Items[n].Items = []d.Item{}
+		}
 		p.Items[n].Events = []d.Event{}
 	}
 	return p, e

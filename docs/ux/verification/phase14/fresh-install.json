@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "fresh_source_copy": true,
+  "owner_configuration_copied": false,
+  "frontend_packages_installed_offline": 373,
+  "typecheck_production_build": "PASS",
+  "go_dependencies": "pinned vendor, empty module and fresh build cache, proxy/sumdb off",
+  "migrations": 11,
+  "reconcile_checks": 11,
+  "startup_shutdown_restart": "PASS",
+  "api_loopback_binding": true,
+  "prerequisites": "Installed Go/Node/Python/Docker and explicitly prepared public dependency cache/cached PostgreSQL image. No fresh operating-system installation claimed."
+}

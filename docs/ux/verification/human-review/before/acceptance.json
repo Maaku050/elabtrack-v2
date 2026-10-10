@@ -1,0 +1,16 @@
+{
+  "scope": "Read-only baseline before human-review changes; fictional isolated accounts only.",
+  "screens": [
+    "-staff-requests-1366-768-light.png",
+    "-staff-requests-1366-768-dark.png",
+    "direct-browse-1366-768-light.png",
+    "direct-browse-1366-768-dark.png",
+    "-borrower-account-390-844-light.png",
+    "-borrower-account-390-844-dark.png",
+    "catalog-open-390-844-light.png",
+    "catalog-open-390-844-dark.png"
+  ],
+  "errors": [],
+  "screens_original_capture_count": 24,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

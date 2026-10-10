@@ -1,0 +1,261 @@
+{
+  "date": "2026-10-11",
+  "status": "ALL PREPUBLICATION ENGINEERING GATES PASS",
+  "owner_visual_acceptance": "PASSED; explicit final publication prompt",
+  "branch": "release/elabtrack-v2-presentation-ready",
+  "initial_git": {
+    "branch": "main",
+    "head": "c2741c54ba3aca95df705ce612ade1a277e0335d",
+    "modified": 78,
+    "untracked": 954,
+    "staged": 0
+  },
+  "staging_manifest": "docs/project/RELEASE_STAGING_MANIFEST.txt",
+  "changed_and_new_paths": 442,
+  "total_candidate_tree_paths": 2327,
+  "evidence": {
+    "retained_screenshots": 42,
+    "excluded_screenshots_kept_locally": 600,
+    "manifest": "docs/ux/verification/RELEASE_EVIDENCE_MANIFEST.json"
+  },
+  "ignored_artifact_inventory": {
+    "ignored_files_at_audit": 79284,
+    "categories": {
+      "private_environment_configuration": 6,
+      "private_reference_material": 1,
+      "private_backend_workspaces_runtime_credentials_caches_and_rehearsals": 41776,
+      "excluded_capture_or_intermediate_evidence": 629,
+      "raw_owner_archives_and_reference_documents": 6,
+      "frontend_build_outputs": 80,
+      "installed_frontend_dependencies": 36780,
+      "other_ignored_runtime_or_editor_artifacts": 6
+    },
+    "curated_initial_screenshots_excluded": 600,
+    "counts_include_private_test_copies_and_new_release_rehearsal": true,
+    "no_files_deleted": true
+  },
+  "frontend": {
+    "tests": 334,
+    "files": 32,
+    "duration_seconds": 86.26,
+    "workers": 2,
+    "lint": "PASS",
+    "inherited_lint_warnings": 19,
+    "typescript_and_production_build": "PASS",
+    "initial_loaded_run": "333 passed / one async query timeout; unchanged sequential rerun334PASS"
+  },
+  "backend": {
+    "fmt": "PASS",
+    "vet": "PASS",
+    "unit_tests": "PASS",
+    "race_tests": "PASS",
+    "public_passing_packages": 28,
+    "generic_package_results_cached": true,
+    "generic_DB_checks_can_skip_without_explicit_env": true
+  },
+  "postgres_api": {
+    "fresh_target_only": true,
+    "named_passes": 121,
+    "suites": [
+      {
+        "suite": "terms",
+        "exit": 0,
+        "passing_named_tests": 13
+      },
+      {
+        "suite": "accounts",
+        "exit": 0,
+        "passing_named_tests": 11
+      },
+      {
+        "suite": "inventory",
+        "exit": 0,
+        "passing_named_tests": 9
+      },
+      {
+        "suite": "borrowing",
+        "exit": 0,
+        "passing_named_tests": 55
+      },
+      {
+        "suite": "http",
+        "exit": 0,
+        "passing_named_tests": 33
+      }
+    ]
+  },
+  "migrations": {
+    "historical_pairs": 8,
+    "historical_files_unchanged": 16,
+    "new_pairs": [
+      9,
+      10,
+      11
+    ],
+    "fresh_up_down_up": "PASS",
+    "sha256": {
+      "backend/migrations/000001_create_users.down.sql": "18bf06e83f6aac2da5f82d8e5b1023384fe47a5fdea91817c6b8cd5f576b414f",
+      "backend/migrations/000001_create_users.up.sql": "c23bc6998654c81726a9606ef96b488daa469cd0bf189f9c4d24765f3691b957",
+      "backend/migrations/000002_create_refresh_tokens.down.sql": "fc4b9fa19c9e876783ecc7ae07fd5c8dfc28e508005fd6236e2f8f00bfe6d0a3",
+      "backend/migrations/000002_create_refresh_tokens.up.sql": "02911930f10c97b26783732bb02c0f9eda0c4bc7c516441bb288e9e6a240b33a",
+      "backend/migrations/000003_refresh_session_security.down.sql": "4ef03cd126ce7e7102ffdfa9677183786a66147f3e0f236e980753e8d2a4a5a4",
+      "backend/migrations/000003_refresh_session_security.up.sql": "48fcc3b3a44a82fac9ca060dd8379442109303275c03b92d6e6d4f08015e2940",
+      "backend/migrations/000004_product_roles.down.sql": "5ea94e9e5c08585e5c4e90f5b0c5aeeb545b0cf18653b9599d3facb8e6614590",
+      "backend/migrations/000004_product_roles.up.sql": "c577558a5cfa808f54f54dadd7fc8238c5884fd22406b2e6cd5964e2cb6261ee",
+      "backend/migrations/000005_terms_acceptance.down.sql": "a57d073014961cad12ed46b42f2a7c39fe09ffe6d741c9c2eb6c0823eb801a9c",
+      "backend/migrations/000005_terms_acceptance.up.sql": "13c06ac48abb7ce7c32299955c768325bccfb28d993d1e2273135805fe42ceed",
+      "backend/migrations/000006_account_management.down.sql": "ef6d7f70e1e6995bcfda621beb8b32d281e095e1c388b28c9f7fb7a7e0a8aa5f",
+      "backend/migrations/000006_account_management.up.sql": "720ce3c5545b201c7cba9f541c11e3633a385353df14a94768f998e8a22cc018",
+      "backend/migrations/000007_inventory.down.sql": "85bcff2c4c353fa7cc68f2450bd57185c8e35daacac84a94cf938dddfb873c59",
+      "backend/migrations/000007_inventory.up.sql": "f8c8bbd700c286e3f847a20702cfa66896f9378291f9dd50aeb98639abb9120a",
+      "backend/migrations/000008_borrowing.down.sql": "40df42a0ec0f146b3a2c827ee10fe6f3646c868b8f34a5b08afe80de216aaf44",
+      "backend/migrations/000008_borrowing.up.sql": "41e5f1d511c1b9a1eae652f866197afedcb31c735270e88bedaa08f9c4865800",
+      "backend/migrations/000009_accountability.down.sql": "801da2528e2faf8c615d3a2a679815628e0ccafed42db8c9487da1fc5d429c62",
+      "backend/migrations/000009_accountability.up.sql": "34a93bbb5eb8b9863f04757a7ab2446dac4bf14caa7d9706865336006ef1454c",
+      "backend/migrations/000010_notifications.down.sql": "d1a24e0bd19c26abc08755cc9604dc56c0d997175948c2204e25606d027ae0ab",
+      "backend/migrations/000010_notifications.up.sql": "7962a0886d7ea15f48702a9965651db93ba18b89588dac5ccada9fab17fff330",
+      "backend/migrations/000011_profile_images.down.sql": "8b3caeee6519af1a38c61a052337f3348a904ff04d3c54bef4f45edb8cabf21c",
+      "backend/migrations/000011_profile_images.up.sql": "3b9c1a5b0379e64f9f5c19f6293d0c38b329a2c2ededa2efaf07523dd9ad8f98"
+    }
+  },
+  "presentation_guard_tests": 10,
+  "presentation_integrity": {
+    "counts": "PASS",
+    "stock": "PASS",
+    "ledger": "PASS",
+    "movement_sums": "PASS",
+    "chronology": "PASS",
+    "ledger_chronology": "PASS",
+    "synthetic": "PASS",
+    "replacement_overflow": "PASS",
+    "notification_uniqueness": "PASS",
+    "distinct_fictional_avatars": "PASS",
+    "bundled_asset_provenance_hashes": "PASS"
+  },
+  "startup_browser": {
+    "result": "PASS",
+    "checks": 6,
+    "viewports": [
+      320,
+      1440
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "javascript_errors": 0,
+    "external_requests": 0,
+    "api_ready_status": 200,
+    "authentication_performed": false,
+    "anonymous_refresh_statuses": [
+      401
+    ],
+    "database_mutations": false
+  },
+  "normal_and_accepted_demo_preservation": [
+    {
+      "target": "normal",
+      "tables": 21,
+      "unchanged": true
+    },
+    {
+      "target": "accepted-phase7-demo",
+      "tables": 22,
+      "unchanged": true
+    }
+  ],
+  "fresh_source_export": {
+    "result": "PASS",
+    "candidate_tree": "40d0a935c341dd625bc8b29eb5bbab5561aa41d6",
+    "npm_packages_installed_offline": 396,
+    "empty_npm_configuration": true,
+    "configuration_or_credentials_copied": false,
+    "builds_and_tests": [
+      {
+        "check": "npm-ci",
+        "exit": 0
+      },
+      {
+        "check": "frontend-build",
+        "exit": 0
+      },
+      {
+        "check": "backend-build",
+        "exit": 0
+      },
+      {
+        "check": "presentation-guards",
+        "exit": 0
+      }
+    ],
+    "all_68_PNG_and_68_SVG_hashes_verified": true,
+    "all_22_migration_files_present": true,
+    "first_attempt": "Public offline cache lacked a required tarball; merged prior prepared public cache and reran successfully. No package/lockfile change."
+  },
+  "secret_audit": {
+    "result": "PASS",
+    "staged_snapshot_paths": 2327,
+    "known_private_values_compared": 378,
+    "private_configs": 48,
+    "matches": 0
+  },
+  "credential_pattern_audit": {
+    "findings": [],
+    "largest_files": [
+      [
+        2053072,
+        "frontend/src/assets/brand/fsmo-seal-reference.png"
+      ],
+      [
+        2053072,
+        "docs/ux/approved/brand/FSMO-seal-reference.png"
+      ],
+      [
+        1639350,
+        "docs/ux/approved/overview/batch-5-staff-desktop.png"
+      ],
+      [
+        1589125,
+        "docs/ux/approved/core/B02-borrower-equipment-catalog.png"
+      ],
+      [
+        1571123,
+        "docs/ux/approved/core/B01-borrower-home.png"
+      ],
+      [
+        1493840,
+        "docs/ux/approved/core/S01-staff-dashboard-and-pending-requests.png"
+      ],
+      [
+        1116875,
+        "docs/ux/verification/phase7-owner-demo/identities-failure-1440-light.png"
+      ],
+      [
+        1039588,
+        "docs/ux/verification/immersive-login/login-authentication-error-1440-light.png"
+      ]
+    ],
+    "standalone_scanner_available": false
+  },
+  "unpublished_prior_history_audit": {
+    "unpublished_prior_commit": "c2741c5",
+    "files_scanned": 83,
+    "known_private_values": 378,
+    "matches": 0
+  },
+  "documentation_links": {
+    "checked": 1329,
+    "broken": []
+  },
+  "license_notices": "docs/THIRD_PARTY_NOTICES.md",
+  "whitespace_audit": "Two trailing spaces in copied font license found by staged check and removed without changing license text; final staged check required before commit.",
+  "main_local_preserved": "c2741c54ba3aca95df705ce612ade1a277e0335d",
+  "origin_main_before": "73f3fe49c61961db4b678975d9ff2145da192f8a",
+  "remote_release_branch_before": "ABSENT",
+  "no_normal_migration": true,
+  "no_existing_database_reset_reseed_or_mutation": true,
+  "disposable_QA_database_tests_write_only_new_target": true,
+  "deployment": false,
+  "V1_import": false,
+  "publication_result": "Commit/push/remote verification reported after this commit; this file records prepublication gates, not a premature push-success claim."
+}

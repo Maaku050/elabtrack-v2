@@ -5,6 +5,7 @@ import { SidebarProvider, Sidebar } from '@/components/ui/sidebar'
 import { Sheet, SheetContent, SheetTitle, SheetDescription, SheetHeader } from '@/components/ui/sheet'
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { useUIStore } from '@/stores/ui-store'
+import { NotificationBell } from '@/features/notifications/components/notification-bell'
 import { AppBrand, AppButton, ThemeControl } from './visual'
 
 export interface NavigationDestination { label: string; icon: LucideIcon; href?: string; onSelect?: () => void }
@@ -19,9 +20,9 @@ function Destination({ item, active, onNavigate }: { item: NavigationDestination
     : <button type="button" title={item.label} aria-label={item.label} onClick={() => { onNavigate?.(); item.onSelect?.() }}>{content}</button>
 }
 
-export function BorrowerTopBar({ action, preview = false }: { action?: ReactNode; preview?: boolean }) {
+export function BorrowerTopBar({ action, navigationAction, preview = false }: { action?: ReactNode; navigationAction?: ReactNode; preview?: boolean }) {
   return <header className="borrower-top-bar"><div className="borrower-top-bar-inner"><AppBrand /><div className="top-bar-actions">
-    {preview && <span className="preview-tag">Preview</span>}{action}
+    {preview && <span className="preview-tag">Preview</span>}{action}{!preview && <><ThemeControl />{navigationAction??<NotificationBell />}</>}
   </div></div></header>
 }
 
@@ -29,9 +30,9 @@ export function BorrowerBottomNavigation({ destinations, active }: { destination
   return <nav className="borrower-bottom-nav" aria-label="Borrower navigation"><div>{destinations.map(item => <Destination key={item.label} item={item} active={active === item.label} />)}</div></nav>
 }
 
-export function BorrowerShell({ children, destinations, active, action, preview = false }: { children: ReactNode; destinations: readonly NavigationDestination[]; active: string; action?: ReactNode; preview?: boolean }) {
+export function BorrowerShell({ children, destinations, active, action, navigationAction, preview = false }: { children: ReactNode; destinations: readonly NavigationDestination[]; active: string; action?: ReactNode; navigationAction?: ReactNode; preview?: boolean }) {
   return <div className="borrower-shell"><a className="skip-link" href="#borrower-content">Skip to content</a>
-    <BorrowerTopBar action={action} preview={preview} /><main id="borrower-content" tabIndex={-1} className="borrower-content">{children}</main>
+    <BorrowerTopBar action={action} navigationAction={navigationAction} preview={preview} /><main id="borrower-content" tabIndex={-1} className="borrower-content">{children}</main>
     <BorrowerBottomNavigation destinations={destinations} active={active} />
   </div>
 }

@@ -43,6 +43,7 @@ func TestRealInventory(t *testing.T) {
 		var count int
 		require(t, owner.Pool.QueryRow(ctx, `SELECT count(*) FROM equipment`).Scan(&count) == nil && count == 0, "empty inventory before history")
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase8 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil && m.Up(ctx) == nil, "empty007 rollback/reapply")
 	})
@@ -177,6 +178,10 @@ func TestRealInventory(t *testing.T) {
 		require(t, e != nil, "unsupported image rejects")
 	})
 	t.Run("archive_future_boundary_and_history_guards", func(t *testing.T) {
+		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase12 profile down before historical probe")
+		require(t, m.Down(ctx) == nil, "empty Phase9 notifications down before historical probe")
+		require(t, m.Down(ctx) == nil, "empty Phase8 down before historical uninstalled adapter probe")
 		_, e := owner.Pool.Exec(ctx, `CREATE TABLE replacement_obligations(batch1_probe bool)`)
 		require(t, e == nil, "test-only future table probe")
 		_, e = s.Status(ctx, staff.ID, v.ID, uuid.NewString(), d.StatusInput{Status: "ARCHIVED", ExpectedVersion: v.Version, Confirm: true})
@@ -201,7 +206,6 @@ func TestRealInventory(t *testing.T) {
 		require(t, e != nil, "DB negative constraint")
 		_, e = owner.Pool.Exec(ctx, `UPDATE equipment SET total_tracked=99 WHERE id=$1`, v.ID)
 		require(t, e != nil, "DB conservation constraint")
-		m := database.NewMigrator(owner.Pool, "../../migrations")
 		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before inventory history guard")
 		require(t, m.Down(ctx) != nil, "history rollback refused")
 		require(t, m.Up(ctx) == nil, "restore Phase7 schema")

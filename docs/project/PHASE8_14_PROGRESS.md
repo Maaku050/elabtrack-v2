@@ -1,41 +1,23 @@
 # Phases 8–14 implementation progress
 
-2026-10-10. **PHASE7 OWNER ACCEPTED (DEC-081); PHASES8–14 REMAIN PAUSED.**
+**Current owner acceptance and publication authority, 2026-10-11 — DEC-085:** Final Staff/Admin desktop and Student/Faculty mobile visual review passed; the owner reported no remaining UI issues and authorized auditing, committing and pushing the completed Phases 8–14 application and shared UI to `release/elabtrack-v2-presentation-ready`. Main and production deployment remain untouched. Normal schema 000008 and existing records are preserved. Official FSMO terms/current acceptance, production Student domains, verified activation/Brevo and operational deployment readiness remain separate gates. Earlier pending-review/no-commit statements below are historical task snapshots. [Release audit and publication handoff](RELEASE_PUBLICATION_REPORT.md).
 
-An earlier owner message accepted Phase7 and authorized Phases8–14. That acceptance and advance authority were subsequently withdrawn by the correction below. Commit `73f3fe4` remains the Phase7 engineering baseline. DEC-081 now authorizes a safe local Phase7/demo/UX checkpoint only; no push, deployment or further implementation is authorized.
+2026-10-10. **Phase7 owner accepted (DEC-081); Phases8–14 currently authorized (DEC-082). Phases8–14 engineering gates PASS. ELABTRACK V2 LOCAL PRESENTATION BUILD ENGINEERING COMPLETE; final owner acceptance remains pending. Work stops after14.**
 
-## Historical scope correction — later acceptance recorded below
+Current baselinec2741c5. [Master plan](REMAINING_SYSTEM_IMPLEMENTATION_PLAN.md) records sequential exit gates. No commit, push, deployment, live mail, V1 import or normal database migration/reset. Production official terms/current consent and verified activation remain enforced external gates. Production reminder lead/repeat policy remains OPEN-025; due-soon is explicitly configured/defaultoff, demo timing is not institutional approval.
 
-The owner's subsequent Phase7 demo-enablement request explicitly revokes the earlier acceptance: both normal Borrowers are pending activation and official terms are absent, so full owner workflow review is not possible there. Phases8–14 are PAUSED, not completed or currently authorized to advance. Partial uncommitted Phase8 code/migration/tests are safely shelved at ignored backend/tmp/system-implementation/.paused-phase8 with a checksum manifest and tracked diff. All11 affected files are preserved; active source is restored byte-for-byte to73f3fe4 so normal restart cannot accidentally require000009. Do not deploy or use shelved files for this demo. Committed73f3fe4 remains the Phase7 engineering baseline for the isolated demo only.
+|Phase|Current evidence/status|
+|---|---|
+|8|[Engineering PASS](PHASE8_REPORT.md): mixed/partial return, exact replacements, completion/fine freeze, full Admin resolution, PostgreSQL/races/HTTP,284 frontend tests serial/parallel,5 Chromium checks/12 screenshots, actual full restore and original-column preservation|
+|9|[Engineering PASS](PHASE9_REPORT.md): persistent scoped notifications, rollback/concurrent dedup, actual process kill/restart and read persistence,288 frontend tests,5 Chromium checks/4 screenshots|
+|10|[Engineering PASS](PHASE10_REPORT.md): scoped actual dashboards,12 bounded reports, genuine safe CSV including5001-row refusal, PostgreSQL/HTTP/source reconciliation,294 frontend tests,6 Chromium checks/8 screenshots|
+|11|[Engineering PASS](PHASE11_REPORT.md): bindingDEC-080 protected-image catalog/cart, adjacent44px mobile quantity/Add, desktop browse/cart, mobile review, private draft fences,302 frontend tests,7 Chromium checks/21 screenshots; existing Phase7 API only|
+|12|[Engineering PASS](PHASE12_REPORT.md): separate40-equipment/28-account/35-history presentation,68 original local illustrations, optional own profile images, real safe reset/reseed,6 Chromium checks/17 screenshots and normal/old-demo preservation|
+|13|[Engineering PASS](PHASE13_REPORT.md):311 serial/parallel tests, full fresh PostgreSQL/HTTP/security/rollback/race gates, deterministic deadlock correction, actual29-table restore and9 Chromium checks/16 screenshots|
+|14|[Engineering PASS](PHASE14_REPORT.md):373-package fresh offline npm install, pinned vendored Go/new caches,11 migrations/reconciliation checks and actual restart/loopback;9 blocked-external-network Chromium checks/19 screenshots; canonical fresh dataset and preserved normal/old-demo; owner acceptance pending|
 
-Already launched isolated migration processes applied000001–000008 and then failed000009; the runner reported transaction rollback on both test54832 and representative restore54833 targets. No normal migration was launched. Phase8 remains unverified, including its failed migration gate; resumption must diagnose it before proceeding. All disposable volumes are retained. Current task: only Phase7 owner demo, using a private snapshot of73f3fe4 and migrations000001–000008.
+Migration000009/000010/000011 exist only on isolated targets. Historical000001–000008 are unchanged. Normal21-table snapshots remain identical. Accepted old5-account/8-equipment owner demo and its7 loan scenarios are retained; no reset or seed targets it. Existing containers/volumes and failed-migration targets are retained.
 
-## Current acceptance boundary
+Historical pause: earlier73f3fe4 acceptance/advance authority was withdrawn to enable owner Phase7 review. Eleven partial Phase8 files were shelved with checksums at ignored backend/tmp/system-implementation/.paused-phase8. DEC-081 subsequently accepted/checkpointed Phase7/demo/UX; DEC-082 is the latest renewed advance authority. All11 archived originals remain intact. Original000009 PostgreSQL42601 was reproduced, corrected and rollback/up/down/up/full-restore gates passed before reusing its source. Historical pause/failure remains evidence, not current execution status. [Preflight](PHASE8_MIGRATION_PREFLIGHT.md), [owner checkpoint](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md).
 
-The owner formally accepted Phase7 after manual core-workflow review and automated safeguards. The Student/Faculty mobile interface is accepted functionally; DEC-080 governs its future presentation. Only the safe local checkpoint is authorized in this task. Do not resume Phases8–14. [Checkpoint evidence](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md) records fresh checks and exclusions; previous failed Phase8 verification remains unresolved.
-
-## Safety boundary
-
-Normal development database is not a new-migration or seed target. New migrations, full restores, scenarios and all presentation fixtures use positively identified isolated databases. Never rewrite000001–000008, grant normal runtime privileges, reset normal volumes, publish unofficial normal terms, send live mail or import V1 data. Official terms/consent, production Student domains and live activation ownership/delivery remain external gates. V1 import is cancelled by the owner; fresh FSMO installation replaces that roadmap scope.
-
-## Implementation sequence and gates
-
-| Phase | Scope | Current status |
-|---|---|---|
-|8|Immutable mixed/partial returns, replacement acceptance, completion/fine freeze, Admin full clear; stock, rollback, idempotency, authorization and browser gates|PAUSED; partial work privately preserved, isolated migration gate failed and rolled back|
-|9|Persistent event notifications, deduplication, recipient isolation, durable reminders, restart/concurrency, UI|Not started; requires Phase8 gate|
-|10|Authorized persisted dashboards/reports, bounded filters/pagination, safe CSV exports|Not started; requires Phase9 gate|
-|11|DEC-080 [binding equipment selection](../ux/PHASE11_EQUIPMENT_SELECTION_UX.md): actual image/facts/availability, combined mobile quantity+Add row, mobile review and desktop browse/cart; Phase7 contracts, no prices/payments|Not started / PAUSED; both V1 references received/inspected; requires authorized advancement, Phase10 gate and future rendered/runtime comparison|
-|12|Guarded isolated demo,40 equipment/20 Student/5 Faculty/2 Staff/1 Admin, offline images/avatars, real synthetic lifecycle|Not started; requires Phase11 gate|
-|13|Full serial/parallel frontend, Go/race, PostgreSQL/concurrency/migration/preservation, Chromium/offline QA|Not started|
-|14|Tested WSL local startup/shutdown/setup/reset/recovery, presentation walkthrough and full evidence report|Not started|
-
-## Design and verification plan
-
-Reuse accounts→borrowing→sorted equipment locks, existing transaction port, transport/security/session infrastructure, stock bounds and immutable movement/audit/receipt records. Returns use one validated map: A+=good,C-=good+damage+loss,D+=damage,T-=loss. Replacement acceptance adds A/T and preserves held originals. Fine basis is PHP1000 minor units per started86400 seconds per loan; full-clear checkpoints preserve assessed/cleared balances and never close custody. No return photographs or attachments.
-
-Each migration receives fresh isolated up/down safety, constraints/indexes/checksum inspection, representative full-backup restore/rehearsal and preservation checks. Each phase records actual test results before proceeding. Existing evidence remains historical; nothing is passed by assertion. Final handoff requires real browser lifecycle, reports, notifications, demo login/images/avatars, offline operation and normal-data preservation.
-
-## Evidence
-
-Initial working tree clean on main at73f3fe4; git diff --check passed. Private environment/backup/session paths are untracked. No migration or seed from this task has touched normal data. The isolated candidate000009 failed and rolled back, as recorded above. The independently verified Phase7 owner demo uses only000001–000008; see [its report](PHASE7_OWNER_DEMO_IMPLEMENTATION_REPORT.md). No Phase8–14 completion is claimed.
+Complete per-loan history totals/event-count and bounded public pages passed real regressions; measured notification history-query and unusually long mutation aggregate capacity are disclosed limits, not unimplemented authority. Normal21-table and accepted Phase7 snapshots remain unchanged at final closeout. Canonical fresh40-equipment/28-account/35-history presentation runs on15177 with Student20 unaccepted for first use. [System report](SYSTEM_IMPLEMENTATION_REPORT.md), [setup](PRESENTATION_SETUP.md), [walkthrough](PRESENTATION_WALKTHROUGH.md) and [production gaps](PRODUCTION_READINESS_GAPS.md) are the final handoff. No further phase, commit, push, deployment or normal migration is performed; owner8–14 acceptance remains pending.

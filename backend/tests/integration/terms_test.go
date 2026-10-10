@@ -131,6 +131,9 @@ func TestRealTerms(t *testing.T) {
 		}
 		before := snapshot()
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase12 profile rollback before historical pairs")
+		require(t, m.Down(ctx) == nil, "empty Phase9 notifications rollback before historical pairs")
+		require(t, m.Down(ctx) == nil, "empty Phase8 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil, "empty inventory rollback before account and terms pairs")
 		require(t, m.Down(ctx) == nil, "empty account migration rollback before terms")
@@ -363,6 +366,9 @@ func TestRealTerms(t *testing.T) {
 	})
 	t.Run("history_safe_rollback_and_policy_transaction_boundary", func(t *testing.T) {
 		m := database.NewMigrator(owner.Pool, "../../migrations")
+		require(t, m.Down(ctx) == nil, "empty Phase12 profile rollback before historical pairs")
+		require(t, m.Down(ctx) == nil, "empty Phase9 notifications rollback before historical pairs")
+		require(t, m.Down(ctx) == nil, "empty Phase8 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil, "empty Phase7 rollback before historical pairs")
 		require(t, m.Down(ctx) == nil, "empty inventory rollback before account and terms pairs")
 		require(t, m.Down(ctx) == nil, "empty account migration rollback before terms history gate")

@@ -94,6 +94,45 @@ func TestPhase7HTTP(t *testing.T) {
 	origin := infra.Config.Security.FrontendURL
 	in := d.Input{Items: []d.Line{{EquipmentID: eq.ID, Quantity: 2}}, Confirm: true}
 	key := uuid.NewString()
+	t.Run("current_issuance_eligibility_and_server_filtered_directory", func(t *testing.T) {
+		path := "/borrowings/eligibility/" + users["borrower"].ID.String()
+		for _, role := range []string{"staff", "admin", "borrower", ""} {
+			want := 200
+			if role == "borrower" {
+				want = 403
+			}
+			if role == "" {
+				want = 401
+			}
+			status, _ := request("GET", path, role, origin, "", nil)
+			if status != want {
+				t.Fatal("eligibility authority", role, status)
+			}
+		}
+		query := "/borrowers?eligible_for_issuance=true&search=" + users["borrower"].Email + "&per_page=1"
+		status, out := request("GET", query, "staff", origin, "", nil)
+		if status != 200 || out["data"].(map[string]any)["total"].(float64) != 1 {
+			t.Fatal("eligible exact server count", status)
+		}
+		if _, e := infra.DB.Pool.Exec(context.Background(), `UPDATE users SET activation_required=true WHERE id=$1`, users["borrower"].ID); e != nil {
+			t.Fatal(e)
+		}
+		status, _ = request("GET", path, "staff", origin, "", nil)
+		if status != 403 {
+			t.Fatal("activation eligibility", status)
+		}
+		status, out = request("GET", query, "staff", origin, "", nil)
+		if status != 200 || out["data"].(map[string]any)["total"].(float64) != 0 {
+			t.Fatal("activation filtered before pagination", status)
+		}
+		if _, e := infra.DB.Pool.Exec(context.Background(), `UPDATE users SET activation_required=false WHERE id=$1`, users["borrower"].ID); e != nil {
+			t.Fatal(e)
+		}
+		status, _ = request("GET", "/borrowers?eligible_for_issuance=invalid", "staff", origin, "", nil)
+		if status != 400 {
+			t.Fatal("strict eligibility filter", status)
+		}
+	})
 	t.Run("submit_replay_strict_origin_and_roles", func(t *testing.T) {
 		for _, role := range []string{"staff", "admin", ""} {
 			status, _ := request("POST", "/borrowings", role, origin, uuid.NewString(), in)

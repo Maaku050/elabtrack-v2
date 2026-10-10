@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Stage 1 displays only eligible, current-terms activated Student/Faculty records",
+    "Stage 2 uses image browsing alongside editable cart; Back/Next retains selections",
+    "Mandatory due/handover and fresh final review make exactly one atomic physical issuance",
+    "Actual verified in-person return restores custody exactly, completes the loan and retains immutable history",
+    "Faculty sees the real completed issuance and return history with no return authority",
+    "Profile-menu-only operational Sign Out revokes normal access"
+  ],
+  "screens": [
+    "direct-frozen-review-1366-light.png",
+    "direct-frozen-review-1366-dark.png",
+    "staff-completed-return-1366-light.png",
+    "staff-completed-return-1366-dark.png"
+  ],
+  "errors": [],
+  "scope": "Actual synthetic presentation commands only; no database reset. Physical stock returned to the pre-issuance values; history retained.",
+  "screens_original_capture_count": 13,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

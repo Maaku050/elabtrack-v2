@@ -8,6 +8,10 @@
 @import "./refinement.css";
 @import "./phase56-refinement.css";
 @import "./reconstruction.css";
+@import "./phase11.css";
+@import "./profile.css";
+@import "./complete-ui.css";
+@import "./human-review.css";
 
 @custom-variant dark (&:is(.dark *));
 

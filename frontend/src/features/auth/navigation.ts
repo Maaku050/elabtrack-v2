@@ -1,7 +1,7 @@
 import type { UserRole } from '@/types/common'
 
 export const borrowerPaths = ['/borrower/home', '/borrower/equipment', '/borrower/borrowings', '/borrower/account', '/borrower/notifications'] as const
-export const staffPaths = ['/staff/dashboard', '/staff/requests', '/staff/inventory', '/staff/borrowers', '/staff/account', '/staff/notifications'] as const
+export const staffPaths = ['/staff/dashboard', '/staff/reports', '/staff/requests', '/staff/inventory', '/staff/borrowers', '/staff/account', '/staff/notifications'] as const
 export const adminPaths = ['/admin/reports', '/admin/administration'] as const
 
 export function canVisit(role: UserRole, pathname: string): boolean {

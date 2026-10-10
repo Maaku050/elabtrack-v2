@@ -1,0 +1,322 @@
+[
+  {
+    "name": "Stainless Steel Ladle",
+    "category": "Utensils",
+    "description": "Stainless Steel Ladle for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/stainless-steel-ladle.png",
+    "status": "ACTIVE",
+    "opening": 8
+  },
+  {
+    "name": "Wooden Spoon",
+    "category": "Utensils",
+    "description": "Wooden Spoon for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/wooden-spoon.png",
+    "status": "ACTIVE",
+    "opening": 9
+  },
+  {
+    "name": "Slotted Serving Spoon",
+    "category": "Utensils",
+    "description": "Slotted Serving Spoon for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/slotted-serving-spoon.png",
+    "status": "ACTIVE",
+    "opening": 10
+  },
+  {
+    "name": "Silicone Spatula",
+    "category": "Utensils",
+    "description": "Silicone Spatula for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/silicone-spatula.png",
+    "status": "ACTIVE",
+    "opening": 11
+  },
+  {
+    "name": "Stainless Turner",
+    "category": "Utensils",
+    "description": "Stainless Turner for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/stainless-turner.png",
+    "status": "ACTIVE",
+    "opening": 12
+  },
+  {
+    "name": "Balloon Whisk",
+    "category": "Utensils",
+    "description": "Balloon Whisk for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/balloon-whisk.png",
+    "status": "ACTIVE",
+    "opening": 13
+  },
+  {
+    "name": "Kitchen Tongs",
+    "category": "Utensils",
+    "description": "Kitchen Tongs for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/kitchen-tongs.png",
+    "status": "ACTIVE",
+    "opening": 14
+  },
+  {
+    "name": "Soup Skimmer",
+    "category": "Utensils",
+    "description": "Soup Skimmer for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/soup-skimmer.png",
+    "status": "ACTIVE",
+    "opening": 15
+  },
+  {
+    "name": "Small Saucepan",
+    "category": "Cookware",
+    "description": "Small Saucepan for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/small-saucepan.png",
+    "status": "ACTIVE",
+    "opening": 16
+  },
+  {
+    "name": "Medium Cooking Pot",
+    "category": "Cookware",
+    "description": "Medium Cooking Pot for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/medium-cooking-pot.png",
+    "status": "ACTIVE",
+    "opening": 17
+  },
+  {
+    "name": "Large Stockpot",
+    "category": "Cookware",
+    "description": "Large Stockpot for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/large-stockpot.png",
+    "status": "ACTIVE",
+    "opening": 18
+  },
+  {
+    "name": "Nonstick Frying Pan",
+    "category": "Cookware",
+    "description": "Nonstick Frying Pan for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/nonstick-frying-pan.png",
+    "status": "ACTIVE",
+    "opening": 19
+  },
+  {
+    "name": "Saute Pan",
+    "category": "Cookware",
+    "description": "Saute Pan for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/saute-pan.png",
+    "status": "ACTIVE",
+    "opening": 20
+  },
+  {
+    "name": "Grill Pan",
+    "category": "Cookware",
+    "description": "Grill Pan for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/grill-pan.png",
+    "status": "ACTIVE",
+    "opening": 21
+  },
+  {
+    "name": "Carbon Steel Wok",
+    "category": "Cookware",
+    "description": "Carbon Steel Wok for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/carbon-steel-wok.png",
+    "status": "ACTIVE",
+    "opening": 22
+  },
+  {
+    "name": "Steamer Basket",
+    "category": "Cookware",
+    "description": "Steamer Basket for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/steamer-basket.png",
+    "status": "ACTIVE",
+    "opening": 23
+  },
+  {
+    "name": "Measuring Cup Set",
+    "category": "Measuring",
+    "description": "Measuring Cup Set for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/measuring-cup-set.png",
+    "status": "ACTIVE",
+    "opening": 24
+  },
+  {
+    "name": "Measuring Spoon Set",
+    "category": "Measuring",
+    "description": "Measuring Spoon Set for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/measuring-spoon-set.png",
+    "status": "ACTIVE",
+    "opening": 8
+  },
+  {
+    "name": "Digital Kitchen Scale",
+    "category": "Measuring",
+    "description": "Digital Kitchen Scale for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/digital-kitchen-scale.png",
+    "status": "ACTIVE",
+    "opening": 9
+  },
+  {
+    "name": "Food Thermometer",
+    "category": "Measuring",
+    "description": "Food Thermometer for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/food-thermometer.png",
+    "status": "ACTIVE",
+    "opening": 10
+  },
+  {
+    "name": "Glass Measuring Jug",
+    "category": "Measuring",
+    "description": "Glass Measuring Jug for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/glass-measuring-jug.png",
+    "status": "ACTIVE",
+    "opening": 11
+  },
+  {
+    "name": "Portion Scoop",
+    "category": "Measuring",
+    "description": "Portion Scoop for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/portion-scoop.png",
+    "status": "ACTIVE",
+    "opening": 12
+  },
+  {
+    "name": "Stainless Mixing Bowl",
+    "category": "Preparation",
+    "description": "Stainless Mixing Bowl for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/stainless-mixing-bowl.png",
+    "status": "ACTIVE",
+    "opening": 13
+  },
+  {
+    "name": "Mesh Strainer",
+    "category": "Preparation",
+    "description": "Mesh Strainer for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/mesh-strainer.png",
+    "status": "ACTIVE",
+    "opening": 14
+  },
+  {
+    "name": "Kitchen Colander",
+    "category": "Preparation",
+    "description": "Kitchen Colander for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/kitchen-colander.png",
+    "status": "ACTIVE",
+    "opening": 15
+  },
+  {
+    "name": "Food Prep Cutting Board",
+    "category": "Preparation",
+    "description": "Food Prep Cutting Board for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/food-prep-cutting-board.png",
+    "status": "ACTIVE",
+    "opening": 16
+  },
+  {
+    "name": "Wooden Cutting Board",
+    "category": "Preparation",
+    "description": "Wooden Cutting Board for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/wooden-cutting-board.png",
+    "status": "ACTIVE",
+    "opening": 17
+  },
+  {
+    "name": "Chef Knife",
+    "category": "Preparation",
+    "description": "Chef Knife for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/chef-knife.png",
+    "status": "ACTIVE",
+    "opening": 18
+  },
+  {
+    "name": "Bread Knife",
+    "category": "Preparation",
+    "description": "Bread Knife for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/bread-knife.png",
+    "status": "ACTIVE",
+    "opening": 19
+  },
+  {
+    "name": "Stainless Food Pan",
+    "category": "Serving",
+    "description": "Stainless Food Pan for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/stainless-food-pan.png",
+    "status": "ACTIVE",
+    "opening": 20
+  },
+  {
+    "name": "Chafing Dish",
+    "category": "Serving",
+    "description": "Chafing Dish for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/chafing-dish.png",
+    "status": "ACTIVE",
+    "opening": 21
+  },
+  {
+    "name": "Serving Tray",
+    "category": "Serving",
+    "description": "Serving Tray for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/serving-tray.png",
+    "status": "ACTIVE",
+    "opening": 22
+  },
+  {
+    "name": "Beverage Pitcher",
+    "category": "Serving",
+    "description": "Beverage Pitcher for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/beverage-pitcher.png",
+    "status": "ACTIVE",
+    "opening": 23
+  },
+  {
+    "name": "Large Serving Scoop",
+    "category": "Serving",
+    "description": "Large Serving Scoop for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/large-serving-scoop.png",
+    "status": "ACTIVE",
+    "opening": 24
+  },
+  {
+    "name": "Muffin Tray",
+    "category": "Baking",
+    "description": "Muffin Tray for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/muffin-tray.png",
+    "status": "ACTIVE",
+    "opening": 8
+  },
+  {
+    "name": "Baking Sheet",
+    "category": "Baking",
+    "description": "Baking Sheet for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/baking-sheet.png",
+    "status": "ACTIVE",
+    "opening": 9
+  },
+  {
+    "name": "Rolling Pin",
+    "category": "Baking",
+    "description": "Rolling Pin for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/rolling-pin.png",
+    "status": "ACTIVE",
+    "opening": 10
+  },
+  {
+    "name": "Pastry Brush",
+    "category": "Baking",
+    "description": "Pastry Brush for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/pastry-brush.png",
+    "status": "ACTIVE",
+    "opening": 0
+  },
+  {
+    "name": "Countertop Blender",
+    "category": "Appliances",
+    "description": "Countertop Blender for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/countertop-blender.png",
+    "status": "INACTIVE",
+    "opening": 12
+  },
+  {
+    "name": "Stand Mixer",
+    "category": "Appliances",
+    "description": "Stand Mixer for food-service laboratory preparation and supervised FSMO use.",
+    "asset": "equipment/stand-mixer.png",
+    "status": "INACTIVE",
+    "opening": 13
+  }
+]

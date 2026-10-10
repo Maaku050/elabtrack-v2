@@ -1,0 +1,39 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Final desktop pages use actual theme controls and preserve the approved shell",
+    "All desktop sizes, short heights and collapsed/expanded sidebar preserve table access",
+    "Short-height account menu stays inside the viewport and Escape restores keyboard focus",
+    "Due-today KPI uses the authoritative active filter and switching report type clears that incompatible scope",
+    "Notification bell hover keeps a transparent button and keyboard navigation preserves a visible focus indicator",
+    "Final Student composition, real themes, B01 links and B02 cart 320 light",
+    "Final Student composition, real themes, B01 links and B02 cart 320 dark",
+    "Final Student composition, real themes, B01 links and B02 cart 360 light",
+    "Final Student composition, real themes, B01 links and B02 cart 360 dark",
+    "Final Student composition, real themes, B01 links and B02 cart 375 light",
+    "Final Student composition, real themes, B01 links and B02 cart 375 dark",
+    "Final Student composition, real themes, B01 links and B02 cart 390 light",
+    "Final Student composition, real themes, B01 links and B02 cart 390 dark",
+    "Final Student composition, real themes, B01 links and B02 cart 414 light",
+    "Final Student composition, real themes, B01 links and B02 cart 414 dark",
+    "Final Student composition, real themes, B01 links and B02 cart 440 light",
+    "Final Student composition, real themes, B01 links and B02 cart 440 dark",
+    "Final Student composition, real themes, B01 links and B02 cart 768 light",
+    "Final Student composition, real themes, B01 links and B02 cart 768 dark",
+    "Empty catalog is a real server-filtered result with usable recovery controls",
+    "Contextual header cart and live count open editable review, then a distinct frozen confirmation without submitting",
+    "Protected equipment details retain readable stock, imagery and actual request navigation",
+    "Account layout tolerates increased root text size without horizontal overflow",
+    "Final Faculty pages share the complete mobile system and actual theme behavior"
+  ],
+  "screens": [
+    "admin-admin-reports-1366-768-light.png",
+    "admin-admin-reports-1366-768-dark.png",
+    "admin-staff-notifications-1366-768-light.png",
+    "admin-staff-notifications-1366-768-dark.png"
+  ],
+  "errors": [],
+  "scope": "Final shared source, actual theme controls, responsive checks and real empty state; cart draft only, no borrowing commands; owner visual acceptance pending.",
+  "screens_original_capture_count": 137,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

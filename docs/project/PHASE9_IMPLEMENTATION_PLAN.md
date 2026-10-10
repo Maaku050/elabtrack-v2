@@ -1,0 +1,13 @@
+# Phase 9 — persistent in-app notifications
+
+DEC-082 authority,2026-10-10, after verified Phase8 gate. No normal database changes or mail. Additive000010 on isolated targets only; preserve history and old demo.
+
+Use existing immutable borrowing events, dispositions and replacement obligations as durable source records. A bounded application worker consumes them after commit, transactionally records a unique dispatch key and scoped recipient rows; source records survive failure/restart without an in-memory queue. No financial posting, custody mutation or schema rewrite. Concurrent workers serialize only notification reconciliation through a transaction advisory lock; unique source/recipient keys independently prevent duplication.
+
+Borrowers receive own workflow changes/reminders/accountability. Currently active activated Staff/Admin receive legitimate operational action alerts (submitted requests, damage/loss/replacement needs, overdue); a named current operational actor may receive their action result. Recheck role/status on every list/count/read-state mutation. Former operational-role notifications remain hidden after demotion; other users' notifications cannot be read or marked. Safe links target the existing borrowing detail with its own authorization.
+
+Event coverage: submit/deny/cancel/expire/check-out/direct/complete, return, separate damage/loss and replacement-required sources, replacement-accepted, fine-resolved; configured due-soon and one overdue/fine-assessed source per loan. In-app reminders do not create daily charges. Due-soon lead time is explicit configuration; disabled by default until institutionally configured. One reminder per kind/loan, no repeats or invented production cadence. A24h demo lead is demonstration-only; OPEN-025 remains the live scheduling dependency. Catch-up processes current unresolved liabilities rather than pretending completed loans remain overdue.
+
+API: own scoped paginated center with exact unread/counts and read/unread filter; count endpoint; origin-protected PATCH own read state. TanStack Query owns server state; centralized transport, current session fences,30s foreground refresh, existing header controls and responsive shell. No credentials/email API key/startup mail dependency.
+
+Gate: actual recipient/event correctness, object/role authorization, exact pagination/count/read persistence, transaction rollback/dedup, concurrent workers and real process restart, PostgreSQL migration/grants, frontend tests/lint/build, real Chromium center/count/mark/link, normal preservation. Document actual evidence before Phase10.

@@ -1,0 +1,16 @@
+{
+  "environment": "isolated PostgreSQL QA after full suites",
+  "notification_pending": {
+    "execution_ms": 6.73,
+    "planning_ms": 31.642,
+    "returned_events": 100.0,
+    "bounded_limit": 100
+  },
+  "limitation": "Historical source union is scanned; this is a measured local fixture, not production load qualification.",
+  "counts": {
+    "loans": 62,
+    "events": 265,
+    "notifications": 1648,
+    "equipment": 90
+  }
+}

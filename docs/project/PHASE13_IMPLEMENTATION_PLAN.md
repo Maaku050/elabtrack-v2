@@ -1,0 +1,9 @@
+# Phase 13 — complete system QA and security
+
+Begin after Phase12 reset/preservation gates PASS. Final owner acceptance remains pending. No normal migrations, commits, deployment or live mail.
+
+Recreate only the guarded disposable54832 test target with a new volume while retaining the previous container/data; apply all1–11 migrations and rehearse empty down/up before any fixtures. Compare accepted historical checksums. Re-run real auth/activation/current-terms/account/Excel/inventory/filter/borrowing/returns/replacement/fine/notifications/reports/profile boundaries sequentially where singleton policy publication is shared, with race detection, rollback and contention. Verify HTTP dispatch/origin/roles/safe errors and real process restart. Rehearse full presentation backup/restore into another labeled disposable target; preserve both existing normal and accepted owner demo snapshots.
+
+Review unbounded expanded per-loan history and report/notification source costs; keep all financial/custody authority derived from complete persisted history. Correct reproduced defects, expose bounded history browsing without losing mutation version checks, and document measured remaining scale limitations. Keep approved frontend primitives and business policies unchanged.
+
+Run TypeScript/build, lint, serial and parallel frontend tests, Go fmt/vet/unit/race and git diff checks. Review inherited19 warning origins and lazy-login timing sensitivity; do not suppress or weaken checks. Real Chromium must traverse account roles, activation/terms errors, catalog/cart/physical checkout/return/replacement/Admin resolution, notifications/read persistence, dashboards/filters/CSV, stock review and profile images, desktop/mobile/light/dark/focus/keyboard/overflow. Audit tracked/untracked candidate secrets/artifacts with bounded redacted results; private fixture/tool logs remain ignored. Distinguish actual checks from unrun real-device/deployment scenarios.

@@ -1,0 +1,47 @@
+{
+  "result": "PASS",
+  "candidate_files": 420,
+  "secret_pattern_findings": [],
+  "historical_migration_files_unchanged": 16,
+  "private_artifact_exclusions_verified": [
+    ".env",
+    "backend/.env",
+    "backend/tmp/presentation-demo/credentials.json",
+    "backend/tmp/presentation-demo/config.json",
+    "backend/tmp/pre-phase7-backups/elabtrack_v2-pre-phase7-20261009T150053Z-000007.dump",
+    ".project-reference/",
+    "elabtrack_phase11_v1_references.zip"
+  ],
+  "note": "Pattern scan plus source/screenshot/provenance review, not a claim of a third-party security scan. Exact final status follows documentation closeout.",
+  "phase_status": {
+    "8": "ENGINEERING PASS",
+    "9": "ENGINEERING PASS",
+    "10": "ENGINEERING PASS",
+    "11": "ENGINEERING PASS",
+    "12": "ENGINEERING PASS",
+    "13": "ENGINEERING PASS",
+    "14": "ENGINEERING PASS"
+  },
+  "owner_acceptance": "PENDING",
+  "normal_database": {
+    "migrations": 8,
+    "complete_table_snapshots_equal": 21,
+    "accounts": 3,
+    "borrowings": 0
+  },
+  "accepted_phase7_demo_snapshot_equal": true,
+  "no_commit": true,
+  "no_push": true,
+  "no_deploy": true,
+  "index_changes": 0,
+  "branch": "main",
+  "head": "c2741c54ba3aca95df705ce612ade1a277e0335d",
+  "source_snapshot_note": "Exact paths include public source, tests, domain/project/UX documents and fictional evidence/assets. Private configs, backups, credentials, runtime output and reference archive remain ignored.",
+  "diff_check": "PASS",
+  "staged_diff_check": "PASS",
+  "modified_tracked": 60,
+  "untracked_public": 360,
+  "personal_data_review": "Two illustrative28366 matches: CSV harmless-cell regression and owner-approved example Student ID. No real owner email/contact/credentials added.",
+  "presentation_readiness_http": 200,
+  "presentation_browser_http": 200
+}

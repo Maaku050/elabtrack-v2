@@ -1,0 +1,12 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Full B01 composition and lower quick-action/collection content use compact protected thumbnails and actual themes",
+    "Final B02 contextual cart and Profile After distinguish Student category from operational authorization role"
+  ],
+  "screens": [],
+  "errors": [],
+  "scope": "Final literal B01/B02/Profile comparison; synthetic read-only browsing, no borrowing commands.",
+  "screens_original_capture_count": 8,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

@@ -9,7 +9,7 @@ const fixtures = JSON.parse(await fs.readFile('/tmp/elabtrack-phase4b-fixtures.j
 await fs.mkdir(output, { recursive: true })
 const b = await browser(), checks = [], screens = [], errors = [], warnings = [], responses = []
 const sessionEvents = []
-let holdAccept = false, paused = [], cookiePolicies = []
+let holdAccept = false, paused = [], cookiePolicies
 b.on(async message => {
   if (message.method === 'Runtime.exceptionThrown') errors.push({ text: message.params.exceptionDetails.text })
   if (message.method === 'Runtime.consoleAPICalled' && ['error', 'warning'].includes(message.params.type)) {

@@ -103,3 +103,68 @@ func (h *BorrowingHandler) decide(c fiber.Ctx, action string) error {
 	v, e := h.svc.Decide(c.Context(), actor(c), id, key, action, in)
 	return borrowingResult(c, v, e)
 }
+
+func (h *BorrowingHandler) Return(c fiber.Ctx) error    { return h.accountability(c, "return") }
+func (h *BorrowingHandler) Replace(c fiber.Ctx) error   { return h.accountability(c, "replace") }
+func (h *BorrowingHandler) ClearFine(c fiber.Ctx) error { return h.accountability(c, "clear") }
+func (h *BorrowingHandler) accountability(c fiber.Ctx, action string) error {
+	key, e := h.mutation(c)
+	if e != nil {
+		return response.Error(c, e)
+	}
+	id, e := accountID(c)
+	if e != nil {
+		return response.Error(c, e)
+	}
+	var v d.Record
+	switch action {
+	case "return":
+		var in d.ReturnInput
+		if e = strictObject(c, &in); e != nil {
+			return response.Error(c, shared.ErrInvalidInput)
+		}
+		v, e = h.svc.Return(c.Context(), actor(c), id, key, in)
+	case "replace":
+		var in d.ReplacementInput
+		if e = strictObject(c, &in); e != nil {
+			return response.Error(c, shared.ErrInvalidInput)
+		}
+		v, e = h.svc.Replace(c.Context(), actor(c), id, key, in)
+	case "clear":
+		var in d.FineInput
+		if e = strictObject(c, &in); e != nil {
+			return response.Error(c, shared.ErrInvalidInput)
+		}
+		v, e = h.svc.ClearFine(c.Context(), actor(c), id, key, in)
+	}
+	return borrowingResult(c, v, e)
+}
+
+func (h *BorrowingHandler) History(c fiber.Ctx) error {
+	id, e := accountID(c)
+	if e != nil {
+		return response.Error(c, e)
+	}
+	page, e := strconv.Atoi(c.Query("page", "1"))
+	if e != nil {
+		return response.Error(c, shared.ErrInvalidInput)
+	}
+	size, e := strconv.Atoi(c.Query("per_page", "25"))
+	if e != nil {
+		return response.Error(c, shared.ErrInvalidInput)
+	}
+	v, e := h.svc.History(c.Context(), actor(c), id, c.Query("kind", "events"), page, size)
+	return borrowingResult(c, v, e)
+}
+
+func (h *BorrowingHandler) Eligibility(c fiber.Ctx) error {
+	id, e := accountID(c)
+	if e != nil {
+		return response.Error(c, e)
+	}
+	e = h.svc.Eligibility(c.Context(), actor(c), id)
+	if e != nil {
+		return response.Error(c, e)
+	}
+	return response.OK(c, "Borrower currently eligible; rechecked at issuance.", map[string]bool{"eligible": true})
+}

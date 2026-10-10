@@ -1,0 +1,19 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Borrower reads real partial returns, replacements and live fine; no mutation controls",
+    "Final physical return keeps loan open for two exact replacement obligations",
+    "Replacement adds usable stock once, preserves damaged original, and completes/finalizes fine",
+    "Admin clears entire frozen fine with immutable method and assessment, without changing stock",
+    "Borrower completed history, persisted disposition/replacement/clearance, reload and role switching"
+  ],
+  "screens": [
+    "return-review-1440-dark.png",
+    "fine-review-1440-dark.png",
+    "borrower-completed-390-light.png"
+  ],
+  "errors": [],
+  "scope": "Real Chromium, normal login/HTTP, isolated fictional PostgreSQL. Owner acceptance pending.",
+  "screens_original_capture_count": 12,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

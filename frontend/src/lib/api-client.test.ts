@@ -447,3 +447,12 @@ describe('session notice presentation does not alter session security', () => {
     expect(useSessionActionStore.getState().sessionNotice).toBeNull()
   })
 })
+
+it('preserves explicit DELETE review data through the centralized authenticated transport',async()=>{
+ useAuthStore.getState().setSession(session)
+ const adapter=vi.fn<AxiosAdapter>(async config=>response(config,200,{removed:true})),client=new ApiClient(adapter);clients.push(client)
+ await client.delete('/profile-images/fictional',{data:{expected_version:4,confirm:true},headers:{'Idempotency-Key':'fictional-command'}})
+ expect(JSON.parse(adapter.mock.calls[0][0].data)).toEqual({expected_version:4,confirm:true})
+ expect(adapter.mock.calls[0][0].headers.get('Authorization')).toBe('Bearer '+session.access_token)
+ expect(adapter.mock.calls[0][0].headers.get('Idempotency-Key')).toBe('fictional-command')
+})

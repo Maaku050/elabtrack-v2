@@ -6,6 +6,7 @@ import (
 	domainaccounts "github.com/Maaku050/elabtrack-v2/backend/internal/domain/accounts"
 	domainauth "github.com/Maaku050/elabtrack-v2/backend/internal/domain/auth"
 	domainborrowing "github.com/Maaku050/elabtrack-v2/backend/internal/domain/borrowing"
+	domainreporting "github.com/Maaku050/elabtrack-v2/backend/internal/domain/reporting"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	domainterms "github.com/Maaku050/elabtrack-v2/backend/internal/domain/terms"
 	domainuser "github.com/Maaku050/elabtrack-v2/backend/internal/domain/user"
@@ -35,6 +36,8 @@ func Map(err error) Mapping {
 		return Mapping{400, constants.CodeValidation, "Validation failed.", fe}
 	}
 	switch {
+	case errors.Is(err, domainreporting.ErrExportLimit):
+		return result(409, "EXPORT_LIMIT", "This report exceeds 5000 rows. Narrow the filters before exporting.")
 	case errors.Is(err, domainborrowing.ErrExpired):
 		return result(409, "BORROWING_EXPIRED", "The request expired and its reservation was released.")
 	case errors.Is(err, domainborrowing.ErrStock):

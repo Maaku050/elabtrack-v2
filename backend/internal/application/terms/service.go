@@ -148,9 +148,10 @@ func (s *Service) Publish(ctx context.Context, cmd PublishCommand) (version *dom
 	return
 }
 
-// RequireCurrentAcceptance must run INSIDE the future command's transaction.
-// It returns the exact evidence to bind and retains account/publication locks
-// until that command commits. Never call it in a detached preflight transaction.
+// RequireCurrentAcceptance must run inside the borrowing command's transaction
+// when authorizing a write. It retains account/publication locks until commit.
+// A read-only eligibility preview may use it in its own transaction, but cannot
+// authorize a later write: that command must repeat this check atomically.
 // A direct checkout passes its separately authorized target Borrower ID.
 func (s *Service) RequireCurrentAcceptance(ctx context.Context, borrowerID uuid.UUID) (*domainterms.Acceptance, error) {
 	if _, err := s.lockAccount(ctx, borrowerID, user.AcceptBorrowerTerms); err != nil {

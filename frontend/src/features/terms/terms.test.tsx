@@ -9,6 +9,9 @@ import { useAuthStore } from '@/stores/auth-store'
 import { useSessionActionStore } from '@/stores/session-action-store'
 import { useUIStore } from '@/stores/ui-store'
 import { ApiRequestError } from '@/lib/api-error'
+import { borrowingApi } from '@/features/borrowing/api/borrowing.api'
+import { profileApi } from '@/features/profile/api/profile.api'
+import { reportingApi } from '@/features/reporting/api/reporting.api'
 import { termsApi } from './api/terms.api'
 import type { TermsStatus, TermsVersion, TermsAcceptance } from './types'
 
@@ -31,6 +34,8 @@ beforeEach(() => {
  useAuthStore.getState().setSession({ access_token: 'unit-memory-only', token_type: 'Bearer', expires_at: '2030-01-01T00:00:00Z', user: { id: 'unit-account', role: 'BORROWER', name: 'Synthetic Borrower', email: 'unit@example.invalid', is_active: true } })
  useSessionActionStore.setState({ signingIn: false, logout: 'idle', message: undefined }); useUIStore.getState().setTheme('light')
  status = { state: 'required', current_terms: v1, acceptance: null, has_previous_acceptance: false, acceptance_required: true, can_initiate_borrowing: false }
+ vi.spyOn(borrowingApi,'list').mockResolvedValue({items:[],total:0,page:1,per_page:3});vi.spyOn(profileApi,'own').mockResolvedValue({name:'Synthetic',email:'synthetic@example.invalid',role:'BORROWER',borrower_type:'FACULTY',student_id:'',course:'',contact_number:''});vi.spyOn(profileApi,'metadata').mockResolvedValue({account_id:'unit',image_id:null,version:0})
+  vi.spyOn(reportingApi, 'dashboard').mockResolvedValue({ metrics: { active_loans: 0 }, recent: [], as_of: '2026-10-10T00:00:00Z' })
  vi.spyOn(authApi, 'me').mockImplementation(async () => useAuthStore.getState().user!)
  vi.spyOn(authApi, 'logout').mockResolvedValue(undefined)
  vi.spyOn(termsApi, 'status').mockImplementation(async () => status)
@@ -45,22 +50,22 @@ describe('Phase 4B authoritative terms experience', () => {
   expect(router.state.location.pathname).toBe('/borrower/terms')
   expect(screen.getByRole('checkbox')).not.toBeChecked()
   expect(screen.getByRole('button', { name: 'Accept and continue' })).toBeDisabled()
-  expect(termsApi.accept).not.toHaveBeenCalled()
+  expect(termsApi.accept).not.toHaveBeenCalled(); expect(reportingApi.dashboard).not.toHaveBeenCalled()
  })
  it('withholds workspace content while acceptance status is loading', async () => {
   const gate = deferred<TermsStatus>(); vi.mocked(termsApi.status).mockReturnValue(gate.promise)
   open('/borrower/home'); expect(await screen.findByText('Checking borrowing terms…')).toBeInTheDocument()
-  expect(screen.queryByText('This feature is not available yet')).not.toBeInTheDocument()
+  expect(screen.queryByRole('heading', { name: /Hello,/, level: 1 })).not.toBeInTheDocument(); expect(reportingApi.dashboard).not.toHaveBeenCalled()
   gate.resolve(status); await screen.findByRole('checkbox')
  })
  it('permits returning current-terms borrower to enter Home', async () => {
   status = accepted(); open('/borrower/home')
-  expect(await screen.findByText('This feature is not available yet')).toBeInTheDocument()
+  expect(await screen.findByRole('heading', { name: /Hello,/, level: 1 })).toBeInTheDocument(); await waitFor(() => expect(reportingApi.dashboard).toHaveBeenCalledTimes(1))
   expect(screen.queryByRole('checkbox')).not.toBeInTheDocument()
  })
  it('does not treat malformed accepted metadata as current consent', async () => {
   status = { ...accepted(), acceptance: { ...receipt, terms_version_id: 'different-version' } };open('/borrower/home')
-  await screen.findByRole('checkbox');expect(screen.queryByText('This feature is not available yet')).not.toBeInTheDocument()
+  await screen.findByRole('checkbox');expect(screen.queryByRole('heading', { name: /Hello,/, level: 1 })).not.toBeInTheDocument(); expect(reportingApi.dashboard).not.toHaveBeenCalled()
  })
  it('explains updated terms without discarding historical acceptance', async () => {
   status = { ...status, state: 'updated', has_previous_acceptance: true };open()
@@ -75,7 +80,7 @@ describe('Phase 4B authoritative terms experience', () => {
   expect(termsApi.accept).toHaveBeenCalledTimes(1);expect(termsApi.accept).toHaveBeenCalledWith(id)
   expect(router.state.location.pathname).toBe('/borrower/terms')
   gate.resolve(receipt);await waitFor(() => expect(router.state.location.pathname).toBe('/borrower/home'))
-  await screen.findByText('This feature is not available yet')
+  await screen.findByRole('heading', { name: /Hello,/, level: 1 })
  })
  it.each([0, 500])('does not infer consent after failed acceptance %s', async code => {
   vi.mocked(termsApi.accept).mockRejectedValue(new ApiRequestError('Something went wrong. Please try again later.', code, 'INTERNAL_ERROR', undefined, id))
@@ -131,7 +136,7 @@ describe('Phase 4B authoritative terms experience', () => {
  })
  it.each(['STAFF','ADMIN'] as const)('leaves %s navigation unaffected without borrower acceptance', async role => {
   useAuthStore.setState({ user: { ...useAuthStore.getState().user!,role } });open('/staff/dashboard')
-  await screen.findByText('This feature is not available yet');expect(termsApi.status).not.toHaveBeenCalled()
+  await screen.findByRole('heading', { name: 'Dashboard', level: 1 }, { timeout:5000 });expect(termsApi.status).not.toHaveBeenCalled()
  })
  it('renders the complete long document as text and supports both themes', async () => {
   status = { ...status, current_terms: { ...v1, body: v1.body + '\n' + 'Long synthetic test paragraph.\n'.repeat(300) + 'END OF TEST DOCUMENT' } }

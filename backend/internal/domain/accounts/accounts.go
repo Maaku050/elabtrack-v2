@@ -133,6 +133,7 @@ type Filter struct {
 	Page, PerPage                int
 	Search, BorrowerType, Status string
 	Staff                        bool
+	EligibleForIssuance          bool
 }
 type Page struct {
 	Items   []Record `json:"items"`

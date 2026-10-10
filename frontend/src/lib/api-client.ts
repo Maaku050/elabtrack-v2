@@ -59,7 +59,7 @@ export class ApiClient {
   post<T>(url: string, body?: unknown, opts: RequestOptions = {}): Promise<T> { return this.request<T>('POST', url, body, opts) }
   patch<T>(url: string, body?: unknown, opts: RequestOptions = {}): Promise<T> { return this.request<T>('PATCH', url, body, opts) }
   put<T>(url: string, body?: unknown, opts: RequestOptions = {}): Promise<T> { return this.request<T>('PUT', url, body, opts) }
-  delete<T>(url: string, opts: RequestOptions = {}): Promise<T> { return this.request<T>('DELETE', url, undefined, opts) }
+  delete<T>(url: string, opts: RequestOptions = {}): Promise<T> { return this.request<T>('DELETE', url, opts.data, opts) }
 
   async download(url: string, signal?: AbortSignal): Promise<Blob> {
     try { const response = await this.axios.get<Blob>(url, { responseType: 'blob', signal }); return response.data }

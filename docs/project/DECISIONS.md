@@ -647,3 +647,36 @@ Authority for DEC-051–061: project owner's explicit **“PHASE 2.5 — PRODUCT
 - **Git authority:** Audit all changed/untracked files, exclude secrets/credentials/backups/private configuration/runtime artifacts, preserve normal database records, verify relevant gates and create a LOCAL checkpoint for verified Phase7, isolated demo tooling and updated UX documentation. No push, deployment, history rewrite or Phases8–14 implementation.
 - **Remaining boundaries:** Official FSMO published terms/current consent, production Student-domain inputs and activation/ownership readiness remain live-use gates. Live Brevo delivery is deferred. Preserve paused Phase8 work privately; its previous failed isolated migration gate is not passed by this acceptance.
 - **Evidence:** Owner's current formal acceptance, existing [demo engineering verification](PHASE7_OWNER_DEMO_IMPLEMENTATION_REPORT.md), [DEC-080 specification](../ux/PHASE11_EQUIPMENT_SELECTION_UX.md) and [checkpoint audit/results](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md).
+
+## ELAB-V2-DEC-082 — Remaining system implementation authorization
+
+- **Authority/status:** Explicit owner Phases8–14 one-shot master request,2026-10-10, baselinec2741c5. Supersedes the implementation pause in DEC-081 while preserving accepted Phase7 and DEC-080 presentation requirements. This authorizes engineering, not final owner acceptance.
+- **Scope:** Sequential gated returns/accountability/fines, offline durable notifications, truthful dashboards/reports/CSV, interactive cart, fresh-start presentation dataset40 equipment/20 Students/5 Faculty/2 Staff/1 Admin with fictional avatars/history, full QA and offline Windows/WSL presentation readiness. Optional protected profile image updating is explicitly included. No V1 importer, online deployment or live email.
+- **Safety:** First reproduce/review the shelved Phase8 migration failure. Preserve all existing normal data and paused artifacts; use isolated migration/restore/scenario targets only, unchanged historical migration checksums. No commit, push, deployment, normal migration/reset/activation/consent/privilege change. Ordinary technical fixes need no routine approval; genuine unresolved policy/security/destructive gates stop dependent work.
+- **Evidence:** [Master plan](REMAINING_SYSTEM_IMPLEMENTATION_PLAN.md), [progress](PHASE8_14_PROGRESS.md). Phase statuses record actual verification, not planned completion; final Phases8–14 owner acceptance remains pending.
+
+- **Executed engineering handoff,2026-10-10:** DEC-082 Phases8–14 mandatory gates PASS; [system report](SYSTEM_IMPLEMENTATION_REPORT.md), [progress](PHASE8_14_PROGRESS.md) and [presentation](PRESENTATION_WALKTHROUGH.md). This records implementation evidence, not a new business decision or owner acceptance. Normal000008 and accepted Phase7 data remain unchanged. Final owner acceptance is pending; work stops after14 with no commit/push/deployment/normal migration.
+
+
+## ELAB-V2-DEC-083 — Complete shared frontend reconstruction authority
+
+- **Authority/date:** Explicit owner master request and two authoritative UI refinement DOCX documents, 2026-10-10.
+- **Scope:** Seven Staff/Admin and seven Borrower refinements; major shared React composition/wizard changes, truthful dashboard aggregation, persistent own-account Mark All Read and bounded filtered offline PDF. Preserve existing Staff/Admin shell except duplicate standalone Sign Out, DEC-080 controls and real domain/API/security behavior. Both operational and presentation builds use shared components.
+- **Safety:** No business-policy changes, normal database migration/reset, sample production data, commit, push or deployment. Use isolated synthetic verification. Source references may contain personal information and remain private. Existing Phases8–14 uncommitted work is retained.
+- **Status:** Source audit complete; implementation/verification pending. Owner visual acceptance follows engineering verification. [Progress matrix](COMPLETE_UI_RECONSTRUCTION_PROGRESS.md) is the current reconstruction status authority.
+
+## ELAB-V2-DEC-084 — Final human-review UI refinement authority
+
+- **Authority/date:** Explicit owner final human-review prompt and both human-review refinement DOCX documents, 2026-10-10. All 18 embedded exhibits were individually inspected.
+- **Confirmed direction:** Preserve accepted Dashboard composition and Borrower Home. Refine shared themed native scrollbars; reconstruct only Requests & Borrowings page content toward R-01 using supported states/server counts; contain the successful issuance wizard’s Stage 2 catalog/cart/footer; compact adjacent quantity/Add controls; correct catalog overlay using existing Base UI; move one red Borrower Account Sign Out to the heading and separate personal information/terms by the spacing scale.
+- **Restrictions:** Existing Staff/Admin shell, DEC-080 mobile adjacency, current business/API/auth/terms/stock/audit rules remain. No unsupported mockup states/fields/bulk actions, V1 prices/payments, normal migration/reset, demo-only frontend, commit, push or deployment.
+- **Acceptance:** Most of the previous reconstruction is owner-satisfactory; the specifically accepted Dashboard composition and Borrower Home are preserved. Final refinement engineering gates and owner visual acceptance are separate. [Progress](HUMAN_REVIEW_UI_POLISH_PROGRESS.md) and [report](HUMAN_REVIEW_UI_POLISH_REPORT.md) record actual results. This entry does not mark the pending visual review or Phases8–14 final acceptance passed.
+
+
+## ELAB-V2-DEC-085 — Final UI acceptance and authorized release-branch publication
+
+- **Authority/date:** Explicit owner final Git audit, commit and GitHub push request, 2026-10-11.
+- **Accepted:** Completed Staff/Admin desktop and Student/Faculty mobile interfaces passed final owner visual review, with no remaining UI issues. This supersedes DEC-083/084 pending visual acceptance; historical engineering results remain retained.
+- **Authorized scope:** Curate and audit all completed Phases 8–14 source/migrations/tests, shared reconstruction/refinements, documentation, fictional offline assets and presentation tools. Create and normally push only `release/elabtrack-v2-presentation-ready`; preserve main, existing work and locally excluded artifacts. No force push, merge, deployment, normal migration/reset/reseed or new feature work.
+- **Safety gates:** Explicit staging manifest, licenses/fictional provenance, secret/binary audit, frontend/backend/race/fresh isolated PostgreSQL/migration/presentation checks, fresh exported-tree validation and remote HEAD verification. Production official terms, current consent, Student-domain inputs, activation/delivery and operational approvals remain enforced and separate.
+- **Evidence:** [Release publication report](RELEASE_PUBLICATION_REPORT.md), [curated screenshot manifest](../ux/verification/RELEASE_EVIDENCE_MANIFEST.json). Publication authorization does not certify production readiness or institutional approval.

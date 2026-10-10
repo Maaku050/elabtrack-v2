@@ -1,0 +1,20 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Actual protected thumbnails and unique multi-item cart with adjacent quantity/Add controls",
+    "320/390/768/1024/1440 light/dark, no overflow, four adjacent 44px controls, desktop browse/cart composition",
+    "Dedicated mobile cart focus, quantity editing/removal and selection preservation across real server pagination",
+    "Separate review submits one coherent request and exact server reservation vectors; mobile detail stays readable",
+    "Actual reviewed cancellation releases reserved stock without altering other custody buckets",
+    "Own borrower histories and overdue accountability cards preserve read-only authority, full references and one shell theme control",
+    "Logout/account replacement clears private draft; existing Staff direct issuance and approved operational shell remain available"
+  ],
+  "screens": [
+    "catalog-1440-light.png",
+    "cart-390-dark.png"
+  ],
+  "errors": [],
+  "scope": "Real Chromium and PostgreSQL, normal login, protected catalog images, multi-item reserve/cancel. Final owner acceptance pending.",
+  "screens_original_capture_count": 21,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

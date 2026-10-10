@@ -1,0 +1,11 @@
+{
+  "result": "PASS",
+  "full_restore": true,
+  "tables_verified": 29,
+  "migration_rows": 11,
+  "sequence_state_equal": true,
+  "backup_sha256": "863914a9f892d39962bcc6fffe5e17ed73b186438c84f63ebba69109fcbe2aa6",
+  "port": 54837,
+  "volume_retained": "elabtrack_v2_presentation_restore_20261009t222419zf28c_pgdata",
+  "normal_data_untouched": true
+}

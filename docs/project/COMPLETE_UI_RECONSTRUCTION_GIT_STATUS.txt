@@ -1,0 +1,818 @@
+ELABTRACK V2 — COMPLETE UI RECONSTRUCTION EXACT GIT INVENTORY
+Date: 2026-10-10
+
+{
+  "branch": "main",
+  "head": "c2741c54ba3aca95df705ce612ade1a277e0335d",
+  "modified_tracked": 77,
+  "untracked_paths": 607,
+  "total_changed_or_untracked": 684,
+  "staged_paths": 0,
+  "commit_performed": false,
+  "push_or_deployment": false,
+  "cumulative_existing_work_preserved": true
+}
+
+This is the cumulative working tree, including preserved existing Phases 8–14 work.
+Task-start baseline: 60 modified tracked files, 360 untracked public paths; empty index.
+No files are staged, committed, pushed or deployed. No unrelated changes discarded.
+
+Remotes (credentials redacted; no remote operation performed):
+origin https://github.com/Maaku050/elabtrack-v2.git (fetch)
+origin https://github.com/Maaku050/elabtrack-v2.git (push)
+
+Recent local commits (read-only):
+c2741c5 chore: checkpoint accepted Phase 7 and isolated demo tooling
+73f3fe4 Phase 7: Borrowing & Reservations
+366b6ef refactor(frontend): complete shadcn UI reconstruction
+ed89f9e docs: record pre-Phase7 readiness and checkpoint results
+29b49ec feat: implement eLabTrack account and inventory foundations
+
+Ignored/excluded artifacts (retained locally):
+staff-admin_desktop_UI_refinements.docx
+student-faculty_mobile_UI_refinements.docx
+elabtrack_phase11_v1_references.zip
+.env
+backend/.env
+backend/tmp/ui-reconstruction/preservation.json
+backend/tmp/presentation-demo/config.json
+frontend/dist/index.html
+Also excluded: backend/tmp/** private snapshots, credentials, fixture secrets, logs, sessions, backups and runtime; node_modules, build outputs, .project-reference, extracted DOCX media, intermediate preview and incomplete-capture JSON. Public before/after evidence uses fictional identities only.
+
+Known-private-secret audit:
+{
+  "result": "PASS",
+  "public_files_scanned": 2570,
+  "private_configurations_scanned": 48,
+  "known_private_values_compared": 378,
+  "known_secret_matches": 0,
+  "index_empty": true,
+  "private_reference_and_configuration_ignored": true,
+  "no_credentials_printed": true
+}
+
+Exact porcelain status (all untracked files expanded):
+ M .gitignore
+ M README.md
+ M backend/.env.production.example
+ M backend/README.md
+ M backend/internal/application/accounts/service.go
+ M backend/internal/application/borrowing/service.go
+ M backend/internal/application/terms/service.go
+ M backend/internal/bootstrap/app.go
+ M backend/internal/bootstrap/borrowing_integration_test.go
+ M backend/internal/bootstrap/dependencies.go
+ M backend/internal/config/config.go
+ M backend/internal/config/config_test.go
+ M backend/internal/domain/accounts/accounts.go
+ M backend/internal/domain/borrowing/borrowing.go
+ M backend/internal/infrastructure/persistence/postgres/accounts_repository.go
+ M backend/internal/infrastructure/persistence/postgres/borrowing_obligations.go
+ M backend/internal/infrastructure/persistence/postgres/borrowing_repository.go
+ M backend/internal/infrastructure/persistence/postgres/inventory_repository.go
+ M backend/internal/interface/http/handlers/accounts_handler.go
+ M backend/internal/interface/http/handlers/borrowing_handler.go
+ M backend/internal/interface/http/response/errors.go
+ M backend/internal/interface/http/routes/borrowing_routes.go
+ M backend/internal/interface/http/routes/routes.go
+ M backend/tests/integration/accounts_test.go
+ M backend/tests/integration/borrowing_restart_test.go
+ M backend/tests/integration/borrowing_test.go
+ M backend/tests/integration/inventory_test.go
+ M backend/tests/integration/terms_test.go
+ M docs/API_CONTRACTS.md
+ M docs/STACK.md
+ M docs/domain/BUSINESS_RULES.md
+ M docs/domain/DATA_MODEL.md
+ M docs/domain/DOMAIN_MODEL.md
+ M docs/domain/INVARIANTS.md
+ M docs/domain/STATE_MACHINES.md
+ M docs/project/DECISIONS.md
+ M docs/project/OPEN_DECISIONS.md
+ M docs/project/PHASE8_14_PROGRESS.md
+ M docs/project/ROADMAP.md
+ M docs/project/SOURCE_OF_TRUTH.md
+ M docs/ux/PHASE11_EQUIPMENT_SELECTION_UX.md
+ M frontend/package-lock.json
+ M frontend/package.json
+ M frontend/scripts/phase4a-browser-qa.mjs
+ M frontend/scripts/phase4b-browser-qa.mjs
+ M frontend/src/app/router.tsx
+ M frontend/src/components/application/directory.tsx
+ M frontend/src/components/application/operational-frame.tsx
+ M frontend/src/components/application/operational-shell.tsx
+ M frontend/src/components/application/shells.tsx
+ M frontend/src/features/accounts/pages/account-detail.tsx
+ M frontend/src/features/accounts/types.ts
+ M frontend/src/features/auth/navigation.ts
+ M frontend/src/features/auth/product-auth.test.tsx
+ M frontend/src/features/borrowing/api/borrowing.api.ts
+ M frontend/src/features/borrowing/borrowing.test.tsx
+ M frontend/src/features/borrowing/hooks/use-borrowing.ts
+ M frontend/src/features/borrowing/lib/time.ts
+ M frontend/src/features/borrowing/pages/borrowing-detail.tsx
+ M frontend/src/features/borrowing/pages/borrowing-directory.tsx
+ M frontend/src/features/borrowing/pages/borrowing-frame.tsx
+ M frontend/src/features/borrowing/pages/request-compose.tsx
+ M frontend/src/features/borrowing/pages/staff-borrower-picker.tsx
+ M frontend/src/features/borrowing/types.ts
+ M frontend/src/features/foundation/foundation.test.tsx
+ M frontend/src/features/inventory/hooks/use-catalog-image.ts
+ M frontend/src/features/inventory/pages/equipment-detail.tsx
+ M frontend/src/features/inventory/pages/equipment-list.tsx
+ M frontend/src/features/terms/components/terms-frame.tsx
+ M frontend/src/features/terms/terms.test.tsx
+ M frontend/src/features/workspace/workspace-page.tsx
+ M frontend/src/lib/api-client.test.ts
+ M frontend/src/lib/api-client.ts
+ M frontend/src/lib/api-error.test.ts
+ M frontend/src/lib/api-error.ts
+ M frontend/src/styles/index.css
+ M frontend/vitest.config.ts
+?? backend/internal/application/borrowing/accountability.go
+?? backend/internal/application/borrowing/history.go
+?? backend/internal/application/notifications/service.go
+?? backend/internal/application/profile/service.go
+?? backend/internal/application/reporting/service.go
+?? backend/internal/bootstrap/accountability_integration_test.go
+?? backend/internal/bootstrap/notifications_integration_test.go
+?? backend/internal/bootstrap/notifications_worker.go
+?? backend/internal/bootstrap/profile_integration_test.go
+?? backend/internal/bootstrap/reporting_integration_test.go
+?? backend/internal/bootstrap/selection_integration_test.go
+?? backend/internal/domain/borrowing/accountability.go
+?? backend/internal/domain/borrowing/accountability_test.go
+?? backend/internal/domain/borrowing/history.go
+?? backend/internal/domain/notifications/notifications.go
+?? backend/internal/domain/notifications/notifications_test.go
+?? backend/internal/domain/profile/profile.go
+?? backend/internal/domain/reporting/reporting.go
+?? backend/internal/domain/reporting/reporting_test.go
+?? backend/internal/infrastructure/persistence/postgres/accountability_repository.go
+?? backend/internal/infrastructure/persistence/postgres/borrowing_history.go
+?? backend/internal/infrastructure/persistence/postgres/notifications_repository.go
+?? backend/internal/infrastructure/persistence/postgres/profile_repository.go
+?? backend/internal/infrastructure/persistence/postgres/reporting_repository.go
+?? backend/internal/infrastructure/profileimage/validator.go
+?? backend/internal/interface/http/handlers/notifications_handler.go
+?? backend/internal/interface/http/handlers/profile_handler.go
+?? backend/internal/interface/http/handlers/reporting_handler.go
+?? backend/internal/interface/http/routes/notifications_routes.go
+?? backend/internal/interface/http/routes/profile_routes.go
+?? backend/internal/interface/http/routes/reporting_routes.go
+?? backend/migrations/000009_accountability.down.sql
+?? backend/migrations/000009_accountability.up.sql
+?? backend/migrations/000010_notifications.down.sql
+?? backend/migrations/000010_notifications.up.sql
+?? backend/migrations/000011_profile_images.down.sql
+?? backend/migrations/000011_profile_images.up.sql
+?? backend/tests/integration/accountability_test.go
+?? backend/tests/integration/notification_lock_test.go
+?? backend/tests/integration/notifications_restart_test.go
+?? backend/tests/integration/notifications_test.go
+?? backend/tests/integration/profile_test.go
+?? backend/tests/integration/reporting_test.go
+?? docs/project/COMPLETE_FRONTEND_UI_RECONSTRUCTION_REPORT.md
+?? docs/project/COMPLETE_UI_RECONSTRUCTION_GIT_STATUS.txt
+?? docs/project/COMPLETE_UI_RECONSTRUCTION_PROGRESS.md
+?? docs/project/PHASE10_IMPLEMENTATION_PLAN.md
+?? docs/project/PHASE10_REPORT.md
+?? docs/project/PHASE11_IMPLEMENTATION_PLAN.md
+?? docs/project/PHASE11_REPORT.md
+?? docs/project/PHASE12_IMPLEMENTATION_PLAN.md
+?? docs/project/PHASE12_REPORT.md
+?? docs/project/PHASE13_IMPLEMENTATION_PLAN.md
+?? docs/project/PHASE13_REPORT.md
+?? docs/project/PHASE13_SECURITY_ASSESSMENT.md
+?? docs/project/PHASE14_IMPLEMENTATION_PLAN.md
+?? docs/project/PHASE14_REPORT.md
+?? docs/project/PHASE8_14_GIT_STATUS.txt
+?? docs/project/PHASE8_MIGRATION_PREFLIGHT.md
+?? docs/project/PHASE8_REPORT.md
+?? docs/project/PHASE9_IMPLEMENTATION_PLAN.md
+?? docs/project/PHASE9_REPORT.md
+?? docs/project/PRESENTATION_SETUP.md
+?? docs/project/PRESENTATION_WALKTHROUGH.md
+?? docs/project/PRODUCTION_READINESS_GAPS.md
+?? docs/project/REMAINING_SYSTEM_IMPLEMENTATION_PLAN.md
+?? docs/project/SYSTEM_IMPLEMENTATION_REPORT.md
+?? docs/ux/verification/complete-ui/after/acceptance.json
+?? docs/ux/verification/complete-ui/after/admin-admin-reports-1366-768-dark.png
+?? docs/ux/verification/complete-ui/after/admin-admin-reports-1366-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1366-600-dark.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1366-600-light.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1366-768-dark.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1366-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1440-600-dark.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1440-600-light.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1440-768-dark.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1440-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1920-600-dark.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1920-600-light.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1920-768-dark.png
+?? docs/ux/verification/complete-ui/after/admin-borrowings-1920-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-dashboard-30-days-1366-1000-light.png
+?? docs/ux/verification/complete-ui/after/admin-directory-collapsed-1366-1366-600-dark.png
+?? docs/ux/verification/complete-ui/after/admin-directory-collapsed-1366-600-dark.png
+?? docs/ux/verification/complete-ui/after/admin-directory-collapsed-1440-1440-600-dark.png
+?? docs/ux/verification/complete-ui/after/admin-directory-collapsed-1920-1920-600-dark.png
+?? docs/ux/verification/complete-ui/after/admin-filtered-pdf-report-1366-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-keyboard-profile-1366-600-light.png
+?? docs/ux/verification/complete-ui/after/admin-profile-local-preview-1366-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-short-height-account-menu-1366-600-light.png
+?? docs/ux/verification/complete-ui/after/admin-staff-account-1366-768-dark.png
+?? docs/ux/verification/complete-ui/after/admin-staff-account-1366-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-staff-dashboard-1366-768-dark.png
+?? docs/ux/verification/complete-ui/after/admin-staff-dashboard-1366-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-staff-notifications-1366-768-dark.png
+?? docs/ux/verification/complete-ui/after/admin-staff-notifications-1366-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-staff-requests-1366-768-dark.png
+?? docs/ux/verification/complete-ui/after/admin-staff-requests-1366-768-light.png
+?? docs/ux/verification/complete-ui/after/admin-staff-requests-direct-1366-768-dark.png
+?? docs/ux/verification/complete-ui/after/admin-staff-requests-direct-1366-768-light.png
+?? docs/ux/verification/complete-ui/after/faculty-detail-CHECKED_OUT-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/faculty-detail-CHECKED_OUT-390-844-light.png
+?? docs/ux/verification/complete-ui/after/faculty-detail-COMPLETED-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/faculty-detail-COMPLETED-390-844-light.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-account-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-account-390-844-light.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-borrowings-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-borrowings-390-844-light.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-equipment-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-equipment-390-844-light.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-home-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-home-390-844-light.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-notifications-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-notifications-390-844-light.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-terms-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/faculty01-borrower-terms-390-844-light.png
+?? docs/ux/verification/complete-ui/after/reference-acceptance.json
+?? docs/ux/verification/complete-ui/after/student-account-large-text-320-844-dark.png
+?? docs/ux/verification/complete-ui/after/student-account-large-text-320-844-light.png
+?? docs/ux/verification/complete-ui/after/student-cart-dock-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student-cart-dock-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student-catalog-empty-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student-catalog-empty-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student-editable-review-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student-editable-review-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student-equipment-detail-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student-equipment-detail-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student-frozen-confirm-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student-frozen-confirm-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student-home-full-reference-390-1672-dark.png
+?? docs/ux/verification/complete-ui/after/student-home-full-reference-390-1672-light.png
+?? docs/ux/verification/complete-ui/after/student-home-lower-content-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student-home-lower-content-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student-pending-submission-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student-pending-submission-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-320-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-320-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-360-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-360-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-375-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-375-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-414-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-414-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-440-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-440-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-768-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-account-768-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-320-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-320-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-360-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-360-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-375-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-375-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-414-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-414-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-440-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-440-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-768-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-borrowings-768-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-320-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-320-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-360-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-360-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-375-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-375-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-414-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-414-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-440-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-440-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-768-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-equipment-768-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-320-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-320-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-360-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-360-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-375-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-375-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-414-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-414-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-440-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-440-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-768-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-home-768-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-320-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-320-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-360-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-360-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-375-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-375-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-414-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-414-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-440-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-440-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-768-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-notifications-768-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-320-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-320-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-360-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-360-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-375-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-375-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-390-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-390-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-414-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-414-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-440-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-440-844-light.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-768-844-dark.png
+?? docs/ux/verification/complete-ui/after/student01-borrower-terms-768-844-light.png
+?? docs/ux/verification/complete-ui/after/visual-acceptance.json
+?? docs/ux/verification/complete-ui/before/admin--admin-reports-1366-dark.png
+?? docs/ux/verification/complete-ui/before/admin--admin-reports-1366-light.png
+?? docs/ux/verification/complete-ui/before/admin--staff-account-1366-dark.png
+?? docs/ux/verification/complete-ui/before/admin--staff-account-1366-light.png
+?? docs/ux/verification/complete-ui/before/admin--staff-dashboard-1366-dark.png
+?? docs/ux/verification/complete-ui/before/admin--staff-dashboard-1366-light.png
+?? docs/ux/verification/complete-ui/before/admin--staff-notifications-1366-dark.png
+?? docs/ux/verification/complete-ui/before/admin--staff-notifications-1366-light.png
+?? docs/ux/verification/complete-ui/before/admin--staff-requests-1366-dark.png
+?? docs/ux/verification/complete-ui/before/admin--staff-requests-1366-light.png
+?? docs/ux/verification/complete-ui/before/admin--staff-requests-direct-1366-dark.png
+?? docs/ux/verification/complete-ui/before/admin--staff-requests-direct-1366-light.png
+?? docs/ux/verification/complete-ui/before/capture.json
+?? docs/ux/verification/complete-ui/before/student01--borrower-account-390-dark.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-account-390-light.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-borrowings-390-dark.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-borrowings-390-light.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-equipment-390-dark.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-equipment-390-light.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-equipment-view=cart-390-dark.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-equipment-view=cart-390-light.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-home-390-dark.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-home-390-light.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-notifications-390-dark.png
+?? docs/ux/verification/complete-ui/before/student01--borrower-notifications-390-light.png
+?? docs/ux/verification/complete-ui/index.html
+?? docs/ux/verification/complete-ui/pdf/acceptance.json
+?? docs/ux/verification/complete-ui/pdf/inventory-first.png
+?? docs/ux/verification/complete-ui/pdf/inventory-last.png
+?? docs/ux/verification/complete-ui/reference-manifest.json
+?? docs/ux/verification/complete-ui/shared-operational/acceptance.json
+?? docs/ux/verification/complete-ui/shared-operational/admin-admin-reports-1366-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-admin-reports-1366-light.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-account-1366-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-account-1366-light.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-dashboard-1366-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-dashboard-1366-light.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-notifications-1366-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-notifications-1366-light.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-requests-1366-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-requests-1366-light.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-requests-direct-1366-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/admin-staff-requests-direct-1366-light.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-account-390-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-account-390-light.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-borrowings-390-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-borrowings-390-light.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-equipment-390-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-equipment-390-light.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-home-390-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-home-390-light.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-notifications-390-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-notifications-390-light.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-terms-390-dark.png
+?? docs/ux/verification/complete-ui/shared-operational/student01-borrower-terms-390-light.png
+?? docs/ux/verification/complete-ui/workflows/acceptance.json
+?? docs/ux/verification/complete-ui/workflows/direct-frozen-review-1366-dark.png
+?? docs/ux/verification/complete-ui/workflows/direct-frozen-review-1366-light.png
+?? docs/ux/verification/complete-ui/workflows/direct-step1-borrower-1366-dark.png
+?? docs/ux/verification/complete-ui/workflows/direct-step1-borrower-1366-light.png
+?? docs/ux/verification/complete-ui/workflows/direct-step2-browse-cart-1366-dark.png
+?? docs/ux/verification/complete-ui/workflows/direct-step2-browse-cart-1366-light.png
+?? docs/ux/verification/complete-ui/workflows/direct-step3-due-handover-1366-dark.png
+?? docs/ux/verification/complete-ui/workflows/direct-step3-due-handover-1366-light.png
+?? docs/ux/verification/complete-ui/workflows/faculty-completed-new-return-390-dark.png
+?? docs/ux/verification/complete-ui/workflows/faculty-completed-new-return-390-light.png
+?? docs/ux/verification/complete-ui/workflows/staff-completed-return-1366-dark.png
+?? docs/ux/verification/complete-ui/workflows/staff-completed-return-1366-light.png
+?? docs/ux/verification/complete-ui/workflows/staff-return-review-1366-light.png
+?? docs/ux/verification/phase10/acceptance.json
+?? docs/ux/verification/phase10/admin-audit-1440-dark.png
+?? docs/ux/verification/phase10/borrower-dashboard-390-dark.png
+?? docs/ux/verification/phase10/borrower-dashboard-390-light.png
+?? docs/ux/verification/phase10/fine-resolution-history-1440-dark.png
+?? docs/ux/verification/phase10/inventory-report-1440-dark.png
+?? docs/ux/verification/phase10/inventory-report-1440-light.png
+?? docs/ux/verification/phase10/staff-dashboard-1440-dark.png
+?? docs/ux/verification/phase10/staff-dashboard-1440-light.png
+?? docs/ux/verification/phase11/acceptance.json
+?? docs/ux/verification/phase11/cart-390-dark.png
+?? docs/ux/verification/phase11/cart-390-light.png
+?? docs/ux/verification/phase11/catalog-1024-dark.png
+?? docs/ux/verification/phase11/catalog-1024-light.png
+?? docs/ux/verification/phase11/catalog-1440-dark.png
+?? docs/ux/verification/phase11/catalog-1440-light.png
+?? docs/ux/verification/phase11/catalog-320-dark.png
+?? docs/ux/verification/phase11/catalog-320-light.png
+?? docs/ux/verification/phase11/catalog-390-dark.png
+?? docs/ux/verification/phase11/catalog-390-light.png
+?? docs/ux/verification/phase11/catalog-768-dark.png
+?? docs/ux/verification/phase11/catalog-768-light.png
+?? docs/ux/verification/phase11/catalog-page-two-390-dark.png
+?? docs/ux/verification/phase11/my-borrowings-320-light.png
+?? docs/ux/verification/phase11/my-borrowings-390-dark.png
+?? docs/ux/verification/phase11/overdue-details-320-light.png
+?? docs/ux/verification/phase11/overdue-details-390-dark.png
+?? docs/ux/verification/phase11/pending-details-320-dark.png
+?? docs/ux/verification/phase11/review-390-dark.png
+?? docs/ux/verification/phase11/review-390-light.png
+?? docs/ux/verification/phase12/acceptance.json
+?? docs/ux/verification/phase12/admin-profile-1440-dark.png
+?? docs/ux/verification/phase12/admin-profile-1440-light.png
+?? docs/ux/verification/phase12/admin-reports-1440-dark.png
+?? docs/ux/verification/phase12/faculty-dashboard-390-light.png
+?? docs/ux/verification/phase12/first-use-demo-terms-390-dark.png
+?? docs/ux/verification/phase12/first-use-demo-terms-390-light.png
+?? docs/ux/verification/phase12/offline-catalog-1440-dark.png
+?? docs/ux/verification/phase12/offline-catalog-1440-light.png
+?? docs/ux/verification/phase12/offline-catalog-320-dark.png
+?? docs/ux/verification/phase12/offline-catalog-320-light.png
+?? docs/ux/verification/phase12/offline-catalog-390-dark.png
+?? docs/ux/verification/phase12/offline-catalog-390-light.png
+?? docs/ux/verification/phase12/offline-catalog-768-dark.png
+?? docs/ux/verification/phase12/offline-catalog-768-light.png
+?? docs/ux/verification/phase12/staff-accountability-1440-light.png
+?? docs/ux/verification/phase12/staff-borrower-profile-1440-dark.png
+?? docs/ux/verification/phase12/student-profile-390-dark.png
+?? docs/ux/verification/phase13/acceptance.json
+?? docs/ux/verification/phase13/admin-fine-review-1440-light.png
+?? docs/ux/verification/phase13/cart-review-390-dark.png
+?? docs/ux/verification/phase13/checkout-review-1440-light.png
+?? docs/ux/verification/phase13/complete-return-history-1440-dark.png
+?? docs/ux/verification/phase13/completed-borrower-detail-320-dark.png
+?? docs/ux/verification/phase13/completed-borrower-detail-320-light.png
+?? docs/ux/verification/phase13/completed-borrower-detail-390-dark.png
+?? docs/ux/verification/phase13/completed-borrower-detail-390-light.png
+?? docs/ux/verification/phase13/completed-borrower-detail-768-dark.png
+?? docs/ux/verification/phase13/completed-borrower-detail-768-light.png
+?? docs/ux/verification/phase13/filtered-inventory-csv-1440-dark.png
+?? docs/ux/verification/phase13/mixed-return-accountability-1440-light.png
+?? docs/ux/verification/phase13/mixed-return-review-1440-dark.png
+?? docs/ux/verification/phase13/notifications-read-recovery-1440-dark.png
+?? docs/ux/verification/phase13/query-performance.json
+?? docs/ux/verification/phase13/replacement-review-0-1440-light.png
+?? docs/ux/verification/phase13/replacement-review-1-1440-dark.png
+?? docs/ux/verification/phase14/acceptance.json
+?? docs/ux/verification/phase14/final-dataset.json
+?? docs/ux/verification/phase14/fresh-install.json
+?? docs/ux/verification/phase14/offline-admin-dashboard-1440-light.png
+?? docs/ux/verification/phase14/offline-borrower-directory-1440-dark.png
+?? docs/ux/verification/phase14/offline-desktop-browse-cart-1440-light.png
+?? docs/ux/verification/phase14/offline-faculty-home-390-light.png
+?? docs/ux/verification/phase14/offline-first-use-terms-390-dark.png
+?? docs/ux/verification/phase14/offline-mobile-cart-review-390-dark.png
+?? docs/ux/verification/phase14/offline-notifications-1440-light.png
+?? docs/ux/verification/phase14/offline-real-reservation-390-light.png
+?? docs/ux/verification/phase14/offline-returns-csv-1440-dark.png
+?? docs/ux/verification/phase14/offline-selection-1440-dark.png
+?? docs/ux/verification/phase14/offline-selection-1440-light.png
+?? docs/ux/verification/phase14/offline-selection-320-dark.png
+?? docs/ux/verification/phase14/offline-selection-320-light.png
+?? docs/ux/verification/phase14/offline-selection-390-dark.png
+?? docs/ux/verification/phase14/offline-selection-390-light.png
+?? docs/ux/verification/phase14/offline-selection-768-dark.png
+?? docs/ux/verification/phase14/offline-selection-768-light.png
+?? docs/ux/verification/phase14/offline-staff-accountability-1440-dark.png
+?? docs/ux/verification/phase14/offline-student-account-390-dark.png
+?? docs/ux/verification/phase14/quality.json
+?? docs/ux/verification/phase14/recovery.json
+?? docs/ux/verification/phase14/repository-audit.json
+?? docs/ux/verification/phase8/acceptance.json
+?? docs/ux/verification/phase8/admin-cleared-1440-light.png
+?? docs/ux/verification/phase8/borrower-completed-390-dark.png
+?? docs/ux/verification/phase8/borrower-completed-390-light.png
+?? docs/ux/verification/phase8/borrower-open-390-dark.png
+?? docs/ux/verification/phase8/borrower-open-390-light.png
+?? docs/ux/verification/phase8/fine-review-1440-dark.png
+?? docs/ux/verification/phase8/replacement-review-0-1440-light.png
+?? docs/ux/verification/phase8/replacement-review-1-1440-dark.png
+?? docs/ux/verification/phase8/return-review-1440-dark.png
+?? docs/ux/verification/phase8/staff-completed-1440-light.png
+?? docs/ux/verification/phase8/staff-open-1024-dark.png
+?? docs/ux/verification/phase8/staff-open-1440-light.png
+?? docs/ux/verification/phase9/acceptance.json
+?? docs/ux/verification/phase9/borrower-unread-390-dark.png
+?? docs/ux/verification/phase9/borrower-unread-390-light.png
+?? docs/ux/verification/phase9/staff-center-1440-dark.png
+?? docs/ux/verification/phase9/staff-center-1440-light.png
+?? frontend/eslint.config.js
+?? frontend/scripts/complete-ui-before.mjs
+?? frontend/scripts/complete-ui-browser-qa.mjs
+?? frontend/scripts/complete-ui-final-reference-qa.mjs
+?? frontend/scripts/complete-ui-operational-qa.mjs
+?? frontend/scripts/complete-ui-preview.mjs
+?? frontend/scripts/complete-ui-visual-qa.mjs
+?? frontend/scripts/complete-ui-workflow-qa.mjs
+?? frontend/scripts/phase10-browser-qa.mjs
+?? frontend/scripts/phase11-browser-qa.mjs
+?? frontend/scripts/phase12-browser-qa.mjs
+?? frontend/scripts/phase13-browser-qa.mjs
+?? frontend/scripts/phase14-offline-qa.mjs
+?? frontend/scripts/phase8-browser-qa.mjs
+?? frontend/scripts/phase9-browser-qa.mjs
+?? frontend/scripts/render-presentation-assets.mjs
+?? frontend/src/assets/fonts/DejaVu-LICENSE.txt
+?? frontend/src/assets/fonts/DejaVuSans.ttf
+?? frontend/src/components/application/record-reference.tsx
+?? frontend/src/features/borrowing/accountability.test.tsx
+?? frontend/src/features/borrowing/cart.test.tsx
+?? frontend/src/features/borrowing/components/borrowing-card.tsx
+?? frontend/src/features/borrowing/components/equipment-selection-card.tsx
+?? frontend/src/features/borrowing/components/quantity-control.tsx
+?? frontend/src/features/borrowing/direct-wizard.test.tsx
+?? frontend/src/features/borrowing/history.test.tsx
+?? frontend/src/features/borrowing/hooks/use-cart-review.ts
+?? frontend/src/features/borrowing/hooks/use-direct-review.ts
+?? frontend/src/features/borrowing/lib/money.ts
+?? frontend/src/features/borrowing/pages/accountability-actions.tsx
+?? frontend/src/features/borrowing/pages/accountability-summary.tsx
+?? frontend/src/features/borrowing/pages/borrowing-history.tsx
+?? frontend/src/features/borrowing/pages/catalog-cart.tsx
+?? frontend/src/features/borrowing/schemas/accountability.schema.ts
+?? frontend/src/features/borrowing/stores/cart-store.ts
+?? frontend/src/features/notifications/api/notifications.api.ts
+?? frontend/src/features/notifications/components/notification-bell.tsx
+?? frontend/src/features/notifications/hooks/use-notifications.ts
+?? frontend/src/features/notifications/notifications.test.tsx
+?? frontend/src/features/notifications/pages/notification-center.tsx
+?? frontend/src/features/notifications/types.ts
+?? frontend/src/features/profile/api/profile.api.ts
+?? frontend/src/features/profile/components/profile-avatar.tsx
+?? frontend/src/features/profile/components/profile-editor.tsx
+?? frontend/src/features/profile/hooks/use-profile.ts
+?? frontend/src/features/profile/profile.test.tsx
+?? frontend/src/features/reporting/api/reporting.api.ts
+?? frontend/src/features/reporting/hooks/use-reporting.ts
+?? frontend/src/features/reporting/lib/pdf-export.ts
+?? frontend/src/features/reporting/pages/borrower-home.tsx
+?? frontend/src/features/reporting/pages/dashboard.tsx
+?? frontend/src/features/reporting/pages/reports.tsx
+?? frontend/src/features/reporting/pdf-export.test.ts
+?? frontend/src/features/reporting/reporting.test.tsx
+?? frontend/src/features/reporting/types.ts
+?? frontend/src/lib/image-validation.ts
+?? frontend/src/lib/record-reference.ts
+?? frontend/src/styles/complete-ui.css
+?? frontend/src/styles/phase11.css
+?? frontend/src/styles/profile.css
+?? integration/evidence/2026-10-10-complete-ui-reconstruction.json
+?? integration/presentation-demo.py
+?? integration/presentation/assets/MANIFEST.json
+?? integration/presentation/assets/README.md
+?? integration/presentation/assets/avatars/avatar-01.png
+?? integration/presentation/assets/avatars/avatar-01.svg
+?? integration/presentation/assets/avatars/avatar-02.png
+?? integration/presentation/assets/avatars/avatar-02.svg
+?? integration/presentation/assets/avatars/avatar-03.png
+?? integration/presentation/assets/avatars/avatar-03.svg
+?? integration/presentation/assets/avatars/avatar-04.png
+?? integration/presentation/assets/avatars/avatar-04.svg
+?? integration/presentation/assets/avatars/avatar-05.png
+?? integration/presentation/assets/avatars/avatar-05.svg
+?? integration/presentation/assets/avatars/avatar-06.png
+?? integration/presentation/assets/avatars/avatar-06.svg
+?? integration/presentation/assets/avatars/avatar-07.png
+?? integration/presentation/assets/avatars/avatar-07.svg
+?? integration/presentation/assets/avatars/avatar-08.png
+?? integration/presentation/assets/avatars/avatar-08.svg
+?? integration/presentation/assets/avatars/avatar-09.png
+?? integration/presentation/assets/avatars/avatar-09.svg
+?? integration/presentation/assets/avatars/avatar-10.png
+?? integration/presentation/assets/avatars/avatar-10.svg
+?? integration/presentation/assets/avatars/avatar-11.png
+?? integration/presentation/assets/avatars/avatar-11.svg
+?? integration/presentation/assets/avatars/avatar-12.png
+?? integration/presentation/assets/avatars/avatar-12.svg
+?? integration/presentation/assets/avatars/avatar-13.png
+?? integration/presentation/assets/avatars/avatar-13.svg
+?? integration/presentation/assets/avatars/avatar-14.png
+?? integration/presentation/assets/avatars/avatar-14.svg
+?? integration/presentation/assets/avatars/avatar-15.png
+?? integration/presentation/assets/avatars/avatar-15.svg
+?? integration/presentation/assets/avatars/avatar-16.png
+?? integration/presentation/assets/avatars/avatar-16.svg
+?? integration/presentation/assets/avatars/avatar-17.png
+?? integration/presentation/assets/avatars/avatar-17.svg
+?? integration/presentation/assets/avatars/avatar-18.png
+?? integration/presentation/assets/avatars/avatar-18.svg
+?? integration/presentation/assets/avatars/avatar-19.png
+?? integration/presentation/assets/avatars/avatar-19.svg
+?? integration/presentation/assets/avatars/avatar-20.png
+?? integration/presentation/assets/avatars/avatar-20.svg
+?? integration/presentation/assets/avatars/avatar-21.png
+?? integration/presentation/assets/avatars/avatar-21.svg
+?? integration/presentation/assets/avatars/avatar-22.png
+?? integration/presentation/assets/avatars/avatar-22.svg
+?? integration/presentation/assets/avatars/avatar-23.png
+?? integration/presentation/assets/avatars/avatar-23.svg
+?? integration/presentation/assets/avatars/avatar-24.png
+?? integration/presentation/assets/avatars/avatar-24.svg
+?? integration/presentation/assets/avatars/avatar-25.png
+?? integration/presentation/assets/avatars/avatar-25.svg
+?? integration/presentation/assets/avatars/avatar-26.png
+?? integration/presentation/assets/avatars/avatar-26.svg
+?? integration/presentation/assets/avatars/avatar-27.png
+?? integration/presentation/assets/avatars/avatar-27.svg
+?? integration/presentation/assets/avatars/avatar-28.png
+?? integration/presentation/assets/avatars/avatar-28.svg
+?? integration/presentation/assets/equipment.json
+?? integration/presentation/assets/equipment/baking-sheet.png
+?? integration/presentation/assets/equipment/baking-sheet.svg
+?? integration/presentation/assets/equipment/balloon-whisk.png
+?? integration/presentation/assets/equipment/balloon-whisk.svg
+?? integration/presentation/assets/equipment/beverage-pitcher.png
+?? integration/presentation/assets/equipment/beverage-pitcher.svg
+?? integration/presentation/assets/equipment/bread-knife.png
+?? integration/presentation/assets/equipment/bread-knife.svg
+?? integration/presentation/assets/equipment/carbon-steel-wok.png
+?? integration/presentation/assets/equipment/carbon-steel-wok.svg
+?? integration/presentation/assets/equipment/chafing-dish.png
+?? integration/presentation/assets/equipment/chafing-dish.svg
+?? integration/presentation/assets/equipment/chef-knife.png
+?? integration/presentation/assets/equipment/chef-knife.svg
+?? integration/presentation/assets/equipment/countertop-blender.png
+?? integration/presentation/assets/equipment/countertop-blender.svg
+?? integration/presentation/assets/equipment/digital-kitchen-scale.png
+?? integration/presentation/assets/equipment/digital-kitchen-scale.svg
+?? integration/presentation/assets/equipment/food-prep-cutting-board.png
+?? integration/presentation/assets/equipment/food-prep-cutting-board.svg
+?? integration/presentation/assets/equipment/food-thermometer.png
+?? integration/presentation/assets/equipment/food-thermometer.svg
+?? integration/presentation/assets/equipment/glass-measuring-jug.png
+?? integration/presentation/assets/equipment/glass-measuring-jug.svg
+?? integration/presentation/assets/equipment/grill-pan.png
+?? integration/presentation/assets/equipment/grill-pan.svg
+?? integration/presentation/assets/equipment/kitchen-colander.png
+?? integration/presentation/assets/equipment/kitchen-colander.svg
+?? integration/presentation/assets/equipment/kitchen-tongs.png
+?? integration/presentation/assets/equipment/kitchen-tongs.svg
+?? integration/presentation/assets/equipment/large-serving-scoop.png
+?? integration/presentation/assets/equipment/large-serving-scoop.svg
+?? integration/presentation/assets/equipment/large-stockpot.png
+?? integration/presentation/assets/equipment/large-stockpot.svg
+?? integration/presentation/assets/equipment/measuring-cup-set.png
+?? integration/presentation/assets/equipment/measuring-cup-set.svg
+?? integration/presentation/assets/equipment/measuring-spoon-set.png
+?? integration/presentation/assets/equipment/measuring-spoon-set.svg
+?? integration/presentation/assets/equipment/medium-cooking-pot.png
+?? integration/presentation/assets/equipment/medium-cooking-pot.svg
+?? integration/presentation/assets/equipment/mesh-strainer.png
+?? integration/presentation/assets/equipment/mesh-strainer.svg
+?? integration/presentation/assets/equipment/muffin-tray.png
+?? integration/presentation/assets/equipment/muffin-tray.svg
+?? integration/presentation/assets/equipment/nonstick-frying-pan.png
+?? integration/presentation/assets/equipment/nonstick-frying-pan.svg
+?? integration/presentation/assets/equipment/pastry-brush.png
+?? integration/presentation/assets/equipment/pastry-brush.svg
+?? integration/presentation/assets/equipment/portion-scoop.png
+?? integration/presentation/assets/equipment/portion-scoop.svg
+?? integration/presentation/assets/equipment/rolling-pin.png
+?? integration/presentation/assets/equipment/rolling-pin.svg
+?? integration/presentation/assets/equipment/saute-pan.png
+?? integration/presentation/assets/equipment/saute-pan.svg
+?? integration/presentation/assets/equipment/serving-tray.png
+?? integration/presentation/assets/equipment/serving-tray.svg
+?? integration/presentation/assets/equipment/silicone-spatula.png
+?? integration/presentation/assets/equipment/silicone-spatula.svg
+?? integration/presentation/assets/equipment/slotted-serving-spoon.png
+?? integration/presentation/assets/equipment/slotted-serving-spoon.svg
+?? integration/presentation/assets/equipment/small-saucepan.png
+?? integration/presentation/assets/equipment/small-saucepan.svg
+?? integration/presentation/assets/equipment/soup-skimmer.png
+?? integration/presentation/assets/equipment/soup-skimmer.svg
+?? integration/presentation/assets/equipment/stainless-food-pan.png
+?? integration/presentation/assets/equipment/stainless-food-pan.svg
+?? integration/presentation/assets/equipment/stainless-mixing-bowl.png
+?? integration/presentation/assets/equipment/stainless-mixing-bowl.svg
+?? integration/presentation/assets/equipment/stainless-steel-ladle.png
+?? integration/presentation/assets/equipment/stainless-steel-ladle.svg
+?? integration/presentation/assets/equipment/stainless-turner.png
+?? integration/presentation/assets/equipment/stainless-turner.svg
+?? integration/presentation/assets/equipment/stand-mixer.png
+?? integration/presentation/assets/equipment/stand-mixer.svg
+?? integration/presentation/assets/equipment/steamer-basket.png
+?? integration/presentation/assets/equipment/steamer-basket.svg
+?? integration/presentation/assets/equipment/wooden-cutting-board.png
+?? integration/presentation/assets/equipment/wooden-cutting-board.svg
+?? integration/presentation/assets/equipment/wooden-spoon.png
+?? integration/presentation/assets/equipment/wooden-spoon.svg
+?? integration/presentation/generate-assets.py
+?? integration/presentation/prepare-npm-cache.mjs
+?? integration/presentation/recovery.py
+?? integration/presentation/seed.go
+?? integration/presentation/test_demo.py
+?? integration/presentation/test_recovery.py
+?? integration/presentation/verify.py
+
+Tracked diff summary:
+ .gitignore                                         |  12 +
+ README.md                                          |  26 +--
+ backend/.env.production.example                    |   7 +
+ backend/README.md                                  |  15 +-
+ backend/internal/application/accounts/service.go   |   3 +
+ backend/internal/application/borrowing/service.go  |  34 ++-
+ backend/internal/application/terms/service.go      |   7 +-
+ backend/internal/bootstrap/app.go                  |  39 ++--
+ .../bootstrap/borrowing_integration_test.go        |  39 ++++
+ backend/internal/bootstrap/dependencies.go         |  25 ++-
+ backend/internal/config/config.go                  |  32 ++-
+ backend/internal/config/config_test.go             |  14 ++
+ backend/internal/domain/accounts/accounts.go       |   1 +
+ backend/internal/domain/borrowing/borrowing.go     |  53 +++--
+ .../persistence/postgres/accounts_repository.go    |   3 +
+ .../persistence/postgres/borrowing_obligations.go  |  22 +-
+ .../persistence/postgres/borrowing_repository.go   |  45 +++-
+ .../persistence/postgres/inventory_repository.go   |  23 +-
+ .../interface/http/handlers/accounts_handler.go    |   9 +-
+ .../interface/http/handlers/borrowing_handler.go   |  65 ++++++
+ backend/internal/interface/http/response/errors.go |   3 +
+ .../interface/http/routes/borrowing_routes.go      |   5 +
+ backend/internal/interface/http/routes/routes.go   |  12 +
+ backend/tests/integration/accounts_test.go         |   6 +
+ .../tests/integration/borrowing_restart_test.go    |  16 +-
+ backend/tests/integration/borrowing_test.go        |  15 +-
+ backend/tests/integration/inventory_test.go        |   6 +-
+ backend/tests/integration/terms_test.go            |   6 +
+ docs/API_CONTRACTS.md                              |  57 +++++
+ docs/STACK.md                                      |   5 +-
+ docs/domain/BUSINESS_RULES.md                      |   2 +
+ docs/domain/DATA_MODEL.md                          |   6 +
+ docs/domain/DOMAIN_MODEL.md                        |   2 +
+ docs/domain/INVARIANTS.md                          |   2 +
+ docs/domain/STATE_MACHINES.md                      |   2 +
+ docs/project/DECISIONS.md                          |  17 ++
+ docs/project/OPEN_DECISIONS.md                     |   6 +-
+ docs/project/PHASE8_14_PROGRESS.md                 |  48 ++--
+ docs/project/ROADMAP.md                            |  53 +++--
+ docs/project/SOURCE_OF_TRUTH.md                    |   8 +-
+ docs/ux/PHASE11_EQUIPMENT_SELECTION_UX.md          |   8 +-
+ frontend/package-lock.json                         | 246 ++++++++++++++++++++-
+ frontend/package.json                              |   2 +
+ frontend/scripts/phase4a-browser-qa.mjs            |   2 +-
+ frontend/scripts/phase4b-browser-qa.mjs            |   2 +-
+ frontend/src/app/router.tsx                        |  13 +-
+ frontend/src/components/application/directory.tsx  |   4 +-
+ .../components/application/operational-frame.tsx   |  14 +-
+ .../components/application/operational-shell.tsx   |   2 +-
+ frontend/src/components/application/shells.tsx     |   9 +-
+ .../src/features/accounts/pages/account-detail.tsx |   3 +-
+ frontend/src/features/accounts/types.ts            |   2 +-
+ frontend/src/features/auth/navigation.ts           |   2 +-
+ frontend/src/features/auth/product-auth.test.tsx   |  64 +++---
+ .../src/features/borrowing/api/borrowing.api.ts    |   7 +-
+ frontend/src/features/borrowing/borrowing.test.tsx |   9 +-
+ .../src/features/borrowing/hooks/use-borrowing.ts  |  13 +-
+ frontend/src/features/borrowing/lib/time.ts        |   2 +
+ .../features/borrowing/pages/borrowing-detail.tsx  |  17 +-
+ .../borrowing/pages/borrowing-directory.tsx        |   6 +-
+ .../features/borrowing/pages/borrowing-frame.tsx   |   3 +-
+ .../features/borrowing/pages/request-compose.tsx   |  62 +++---
+ .../borrowing/pages/staff-borrower-picker.tsx      |  13 +-
+ frontend/src/features/borrowing/types.ts           |  17 +-
+ .../src/features/foundation/foundation.test.tsx    |  25 ++-
+ .../features/inventory/hooks/use-catalog-image.ts  |  13 +-
+ .../features/inventory/pages/equipment-detail.tsx  |   4 +-
+ .../features/inventory/pages/equipment-list.tsx    |  25 +--
+ .../src/features/terms/components/terms-frame.tsx  |   8 +-
+ frontend/src/features/terms/terms.test.tsx         |  17 +-
+ frontend/src/features/workspace/workspace-page.tsx |  21 +-
+ frontend/src/lib/api-client.test.ts                |   9 +
+ frontend/src/lib/api-client.ts                     |   2 +-
+ frontend/src/lib/api-error.test.ts                 |   2 +-
+ frontend/src/lib/api-error.ts                      |   2 +-
+ frontend/src/styles/index.css                      |   3 +
+ frontend/vitest.config.ts                          |   2 +
+ 77 files changed, 1068 insertions(+), 338 deletions(-)

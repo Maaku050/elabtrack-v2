@@ -1,9 +1,14 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Bell, LogOut, LayoutDashboard, ArrowRight, Package, Users, UserRound } from 'lucide-react'
+import { Mail, GraduationCap, IdCard, Phone, ShieldCheck } from 'lucide-react'
+import { useOwnAccount } from '@/features/profile/hooks/use-profile'
+import { Notice } from '@/components/application/management'
+import { apiErrorMessage } from '@/lib/api-error'
+import { ProfileEditor } from '@/features/profile/components/profile-editor'
+import { Link, useLocation } from 'react-router-dom'
+import { LogOut, LayoutDashboard, ArrowRight, Package, Users, UserRound } from 'lucide-react'
 import { borrowerDestinations } from '@/components/application/borrower-navigation'
 import { AccountTerms } from '@/features/terms/components/account-terms'
 import { BorrowerShell } from '@/components/application/shells'
-import { AppButton, PageHeading, SurfaceCard, ThemeControl } from '@/components/application/visual'
+import { AppButton, PageHeading, SurfaceCard } from '@/components/application/visual'
 import { EmptyState } from '@/components/feedback/states'
 import { useAuthStore } from '@/stores/auth-store'
 import { useLogout } from '@/features/auth/hooks/use-auth'
@@ -19,21 +24,21 @@ const labels: Record<string, string> = {
 export function WorkspacePage() {
   const user = useAuthStore(s => s.user)
   const location = useLocation()
-  const navigate = useNavigate()
   const logout = useLogout()
+  const own=useOwnAccount()
   if (!user) return null
   const title = labels[location.pathname] ?? 'Workspace'
   const borrower = user.role === 'BORROWER'
   const account = location.pathname.endsWith('/account')
-  const signOut = <AppButton variant="outline" className="workspace-signout" aria-label="Sign Out" onClick={() => { void logout() }}><LogOut size={18} aria-hidden="true" /><span>Sign Out</span></AppButton>
+  const signOut = <AppButton variant="outline" className={`workspace-signout ${borrower && account ? 'account-header-signout' : ''}`} aria-label="Sign Out" onClick={() => { void logout() }}><LogOut size={18} aria-hidden="true" /><span>Sign Out</span></AppButton>
   const body = <>
-    <PageHeading title={title} description={account ? 'Your FSMO account.' : `Welcome, ${user.name}.`} action={borrower ? <div className="workspace-actions"><ThemeControl />{signOut}</div> : undefined} />
-    {account ? <SurfaceCard className="workspace-placeholder workspace-account"><h2>Account details</h2><dl><dt>Name</dt><dd>{user.name}</dd><dt>Email</dt><dd>{user.email}</dd><dt>Role</dt><dd>{user.role === 'BORROWER' ? 'Borrower' : user.role === 'STAFF' ? 'Staff' : 'Admin'}</dd></dl></SurfaceCard>
+    <PageHeading title={title} description={account ? 'Your FSMO account.' : `Welcome, ${user.name}.`} action={account && borrower ? signOut : undefined} />
+    {account ? <SurfaceCard className="personal-account"><ProfileEditor key={user.id} category={own.data?.borrower_type}/>{own.error&&<Notice tone="danger">{apiErrorMessage(own.error)}<AppButton onClick={()=>{void own.refetch()}}>Retry account information</AppButton></Notice>}<section className="personal-information"><h2>Personal Information</h2><p className="management-note">Your recorded account information. Contact FSMO for authorized corrections.</p><dl className="account-information-grid">{[[Mail,'Email',user.email],[ShieldCheck,user.role==='BORROWER'?'Borrower type':'Account role',user.role==='BORROWER'?(own.data?.borrower_type||'Borrower'):user.role],[IdCard,'Student ID',own.data?.borrower_type==='STUDENT'?own.data.student_id:''],[GraduationCap,'Course / program',own.data?.course],[Phone,'Contact number',own.data?.contact_number]].filter(([, ,value])=>value).map(([Icon,label,value])=>{const I=Icon as typeof Mail;return <div key={String(label)}><I aria-hidden="true"/><div><dt>{String(label)}</dt><dd>{String(value)}</dd></div></div>})}</dl></section></SurfaceCard>
       : !borrower && title === 'Dashboard' ? <DashboardWelcome /> : <SurfaceCard className="workspace-placeholder"><EmptyState title="This feature is not available yet" description="Your account is connected. Contact FSMO for assistance while this workspace is being prepared." /></SurfaceCard>}
-    {account && borrower && <AccountTerms />}
+    {account && borrower && <div className="account-terms-section"><AccountTerms/></div>}
   </>
   return borrower ? <BorrowerShell active={title === 'Equipment Catalog' ? 'Equipment' : title} destinations={borrowerDestinations}
-    action={<AppButton variant="ghost" aria-label="Notifications" onClick={() => navigate('/borrower/notifications')}><Bell size={20} aria-hidden="true" /></AppButton>}>{body}</BorrowerShell>
+>{body}</BorrowerShell>
     : body
 }
 

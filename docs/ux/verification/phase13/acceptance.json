@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Genuine first-use terms, adjacent cart controls, separate review and exactly one atomic five-unit reservation",
+    "Actual Staff physical checkout records future Manila deadline and transfers reserved custody exactly",
+    "Mixed partial return records usable/damaged/lost separately and retains two physical and two replacement obligations",
+    "Remaining return alone leaves replacement liability; two verified replacements complete loan while damaged original remains held",
+    "Admin-only entire fine resolution preserves physical stock, replacements, original deadline and open loan",
+    "Persisted in-app notification read state survives full session recovery",
+    "Dashboard/Inventory/Borrowers routes retain shell with no reload and exactly one current-authority auth/me check per pathname",
+    "Actual filtered CSV download and server result count reflect the same recorded inventory",
+    "Borrower mobile completed/history views remain read-only and unauthorized Admin navigation cannot grant access"
+  ],
+  "screens": [],
+  "errors": [],
+  "externalRequests": [],
+  "requestPosts": 1,
+  "navigationAuthMeDelta": 3,
+  "scope": "Actual isolated PostgreSQL production bundle and normal auth/terms/cart/checkout/mixed return/replacement/fine/notification/CSV operations. Final owner acceptance pending.",
+  "screens_original_capture_count": 16,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

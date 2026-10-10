@@ -1,6 +1,6 @@
 # Phase 11 — binding equipment selection UX
 
-2026-10-10. **CONFIRMED OWNER REQUIREMENTS**, DEC-080. This specifies the future interface. DEC-081 subsequently records formal acceptance of functional Phase7 only; Phases8–14 remain paused and final Phase11 presentation is not accepted by that decision. Both supplied V1 screenshots have been visually inspected. No Phase11 implementation, rendered V2 comparison or runtime interaction verification is claimed.
+2026-10-10. **Confirmed owner requirements, DEC-080; current implementation authority DEC-082 after Phase10 exit gate.** DEC-081 accepted functional Phase7 and its local checkpoint; the later master prompt renewed Phases8–14 authority. Both V1 references are re-inspected. Phase11 engineering gate PASS; [verification](../project/PHASE11_REPORT.md). Final owner acceptance remains pending. [Current plan](../project/PHASE11_IMPLEMENTATION_PLAN.md). The exact comparison below remains binding.
 
 ## Reference and current evidence
 
@@ -13,9 +13,9 @@ The owner's two V1 equipment-selection screenshots are the binding interaction r
 | `elabtrack_v1_quantity_add_reference.png` | 591 × 154 px | `d0dbd41d7748c9b579ef341ca931e63c334617c90f197647495098f950e443cc` |
 | `elabtrack_v1_browse_cart_reference.png` | 1311 × 588 px | `5265a1918bf6d4f2df8a5f515f110c1100a4292cd02dcdb86558e19f40b73510` |
 
-The archive's `REFERENCE_NOTES.txt` was read as supporting reference material. It is not separate execution authority: the owner's current message authorizes documentation only. Screenshots establish visible layout and control affordances; they do not establish click behavior, editable-input semantics, accessibility, backend arithmetic or mobile responsiveness. No V1 application or Firebase access was performed. Background personal/sample records are excluded from this specification.
+The archive's `REFERENCE_NOTES.txt` was read as supporting reference material. It is not separate execution authority: the earlier reference-preparation message authorized documentation only; the latest master prompt/DEC-082 supplies current implementation authority. Screenshots establish visible layout and control affordances; they do not establish click behavior, editable-input semantics, accessibility, backend arithmetic or mobile responsiveness. No V1 application or Firebase access was performed. Background personal/sample records are excluded from this specification.
 
-**ACTUAL CURRENT V2 BEHAVIOR:** `frontend/src/features/borrowing/pages/request-compose.tsx` lists name/category/available stock with Select, initially adding one unit to a local form. Quantity editing appears separately under Your selection, then a dedicated review stage. These selection rows have no equipment images or inline minus/quantity/plus/Add controls. Phase7 is the functional baseline, not evidence that this Phase11 requirement is implemented.
+**Phase7 source baseline before Phase11:** `frontend/src/features/borrowing/pages/request-compose.tsx` lists name/category/available stock with Select, initially adding one unit to a local form. Quantity editing appears separately under Your selection, then a dedicated review stage. These selection rows have no equipment images or inline minus/quantity/plus/Add controls. Phase7 is the functional baseline, not evidence that this Phase11 requirement is implemented.
 
 Reuse the protected `EquipmentImage`, `useEquipment` server queries/pagination, `useBorrowingCommand`, `borrowingApi.submit`, RHF/Zod validation and reviewed idempotency-key/busy guard. [Phase7 API contracts](../API_CONTRACTS.md#phase-7-implemented-borrowing-contracts) govern authority, payloads and transactions.
 
@@ -90,7 +90,7 @@ Stock/terms conflicts refresh affected server data and retain the draft for expl
 5. Exercise real Phase7 APIs/PostgreSQL: atomic multi-item reserve, stale/insufficient stock, eligibility/terms/role/account changes, idempotent retry, cancellation/expiry conservation and preserved custody/history.
 6. Run required quality gates and real Chromium acceptance with responsive light/dark evidence. Do not mark completion or owner acceptance from this specification alone.
 
-**Handoff:** Phase11 remains unimplemented and paused under DEC-081. Once advancement is authorized and prerequisite gates pass, this specification governs equipment-selection UX. No code, migration, approved mockup edit, V1 import, commit, push or deployment belongs to this documentation update.
+**Current handoff:** Phase10 prerequisites passed and DEC-082 authorizes implementation under this specification. Phase11 engineering/visual/runtime acceptance is still pending. No migration, V1 import, commit, push or deployment is needed for selection UX. Historical documentation-only checks below do not count as implementation acceptance.
 
 ## Initial binding-document verification — before reference receipt
 

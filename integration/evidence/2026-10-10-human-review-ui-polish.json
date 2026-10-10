@@ -1,0 +1,157 @@
+{
+  "status": "ENGINEERING VERIFIED",
+  "owner_visual_acceptance": "PASSED \u2014 explicit owner final publication prompt, 2026-10-11",
+  "task_started": "2026-10-10",
+  "verification_completed": "2026-10-11",
+  "timezone": "Asia/Shanghai",
+  "requirements": "DEC-084",
+  "references": {
+    "documents": 2,
+    "individually_inspected_images": 18,
+    "manifest": "docs/ux/verification/human-review/reference-manifest.json"
+  },
+  "frontend": {
+    "test_result": "PASS",
+    "tests": 334,
+    "files": 32,
+    "workers": 2,
+    "duration_seconds": 79.23,
+    "focused_tests": 10,
+    "typescript_build": "PASS",
+    "lint": "PASS",
+    "inherited_warnings": 19,
+    "changed_typescript_eslint_diagnostics": 0
+  },
+  "backend": {
+    "fmt": "PASS",
+    "vet": "PASS",
+    "tests": "PASS",
+    "public_passing_test_packages": 28,
+    "source_and_migrations_changed": false,
+    "dedicated_fresh_postgresql_suite_rerun": false
+  },
+  "browser": {
+    "after": {
+      "result": "PASS",
+      "check_groups": 8,
+      "screenshots": 146,
+      "javascript_errors": 0,
+      "evidence": "docs/ux/verification/human-review/after/acceptance.json"
+    },
+    "operational": {
+      "result": "PASS",
+      "check_groups": 8,
+      "screenshots": 146,
+      "javascript_errors": 0,
+      "evidence": "docs/ux/verification/human-review/operational/acceptance.json"
+    },
+    "workflows": {
+      "result": "PASS",
+      "check_groups": 6,
+      "screenshots": 13,
+      "javascript_errors": 0,
+      "evidence": "docs/ux/verification/human-review/workflows/acceptance.json"
+    }
+  },
+  "presentation_integrity": {
+    "counts": "PASS",
+    "stock": "PASS",
+    "ledger": "PASS",
+    "movement_sums": "PASS",
+    "chronology": "PASS",
+    "ledger_chronology": "PASS",
+    "synthetic": "PASS",
+    "replacement_overflow": "PASS",
+    "notification_uniqueness": "PASS",
+    "distinct_fictional_avatars": "PASS",
+    "bundled_asset_provenance_hashes": "PASS"
+  },
+  "preservation": [
+    {
+      "target": "normal",
+      "tables": 21,
+      "unchanged": true
+    },
+    {
+      "target": "accepted-phase7-demo",
+      "tables": 22,
+      "unchanged": true
+    }
+  ],
+  "shared_source_proof": {
+    "shared_frontend_files_and_manifests_identical": 265,
+    "home_dashboard_source_unchanged": true,
+    "backend_migrations_unchanged": true
+  },
+  "task_changed_files": [
+    ".gitignore",
+    "docs/project/COMPLETE_FRONTEND_UI_RECONSTRUCTION_REPORT.md",
+    "docs/project/DECISIONS.md",
+    "docs/project/HUMAN_REVIEW_UI_POLISH_GIT_STATUS.txt",
+    "docs/project/HUMAN_REVIEW_UI_POLISH_PROGRESS.md",
+    "docs/project/HUMAN_REVIEW_UI_POLISH_REPORT.md",
+    "docs/project/ROADMAP.md",
+    "docs/project/SOURCE_OF_TRUTH.md",
+    "docs/ux/verification/human-review/index.html",
+    "docs/ux/verification/human-review/reference-manifest.json",
+    "frontend/scripts/browser-cdp.mjs",
+    "frontend/scripts/human-review-before.mjs",
+    "frontend/scripts/human-review-browser-qa.mjs",
+    "frontend/scripts/human-review-workflow-qa.mjs",
+    "frontend/src/features/borrowing/components/equipment-selection-card.tsx",
+    "frontend/src/features/borrowing/direct-wizard.test.tsx",
+    "frontend/src/features/borrowing/hooks/use-borrowing.ts",
+    "frontend/src/features/borrowing/human-review.test.tsx",
+    "frontend/src/features/borrowing/pages/borrowing-directory.tsx",
+    "frontend/src/features/borrowing/pages/catalog-cart.tsx",
+    "frontend/src/features/borrowing/pages/request-compose.tsx",
+    "frontend/src/features/workspace/workspace-page.tsx",
+    "frontend/src/styles/human-review.css",
+    "frontend/src/styles/index.css",
+    "integration/evidence/2026-10-10-human-review-ui-polish.json"
+  ],
+  "screenshots": {
+    "before": 27,
+    "after": 146,
+    "operational": 146,
+    "workflows": 13,
+    "total_unique_pngs": 332
+  },
+  "normal_database_migrated_or_reset": false,
+  "presentation_reset_or_reseed": false,
+  "remaining_dependencies": [
+    "Separately authorized normal schema8\u219211 migration",
+    "Official FSMO terms/publication/current consent for live borrowing",
+    "Approved Student domains and required activation/ownership/Brevo live delivery readiness"
+  ],
+  "limitations": [
+    "Native scrollbar/browser/OS differences",
+    "Physical phone/assistive-device/non-Chromium verification unrun",
+    "Independent count queries are not one atomic snapshot"
+  ],
+  "git": {
+    "branch": "main",
+    "head": "c2741c54ba3aca95df705ce612ade1a277e0335d",
+    "modified_tracked": 78,
+    "untracked_paths": 954,
+    "total_changed_or_untracked": 1032,
+    "staged_paths": 0,
+    "commit_performed": false,
+    "push_or_deployment": false,
+    "cumulative_existing_work_preserved": true,
+    "inventory": "docs/project/HUMAN_REVIEW_UI_POLISH_GIT_STATUS.txt"
+  },
+  "secret_audit": {
+    "result": "PASS",
+    "public_files_scanned": 2917,
+    "private_configurations_scanned": 48,
+    "known_private_values_compared": 378,
+    "known_secret_matches": 0,
+    "index_empty": true,
+    "private_reference_and_configuration_ignored": true,
+    "no_credentials_printed": true
+  },
+  "git_diff_check": "PASS",
+  "publication_handoff": "docs/project/RELEASE_PUBLICATION_REPORT.md",
+  "historical_git_and_capture_counts": true
+}

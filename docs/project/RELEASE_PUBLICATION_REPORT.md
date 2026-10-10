@@ -1,0 +1,35 @@
+# eLabTrack V2 release publication audit
+
+2026-10-11. Owner final Staff/Admin desktop and Student/Faculty mobile visual review **passed**, with no remaining UI issues. DEC-085 authorizes publication of the completed Phases 8–14 implementation and approved shared UI on `release/elabtrack-v2-presentation-ready` only. This does not authorize deployment, merging into main, normal migration, live mail or new feature work.
+
+## Audited scope and curation
+
+Initial live branch `main`, HEAD `c2741c54ba3aca95df705ce612ade1a277e0335d`: **78 modified tracked, 954 untracked, zero staged**. [The classification inventory](RELEASE_INITIAL_PATH_CLASSIFICATION.json) assigns every initial path to source/configuration, migrations, tests, demo tooling, offline assets, documentation, useful evidence or redundant captures. No unknown or unrelated change was discarded.
+
+The integrated implementation is checkpointed as one complete Conventional Commit rather than separating interdependent backend/API/frontend changes into incomplete intermediate trees. It includes paired migrations 000009–000011, all necessary application source/tests, browser/integration scripts, presentation setup/seed/recovery, README/contracts/plans/reports, local assets and licenses. [The staging manifest](RELEASE_STAGING_MANIFEST.txt) records the exact reviewed changed/new paths. Unchanged baseline files remain part of the final repository.
+
+The release retains **42 representative verification PNGs**, including light/dark desktop/mobile before/after, real issuance/return, PDF pages and offline checks. **600 redundant screenshots are excluded and retained locally**. [The evidence manifest](../ux/verification/RELEASE_EVIDENCE_MANIFEST.json) records every retained/excluded screenshot and retained hashes. Both galleries and capture lists are curated to shipped files; complete original gallery/capture JSON is preserved privately. Original automated-run capture totals remain historical test facts. Raw owner-reference crops are excluded even where a previous task approved a sanitized crop.
+
+All **40 catalog PNGs, 28 fictional avatar PNGs and 68 editable SVG sources** are included, with equipment metadata and hash/provenance manifest. The licensed PDF font and required package notices are retained in [third-party notices](../THIRD_PARTY_NOTICES.md). No real student/faculty identities or external portrait library enter the demo seed.
+
+Private credentials/configuration, demo password manifests, authentication tokens/cookies, `.env`, database dumps, runtime logs/process state, private references, generated builds, installed dependencies/caches and temporary test outputs stay ignored/local. Test-only sentinels are nonusable synthetic values; no issued demonstration account password is published. Existing approved branding/references are historical project assets, not newly uploaded owner documents.
+
+## Engineering evidence
+
+- Frontend: **334 tests / 32 files passed** in the sequential final run; TypeScript/production build and lint passed. Nineteen inherited lint warnings remain. The initial concurrent run timed out one asynchronous query test (333 passed); sequential verification passed without test/source/timeout changes.
+- Backend: Go formatting, vet, normal tests and race tests passed. Generic database tests may skip without their explicit fixture environment; the dedicated suite below actually uses PostgreSQL.
+- Fresh isolated QA: **121 named PostgreSQL/API race checks passed** across terms (13), accounts (11), inventory (9), borrowing/accountability/notifications/reporting/profile (55), HTTP (33). New isolated migrations 1–11 **up / full empty down / up** passed. All 16 historical migration files exactly match accepted `c2741c5`; all 11 paired migration checksums are recorded.
+- Presentation: **10 target/reset/credential/recovery guard tests passed**; read-only reconciliation passed all **11 integrity categories**, including exact fictional account/catalog/image counts, conservation, ledger/movement sums, chronology and all 68 asset hashes. Existing normal and accepted Phase 7 data use fresh read-only preservation baselines; no normal/demo reset or reseed is performed.
+- Latest pre-publication functional Chromium evidence remains **22 human-polish check groups**, including 8 shared operational, 8 presentation and 6 real transaction checks; preceding full reconstruction includes 121 PostgreSQL/API checks, 83 Chromium groups and 12 actual PDF kinds. These historical checks are not mislabeled as newly executed here. Publication verification adds a read-only offline Chromium startup check and a fresh exported-tree build, reported in the accompanying validation evidence.
+
+Final staging/secret/link/fresh-tree and remote publication results are recorded in [the validation evidence](../../integration/evidence/2026-10-11-release-validation.json). Logs/configuration remain private; no secret values are printed. A standalone local secret scanner is unavailable; existing known-value scanning is supplemented with credential/key/token patterns and unpublished-history inspection.
+
+## Publication and preserved boundaries
+
+Configured origin verified as `https://github.com/Maaku050/elabtrack-v2.git`. Before publication, remote main is `73f3fe49c61961db4b678975d9ff2145da192f8a`; local main remains `c2741c54ba3aca95df705ce612ade1a277e0335d`. The release therefore includes the separately owner-approved unpublished Phase 7 checkpoint `c2741c5`, whose 83 changed paths were also scanned. The requested release branch did not exist remotely or locally before this task. Use only a normal non-force push; no main push, history rewrite, GitHub release, deployment or automatic merge.
+
+The exact final commit hash, successful remote HEAD comparison and final Git status are reported after publication; a commit cannot contain its own hash. The curated tree and source checks are completed before publication. GitHub CLI is not installed; no pull request is required or created automatically.
+
+Normal development stays at schema **000008**. The full fictional presentation remains at isolated schema **000011**, using **http://127.0.0.1:15177/login**. No existing normal or accepted Phase 7 database records are changed; verification writes occur only in the explicitly fresh disposable QA target. Offline operation needs prepared dependencies/toolchains and PostgreSQL image: initial installation may require internet; running the prepared presentation does not.
+
+Production still requires official FSMO terms publication/current consent, approved Student-domain inputs, verified secure activation/Brevo sender and delivery, recovery/cadence/retention/disposition responsibilities, authorized normal migration with verified backup/restore, and production HTTPS/origin/cookie/TLS/operations review. See [production gaps](PRODUCTION_READINESS_GAPS.md) and [setup](PRESENTATION_SETUP.md). Physical Windows/mobile/assistive/Safari/Firefox and independent production security/load certification remain disclosed limits. No V1 import is implemented or required.

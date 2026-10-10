@@ -1,6 +1,16 @@
 # Initial delivery roadmap
 
-**Formal owner acceptance, 2026-10-10 — DEC-081:** Phase7 Borrowing & Reservations is OWNER ACCEPTED following manual core-workflow review and automated safeguards. Student/Faculty mobile UI is accepted as functional Phase7, not final presentation; DEC-080 governs the future Phase11 browse/cart. Only a safe LOCAL checkpoint of verified Phase7/demo tooling/UX documents is authorized now. Do not begin Phases8–14, push or deploy. Official FSMO terms/current consent, approved production Student domains and required activation readiness remain live-use gates. Earlier pending-acceptance/correction statements below are historical. See [the checkpoint report](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md).
+**Current owner acceptance and publication authority, 2026-10-11 — DEC-085:** Final Staff/Admin desktop and Student/Faculty mobile visual review passed; the owner reported no remaining UI issues and authorized auditing, committing and pushing the completed Phases 8–14 application and shared UI to `release/elabtrack-v2-presentation-ready`. Main and production deployment remain untouched. Normal schema 000008 and existing records are preserved. Official FSMO terms/current acceptance, production Student domains, verified activation/Brevo and operational deployment readiness remain separate gates. Earlier pending-review/no-commit statements below are historical task snapshots. [Release audit and publication handoff](RELEASE_PUBLICATION_REPORT.md).
+
+**Latest owner human review, 2026-10-10 — DEC-084:** Dashboard composition and Borrower Home are explicitly visually accepted. Only the final desktop queue/scrollbar/issuance and mobile overlay/control/Account refinements are authorized. Shared operational/presentation implementation and verification are tracked in [progress](HUMAN_REVIEW_UI_POLISH_PROGRESS.md) and [report](HUMAN_REVIEW_UI_POLISH_REPORT.md). Final owner visual acceptance remains pending; prior engineering evidence is retained. No normal migration/reset, commit, push or deployment.
+
+**Current UI reconstruction, 2026-10-10 — DEC-083:** **Engineering verified**: 328 frontend tests (serial and parallel), 121 named PostgreSQL/API checks and 83 Chromium check groups pass. The owner authorizes the complete shared Staff/Admin desktop and Student/Faculty mobile reconstruction from both DOCX specifications. S01 applies to page content only; preserve the operational shell. B01/B02/Profile After and DEC-080 govern borrower composition and cart interactions. [Durable progress](COMPLETE_UI_RECONSTRUCTION_PROGRESS.md), [complete implementation report](COMPLETE_FRONTEND_UI_RECONSTRUCTION_REPORT.md), and [reference/evidence gallery](../ux/verification/complete-ui/index.html) separate engineering verification from **owner visual acceptance, still pending**. Raw references contain private information and remain ignored. Earlier Phase 3/11 visual baselines below are historical where superseded by this explicit scope. Existing Phases 8–14 engineering results are preserved; their final owner acceptance remains pending. No normal migrations, data resets, commits, pushes or deployment are authorized.
+
+**Current engineering closeout,2026-10-10:** Phases8–14 mandatory gates PASS; [system report](SYSTEM_IMPLEMENTATION_REPORT.md) and [presentation walkthrough](PRESENTATION_WALKTHROUGH.md). Final owner acceptance remains pending. Normal000008 and accepted Phase7 demo data are preserved; full presentation uses isolated000011 on15177. No commit/push/deploy/normal migration or live email. Remaining approvals/dependencies: [production gaps](PRODUCTION_READINESS_GAPS.md).
+
+**Current implementation authority,2026-10-10 — DEC-082:** The owner authorizes sequential Phases8–14 from acceptedc2741c5, with mandatory preflight/verification gates and an isolated offline presentation build. DEC-081 acceptance and DEC-080 UX remain binding. Earlier implementation pauses below are historical. No commit/push/deploy or normal database changes. Final owner acceptance remains pending. [Master plan](REMAINING_SYSTEM_IMPLEMENTATION_PLAN.md) and [durable progress](PHASE8_14_PROGRESS.md).
+
+**Historical Phase7 checkpoint authority, 2026-10-10 — DEC-081 (advance scope now superseded by DEC-082):** Phase7 Borrowing & Reservations is OWNER ACCEPTED following manual core-workflow review and automated safeguards. Student/Faculty mobile UI is accepted as functional Phase7, not final presentation; DEC-080 governs the future Phase11 browse/cart. Only a safe LOCAL checkpoint of verified Phase7/demo tooling/UX documents is authorized now. Do not begin Phases8–14, push or deploy. Official FSMO terms/current consent, approved production Student domains and required activation readiness remain live-use gates. Earlier pending-acceptance/correction statements below are historical. See [the checkpoint report](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md).
 
 **Historical owner correction,2026-10-10:** Phase7 OWNER ACCEPTANCE PENDING. The prior formal acceptance/Phases8–14 authority below is superseded: PAUSE Phases8–14; create an isolated Phase7 demo using73f3fe4 and000001–000008 so the owner can test real eligible accounts and synthetic demo-only terms. Normal accounts,terms,stock and history remain untouched. [Paused progress](PHASE8_14_PROGRESS.md). The scoped [Phase7 demo report](PHASE7_OWNER_DEMO_IMPLEMENTATION_REPORT.md) and [owner guide](PHASE7_OWNER_DEMO_ACCEPTANCE_GUIDE.md) record isolated engineering verification; owner acceptance remains pending.
 
@@ -138,7 +148,7 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 ## Phase 6 — Equipment & Inventory
 
-- **Status:** COMPLETE within reviewed Batch1 catalog/inventory scope. Core Go/frontend/fresh PostgreSQL/narrow privileges/history/concurrency/HTTP/Chromium gates PASS; see [report](PHASE6_REPORT.md). Future liability integration remains explicitly guarded, not implemented Phase7 borrowing. Phase7 is not authorized.
+- **Status:** COMPLETE within reviewed Batch1 catalog/inventory scope. Core Go/frontend/fresh PostgreSQL/narrow privileges/history/concurrency/HTTP/Chromium gates PASS; see [report](PHASE6_REPORT.md). This is the historical Batch1 scope; later owner-accepted Phase7 and DEC-082 implementation below now integrate liability without weakening conservation.
 
 - **Goal:** Implement catalog pools and four-count physical inventory with append-only evidence.
 - **Deliverables:** Bounded discovery, metadata/version, A/R/C/damaged_held constraints, stock ledger and guarded archive; categories/images as reviewed.
@@ -158,7 +168,7 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 ## Phase 7 — Borrowing & Reservations
 
-- **Status:** PHASE7 ENGINEERING COMPLETE / OWNER ACCEPTANCE PENDING, authorized complete7A–D one-shot implementation. Executed evidence is recorded in [PHASE7_COMPLETION_REPORT.md](PHASE7_COMPLETION_REPORT.md). New workflow/screen acceptance and normal-database rollout remain separate; no automatic normal migration.
+- **Status:** OWNER ACCEPTED under DEC-081; accepted checkpointc2741c5. [Phase7 checkpoint](PHASE7_OWNER_ACCEPTANCE_CHECKPOINT.md). Earlier pending acceptance is historical. Normal migrated through000008; later suffix remains isolated until separately authorized.
 
 - **Goal:** Implement reserve-on-submit and approval WITH physical release.
 - **Deliverables:** PENDING holds,24h expiry/sweep/lazy check, owner pending cancel, required visible denial reason, atomic CHECKED_OUT issue/direct checkout, required due date+time/Asia-Manila/current terms, retained history and idempotency.
@@ -168,7 +178,7 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 ## Phase 8 — Returns & Accountability
 
-- **Status:** NOT STARTED / NOT AUTHORIZED by the Phase7 scope.
+- **Status:** Engineering PASS under DEC-082; [Phase8 report](PHASE8_REPORT.md). Final Phases8–14 owner acceptance pending.
 
 - **Goal:** Implement partial returns, damage/loss replacements and full Admin fine clearance.
 - **Deliverables:** Immutable unique return/acceptance lines, obligations and acquisition vectors, physical0+replacement0 completion, original due clock, PHP 10 ceiling24h live/final fine and immutable full clear methods/history.
@@ -178,59 +188,60 @@ Production configuration/runtime safety; authentication/current-account authoriz
 
 ## Phase 9 — Notifications & Scheduled Work
 
-- **Goal:** Deliver approved confirmations/reminders with observable failures.
-- **Primary deliverables:** Provider adapter, consistent messages, bounded scheduled jobs, delivery/retry/deduplication records and tests.
-- **Dependencies:** Phases 7–8; email provider, due/overdue timing and delivery responsibilities agreed.
+- **Status:** Engineering PASS; [Phase9 report](PHASE9_REPORT.md).
+- **Goal:** Persist authorized in-app confirmations/reminders with reliable deduplication and recovery.
+- **Primary deliverables:** Durable dispatch/recipient records, read/unread state, bounded worker, role-scoped bell/center, actual restart tests. Live Brevo delivery is deferred.
+- **Dependencies:** Phases7–8; production due-soon/repeat timing remains OPEN-025. Default lead is off; demonstration24h is explicit and not institutional approval.
 - **Explicit non-goals:** No unapproved SMS/push provider or distributed broker.
 - **Exit gate:** Agreed triggers are reliable, retries are safe, failures visible, and test delivery/schedule boundaries pass.
 
 ## Phase 10 — Dashboards & Reporting
 
+- **Status:** Engineering PASS; [Phase10 report](PHASE10_REPORT.md).
 - **Goal:** Provide authorized, source-defined operational insight.
-- **Primary deliverables:** Approved metrics, bounded dashboard/report queries and required export/print formats.
+- **Primary deliverables:** Source-defined actual metrics,12 bounded authorized reports and safe filtered CSV; no revenue/pricing/payment metrics or claimed print format.
 - **Dependencies:** Phases 5–9; Phase 2.5 lifecycle/replacement/fine definitions and access matrix; final approved report formats.
 - **Explicit non-goals:** No generic analytics platform, unbounded global reads or guessed revenue.
 - **Exit gate:** Metrics reconcile with authoritative records; authorization, pagination/export limits and accuracy tests pass.
 
 ## Phase 11 — Interactive Equipment Catalog / Kiosk Experience
 
-- **Status:** Not started / PAUSED under DEC-081; Phase7 owner acceptance is confirmed, while prerequisite advancement gates and implementation authority remain pending. DEC-080 confirms the [binding selection UX](../ux/PHASE11_EQUIPMENT_SELECTION_UX.md), without authorizing implementation now.
+- **Status:** Engineering PASS under DEC-082; DEC-080 implemented and verified in [Phase11 report](PHASE11_REPORT.md). Final presentation design owner acceptance pending.
 - **Goal:** Complete and validate the academic Interactive Kiosk requirement as normal responsive borrower browse/search/filter/quantity/cart/review/request UX.
 - **Deliverables:** End-to-end catalog/cart usability/accessibility, responsive refinements and operator guidance; reuse earlier implemented canonical catalog/request flows, no duplicate app.
 - **Binding selection:** Each card has actual catalog imagery, name/category, available physical quantity and compact quantity/Add controls. Mobile keeps `[ − ] [ quantity ] [ + ] [ Add ]` together with adequate touch targets and a cart/review sheet or dedicated screen. Desktop follows the owner's V1 browse-and-cart interaction reference. No prices/payments.
 - **Dependencies:** Approved Phase 3A/3B flow and Phases4/6/7; Phase 9 notices where included. No device registration, shared-device identity, handoff or hardware policy dependency.
-- **Reference/contract gate:** Both owner V1 screenshots are received and inspected in the binding specification; future rendered Phase11 fidelity/runtime verification remains pending. Reuse Phase7 APIs, reservation transactions and eligibility/terms checks. Draft cart operations do not reserve stock.
+- **Reference/contract gate:** Both owner V1 screenshots are received and inspected in the binding specification; rendered desktop/mobile/light/dark/API verification passes; final owner visual acceptance remains pending. Reuse Phase7 APIs, reservation transactions and eligibility/terms checks. Draft cart operations do not reserve stock.
 - **Non-goals:** No dedicated touchscreen shell, device tokens/authentication infrastructure, physical tracking or native application.
 - **Exit gate:** Mobile-first cart/request and larger-screen adaptations preserve stock/ownership/terms semantics and pass accessibility/usability tests; functional kiosk intent documented.
 
-## Phase 12 — Isolated FSMO presentation dataset (future, paused)
+## Phase 12 — Fresh installation and isolated presentation dataset
 
-- **Status:** Not started; Phases8–14 remain paused pending Phase7 owner verification. The owner cancelled V1 import; no live legacy access or import is planned.
-- **Goal:** Extend the guarded Phase7 demo infrastructure for a fresh FSMO installation and offline presentation after the preceding authorized feature gates pass.
-- **Future scope:**40 fictional equipment,20 Students,5 Faculty,2 Staff,1 Admin, local illustrated avatars and realistic histories using implemented services. No return/fine fixtures before those features exist and pass verification.
-- **Current boundary:** [Phase7 demo](PHASE7_OWNER_DEMO_ACCEPTANCE_GUIDE.md) contains only5 fictional accounts,8 equipment and existing borrowing workflows. It does not implement Phase12.
-- **Safety gate:** Explicit disposable identity/reset confirmation, private credentials, real authorization/consent, retained normal data, local assets and tested offline operation. Official institutional terms and verified activation readiness still gate real borrowing.
+- **Status:** Engineering PASS; [Phase12 report](PHASE12_REPORT.md). V1 import is cancelled.
+- **Delivered:**40 fictional equipment,20 Students,5 Faculty,2 Staff,1 Admin,68 protected local original illustrations,35 realistic service-created histories, optional own profile-image updates and actual current-version demonstration consent.
+- **Safety:** Dedicated54836/18087/15177 identity, private generated credentials, transactional initialization, guarded reset/new retained volumes and preserved normal/accepted Phase7 data. No production activation shortcut or unapproved official terms.
+- **External gates:** Official publication/current consent, verified activation readiness and approved Student domains remain required for live use.
 
 ## Phase 13 — QA, Security & Optimization
 
+- **Status:** Engineering PASS; [Phase13 report](PHASE13_REPORT.md), [security assessment](PHASE13_SECURITY_ASSESSMENT.md).
 - **Goal:** Validate complete workflows and address measured security/performance risks.
 - **Primary deliverables:** End-to-end regression, security review, concurrency/load/accessibility checks, defect fixes and release evidence.
 - **Dependencies:** Phases 1–12 with test data, expected workloads and acceptance targets agreed.
 - **Explicit non-goals:** No speculative features or infrastructure scaling without measured need.
 - **Exit gate:** Required quality gates and risk-based tests pass; critical/high findings resolved or explicitly accepted by accountable owners.
 
-## Phase 14 — Deployment, Pilot & Evaluation
+## Phase 14 — Offline presentation package
 
-- **Goal:** Deploy through approved controls and evaluate real FSMO operation.
-- **Primary deliverables:** Approved deployment/backups/monitoring, operator training, pilot, incident/rollback procedures and evaluation results.
-- **Dependencies:** Phase 13 release approval, fresh-installation/backup readiness, institutional terms, activation readiness and operational owners.
-- **Explicit non-goals:** No campus rollout or automatic expansion proposal approval.
-- **Exit gate:** Pilot meets agreed operational criteria; incidents/lessons and stakeholder evaluation recorded; future work remains separately approved.
+- **Status:** Engineering PASS under DEC-082; [Phase14 report](PHASE14_REPORT.md) and [system report](SYSTEM_IMPLEMENTATION_REPORT.md). Final owner acceptance pending; stop after14.
+- **Scope:** Fresh isolated setup/dependency installation, offline production bundle/API/PostgreSQL, startup/shutdown/health/reset/recovery, secure generated demonstration Admin and interactive credentials, full FSMO walkthrough/short route.
+- **Gate:** Actual independent installation, blocked-external-network browser workflows/local assets and preservation; reports and exact repository audit. No deployment, pilot, commit or push is authorized.
+- **Later work:** Institutional/activation/domain approvals, production topology/backup ownership, separately reviewed normal migration and owner authorization are required before deployment or real pilot. Presentation completion does not grant them.
 
 ## Future separate project — Campus-Wide Equipment System Proposal
 
 - **Goal:** evaluate whether measured V2 outcomes justify a broader school proposal.
 - **Primary deliverables:** separately requested scope/feasibility/governance proposal informed by the FSMO pilot.
-- **Dependencies:** Phase 14 evidence and explicit school sponsorship.
+- **Dependencies:** Evidence from a later separately authorized FSMO pilot and explicit school sponsorship; the current local presentation is not a campus rollout.
 - **Explicit non-goals:** no campus architecture, tenancy or cross-department implementation in current V2.
 - **Exit gate:** independent stakeholder decision on whether to authorize that future project.

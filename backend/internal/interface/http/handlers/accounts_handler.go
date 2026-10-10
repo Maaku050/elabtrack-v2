@@ -69,7 +69,14 @@ func (h *AccountsHandler) List(c fiber.Ctx) error {
 	if e != nil {
 		return response.Error(c, shared.ErrInvalidInput)
 	}
-	v, e := h.svc.List(c.Context(), actor(c), d.Filter{Page: page, PerPage: per, Search: c.Query("search"), BorrowerType: c.Query("borrower_type"), Status: c.Query("status"), Staff: staffPath(c)})
+	eligible := false
+	if raw := c.Query("eligible_for_issuance"); raw != "" {
+		if raw != "true" && raw != "false" {
+			return response.Error(c, shared.ErrInvalidInput)
+		}
+		eligible = raw == "true"
+	}
+	v, e := h.svc.List(c.Context(), actor(c), d.Filter{Page: page, PerPage: per, Search: c.Query("search"), BorrowerType: c.Query("borrower_type"), Status: c.Query("status"), Staff: staffPath(c), EligibleForIssuance: eligible})
 	return accountResult(c, v, e)
 }
 func (h *AccountsHandler) Detail(c fiber.Ctx) error {

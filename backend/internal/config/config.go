@@ -3,6 +3,7 @@ package config
 import (
 	"errors"
 	"fmt"
+	"net"
 	"net/netip"
 	"strconv"
 	"strings"
@@ -21,21 +22,27 @@ const (
 
 // Config is validated before any infrastructure or HTTP listener is created.
 type Config struct {
-	App         AppConfig
-	DB          DBConfig
-	MigrationDB *DBConfig
-	JWT         JWTConfig
-	Security    SecurityConfig
-	Log         LogConfig
-	Accounts    AccountsConfig
+	App                            AppConfig
+	DB                             DBConfig
+	MigrationDB                    *DBConfig
+	JWT                            JWTConfig
+	Security                       SecurityConfig
+	Log                            LogConfig
+	Accounts                       AccountsConfig
+	NotificationDueSoonLeadSeconds int
 }
 type AppConfig struct {
 	Env                       Environment
-	Name, Port                string
+	Name, Port, BindHost      string
 	ReadTimeout, WriteTimeout time.Duration
 	IdleTimeout               time.Duration
 	BodyLimit                 int
 }
+
+// Address preserves the existing all-interface default; isolated presentations
+// explicitly select a loopback IP rather than exposing fictional credentials.
+func (a AppConfig) Address() string { return net.JoinHostPort(a.BindHost, a.Port) }
+
 type JWTConfig struct {
 	Secret                string
 	AccessTTL, RefreshTTL time.Duration
@@ -75,6 +82,12 @@ func Parse(values map[string]string) (*Config, error) {
 		}
 	}
 	validatePort(&r, "APP_PORT / PORT", port)
+	bindHost := r.value("APP_BIND_HOST", "")
+	if bindHost != "" {
+		if _, err := netip.ParseAddr(bindHost); err != nil {
+			r.fail("APP_BIND_HOST", "must be a literal IPv4 or IPv6 address")
+		}
+	}
 	body := strings.ToUpper(r.value("APP_BODY_LIMIT", "1MB"))
 	multiplier := int64(1)
 	for suffix, size := range map[string]int64{"KB": 1 << 10, "MB": 1 << 20, "GB": 1 << 30} {
@@ -120,7 +133,7 @@ func Parse(values map[string]string) (*Config, error) {
 		r.fail("ALLOWED_ORIGINS", "must include FRONTEND_URL")
 	}
 	cfg := &Config{
-		App:      AppConfig{Env: env, Name: r.nonblank("APP_NAME", "eLabTrack V2"), Port: port, ReadTimeout: r.duration("APP_READ_TIMEOUT", 10*time.Second), WriteTimeout: r.duration("APP_WRITE_TIMEOUT", 15*time.Second), IdleTimeout: r.duration("APP_IDLE_TIMEOUT", 60*time.Second), BodyLimit: int(n * multiplier)},
+		App:      AppConfig{Env: env, Name: r.nonblank("APP_NAME", "eLabTrack V2"), Port: port, BindHost: bindHost, ReadTimeout: r.duration("APP_READ_TIMEOUT", 10*time.Second), WriteTimeout: r.duration("APP_WRITE_TIMEOUT", 15*time.Second), IdleTimeout: r.duration("APP_IDLE_TIMEOUT", 60*time.Second), BodyLimit: int(n * multiplier)},
 		JWT:      JWTConfig{Secret: secret, AccessTTL: r.duration("JWT_ACCESS_TTL", 15*time.Minute), RefreshTTL: r.duration("JWT_REFRESH_TTL", 168*time.Hour), Issuer: r.nonblank("JWT_ISSUER", "elabtrack-v2")},
 		Security: SecurityConfig{FrontendURL: frontend, AllowedOrigins: origins, RateLimitMax: r.integer("RATE_LIMIT_MAX", 120, 1, 1<<31-1), RateLimitWindow: r.duration("RATE_LIMIT_WINDOW", time.Minute), LoginRateLimitMax: r.integer("LOGIN_RATE_LIMIT_MAX", 10, 1, 1<<31-1), RefreshRateLimitMax: r.integer("REFRESH_RATE_LIMIT_MAX", 60, 1, 1<<31-1), RegisterRateLimitMax: r.integer("REGISTER_RATE_LIMIT_MAX", 5, 1, 1<<31-1), TrustedProxies: readTrustedProxies(&r)},
 		Log:      LogConfig{Level: r.value("LOG_LEVEL", "info"), Format: r.value("LOG_FORMAT", logFormat)},
@@ -141,6 +154,7 @@ func Parse(values map[string]string) (*Config, error) {
 	default:
 		r.fail("LOG_FORMAT", "must be console or json")
 	}
+	cfg.NotificationDueSoonLeadSeconds = r.integer("NOTIFICATION_DUE_SOON_LEAD_SECONDS", 0, 0, 604800)
 	cfg.Accounts = parseAccounts(&r, env, frontend)
 	cfg.DB = parseDatabase(&r, env)
 	cfg.MigrationDB = parseMigrationDatabase(&r, env, cfg.DB)

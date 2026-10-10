@@ -31,6 +31,15 @@ func Register(app *fiber.App, deps *Deps) {
 	if deps.Borrowing != nil {
 		RegisterBorrowing(v1, deps.Borrowing, protected)
 	}
+	if deps.Profile != nil {
+		RegisterProfile(v1, deps.Profile, protected)
+	}
+	if deps.Reporting != nil {
+		RegisterReporting(v1, deps.Reporting, protected)
+	}
+	if deps.Notifications != nil {
+		RegisterNotifications(v1, deps.Notifications, protected)
+	}
 	if deps.Terms != nil {
 		RegisterTerms(v1, deps.Terms, protected)
 	}
@@ -46,6 +55,9 @@ type Deps struct {
 	AccountManagement *handlers.AccountsHandler
 	Inventory         *handlers.InventoryHandler
 	Borrowing         *handlers.BorrowingHandler
+	Notifications     *handlers.NotificationsHandler
+	Reporting         *handlers.ReportingHandler
+	Profile           *handlers.ProfileHandler
 	TokenIssuer       application.TokenIssuer
 	Accounts          appauth.AccountResolver
 	Environment       config.Environment

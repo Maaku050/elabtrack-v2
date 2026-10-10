@@ -1,0 +1,17 @@
+{
+  "result": "PASS",
+  "checks": [
+    "Bundled protected profile images appear in account and persistent operational shell",
+    "Actual profile upload, protected canonical read, removal and initials fallback through normal API",
+    "Fresh fictional Student actually accepts labeled demonstration terms; catalog thumbnails are local protected assets",
+    "Production bundle catalog on phone/tablet/desktop in light/dark; adjacent touch controls and no horizontal overflow",
+    "Student and Faculty share Borrower authority; Staff reads protected borrower avatar in operational detail",
+    "Offline-only browser request interception allows all local assets, role workflows and reports without external services"
+  ],
+  "screens": [],
+  "errors": [],
+  "externalRequests": [],
+  "scope": "Real production bundle, actual login, terms acceptance, profile upload/removal and protected local assets on isolated PostgreSQL. Demo reset restores first-use account.",
+  "screens_original_capture_count": 17,
+  "publication_curation": "Representative subset only; original complete run retained locally. See RELEASE_EVIDENCE_MANIFEST.json."
+}

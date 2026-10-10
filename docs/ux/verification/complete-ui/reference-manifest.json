@@ -1,0 +1,338 @@
+{
+  "date": "2026-10-10",
+  "authority": "DEC-083 and owner complete UI reconstruction request",
+  "scope": "Both full DOCX texts and every embedded image inspected. Raw references contain private information and remain ignored; metadata contains no copied personal information.",
+  "documents": [
+    {
+      "file": "staff-admin_desktop_UI_refinements.docx",
+      "sha256": "fd8958b8c23822d00e8a86de7c97a7f45f067b92b061da58ac20c36ad59c2d64",
+      "embedded_images": [
+        {
+          "id": "D01",
+          "file": "image1.png",
+          "relationship": "rId10",
+          "sha256": "20a1009b82fc555c860011ac82031cd70b68a2b376bef3225aab24840449b28b",
+          "bytes": 46869,
+          "width": 261,
+          "height": 768,
+          "classification": "current interface",
+          "purpose": "Current sidebar and duplicate logout"
+        },
+        {
+          "id": "D02",
+          "file": "image2.png",
+          "relationship": "rId11",
+          "sha256": "eb1e9fa7ecffbc5b675baa2b44813ec5197e6ca7942e374c0cf331f9f9707808",
+          "bytes": 21019,
+          "width": 524,
+          "height": 233,
+          "classification": "current interface",
+          "purpose": "Current account menu"
+        },
+        {
+          "id": "D03",
+          "file": "image3.png",
+          "relationship": "rId12",
+          "sha256": "4156cdcdd3c561568a4ed8084d9db9238daa2b25662be6ad51acbf3c6bbb56f6",
+          "bytes": 131104,
+          "width": 1366,
+          "height": 768,
+          "classification": "current interface",
+          "purpose": "Current dashboard"
+        },
+        {
+          "id": "D04",
+          "file": "image4.png",
+          "relationship": "rId13",
+          "sha256": "b2dbcd32a607480c83bf3858eec61edd3f6de55a21ccc146ee5f98455e35a2dc",
+          "bytes": 144011,
+          "width": 1366,
+          "height": 768,
+          "classification": "visual reference",
+          "purpose": "Earlier dashboard concept"
+        },
+        {
+          "id": "D05",
+          "file": "image5.png",
+          "relationship": "rId14",
+          "sha256": "fc88f13299f0afe76e058d87fe1875bab10c1a0cde02681be793ffd8db5efd18",
+          "bytes": 138243,
+          "width": 1366,
+          "height": 768,
+          "classification": "current interface",
+          "purpose": "Current borrowing directory"
+        },
+        {
+          "id": "D06",
+          "file": "image6.png",
+          "relationship": "rId15",
+          "sha256": "2f1f42084dd396aee50cff444a28b96df1797adfdfda2c1a2df33260503dd6e7",
+          "bytes": 113134,
+          "width": 1366,
+          "height": 768,
+          "classification": "current interface",
+          "purpose": "Current long direct-issuance form 1"
+        },
+        {
+          "id": "D07",
+          "file": "image7.png",
+          "relationship": "rId16",
+          "sha256": "dbb35b365c106cc8124b535ca9a3adf0b72a992ee8fae3e152ec1dd0b8b0b4f9",
+          "bytes": 96643,
+          "width": 1366,
+          "height": 768,
+          "classification": "current interface",
+          "purpose": "Current long direct-issuance form 2"
+        },
+        {
+          "id": "D08",
+          "file": "image8.png",
+          "relationship": "rId17",
+          "sha256": "7cdcd00d471079c084acc459f7f8198384a90f9e4a4f1ac6e620b16d3d76cf9b",
+          "bytes": 91994,
+          "width": 1366,
+          "height": 768,
+          "classification": "current interface",
+          "purpose": "Current long direct-issuance form 3"
+        },
+        {
+          "id": "D09",
+          "file": "image9.png",
+          "relationship": "rId18",
+          "sha256": "1b36651a4f74a68fe798426d31bd03f8c3989b525a2f055782b84c6c4b9a82e3",
+          "bytes": 35410,
+          "width": 684,
+          "height": 626,
+          "classification": "historical interaction reference",
+          "purpose": "V1 borrower selection interaction"
+        },
+        {
+          "id": "D10",
+          "file": "image10.png",
+          "relationship": "rId19",
+          "sha256": "1b9e675ce6fd431e018634afbbe2e12b6f040fef49ca4c142a66e37d618b9531",
+          "bytes": 63636,
+          "width": 1298,
+          "height": 630,
+          "classification": "historical interaction reference",
+          "purpose": "V1 browse and cart interaction"
+        },
+        {
+          "id": "D11",
+          "file": "image11.png",
+          "relationship": "rId20",
+          "sha256": "0fc6502163f7b7a6d72ede83787bb319bbc298da801503289c92dc206818f91f",
+          "bytes": 39121,
+          "width": 702,
+          "height": 556,
+          "classification": "historical interaction reference",
+          "purpose": "V1 final issuance review interaction"
+        },
+        {
+          "id": "D12",
+          "file": "image12.png",
+          "relationship": "rId21",
+          "sha256": "2d00708a4c670e33654b5c05a30b1db2b5c6892e6c0f83f893860843609aec6c",
+          "bytes": 88284,
+          "width": 1366,
+          "height": 768,
+          "classification": "current interface",
+          "purpose": "Current report page"
+        },
+        {
+          "id": "D13",
+          "file": "image13.png",
+          "relationship": "rId22",
+          "sha256": "55cc6d8be99179a2355295c1f8ab4a3997351611a0d011759f663509ef73176b",
+          "bytes": 1243,
+          "width": 72,
+          "height": 49,
+          "classification": "current interface",
+          "purpose": "Current notification bell"
+        },
+        {
+          "id": "D14",
+          "file": "image14.png",
+          "relationship": "rId23",
+          "sha256": "bdd2e7c2833c312da086070355dd230c36721e37502e9b19a0b2cb4d42574a72",
+          "bytes": 1363,
+          "width": 69,
+          "height": 56,
+          "classification": "current interface",
+          "purpose": "Current notification bell hover"
+        },
+        {
+          "id": "D15",
+          "file": "image15.png",
+          "relationship": "rId24",
+          "sha256": "ef941d3d29d125c32990b7ab763ec59266c9b39546fc5f7dd928d8abdded4ce7",
+          "bytes": 69374,
+          "width": 1366,
+          "height": 764,
+          "classification": "current interface",
+          "purpose": "Current notifications page"
+        },
+        {
+          "id": "D16",
+          "file": "image16.png",
+          "relationship": "rId25",
+          "sha256": "34a49bc38ea1d408e7a0ce30e0d7d1294a6b9a337d3194ddeb9545e86de0f586",
+          "bytes": 57789,
+          "width": 1351,
+          "height": 763,
+          "classification": "current interface",
+          "purpose": "Current account page"
+        },
+        {
+          "id": "D17",
+          "file": "image17.png",
+          "relationship": "rId26",
+          "sha256": "756e0247c424830265a086da338b54ed32119ab438d1a08956a46fa5c3c00c5d",
+          "bytes": 65637,
+          "width": 1352,
+          "height": 758,
+          "classification": "current interface",
+          "purpose": "Current account photo editor"
+        },
+        {
+          "id": "D18",
+          "file": "image18.png",
+          "relationship": "rId27",
+          "sha256": "ef1d094208b231579c80e635f02b76bc1047976623c707bf1902100615ab9b30",
+          "bytes": 82685,
+          "width": 740,
+          "height": 528,
+          "classification": "visual reference",
+          "purpose": "Modern personal-information reference"
+        },
+        {
+          "id": "D19",
+          "file": "image19.png",
+          "relationship": "rId28",
+          "sha256": "880a08c0f71945ed4cea62b91da6d6a9d670fad520a77ae9531f867989cc5de6",
+          "bytes": 433360,
+          "width": 1258,
+          "height": 467,
+          "classification": "visual reference",
+          "purpose": "S01 dashboard page content"
+        },
+        {
+          "id": "D20",
+          "file": "image20.png",
+          "relationship": "rId29",
+          "sha256": "d48f01c0697c95d138a6489d6719ed4ee41559c30e3b49b088f80bb637634d3b",
+          "bytes": 420374,
+          "width": 1258,
+          "height": 427,
+          "classification": "visual reference",
+          "purpose": "S01 compact borrowing directory content"
+        },
+        {
+          "id": "D21",
+          "file": "image21.png",
+          "relationship": "rId30",
+          "sha256": "960e4827c34b351e5bd6dee8228a7837869faff27df21e093d6e26ec368ef4d2",
+          "bytes": 2084186,
+          "width": 1536,
+          "height": 1024,
+          "classification": "visual reference",
+          "purpose": "S01 full composite: page content only"
+        }
+      ]
+    },
+    {
+      "file": "student-faculty_mobile_UI_refinements.docx",
+      "sha256": "8f18a314e3bada7e80bfdf6d1478933cefe3a8e8262610d38c5b8d67c0ad86db",
+      "embedded_images": [
+        {
+          "id": "B01",
+          "file": "image1.png",
+          "relationship": "rId11",
+          "sha256": "f85655fc039b1c8dc370f6e35be1e829922edaec389bc87aafbe795fb15b4dd7",
+          "bytes": 45262,
+          "width": 355,
+          "height": 724,
+          "classification": "current interface",
+          "purpose": "Current borrower Home"
+        },
+        {
+          "id": "B02",
+          "file": "image2.png",
+          "relationship": "rId12",
+          "sha256": "9daa6da9a7ada2dc3b7235ffdb69c522d6af1ede11f202140c1baa77cf30f7da",
+          "bytes": 2146119,
+          "width": 941,
+          "height": 1672,
+          "classification": "visual reference",
+          "purpose": "B01 approved borrower Home composition"
+        },
+        {
+          "id": "B03",
+          "file": "image3.png",
+          "relationship": "rId13",
+          "sha256": "39c396a7446a09451dde7065069d0cee30f23db1041afa186156918cdcfb4f65",
+          "bytes": 40951,
+          "width": 369,
+          "height": 728,
+          "classification": "current interface",
+          "purpose": "Current mobile equipment catalog"
+        },
+        {
+          "id": "B04",
+          "file": "image4.png",
+          "relationship": "rId14",
+          "sha256": "2971cd780e3d710fb347781af46cba09cc1798e5169afaad8ae6b93619bdd3b2",
+          "bytes": 2184703,
+          "width": 941,
+          "height": 1672,
+          "classification": "visual reference",
+          "purpose": "B02 approved catalog composition"
+        },
+        {
+          "id": "B05",
+          "file": "image5.png",
+          "relationship": "rId15",
+          "sha256": "c84b05c365b428b4efb1211b44a0da46c5cbd92d08bdfcf816a34a4bf689b159",
+          "bytes": 35175,
+          "width": 356,
+          "height": 726,
+          "classification": "current interface",
+          "purpose": "Current cart/review"
+        },
+        {
+          "id": "B06",
+          "file": "image6.png",
+          "relationship": "rId16",
+          "sha256": "e255a5c94b7d29e644cb5a1464037ab5921a348ebbe07b98a5a311750bde6296",
+          "bytes": 39448,
+          "width": 359,
+          "height": 727,
+          "classification": "current interface",
+          "purpose": "Current My Borrowings"
+        },
+        {
+          "id": "B07",
+          "file": "image7.png",
+          "relationship": "rId17",
+          "sha256": "420871363419d9b45a7fe0e40ab3e5a17daf98b44e72a522cee86d6792931625",
+          "bytes": 40608,
+          "width": 355,
+          "height": 719,
+          "classification": "current interface",
+          "purpose": "Current borrower account"
+        },
+        {
+          "id": "B08",
+          "file": "image8.png",
+          "relationship": "rId18",
+          "sha256": "1f4a9534078883c0adccd3ea591813bc6ac2be2ad957950547b6d29f4cfa8ffe",
+          "bytes": 132034,
+          "width": 571,
+          "height": 582,
+          "classification": "visual reference",
+          "purpose": "Profile After approved account composition"
+        }
+      ]
+    }
+  ]
+}

@@ -168,8 +168,27 @@ func (r *InventoryRepository) ArchiveSafety(c context.Context, ids ...uuid.UUID)
 		return "UNAVAILABLE", accountError(e)
 	}
 	if replacement {
-		return "UNAVAILABLE", nil
-	} // Phase8 adapter has not been authorized/implemented.
+		if len(ids) != 1 {
+			return "UNAVAILABLE", nil
+		}
+		var complete bool
+		e = r.executor(c).QueryRow(c, `SELECT to_regclass('public.return_lines') IS NOT NULL AND to_regclass('public.replacement_acceptances') IS NOT NULL`).Scan(&complete)
+		if e != nil {
+			return "UNAVAILABLE", accountError(e)
+		}
+		if !complete {
+			return "UNAVAILABLE", nil
+		}
+		var blocked bool
+		e = r.executor(c).QueryRow(c, `SELECT EXISTS(SELECT 1 FROM borrowing_items i JOIN borrowings b ON b.id=i.borrowing_id WHERE i.equipment_id=$1 AND (i.reserved_quantity>0 OR (b.status='CHECKED_OUT' AND i.issued_quantity>COALESCE((SELECT sum(good+damaged+lost) FROM return_lines l WHERE l.item_id=i.id),0)))) OR EXISTS(SELECT 1 FROM replacement_obligations o WHERE o.equipment_id=$1 AND o.required>COALESCE((SELECT sum(quantity) FROM replacement_acceptances a WHERE a.obligation_id=o.id),0))`, ids[0]).Scan(&blocked)
+		if e != nil {
+			return "UNAVAILABLE", accountError(e)
+		}
+		if blocked {
+			return "BLOCKED", nil
+		}
+		return "CLEAR", nil
+	}
 	if !borrowing {
 		return "NOT_INSTALLED", nil
 	}

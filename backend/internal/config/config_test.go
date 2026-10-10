@@ -281,3 +281,17 @@ func TestAccountConfigurationGuards(t *testing.T) {
 		t.Fatal("missing external dependencies must not stop independent startup")
 	}
 }
+
+func TestExplicitListenerAddress(t *testing.T) {
+	for _, v := range []struct{ host, address string }{{"", ":8080"}, {"127.0.0.1", "127.0.0.1:8080"}, {"::1", "[::1]:8080"}} {
+		cfg, err := Parse(map[string]string{"APP_BIND_HOST": v.host})
+		if err != nil || cfg.App.Address() != v.address {
+			t.Fatalf("explicit listener configuration: %v", err)
+		}
+	}
+	for _, host := range []string{"localhost", "127.0.0.1:8080", "https://example.invalid", "127.0.0.999"} {
+		if _, err := Parse(map[string]string{"APP_BIND_HOST": host}); err == nil {
+			t.Fatal("invalid bind address accepted")
+		}
+	}
+}

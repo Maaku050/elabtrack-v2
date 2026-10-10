@@ -1,0 +1,57 @@
+{
+  "frontend": {
+    "tests_serial": 311,
+    "tests_parallel": 311,
+    "test_files": 29,
+    "typecheck": "PASS",
+    "lint": "PASS",
+    "inherited_warnings": 19,
+    "build": "PASS"
+  },
+  "backend": {
+    "fmt": "PASS",
+    "vet": "PASS",
+    "unit": "PASS",
+    "race": "PASS"
+  },
+  "postgres_http_ordered_suites": [
+    {
+      "suite": "terms",
+      "exit": 0,
+      "passing_named_tests": 13
+    },
+    {
+      "suite": "accounts",
+      "exit": 0,
+      "passing_named_tests": 11
+    },
+    {
+      "suite": "inventory",
+      "exit": 0,
+      "passing_named_tests": 9
+    },
+    {
+      "suite": "borrowing",
+      "exit": 0,
+      "passing_named_tests": 53
+    },
+    {
+      "suite": "http",
+      "exit": 0,
+      "passing_named_tests": 30
+    }
+  ],
+  "additional_real_gates": {
+    "auth_foundation_named_pass_entries": 9,
+    "abrupt_restart": 2,
+    "inventory_contention": 4,
+    "deterministic_notification_lifecycle_lock": 1,
+    "restored_table_digests_equal": 29,
+    "restored_sequence_states_equal": true,
+    "restored_migrations": 11
+  },
+  "presentation_python_guard_tests": 10,
+  "diff_check": "PASS",
+  "owner_acceptance": "PENDING",
+  "note": "Named database entries include parent/subtests. Default opt-in skips are not represented as database passes."
+}

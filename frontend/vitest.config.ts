@@ -11,6 +11,8 @@ export default defineConfig({
   },
   test: {
     globals: true,
+    // Keep file-level parallelism without exhausting shared WSL memory during lazy imports.
+    maxWorkers: 2,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     css: true,

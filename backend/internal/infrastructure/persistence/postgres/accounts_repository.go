@@ -108,6 +108,9 @@ func (r *AccountsRepository) FindIdentity(ctx context.Context, email, studentID 
 }
 func (r *AccountsRepository) List(ctx context.Context, f d.Filter) (out d.Page, err error) {
 	where := `WHERE u.role='BORROWER'`
+	if f.EligibleForIssuance {
+		where += ` AND u.is_active AND NOT u.activation_required AND p.borrower_type IN ('STUDENT','FACULTY') AND EXISTS(SELECT 1 FROM terms_acceptances ta JOIN terms_publication tp ON tp.current_version_id=ta.terms_version_id WHERE tp.id=1 AND ta.user_id=u.id)`
+	}
 	if f.Staff {
 		where = `WHERE u.role IN ('STAFF','ADMIN')`
 	}

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	appborrowing "github.com/Maaku050/elabtrack-v2/backend/internal/application/borrowing"
+	appnotifications "github.com/Maaku050/elabtrack-v2/backend/internal/application/notifications"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/config"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/domain/shared"
 	"github.com/Maaku050/elabtrack-v2/backend/internal/infrastructure/database"
@@ -21,13 +22,15 @@ import (
 // App is the fully wired application. Run it with Run; shut it down with
 // Shutdown (called automatically by Run on SIGINT/SIGTERM).
 type App struct {
-	cfg        *config.Config
-	log        *logger.Logger
-	db         *database.Postgres
-	server     *fiber.App
-	borrowing  *appborrowing.Service
-	stopExpiry context.CancelFunc
-	expiryDone chan struct{}
+	cfg              *config.Config
+	log              *logger.Logger
+	db               *database.Postgres
+	server           *fiber.App
+	borrowing        *appborrowing.Service
+	notifications    *appnotifications.Service
+	notificationDone chan struct{}
+	stopExpiry       context.CancelFunc
+	expiryDone       chan struct{}
 }
 
 // New wires the entire application: config -> infrastructure -> services
@@ -46,11 +49,12 @@ func New(ctx context.Context) (*App, error) {
 	RegisterRoutes(server, c)
 
 	return &App{
-		cfg:       cfg,
-		log:       infra.Logger,
-		db:        infra.DB,
-		server:    server,
-		borrowing: c.BorrowingSvc,
+		cfg:           cfg,
+		log:           infra.Logger,
+		db:            infra.DB,
+		server:        server,
+		borrowing:     c.BorrowingSvc,
+		notifications: c.NotificationsSvc,
 	}, nil
 }
 
@@ -61,7 +65,11 @@ func (a *App) Run() error {
 	a.stopExpiry = cancel
 	a.expiryDone = make(chan struct{})
 	go a.runExpiry(workerCtx)
-	addr := ":" + a.cfg.App.Port
+	if a.notifications != nil {
+		a.notificationDone = make(chan struct{})
+		go a.runNotifications(workerCtx)
+	}
+	addr := a.cfg.App.Address()
 	go func() {
 		logStartup(a.log, a.cfg)
 		if err := a.server.Listen(addr, fiber.ListenConfig{DisableStartupMessage: true}); err != nil && !errors.Is(err, http.ErrServerClosed) {
@@ -92,6 +100,9 @@ func (a *App) Shutdown(ctx context.Context) error {
 	if a.stopExpiry != nil {
 		a.stopExpiry()
 		<-a.expiryDone
+		if a.notificationDone != nil {
+			<-a.notificationDone
+		}
 	}
 	a.db.Close()
 	a.log.Info("database pool closed", zap.String("event", "server.shutdown_completed"))
@@ -106,5 +117,5 @@ func (a *App) Logger() *logger.Logger { return a.log }
 func (a *App) Config() *config.Config { return a.cfg }
 
 func logStartup(log *logger.Logger, cfg *config.Config) {
-	log.Info("starting http server", zap.String("event", "server.starting"), zap.String("addr", ":"+cfg.App.Port), zap.String("env", string(cfg.App.Env)), zap.String("migration_policy", "explicit_command"), zap.Bool("startup_seed_enabled", false), zap.Bool("trusted_proxy_enabled", len(cfg.Security.TrustedProxies) > 0), zap.Int("allowed_origin_count", len(cfg.Security.AllowedOrigins)))
+	log.Info("starting http server", zap.String("event", "server.starting"), zap.String("addr", cfg.App.Address()), zap.String("env", string(cfg.App.Env)), zap.String("migration_policy", "explicit_command"), zap.Bool("startup_seed_enabled", false), zap.Bool("trusted_proxy_enabled", len(cfg.Security.TrustedProxies) > 0), zap.Int("allowed_origin_count", len(cfg.Security.AllowedOrigins)))
 }

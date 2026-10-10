@@ -1,0 +1,184 @@
+{
+  "date": "2026-10-10",
+  "authority": "Owner human-review documents under explicit master request",
+  "documents": [
+    {
+      "document": "staff-admin_desktop_UI_human_review_refinements.docx",
+      "sha256": "3e191da4ddf0b920dd778cac82dbcb1b605bfeaa866fa33222ab6443572112f7",
+      "full_text_read": true,
+      "images": [
+        {
+          "image": "image1.png",
+          "figure": "D-01",
+          "width": 1366,
+          "height": 768,
+          "sha256": "2ab6b266b3be0d74d3ea2387d4864560f49e9bcf51c89b01fdc8337fa521515c",
+          "individually_inspected": true
+        },
+        {
+          "image": "image2.png",
+          "figure": "D-02",
+          "width": 1366,
+          "height": 768,
+          "sha256": "38ecdfdc5a1175cd480b93a1ecaa68c3f64fc133f3293d5f1023f91985138579",
+          "individually_inspected": true
+        },
+        {
+          "image": "image3.png",
+          "figure": "D-03",
+          "width": 384,
+          "height": 439,
+          "sha256": "25908ca13c5435dfdd5ae89ab1a32e162cee1db0fc686ae625a071474f3334cf",
+          "individually_inspected": true
+        },
+        {
+          "image": "image4.png",
+          "figure": "D-04",
+          "width": 91,
+          "height": 768,
+          "sha256": "4afe62bd2242abb2b964d0029f28ca5b6049133ed8709b616bcb0233f625d52a",
+          "individually_inspected": true
+        },
+        {
+          "image": "image5.png",
+          "figure": "R-01",
+          "width": 969,
+          "height": 316,
+          "sha256": "db8f4623fcd2dcd6dd471ec1c138cc9b32e705ed1cde73f73c1aa0bdeb6aa5fd",
+          "individually_inspected": true
+        },
+        {
+          "image": "image6.png",
+          "figure": "R-02",
+          "width": 1366,
+          "height": 768,
+          "sha256": "5eb0ddda72eba588f3e1c33441571ec4ce126aa14343846c438d85cf879ea27e",
+          "individually_inspected": true
+        },
+        {
+          "image": "image7.png",
+          "figure": "I-01",
+          "width": 1366,
+          "height": 764,
+          "sha256": "2feb79702902d5a7f2105b890c25a9a2a0d739718bdf3fb7949d19bd7d575717",
+          "individually_inspected": true
+        },
+        {
+          "image": "image8.png",
+          "figure": "I-02",
+          "width": 1278,
+          "height": 600,
+          "sha256": "9f6046f960cb7fc8ebaec93ae92e634b6547c35677f4a11a6457635f4913fd30",
+          "individually_inspected": true
+        },
+        {
+          "image": "image9.png",
+          "figure": "I-04",
+          "width": 288,
+          "height": 84,
+          "sha256": "4d4121d70e8ed5e83668a25b2ac9f4e8a5f2d14985a9ad1cc4607517839345fb",
+          "individually_inspected": true
+        },
+        {
+          "image": "image10.png",
+          "figure": "I-03",
+          "width": 1364,
+          "height": 768,
+          "sha256": "dd22c63945c16fef2af86a04733871187d7c7f711ebbeb95a5ae8dda8f62f85a",
+          "individually_inspected": true
+        }
+      ]
+    },
+    {
+      "document": "student-faculty_mobile_UI_human_review_refinements.docx",
+      "sha256": "8b4c8637620db72d552d0bf0d7ff5e05515e6e50f65c43e96f13c645921750ee",
+      "full_text_read": true,
+      "images": [
+        {
+          "image": "image1.png",
+          "figure": "H-01",
+          "width": 341,
+          "height": 719,
+          "sha256": "3bd4aa95d5c8f7ce4a6d2afd9e1c39b7d6b42db3a48f008eab117891566c527a",
+          "individually_inspected": true
+        },
+        {
+          "image": "image2.png",
+          "figure": "E-01",
+          "width": 449,
+          "height": 207,
+          "sha256": "18963c762bd227b535a907d5fe5c721fb9db4ab39d5391e87cdeae019cc8925e",
+          "individually_inspected": true
+        },
+        {
+          "image": "image3.png",
+          "figure": "E-02",
+          "width": 350,
+          "height": 718,
+          "sha256": "30b2258e6b8c07d36045760f9d572fabce34f4cb8eed98e2426f3d4a6b9f99ab",
+          "individually_inspected": true
+        },
+        {
+          "image": "image4.png",
+          "figure": "E-03",
+          "width": 1292,
+          "height": 610,
+          "sha256": "f3bd8994f687237b769458d35fd960f9cabacc017910411ca8baa4c04a9b394a",
+          "individually_inspected": true
+        },
+        {
+          "image": "image5.png",
+          "figure": "A-01",
+          "width": 352,
+          "height": 722,
+          "sha256": "4ad15df72c8cc1d0956fc1c7c16683f6873ae46a52d26d65f35b01b9bea660a2",
+          "individually_inspected": true
+        },
+        {
+          "image": "image6.png",
+          "figure": "A-02",
+          "width": 348,
+          "height": 717,
+          "sha256": "4683c4d15e80d167aed4f854ffcd7df6a19c21243ec2b231c3db9698862a4f02",
+          "individually_inspected": true
+        },
+        {
+          "image": "image7.png",
+          "figure": "A-03",
+          "width": 387,
+          "height": 254,
+          "sha256": "017a49ec779cd530c49eb87eb39aaf18c20bfd49bf947b5e6569d101ec434633",
+          "individually_inspected": true
+        },
+        {
+          "image": "image8.png",
+          "figure": "A-04",
+          "width": 348,
+          "height": 719,
+          "sha256": "58e67d82a64b22cf093579fdacf3695627b37f6932d92dafe8c7790a85a9dbdd",
+          "individually_inspected": true
+        }
+      ]
+    }
+  ],
+  "total_images": 18,
+  "private_originals_excluded": true,
+  "local_reference_crops": [
+    {
+      "figure": "D-03",
+      "file": "before/owner-recent-native-scrollbar.png",
+      "privacy_review": "No names/emails/credentials/personal records; fictional presentation activity references only."
+    },
+    {
+      "figure": "D-04",
+      "file": "before/owner-page-native-scrollbar.png",
+      "privacy_review": "Page-edge scrollbar and interface crop only; no identity/credentials."
+    },
+    {
+      "figure": "A-03",
+      "file": "before/owner-account-bottom-signout.png",
+      "privacy_review": "Fictional demo-contact-student01, demo terms label and bottom Sign Out only; no personal identity or credentials."
+    }
+  ],
+  "local_reference_crops_note": "Owner crops remain private/local; not shipped. These entries identify historical review sources, not downloadable publication links."
+}
